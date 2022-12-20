@@ -21,12 +21,12 @@ public class CreateIndividualIdentityDto
   public string? MiddleNames { get; set; }
 }
 
-public class IndividualDto
-{
-  public int Id { get; set; }
-  public string? ExternalId { get; set; }
-  public IdentityDto? Identity { get; set; }
-}
+// public class IndividualDto
+// {
+//   public int Id { get; set; }
+//   public string? ExternalId { get; set; }
+//   //  public IdentityDto? Identity { get; set; }
+// }
 
 public class IdentityDto
 {

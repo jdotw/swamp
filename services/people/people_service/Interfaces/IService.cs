@@ -1,11 +1,11 @@
-using People.Models;
+using Entity.Models;
 using People.DTOs;
 
 namespace People.Interfaces
 {
   public interface IIndividualService
   {
-    public List<IndividualDto> GetAll();
+    public List<Individual> GetAll();
     public Individual? Get(int id);
     public Individual Add(Individual individual);
     public Individual? Update(Individual individual);
