@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using People.Models;
+using Entity.Models;
 using People.PostgreSQL;
 using People.Services;
 using Microsoft.EntityFrameworkCore;
