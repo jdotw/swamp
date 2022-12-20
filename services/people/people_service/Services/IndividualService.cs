@@ -1,4 +1,4 @@
-using People.Models;
+using Entity.Models;
 using People.Interfaces;
 using People.PostgreSQL;
 using People.DTOs;
@@ -21,10 +21,22 @@ public class IndividualService : IIndividualService
     this.mapper = mapper;
   }
 
-  public List<IndividualDto> GetAll()
+  public List<Individual> GetAll()
   {
-    var individuals = context.Individuals.Include(c => c.Identities);
-    return individuals.ProjectTo<IndividualDto>(mapper.ConfigurationProvider).ToList();
+    // var individuals = context.Individuals.Include(c => c.Identities.OrderBy(i => i.Id).Take(1));
+    return context.Individuals.Select(c => new Individual
+    {
+      Id = c.Id,
+      ExternalId = c.ExternalId,
+      // Identities = c.Identities.Select(i => new IdentityDto
+      // {
+      // Id = i.Id,
+      // Name = i.Name,
+      // Type = i.Type,
+      // IndividualId = i.IndividualId
+      // }).OrderBy(i => i.Id).Take(1).ToList()
+    }).ToList();
+    // return individuals.ProjectTo<IndividualDto>(mapper.ConfigurationProvider).ToList();
   }
 
   public Individual? Get(int id) => context.Individuals.FirstOrDefault(p => p.Id == id);
