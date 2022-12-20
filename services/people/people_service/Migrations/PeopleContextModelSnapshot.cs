@@ -21,7 +21,7 @@ namespace peopleservice.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("People.Models.Identity", b =>
+            modelBuilder.Entity("Entity.Models.Identity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace peopleservice.Migrations
                     b.ToTable("identities", (string)null);
                 });
 
-            modelBuilder.Entity("People.Models.Individual", b =>
+            modelBuilder.Entity("Entity.Models.Individual", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,9 +74,9 @@ namespace peopleservice.Migrations
                     b.ToTable("individuals", (string)null);
                 });
 
-            modelBuilder.Entity("People.Models.Identity", b =>
+            modelBuilder.Entity("Entity.Models.Identity", b =>
                 {
-                    b.HasOne("People.Models.Individual", "Individual")
+                    b.HasOne("Entity.Models.Individual", "Individual")
                         .WithMany("Identities")
                         .HasForeignKey("IndividualId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -86,7 +86,7 @@ namespace peopleservice.Migrations
                     b.Navigation("Individual");
                 });
 
-            modelBuilder.Entity("People.Models.Individual", b =>
+            modelBuilder.Entity("Entity.Models.Individual", b =>
                 {
                     b.Navigation("Identities");
                 });

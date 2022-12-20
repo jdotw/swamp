@@ -30,10 +30,10 @@ namespace peopleservice.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    individualid = table.Column<int>(name: "individual_id", type: "integer", nullable: false),
                     firstname = table.Column<string>(name: "first_name", type: "text", nullable: true),
                     middlenames = table.Column<string>(name: "middle_names", type: "text", nullable: true),
-                    lastname = table.Column<string>(name: "last_name", type: "text", nullable: true)
+                    lastname = table.Column<string>(name: "last_name", type: "text", nullable: true),
+                    individualid = table.Column<int>(name: "individual_id", type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
