@@ -1,9 +1,6 @@
-using System.Text.Json.Serialization;
-
-namespace People.Models;
-public class Identity
+namespace People.Entities;
+public class Identity : BaseEntity
 {
-  public int Id { get; set; }
   public string? FirstName { get; set; }
   public string? MiddleNames { get; set; }
   public string? LastName { get; set; }
