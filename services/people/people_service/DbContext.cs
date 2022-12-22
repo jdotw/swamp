@@ -15,7 +15,7 @@ namespace People.PostgreSQL
       ChangeTracker.StateChanged += UpdateTimestamps;
     }
 
-    private static void UpdateTimestamps(object sender, EntityEntryEventArgs e)
+    private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)
     {
       if (e.Entry.Entity is BaseEntity entityWithTimestamps)
       {
