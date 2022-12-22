@@ -15,6 +15,18 @@ namespace People.PostgreSQL
       ChangeTracker.StateChanged += UpdateTimestamps;
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<LineManager>()
+          .HasOne<Individual>(m => m.Individual)
+          .WithMany(i => i.LineManagers)
+          .HasForeignKey(m => m.IndividualId);
+      modelBuilder.Entity<LineManager>()
+          .HasOne<Individual>(m => m.Manager)
+          .WithMany(i => i.DirectReports)
+          .HasForeignKey(m => m.ManagerId);
+    }
+
     private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)
     {
       if (e.Entry.Entity is BaseEntity entityWithTimestamps)
