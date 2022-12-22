@@ -1,0 +1,171 @@
+openapi: "3.0.2"
+info:
+  title: People Domain API
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /individuals:
+    get:
+      tags:
+        - Individual
+      summary: Get All Individuals
+      description: Returns only the ID and External ID for the individual. For more information on an individual, make a call to /individuals/{id}
+      operationId: GetIndividuals
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IndividualSummary"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - Individual
+      summary: Add Individual
+      description: Adds a new Individual and Identity
+      operationId: AddIndividual
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddIndividualRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Individual"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /individuals/{individual_id}:
+    get:
+      tags:
+        - Individual
+      summary: Get a specific Individual
+      description: Returns the Individual and their current Identity
+      operationId: GetIndividual
+      parameters:
+        - $ref: "#/components/parameters/IndividualID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Individual"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  schemas:
+    Individual:
+      type: object
+      properties:
+        id:
+          type: integer
+        externalid:
+          type: string
+        firstname:
+          type: string
+        middlename:
+          type: string
+        lastname:
+          type: string
+      required: [id, externalid, firstname, lastname]
+    IndividualSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        externalid:
+          type: string
+      required: [id, externalid]
+    AddIndividualRequest:
+      type: object
+      properties:
+        externalid:
+          type: string
+        firstname:
+          type: string
+        middlename:
+          type: string
+        lastname:
+          type: string
+      required: [externalid, firstname, lastname]
+    # Errors
+    HTTPError:
+      type: object
+      properties:
+        message:
+          type: string
+  parameters:
+    IndividualID:
+      name: individual_id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+  responses:
+    HTTPError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    TooManyRequestsError:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPError"

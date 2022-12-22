@@ -21,56 +21,54 @@ public class IndividualService : IIndividualService
     this.mapper = mapper;
   }
 
-  public List<Individual> GetAll()
+  public List<IndividualIdentifiersDto> GetAll()
   {
-    // var individuals = context.Individuals.Include(c => c.Identities.OrderBy(i => i.Id).Take(1));
     return context.Individuals.Select(c => new Individual
     {
       Id = c.Id,
       ExternalId = c.ExternalId,
-      // Identities = c.Identities.Select(i => new IdentityDto
-      // {
-      // Id = i.Id,
-      // Name = i.Name,
-      // Type = i.Type,
-      // IndividualId = i.IndividualId
-      // }).OrderBy(i => i.Id).Take(1).ToList()
-    }).ToList();
-    // return individuals.ProjectTo<IndividualDto>(mapper.ConfigurationProvider).ToList();
+    }).ProjectTo<IndividualIdentifiersDto>(mapper.ConfigurationProvider).ToList();
   }
 
-  public Individual? Get(int id) => context.Individuals.FirstOrDefault(p => p.Id == id);
-
-  public Individual Add(Individual individual)
+  public IndividualDto? Get(int id)
   {
-    var result = context.Individuals.Add(individual);
+    return mapper.Map<IndividualDto>(context.Individuals.Include(p => p.Identities.OrderByDescending(c => c.Id)).FirstOrDefault(p => p.Id == id));
+  }
+
+
+  public IndividualDto Add(MutateIndividualDto individual)
+  {
+    var mappedIndividual = mapper.Map<Individual>(individual);
+    var result = context.Individuals.Add(mappedIndividual);
     context.SaveChanges();
-    return result.Entity;
+    return mapper.Map<IndividualDto>(result.Entity);
   }
 
-  public Individual? Delete(int id)
+  public bool Delete(int id)
   {
-    // Delete the Individual 
-    var existingIndividual = context.Individuals.FirstOrDefault(p => p.Id == id);
+    var existingIndividual = context.Individuals.AsNoTracking().FirstOrDefault(p => p.Id == id);
     if (existingIndividual is not null)
     {
       context.Individuals.Remove(existingIndividual);
       context.SaveChanges();
-      return existingIndividual;
+      return true;
     }
     else
     {
-      return null;
+      return false;
     }
   }
 
-  public Individual? Update(Individual individual)
+  public IndividualDto? Update(int id, MutateIndividualDto individual)
   {
-    if (context.Individuals.FirstOrDefault(c => c.Id == individual.Id) is { })
+    if (context.Individuals.AsNoTracking().FirstOrDefault(c => c.Id == id) is { })
     {
-      var result = context.Individuals.Update(individual);
+      var mappedIndividual = mapper.Map<Individual>(individual);
+      mappedIndividual.Id = id;
+      var individualResult = context.Individuals.Update(mappedIndividual);
+      var identityResult = context.Identities.Add(mappedIndividual.Identities[0]);
       context.SaveChanges();
-      return result.Entity;
+      return mapper.Map<IndividualDto>(mappedIndividual);
     }
     else
     {

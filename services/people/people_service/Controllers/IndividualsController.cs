@@ -14,58 +14,59 @@ namespace People.Controllers;
 [Route("[controller]")]
 public class Individuals : ControllerBase
 {
-  private readonly ILogger<Individuals> _logger;
-  private readonly IIndividualService _service;
-  private readonly IMapper _mapper;
+  private readonly ILogger<Individuals> logger;
+  private readonly IIndividualService service;
+  private readonly IMapper mapper;
 
   public Individuals(ILogger<Individuals> logger, IIndividualService service, IMapper mapper)
   {
-    _logger = logger;
-    _service = service;
-    _mapper = mapper;
+    this.logger = logger;
+    this.service = service;
+    this.mapper = mapper;
   }
 
   [HttpGet]
-  public ActionResult<List<Individual>> GetAll()
+  public ActionResult<List<IndividualIdentifiersDto>> GetAll()
   {
-    var categories = _service.GetAll();
-    return (categories == null) ? NotFound() : Ok(categories);
+    var individuals = service.GetAll();
+    return (individuals == null) ? NotFound() : Ok(individuals);
   }
 
   [HttpGet("{id}")]
-  public ActionResult<Individual> Get(int id)
+  public ActionResult<IndividualDto> Get(int id)
   {
-    var individual = _service.Get(id);
+    var individual = service.Get(id);
     return (individual == null) ? NotFound() : Ok(individual);
   }
 
   [HttpPost]
-  public IActionResult Create(CreateIndividualDto individualDto)
+  public IActionResult Add(MutateIndividualDto individual)
   {
-    var individual = _mapper.Map<Individual>(individualDto);
-    _logger.LogInformation("Individual Identities: {0}", individual.Identities);
-    var result = _service.Add(individual);
-    _service.SaveAll();
-    return CreatedAtAction(nameof(Create), new { id = result.Id }, result);
+    logger.LogInformation("Individual first_name: {individual.FirstName}", individual.FirstName);
+    var result = service.Add(individual);
+    service.SaveAll();
+    return CreatedAtAction(nameof(Add), new { id = result.Id }, result);
   }
 
   [HttpPut("{id}")]
-  public IActionResult Update(int id, Individual individual)
+  public IActionResult Update(int id, MutateIndividualDto individual)
   {
-    if (id != individual.Id)
-      return BadRequest();
-
-
-
-    if (_service.Update(individual) is { })
+    if (service.Update(id, individual) is { })
     {
-      _service.SaveAll();
+      service.SaveAll();
       return NoContent();
     }
     else
     {
       return NotFound();
     }
+  }
+
+  [HttpDelete("{id}")]
+  public ActionResult<IndividualDto> Delete(int id)
+  {
+    var individual = service.Delete(id);
+    return (individual == true) ? NoContent() : NotFound();
   }
 }
 

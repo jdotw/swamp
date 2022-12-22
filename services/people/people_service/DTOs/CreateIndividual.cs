@@ -1,37 +1,46 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace People.DTOs;
 
-public class CreateIndividualDto
+public class IndividualIdentifiersDto
+{
+  [JsonPropertyName("id")]
+  public int Id { get; set; }
+  [JsonPropertyName("external_id")]
+  public string? ExternalId { get; set; }
+}
+
+public class MutateIndividualDto
 {
   [Required]
+  [JsonPropertyName("external_id")]
   public string ExternalId { get; set; } = string.Empty;
 
   [Required]
-  public CreateIndividualIdentityDto Identity { get; set; } = new CreateIndividualIdentityDto();
-}
-
-public class CreateIndividualIdentityDto
-{
-  [Required]
+  [JsonPropertyName("first_name")]
   public string FirstName { get; set; } = string.Empty;
   [Required]
+  [JsonPropertyName("last_name")]
   public string LastName { get; set; } = string.Empty;
 
+  [JsonPropertyName("middle_names")]
   public string? MiddleNames { get; set; }
 }
 
-// public class IndividualDto
-// {
-//   public int Id { get; set; }
-//   public string? ExternalId { get; set; }
-//   //  public IdentityDto? Identity { get; set; }
-// }
+
+public class IndividualDto : IndividualIdentifiersDto
+{
+  [JsonPropertyName("first_name")]
+  public string FirstName { get; set; } = string.Empty;
+  [JsonPropertyName("last_name")]
+  public string LastName { get; set; } = string.Empty;
+  [JsonPropertyName("middle_names")]
+  public string? MiddleNames { get; set; }
+}
 
 public class IdentityDto
 {
-  public int Id { get; set; }
-  public string? FirstName { get; set; }
-  public string? MiddleNames { get; set; }
-  public string? LastName { get; set; }
+  [JsonPropertyName("first_name")]
+  public string FirstName { get; set; } = string.Empty;
 }
