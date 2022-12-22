@@ -82,35 +82,35 @@ components:
       properties:
         id:
           type: integer
-        externalid:
+        external_id:
           type: string
-        firstname:
+        first_name:
           type: string
-        middlename:
+        middle_names:
           type: string
-        lastname:
+        last_name:
           type: string
-      required: [id, externalid, firstname, lastname]
+      required: [id, external_id, first_name, last_name]
     IndividualSummary:
       type: object
       properties:
         id:
           type: integer
-        externalid:
+        external_id:
           type: string
-      required: [id, externalid]
+      required: [id, external_id]
     AddIndividualRequest:
       type: object
       properties:
-        externalid:
+        external_id:
           type: string
-        firstname:
+        first_name:
           type: string
-        middlename:
+        middle_names:
           type: string
-        lastname:
+        last_name:
           type: string
-      required: [externalid, firstname, lastname]
+      required: [external_id, first_name, last_name]
     # Errors
     HTTPError:
       type: object

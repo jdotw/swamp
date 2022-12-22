@@ -1,4 +1,4 @@
-using Entity.Models;
+using People.Entities;
 using People.DTOs;
 
 namespace People.Interfaces

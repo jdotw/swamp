@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Entity.Models;
+using People.Entities;
 
 namespace People.PostgreSQL
 {
