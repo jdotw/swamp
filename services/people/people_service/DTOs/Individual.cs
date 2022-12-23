@@ -13,21 +13,15 @@ public class IndividualIdentifiersDto
 
 public class MutateIndividualDto
 {
-  [Required]
   [JsonPropertyName("external_id")]
-  public string ExternalId { get; set; } = string.Empty;
-
-  [Required]
+  public required string ExternalId { get; set; } = string.Empty;
   [JsonPropertyName("first_name")]
-  public string FirstName { get; set; } = string.Empty;
-  [Required]
+  public required string FirstName { get; set; } = string.Empty;
   [JsonPropertyName("last_name")]
-  public string LastName { get; set; } = string.Empty;
-
+  public required string LastName { get; set; } = string.Empty;
   [JsonPropertyName("middle_names")]
   public string? MiddleNames { get; set; }
 }
-
 
 public class IndividualDto : IndividualIdentifiersDto
 {
