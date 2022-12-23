@@ -8,6 +8,7 @@ namespace People.PostgreSQL
   {
     public DbSet<Individual> Individuals => Set<Individual>();
     public DbSet<Identity> Identities => Set<Identity>();
+    public DbSet<LineManager> LineManagers => Set<LineManager>();
 
     public PeopleContext(DbContextOptions options) : base(options)
     {
@@ -18,13 +19,13 @@ namespace People.PostgreSQL
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<LineManager>()
-          .HasOne<Individual>(m => m.Individual)
-          .WithMany(i => i.LineManagers)
-          .HasForeignKey(m => m.IndividualId);
+      .HasOne<Individual>(m => m.Individual)
+      .WithMany(i => i.LineManagers)
+      .HasForeignKey(m => m.IndividualId);
       modelBuilder.Entity<LineManager>()
-          .HasOne<Individual>(m => m.Manager)
-          .WithMany(i => i.DirectReports)
-          .HasForeignKey(m => m.ManagerId);
+      .HasOne<Individual>(m => m.Manager)
+      .WithMany(i => i.DirectReports)
+      .HasForeignKey(m => m.ManagerId);
     }
 
     private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)

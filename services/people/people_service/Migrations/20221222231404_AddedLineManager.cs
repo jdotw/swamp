@@ -13,7 +13,7 @@ namespace peopleservice.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "line_manager",
+                name: "line_managers",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -27,15 +27,15 @@ namespace peopleservice.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_line_manager", x => x.id);
+                    table.PrimaryKey("pk_line_managers", x => x.id);
                     table.ForeignKey(
-                        name: "fk_line_manager_individuals_individual_id",
+                        name: "fk_line_managers_individuals_individual_id",
                         column: x => x.individualid,
                         principalTable: "individuals",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_line_manager_individuals_manager_id",
+                        name: "fk_line_managers_individuals_manager_id",
                         column: x => x.managerid,
                         principalTable: "individuals",
                         principalColumn: "id",
@@ -43,13 +43,13 @@ namespace peopleservice.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_line_manager_individual_id",
-                table: "line_manager",
+                name: "ix_line_managers_individual_id",
+                table: "line_managers",
                 column: "individual_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_line_manager_manager_id",
-                table: "line_manager",
+                name: "ix_line_managers_manager_id",
+                table: "line_managers",
                 column: "manager_id");
         }
 
@@ -57,7 +57,7 @@ namespace peopleservice.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "line_manager");
+                name: "line_managers");
         }
     }
 }

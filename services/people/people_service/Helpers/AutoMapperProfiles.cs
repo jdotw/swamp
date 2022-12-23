@@ -19,5 +19,9 @@ public class AutoMapperProfiles : Profile
     .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.Identities[0].FirstName))
     .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.Identities[0].LastName))
     .ForMember(dest => dest.MiddleNames, opt => opt.MapFrom(c => c.Identities[0].MiddleNames));
+
+    CreateMap<LineManager, LineManagerDto>();
+    CreateMap<AddLineManagerDto, LineManager>();
+    CreateMap<MutateLineManagerDto, LineManager>();
   }
 }

@@ -125,15 +125,15 @@ namespace peopleservice.Migrations
                         .HasColumnName("updated_date");
 
                     b.HasKey("Id")
-                        .HasName("pk_line_manager");
+                        .HasName("pk_line_managers");
 
                     b.HasIndex("IndividualId")
-                        .HasDatabaseName("ix_line_manager_individual_id");
+                        .HasDatabaseName("ix_line_managers_individual_id");
 
                     b.HasIndex("ManagerId")
-                        .HasDatabaseName("ix_line_manager_manager_id");
+                        .HasDatabaseName("ix_line_managers_manager_id");
 
-                    b.ToTable("line_manager", (string)null);
+                    b.ToTable("line_managers", (string)null);
                 });
 
             modelBuilder.Entity("People.Entities.Identity", b =>
@@ -155,14 +155,14 @@ namespace peopleservice.Migrations
                         .HasForeignKey("IndividualId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_line_manager_individuals_individual_id");
+                        .HasConstraintName("fk_line_managers_individuals_individual_id");
 
                     b.HasOne("People.Entities.Individual", "Manager")
                         .WithMany("DirectReports")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_line_manager_individuals_manager_id");
+                        .HasConstraintName("fk_line_managers_individuals_manager_id");
 
                     b.Navigation("Individual");
 
