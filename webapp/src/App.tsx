@@ -1,10 +1,12 @@
+import { MantineProvider, Text } from '@mantine/core';
+
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <h1>SWAMP</h1>
-    </div>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Text>SWAMP</Text>
+    </MantineProvider>
   );
 }
 
