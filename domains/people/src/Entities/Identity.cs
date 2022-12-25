@@ -1,5 +1,8 @@
+using Base.Entities;
+
 namespace People.Entities;
-public class Identity : BaseEntity
+
+public class Identity : EntityBase
 {
   public string? FirstName { get; set; }
   public string? MiddleNames { get; set; }

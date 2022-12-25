@@ -11,10 +11,10 @@ namespace People.Services;
 public class LineManagerService : ILineManagerService
 {
   private readonly ILogger<LineManagerService> logger;
-  private readonly PeopleContext context;
+  private readonly PeopleDbContext context;
   private readonly IMapper mapper;
 
-  public LineManagerService(PeopleContext context, ILogger<LineManagerService> logger, IMapper mapper)
+  public LineManagerService(PeopleDbContext context, ILogger<LineManagerService> logger, IMapper mapper)
   {
     this.logger = logger;
     this.context = context;

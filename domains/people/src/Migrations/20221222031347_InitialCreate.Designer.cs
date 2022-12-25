@@ -11,106 +11,106 @@ using People.PostgreSQL;
 
 namespace peopleservice.Migrations
 {
-    [DbContext(typeof(PeopleContext))]
-    [Migration("20221222031347_InitialCreate")]
-    partial class InitialCreate
+  [DbContext(typeof(PeopleDbContext))]
+  [Migration("20221222031347_InitialCreate")]
+  partial class InitialCreate
+  {
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+      modelBuilder
+          .HasAnnotation("ProductVersion", "7.0.1")
+          .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+      NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("People.Entities.Identity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+      modelBuilder.Entity("People.Entities.Identity", b =>
+          {
+            b.Property<int>("Id")
+                      .ValueGeneratedOnAdd()
+                      .HasColumnType("integer")
+                      .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+            b.Property<DateTimeOffset>("CreatedDate")
+                      .HasColumnType("timestamp with time zone")
+                      .HasColumnName("created_date");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
+            b.Property<string>("FirstName")
+                      .HasColumnType("text")
+                      .HasColumnName("first_name");
 
-                    b.Property<int>("IndividualId")
-                        .HasColumnType("integer")
-                        .HasColumnName("individual_id");
+            b.Property<int>("IndividualId")
+                      .HasColumnType("integer")
+                      .HasColumnName("individual_id");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
+            b.Property<string>("LastName")
+                      .HasColumnType("text")
+                      .HasColumnName("last_name");
 
-                    b.Property<string>("MiddleNames")
-                        .HasColumnType("text")
-                        .HasColumnName("middle_names");
+            b.Property<string>("MiddleNames")
+                      .HasColumnType("text")
+                      .HasColumnName("middle_names");
 
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+            b.Property<DateTimeOffset>("UpdatedDate")
+                      .HasColumnType("timestamp with time zone")
+                      .HasColumnName("updated_date");
 
-                    b.HasKey("Id")
-                        .HasName("pk_identities");
+            b.HasKey("Id")
+                      .HasName("pk_identities");
 
-                    b.HasIndex("IndividualId")
-                        .HasDatabaseName("ix_identities_individual_id");
+            b.HasIndex("IndividualId")
+                      .HasDatabaseName("ix_identities_individual_id");
 
-                    b.ToTable("identities", (string)null);
-                });
+            b.ToTable("identities", (string)null);
+          });
 
-            modelBuilder.Entity("People.Entities.Individual", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+      modelBuilder.Entity("People.Entities.Individual", b =>
+          {
+            b.Property<int>("Id")
+                      .ValueGeneratedOnAdd()
+                      .HasColumnType("integer")
+                      .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+            b.Property<DateTimeOffset>("CreatedDate")
+                      .HasColumnType("timestamp with time zone")
+                      .HasColumnName("created_date");
 
-                    b.Property<string>("ExternalId")
-                        .HasColumnType("text")
-                        .HasColumnName("external_id");
+            b.Property<string>("ExternalId")
+                      .HasColumnType("text")
+                      .HasColumnName("external_id");
 
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+            b.Property<DateTimeOffset>("UpdatedDate")
+                      .HasColumnType("timestamp with time zone")
+                      .HasColumnName("updated_date");
 
-                    b.HasKey("Id")
-                        .HasName("pk_individuals");
+            b.HasKey("Id")
+                      .HasName("pk_individuals");
 
-                    b.ToTable("individuals", (string)null);
-                });
+            b.ToTable("individuals", (string)null);
+          });
 
-            modelBuilder.Entity("People.Entities.Identity", b =>
-                {
-                    b.HasOne("People.Entities.Individual", "Individual")
-                        .WithMany("Identities")
-                        .HasForeignKey("IndividualId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_identities_individuals_individual_id");
+      modelBuilder.Entity("People.Entities.Identity", b =>
+          {
+            b.HasOne("People.Entities.Individual", "Individual")
+                      .WithMany("Identities")
+                      .HasForeignKey("IndividualId")
+                      .OnDelete(DeleteBehavior.Cascade)
+                      .IsRequired()
+                      .HasConstraintName("fk_identities_individuals_individual_id");
 
-                    b.Navigation("Individual");
-                });
+            b.Navigation("Individual");
+          });
 
-            modelBuilder.Entity("People.Entities.Individual", b =>
-                {
-                    b.Navigation("Identities");
-                });
+      modelBuilder.Entity("People.Entities.Individual", b =>
+          {
+            b.Navigation("Identities");
+          });
 #pragma warning restore 612, 618
-        }
     }
+  }
 }

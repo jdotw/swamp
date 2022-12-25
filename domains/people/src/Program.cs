@@ -18,7 +18,7 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<PeopleContext>(options =>
+builder.Services.AddDbContext<PeopleDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("PeopleDatabase"))
             .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<IIndividualService, IndividualService>();

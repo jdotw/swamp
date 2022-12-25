@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Base.Entities;
 
 namespace People.Entities;
 
-public class Individual : BaseEntity
+public class Individual : EntityBase
 {
   public string? ExternalId { get; set; }
 

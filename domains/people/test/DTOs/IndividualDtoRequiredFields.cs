@@ -1,3 +1,4 @@
+using JorgeSerrano.Json;
 using People.DTOs;
 using System.Text.Json;
 
@@ -22,7 +23,7 @@ public class UnitTest1
       throw new ArgumentException($"Could not find file at path: {path}");
     }
     var fileData = File.ReadAllText(jsonFilePath);
-    var ex = Assert.Throws<System.Text.Json.JsonException>(() => JsonSerializer.Deserialize<MutateIndividualDto>(fileData));
+    var ex = Assert.Throws<System.Text.Json.JsonException>(() => JsonSerializer.Deserialize<MutateIndividualDto>(fileData, _jsonOptions));
     Assert.Contains("missing required properties", ex.Message);
     Assert.Contains(attribute, ex.Message);
   }
@@ -34,6 +35,11 @@ public class UnitTest1
     AssetIndividualDtoRequiredField(JsonPath("mutate_individual_missing_first_name.json"), "first_name");
     AssetIndividualDtoRequiredField(JsonPath("mutate_individual_missing_last_name.json"), "last_name");
   }
+
+  private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+  {
+    PropertyNamingPolicy = new JsonSnakeCaseNamingPolicy(),
+  };
 
   [Fact]
   public void MutateIndividualDtoOptionalFields()
@@ -47,6 +53,6 @@ public class UnitTest1
       throw new ArgumentException($"Could not find file at path: {path}");
     }
     var fileData = File.ReadAllText(jsonFilePath);
-    JsonSerializer.Deserialize<MutateIndividualDto>(fileData);
+    JsonSerializer.Deserialize<MutateIndividualDto>(fileData, _jsonOptions);
   }
 }

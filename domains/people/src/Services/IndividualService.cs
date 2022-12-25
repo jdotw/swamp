@@ -11,10 +11,10 @@ namespace People.Services;
 public class IndividualService : IIndividualService
 {
   private readonly ILogger<IndividualService> logger;
-  private readonly PeopleContext context;
+  private readonly PeopleDbContext context;
   private readonly IMapper mapper;
 
-  public IndividualService(PeopleContext context, ILogger<IndividualService> logger, IMapper mapper)
+  public IndividualService(PeopleDbContext context, ILogger<IndividualService> logger, IMapper mapper)
   {
     this.logger = logger;
     this.context = context;
