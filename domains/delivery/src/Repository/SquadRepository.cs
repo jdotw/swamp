@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Delivery.Repository;
 
-public class SquadRepository : RepositoryBase<Squad>
+public class SquadRepository : RepositoryBase<Squad>, ISquadRepository
 {
   public SquadRepository(DeliveryContext repositoryContext)
       : base(repositoryContext)
@@ -47,9 +47,9 @@ public class SquadRepository : RepositoryBase<Squad>
     else { return 0; }
   }
 
-  public async Task<int> DeleteSquadAsync(Squad squad)
+  public async Task<int> DeleteSquadAsync(int squadId)
   {
-    Delete(squad);
+    Delete(squadId);
     return await SaveAsync();
   }
 }

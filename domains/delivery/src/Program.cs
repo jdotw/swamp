@@ -14,6 +14,9 @@ builder.Services.AddDbContext<DeliveryContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DeliveryDatabase"))
             .UseSnakeCaseNamingConvention());
 
+builder.Services.AddScoped<ISquadRepository, SquadRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

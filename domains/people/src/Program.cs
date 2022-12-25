@@ -2,7 +2,6 @@ using People.PostgreSQL;
 using People.Services;
 using People.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using EFCore.NamingConventions;
 
 var builder = WebApplication.CreateBuilder(args);
 
