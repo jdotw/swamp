@@ -2,7 +2,7 @@ using Delivery.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Delivery.PostgreSQL
+namespace Delivery.Repository
 {
   public class DeliveryContext : DbContext
   {
@@ -21,14 +21,6 @@ namespace Delivery.PostgreSQL
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      // modelBuilder.Entity<LineManager>()
-      // .HasOne<Individual>(m => m.Individual)
-      // .WithMany(i => i.LineManagers)
-      // .HasForeignKey(m => m.IndividualId);
-      // modelBuilder.Entity<LineManager>()
-      // .HasOne<Individual>(m => m.Manager)
-      // .WithMany(i => i.DirectReports)
-      // .HasForeignKey(m => m.ManagerId);
     }
 
     private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)
@@ -48,5 +40,6 @@ namespace Delivery.PostgreSQL
         }
       }
     }
+
   }
 }

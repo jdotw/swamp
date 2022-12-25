@@ -10,4 +10,5 @@ public class Squad : BaseEntity
   public DateTimeOffset? DisbandedDate { get; set; }
 
   public List<SquadRole> SquadRoles { get; set; } = new List<SquadRole>();
+
 }
