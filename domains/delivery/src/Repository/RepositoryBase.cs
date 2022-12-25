@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Delivery.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Delivery.Repository;
@@ -21,6 +22,7 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEnti
   {
     return RepositoryContext.Set<TEntity>().Where(expression);
   }
+
 
   public async Task AddAsync(TEntity obj)
   {

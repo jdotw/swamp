@@ -1,4 +1,5 @@
 using AutoMapper;
+using Delivery.DTOs;
 using Delivery.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +23,8 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> GetSquads()
   {
     var squads = await _squadRepository.GetAllSquadsAsync();
-    // var squadsDto = _mapper.Map<IEnumerable<SquadDto>>(squads);
-    return Ok(squads);
+    var squadsDto = _mapper.Map<IEnumerable<SquadDto>>(squads);
+    return Ok(squadsDto);
   }
 
   // GET: api/Squads/5
@@ -35,29 +36,29 @@ public class SquadsController : ControllerBase
     {
       return NotFound();
     }
-    // var squadDto = _mapper.Map<SquadDto>(squad);
-    return Ok(squad);
+    var squadDto = _mapper.Map<SquadDto>(squad);
+    return Ok(squadDto);
   }
 
   // POST: api/Squads
   [HttpPost]
-  public async Task<IActionResult> PostSquad(Squad squad)
+  public async Task<IActionResult> PostSquad(SquadDto squadDto)
   {
-    // var squad = _mapper.Map<Squad>(squadDto);
+    var squad = _mapper.Map<Squad>(squadDto);
     await _squadRepository.AddSquadAsync(squad);
-    return CreatedAtAction("GetSquad", new { id = squad.Id }, squad);
+    return CreatedAtAction("GetSquad", new { id = squad.Id }, _mapper.Map<SquadDto>(squad));
   }
 
   // PUT: api/Squads/5
   [HttpPut("{id}")]
-  public async Task<IActionResult> PutSquad(int id, Squad squad)
+  public async Task<IActionResult> PutSquad(int id, Squad squadDto)
   {
-    if (id != squad.Id)
+    if (id != squadDto.Id)
     {
       return BadRequest();
     }
 
-    // var squad = _mapper.Map<Squad>(squadDto);
+    var squad = _mapper.Map<Squad>(squadDto);
     var updated = await _squadRepository.UpdateSquadAsync(squad);
     if (updated > 0)
     {
