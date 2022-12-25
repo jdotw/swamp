@@ -3,7 +3,9 @@
 
 namespace Delivery.Entities;
 
-public class Squad : BaseEntity
+using Base.Entities;
+
+public class Squad : EntityBase
 {
   public required string Name { get; set; }
   public DateTimeOffset FormedDate { get; set; } = DateTimeOffset.UtcNow;

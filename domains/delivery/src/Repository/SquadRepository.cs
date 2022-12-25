@@ -1,11 +1,12 @@
 using Delivery.Entities;
 using Microsoft.EntityFrameworkCore;
+using Base.Repository;
 
 namespace Delivery.Repository;
 
 public class SquadRepository : RepositoryBase<Squad>, ISquadRepository
 {
-  public SquadRepository(DeliveryContext repositoryContext)
+  public SquadRepository(DeliveryDbContext repositoryContext)
       : base(repositoryContext)
   {
   }

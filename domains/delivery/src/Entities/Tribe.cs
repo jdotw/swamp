@@ -1,6 +1,8 @@
 namespace Delivery.Entities;
 
-public class Tribe : BaseEntity
+using Base.Entities;
+
+public class Tribe : EntityBase
 {
   public required string Name { get; set; }
   public DateTimeOffset FormedDate { get; set; } = DateTimeOffset.UtcNow;

@@ -1,31 +1,20 @@
-using Delivery.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Base.Entities;
 
-namespace Delivery.Repository
+namespace Base.Repository
 {
-  public class DeliveryContext : DbContext
+  public abstract class DbContextBase : DbContext
   {
-    public DbSet<Squad> Squads => Set<Squad>();
-    public DbSet<SquadRoleType> SquadRoleTypes => Set<SquadRoleType>();
-    public DbSet<SquadRole> SquadRoles => Set<SquadRole>();
-    public DbSet<Tribe> Tribes => Set<Tribe>();
-    public DbSet<TribeRoleType> TribeRoleTypes => Set<TribeRoleType>();
-    public DbSet<TribeRole> TribeRoles => Set<TribeRole>();
-
-    public DeliveryContext(DbContextOptions options) : base(options)
+    public DbContextBase(DbContextOptions options) : base(options)
     {
       ChangeTracker.Tracked += UpdateTimestamps;
       ChangeTracker.StateChanged += UpdateTimestamps;
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-    }
-
     private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)
     {
-      if (e.Entry.Entity is BaseEntity entityWithTimestamps)
+      if (e.Entry.Entity is EntityBase entityWithTimestamps)
       {
         switch (e.Entry.State)
         {

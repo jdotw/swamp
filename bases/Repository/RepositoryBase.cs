@@ -1,14 +1,14 @@
 using System.Linq.Expressions;
-using Delivery.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Base.Repository;
 
-namespace Delivery.Repository;
+namespace Base.Repository;
 
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
 {
-  private readonly DeliveryContext _context;
+  private readonly DbContext _context;
 
-  public RepositoryBase(DeliveryContext repositoryContext)
+  public RepositoryBase(DbContext repositoryContext)
   {
     _context = repositoryContext;
   }

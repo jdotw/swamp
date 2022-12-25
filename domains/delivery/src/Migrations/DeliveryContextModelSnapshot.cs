@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Delivery.Migrations
 {
-  [DbContext(typeof(DeliveryContext))]
-  partial class DeliveryContextModelSnapshot : ModelSnapshot
+  [DbContext(typeof(DeliveryDbContext))]
+  partial class DeliveryDbContextModelSnapshot : ModelSnapshot
   {
     protected override void BuildModel(ModelBuilder modelBuilder)
     {

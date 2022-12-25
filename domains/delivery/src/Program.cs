@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DeliveryContext>(options =>
+builder.Services.AddDbContext<DeliveryDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DeliveryDatabase"))
             .UseSnakeCaseNamingConvention());
 
