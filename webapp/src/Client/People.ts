@@ -14,7 +14,7 @@ export function usePeople() {
       // });
       // console.log("TOKEN: ", accessToken);
 
-      const url = `http://localhost:5187/individuals`;
+      const url = `/api/people/individuals`;
 
       const response = await fetch(url, {
         // headers: {
