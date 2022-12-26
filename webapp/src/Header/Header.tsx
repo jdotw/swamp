@@ -7,6 +7,7 @@ import {
   Burger,
   Text,
 } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -15,6 +16,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     margin: 0,
+    maxWidth: "100%",
   },
 
   linkContainer: {
@@ -25,6 +27,7 @@ const useStyles = createStyles((theme) => ({
     margin: 0,
     flex: 1,
     padding: 0,
+    maxWidth: "100%",
   },
 
   links: {
@@ -68,6 +71,12 @@ const useStyles = createStyles((theme) => ({
       }).background,
       color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
         .color,
+    },
+  },
+
+  home: {
+    "&, &:hover": {
+      color: "black",
     },
   },
 }));
@@ -118,7 +127,11 @@ export function HeaderSimple({
           size="sm"
           mr="xl"
         />
-        <Text mr="xl">SWAMP</Text>
+        <Text mr="xl">
+          <Link className={classes.home} to="/">
+            SWAMP
+          </Link>
+        </Text>
         <Container className={classes.linkContainer}>
           <Group spacing={5} className={classes.links}>
             {items}

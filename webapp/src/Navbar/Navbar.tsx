@@ -1,19 +1,12 @@
 import { useState } from "react";
-import { createStyles, Navbar, Group, Code } from "@mantine/core";
+import { createStyles, Navbar } from "@mantine/core";
 import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
-  IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconSwitchHorizontal,
   IconLogout,
   IconUsers,
   IconBulb,
   IconClipboardList,
 } from "@tabler/icons";
+import { NavLink } from "react-router-dom";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -99,9 +92,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "", label: "People", icon: IconUsers },
-  { link: "", label: "Capability", icon: IconBulb },
-  { link: "", label: "Delivery", icon: IconClipboardList },
+  { link: "/people", label: "People", icon: IconUsers },
+  { link: "/capability", label: "Capability", icon: IconBulb },
+  { link: "/delivery", label: "Delivery", icon: IconClipboardList },
 ];
 
 interface NavbarSimpleColoredProps {
@@ -111,25 +104,26 @@ interface NavbarSimpleColoredProps {
 
 export function NavbarSimpleColored(props: NavbarSimpleColoredProps) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
+  const [active, setActive] = useState("People");
   const { hidden, onLinkClicked } = props;
 
   const links = data.map((item) => (
-    <a
-      className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
-      })}
-      href={item.link}
+    <NavLink
+      to={item.link}
       key={item.label}
+      className={({ isActive }) =>
+        cx(classes.link, {
+          [classes.linkActive]: isActive,
+        })
+      }
       onClick={(event) => {
-        event.preventDefault();
         setActive(item.label);
         onLinkClicked();
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </NavLink>
   ));
 
   return (
