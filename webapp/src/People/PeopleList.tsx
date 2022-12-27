@@ -42,10 +42,14 @@ export function PeopleList(props: PeopleListProps) {
           <Link to={id}>{row.id}</Link>
         </td>
         <td>
+          <Link to={id}>{row.first_name}</Link>
+        </td>
+        <td>
+          <Link to={id}>{row.last_name}</Link>
+        </td>
+        <td>
           <Link to={id}>{row.external_id}</Link>
         </td>
-        <td>{row.first_name}</td>
-        <td>{row.last_name}</td>
       </tr>
     );
   });
@@ -56,9 +60,9 @@ export function PeopleList(props: PeopleListProps) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>External ID</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>External ID</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
