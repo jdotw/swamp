@@ -10,5 +10,10 @@ public class AutoMapperProfiles : Profile
   {
     CreateMap<Squad, SquadDto>();
     CreateMap<SquadDto, Squad>();
+
+    CreateMap<Tribe, TribeDto>();
+    CreateMap<TribeDto, Tribe>();
+    CreateMap<AddTribeDto, Tribe>();
+    CreateMap<UpdateTribeDto, Tribe>();
   }
 }

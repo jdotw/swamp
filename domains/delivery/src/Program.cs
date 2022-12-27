@@ -22,6 +22,7 @@ builder.Services.AddDbContext<DeliveryDbContext>(options =>
             .UseSnakeCaseNamingConvention());
 
 builder.Services.AddScoped<ISquadRepository, SquadRepository>();
+builder.Services.AddScoped<ITribeRepository, TribeRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
