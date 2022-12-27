@@ -14,15 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
-const useStyles = createStyles((theme) => ({
-  progressBar: {
-    "&:not(:first-of-type)": {
-      borderLeft: `3px solid ${
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
-      }`,
-    },
-  },
-}));
+const useStyles = createStyles((theme) => ({}));
 
 interface PeopleListProps {}
 
