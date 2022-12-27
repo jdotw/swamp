@@ -6,6 +6,7 @@ import {
   ScrollArea,
   Button,
   Container,
+  Title,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
@@ -27,7 +28,7 @@ interface TribeListProps {}
 export function TribeList(props: TribeListProps) {
   const { classes, theme } = useStyles();
   const { tribes, loading, add, addError, adding } = useTribes();
-  const [addModelOpen, setAddModelOpen] = useState(false);
+  const [addTribeModalOpen, setAddTribeModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
@@ -49,12 +50,13 @@ export function TribeList(props: TribeListProps) {
 
   const submit = async (newTribe: NewTribe) => {
     await add(newTribe);
-    setAddModelOpen(false);
+    setAddTribeModalOpen(false);
   };
 
   return (
     <>
       <div>
+        <Title order={3}>Tribes</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
@@ -67,12 +69,12 @@ export function TribeList(props: TribeListProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddModelOpen(true)}>Add Tribe</Button>
+          <Button onClick={() => setAddTribeModalOpen(true)}>Add Tribe</Button>
         </div>
       </div>
       <AddTribeModal
-        opened={addModelOpen}
-        onClose={() => setAddModelOpen(false)}
+        opened={addTribeModalOpen}
+        onClose={() => setAddTribeModalOpen(false)}
         onSubmit={submit}
       />
     </>

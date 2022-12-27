@@ -8,7 +8,7 @@ import PeopleList from "./People/PeopleList";
 import Individual from "./People/Individual";
 import { MantineProvider } from "@mantine/core";
 import Capability from "./Capability/Capability";
-import Tribe from "./Delivery/Tribe";
+import TribeHome from "./Delivery/TribeHome";
 import TribeList from "./Delivery/TribeList";
 import Practice from "./Capability/Practice";
 import PracticeList from "./Capability/PracticeList";
@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route index element={<PracticeList />} />
           </Route>
           <Route path="delivery" element={<Capability />}>
-            <Route path=":tribeId" element={<Tribe />} />
+            <Route path=":tribeId" element={<TribeHome />} />
             <Route index element={<TribeList />} />
           </Route>
         </Route>
