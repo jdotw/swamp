@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Delivery.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("tribes/{tribeId}/[controller]")]
 public class SquadsController : ControllerBase
 {
   private readonly ISquadRepository _squadRepository;
@@ -42,11 +42,12 @@ public class SquadsController : ControllerBase
 
   // POST: api/Squads
   [HttpPost]
-  public async Task<IActionResult> PostSquad(SquadDto squadDto)
+  public async Task<IActionResult> PostSquad(int tribeId, SquadDto squadDto)
   {
     var squad = _mapper.Map<Squad>(squadDto);
+    squad.TribeId = tribeId;
     await _squadRepository.AddSquadAsync(squad);
-    return CreatedAtAction("GetSquad", new { id = squad.Id }, _mapper.Map<SquadDto>(squad));
+    return CreatedAtAction("GetSquad", new { tribeId = tribeId, id = squad.Id }, _mapper.Map<SquadDto>(squad));
   }
 
   // PUT: api/Squads/5

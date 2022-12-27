@@ -27,6 +27,7 @@ public class TribeRepository : RepositoryBase<Tribe>, ITribeRepository
   {
     return await FindByConditionAsync(tribe => tribe.Id.Equals(tribeId))
         .Include(s => s.TribeRoles)
+        .Include(s => s.Squads)
         .FirstOrDefaultAsync();
   }
 
