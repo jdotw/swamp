@@ -40,10 +40,10 @@ export function useIndividual({ id }: UseIndividualProps) {
       const response_json = await response.json();
       setIndividual(response_json);
       setError(undefined);
-      setLoading(false);
     } catch (error: any) {
       setIndividual(undefined);
       setError(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -69,11 +69,11 @@ export function useIndividual({ id }: UseIndividualProps) {
         },
       });
       setIndividual(updatedIndividual);
-      setUpdating(false);
       setUpdateError(undefined);
     } catch (error: any) {
-      setUpdating(false);
       setUpdateError(error);
+    } finally {
+      setUpdating(false);
     }
   };
 
