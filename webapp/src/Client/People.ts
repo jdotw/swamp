@@ -23,12 +23,10 @@ export function usePeople() {
       });
 
       const response_json = await response.json();
-      console.log("JSON: ", response_json);
       setPeople(response_json);
       setError(undefined);
       setLoading(false);
     } catch (error: any) {
-      console.log("ERROR: ", error.message);
       setPeople([]);
       setError(error);
       setLoading(false);
