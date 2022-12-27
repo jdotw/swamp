@@ -21,13 +21,10 @@ public class IndividualService : IIndividualService
     this.mapper = mapper;
   }
 
-  public List<IndividualIdentifiersDto> GetAll()
+  public List<IndividualDto> GetAll()
   {
-    return context.Individuals.Select(c => new Individual
-    {
-      Id = c.Id,
-      ExternalId = c.ExternalId,
-    }).ProjectTo<IndividualIdentifiersDto>(mapper.ConfigurationProvider).ToList();
+    var result = context.Individuals.Include(p => p.Identities.OrderByDescending(c => c.Id).Take(1));
+    return mapper.Map<List<IndividualDto>>(result.ToList());
   }
 
   public IndividualDto? Get(int id)
