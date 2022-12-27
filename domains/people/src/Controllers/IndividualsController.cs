@@ -26,7 +26,7 @@ public class Individuals : ControllerBase
   }
 
   [HttpGet]
-  public ActionResult<List<IndividualIdentifiersDto>> GetAll()
+  public IActionResult GetAll()
   {
     var individuals = service.GetAll();
     return (individuals == null) ? NotFound() : Ok(individuals);
