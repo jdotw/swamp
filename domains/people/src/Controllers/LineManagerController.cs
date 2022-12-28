@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using People.Entities;
-using People.PostgreSQL;
-using People.Services;
-using Microsoft.EntityFrameworkCore;
-using People.Interfaces;
 using People.DTOs;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
 namespace People.Controllers;
 
@@ -14,59 +9,62 @@ namespace People.Controllers;
 [Route("/individuals/{individualId}/line-managers")]
 public class LineManagers : ControllerBase
 {
-  private readonly ILogger<Individuals> logger;
-  private readonly ILineManagerService service;
-  private readonly IMapper mapper;
+  private readonly ILogger<Individuals> _logger;
+  private readonly IMapper _mapper;
+  private readonly ILineManagerRepository _repository;
 
-  public LineManagers(ILogger<Individuals> logger, ILineManagerService service, IMapper mapper)
+  public LineManagers(ILogger<Individuals> logger, ILineManagerRepository repository, IMapper mapper)
   {
-    this.logger = logger;
-    this.service = service;
-    this.mapper = mapper;
+    _logger = logger;
+    _repository = repository;
+    _mapper = mapper;
   }
 
+  // GET: /individuals/5/line-managers
   [HttpGet]
-  public ActionResult<List<LineManagerDto>> GetAll(int individualId)
+  public async Task<IActionResult> GetLineManagers(int individualId)
   {
-    var results = service.GetAll(individualId);
-    return (results == null) ? NotFound() : Ok(results);
+    var lineManagers = await _repository.GetAllLineManagersAsync(individualId);
+    var lineManagersDto = _mapper.Map<IEnumerable<LineManagerDto>>(lineManagers);
+    return Ok(lineManagersDto);
   }
 
+  // GET: /individuals/5/line-managers/5
   [HttpGet("{id}")]
-  public ActionResult<LineManagerDto> Get(int individualId, int id)
+  public async Task<IActionResult> GetLineManagerById(int individualId, int id)
   {
-    var result = service.Get(id);
-    return (result == null) ? NotFound() : Ok(result);
+    var lineManager = await _repository.GetLineManagerByIdAsync(id);
+    if (lineManager is null) return NotFound();
+    var lineManagerDto = _mapper.Map<LineManagerDto>(lineManager);
+    return Ok(lineManagerDto);
   }
 
+  // POST: /individuals/5/line-managers
   [HttpPost]
-  public IActionResult Add(int individualId, AddLineManagerDto manager)
+  public async Task<IActionResult> AddLineManager(int individualId, AddLineManagerDto lineManagerDto)
   {
-    logger.LogInformation("MANAGER_ID: {0}", manager.ManagerId);
-    var result = service.Add(individualId, manager);
-    service.SaveAll();
-    return CreatedAtAction(nameof(Add), new { id = result.Id }, result);
+    var lineManager = _mapper.Map<LineManager>(lineManagerDto);
+    lineManager.IndividualId = individualId;
+    await _repository.AddLineManagerAsync(lineManager);
+    return CreatedAtAction(nameof(AddLineManager), new { id = lineManager.Id }, _mapper.Map<LineManagerDto>(lineManager));
   }
 
+  // PUT: /individuals/5/line-managers/5
   [HttpPut("{id}")]
-  public IActionResult Update(int id, MutateLineManagerDto manager)
+  public async Task<IActionResult> Update(int id, MutateLineManagerDto lineManagerDto)
   {
-    if (service.Update(id, manager) is { })
-    {
-      service.SaveAll();
-      return NoContent();
-    }
-    else
-    {
-      return NotFound();
-    }
+    var lineManager = _mapper.Map<LineManager>(lineManagerDto);
+    lineManager.Id = id;
+    var updated = await _repository.UpdateLineManagerAsync(lineManager);
+    return (updated > 0) ? NoContent() : NotFound();
   }
 
+  // DELETE: /individuals/5/line-managers/5
   [HttpDelete("{id}")]
-  public ActionResult Delete(int individualId, int id)
+  public async Task<ActionResult> Delete(int individualId, int id)
   {
-    var success = service.Delete(id);
-    return (success == true) ? NoContent() : NotFound();
+    var deleted = await _repository.DeleteLineManagerAsync(id);
+    return (deleted > 0) ? NoContent() : NotFound();
   }
 }
 

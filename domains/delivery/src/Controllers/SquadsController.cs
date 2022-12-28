@@ -32,10 +32,7 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> GetSquad(int id)
   {
     var squad = await _squadRepository.GetSquadWithDetailsAsync(id);
-    if (squad is null)
-    {
-      return NotFound();
-    }
+    if (squad is null) return NotFound();
     var squadDto = _mapper.Map<SquadDto>(squad);
     return Ok(squadDto);
   }
@@ -54,21 +51,10 @@ public class SquadsController : ControllerBase
   [HttpPut("{id}")]
   public async Task<IActionResult> PutSquad(int id, Squad squadDto)
   {
-    if (id != squadDto.Id)
-    {
-      return BadRequest();
-    }
-
+    if (id != squadDto.Id) return BadRequest();
     var squad = _mapper.Map<Squad>(squadDto);
     var updated = await _squadRepository.UpdateSquadAsync(squad);
-    if (updated > 0)
-    {
-      return NoContent();
-    }
-    else
-    {
-      return NotFound();
-    }
+    return (updated > 0) ? NoContent() : NotFound();
   }
 
   // DELETE: api/Squads/5
@@ -76,13 +62,6 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> DeleteSquad(int id)
   {
     var deleted = await _squadRepository.DeleteSquadAsync(id);
-    if (deleted > 0)
-    {
-      return NoContent();
-    }
-    else
-    {
-      return NotFound();
-    }
+    return (deleted > 0) ? NoContent() : NotFound();
   }
 }

@@ -1,8 +1,6 @@
-using People.PostgreSQL;
-using People.Services;
-using People.Interfaces;
 using JorgeSerrano.Json;
 using Microsoft.EntityFrameworkCore;
+using People.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,8 +30,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PeopleDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("PeopleDatabase"))
             .UseSnakeCaseNamingConvention());
-builder.Services.AddScoped<IIndividualService, IndividualService>();
-builder.Services.AddScoped<ILineManagerService, LineManagerService>();
+// builder.Services.AddScoped<IIndividualService, IndividualService>();
+// builder.Services.AddScoped<ILineManagerService, LineManagerService>();
+builder.Services.AddScoped<IIndividualRepository, IndividualRepository>();
+builder.Services.AddScoped<ILineManagerRepository, LineManagerRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 

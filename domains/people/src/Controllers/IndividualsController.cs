@@ -1,72 +1,69 @@
 using Microsoft.AspNetCore.Mvc;
 using People.Entities;
-using People.PostgreSQL;
-using People.Services;
-using Microsoft.EntityFrameworkCore;
-using People.Interfaces;
 using People.DTOs;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
 namespace People.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/individuals")]
 public class Individuals : ControllerBase
 {
-  private readonly ILogger<Individuals> logger;
-  private readonly IIndividualService service;
-  private readonly IMapper mapper;
+  private readonly ILogger<Individuals> _logger;
+  private readonly IIndividualRepository _repository;
+  private readonly IMapper _mapper;
 
-  public Individuals(ILogger<Individuals> logger, IIndividualService service, IMapper mapper)
+  public Individuals(ILogger<Individuals> logger, IIndividualRepository repository, IMapper mapper)
   {
-    this.logger = logger;
-    this.service = service;
-    this.mapper = mapper;
+    _logger = logger;
+    _repository = repository;
+    _mapper = mapper;
   }
 
+  // GET: /individuals
   [HttpGet]
-  public IActionResult GetAll()
+  public async Task<IActionResult> GetIndividuals()
   {
-    var individuals = service.GetAll();
-    return (individuals == null) ? NotFound() : Ok(individuals);
+    var individuals = await _repository.GetAllIndividualsAsync();
+    var individualsDto = _mapper.Map<IEnumerable<IndividualDto>>(individuals);
+    return Ok(individualsDto);
   }
 
+  // GET: /individuals/5
   [HttpGet("{id}")]
-  public ActionResult<IndividualDto> Get(int id)
+  public async Task<IActionResult> GetIndividual(int id)
   {
-    var individual = service.Get(id);
-    return (individual == null) ? NotFound() : Ok(individual);
+    var individual = await _repository.GetIndividualByIdAsync(id);
+    if (individual is null) return NotFound();
+    var individualDto = _mapper.Map<IndividualDto>(individual);
+    return Ok(individualDto);
   }
 
+  // POST: /individuals
   [HttpPost]
-  public IActionResult Add(MutateIndividualDto individual)
+  public async Task<IActionResult> AddIndividual(MutateIndividualDto individualDto)
   {
-    logger.LogInformation("Individual first_name: {individual.FirstName}", individual.FirstName);
-    var result = service.Add(individual);
-    service.SaveAll();
-    return CreatedAtAction(nameof(Add), new { id = result.Id }, result);
+    var individual = _mapper.Map<Individual>(individualDto);
+    await _repository.AddIndividualAsync(individual);
+    return CreatedAtAction(nameof(AddIndividual), new { id = individual.Id }, _mapper.Map<IndividualDto>(individual));
   }
 
+  // PUT: /individuals/5
   [HttpPut("{id}")]
-  public IActionResult Update(int id, MutateIndividualDto individual)
+  public async Task<IActionResult> UpdateIndividual(int id, MutateIndividualDto individualDto)
   {
-    if (service.Update(id, individual) is { })
-    {
-      service.SaveAll();
-      return NoContent();
-    }
-    else
-    {
-      return NotFound();
-    }
+    var individual = _mapper.Map<Individual>(individualDto);
+    individual.Id = id;
+    var updated = await _repository.UpdateIndividualAsync(individual);
+    return (updated > 0) ? NoContent() : NotFound();
   }
 
+  // DELETE: /individuals/5
   [HttpDelete("{id}")]
-  public ActionResult<IndividualDto> Delete(int id)
+  public async Task<IActionResult> DeleteIndividual(int id)
   {
-    var individual = service.Delete(id);
-    return (individual == true) ? NoContent() : NotFound();
+    var deleted = await _repository.DeleteIndividualAsync(id);
+    return (deleted > 0) ? NoContent() : NotFound();
   }
 }
 
