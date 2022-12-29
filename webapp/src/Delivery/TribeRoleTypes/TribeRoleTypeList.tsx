@@ -9,15 +9,15 @@ import {
   Title,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import Loading from "../Loading/Loading";
-import { useTribes } from "../Client/Tribes";
-import { NewTribe, Tribe } from "../Client/Tribe";
-import { AddTribeModal } from "./AddTribeModal";
+import Loading from "../../Loading/Loading";
+import { useTribes } from "../../Client/Tribes";
+import { NewTribe, Tribe } from "../../Client/Tribe";
+import { AddTribeModal } from "../Tribes/AddTribeModal";
 import {
   NewTribeRoleType,
   TribeRoleType,
   useTribeRoleTypes,
-} from "../Client/TribeRoleTypes";
+} from "../../Client/TribeRoleTypes";
 import { AddTribeRoleTypeModal } from "./AddTribeRoleTypeModal";
 
 const useStyles = createStyles((theme) => ({

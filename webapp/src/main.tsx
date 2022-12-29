@@ -8,12 +8,14 @@ import PeopleList from "./People/PeopleList";
 import Individual from "./People/Individual";
 import { MantineProvider } from "@mantine/core";
 import Capability from "./Capability/Capability";
-import TribeHome from "./Delivery/TribeHome";
-import TribeList from "./Delivery/TribeList";
+import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
+import TribeList from "./Delivery/Tribes/TribeList";
 import Practice from "./Capability/Practice";
 import PracticeList from "./Capability/PracticeList";
-import TribeRoleTypeList from "./Delivery/TribeRoleTypeList";
-import TribeRoleTypeHome from "./Delivery/TribeRoleTypeHome";
+import TribeRoleTypeList from "./Delivery/TribeRoleTypes/TribeRoleTypeList";
+import TribeRoleTypeHome from "./Delivery/TribeRoleTypes/TribeRoleType/TribeRoleTypeHome";
+import DeliveryShell from "./Delivery/DeliveryShell";
+import DeliveryHome from "./Delivery/DeliveryHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -23,20 +25,20 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="people" element={<People />}>
-            <Route path=":individualId" element={<Individual />} />
             <Route index element={<PeopleList />} />
+            <Route path=":individualId" element={<Individual />} />
           </Route>
           <Route path="capability" element={<Capability />}>
-            <Route path=":practiceId" element={<Practice />} />
             <Route index element={<PracticeList />} />
+            <Route path=":practiceId" element={<Practice />} />
           </Route>
-          <Route path="delivery" element={<Capability />}>
+          <Route path="delivery" element={<DeliveryShell />}>
+            <Route index element={<DeliveryHome />} />
             <Route path="tribes/:tribeId" element={<TribeHome />} />
             <Route
               path="triberoletypes/:roleTypeId"
               element={<TribeRoleTypeHome />}
             />
-            <Route index element={<TribeList />} />
           </Route>
         </Route>
       </Routes>

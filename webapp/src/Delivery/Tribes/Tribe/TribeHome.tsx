@@ -9,9 +9,9 @@ import {
   Title,
 } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
-import Loading from "../Loading/Loading";
-import { useTribe, NewTribe, Tribe, NewSquad } from "../Client/Tribe";
-import { AddTribeModal } from "./AddTribeModal";
+import Loading from "../../../Loading/Loading";
+import { useTribe, NewTribe, Tribe, NewSquad } from "../../../Client/Tribe";
+import { AddTribeModal } from "../AddTribeModal";
 
 const useStyles = createStyles((theme) => ({
   headline: {

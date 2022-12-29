@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewTribe, Tribe } from "../Client/Tribe";
+import { NewTribe, Tribe } from "../../Client/Tribe";
 
 interface AddTribeFormProps {
   opened: boolean;
