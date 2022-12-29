@@ -13,7 +13,12 @@ import Loading from "../Loading/Loading";
 import { useTribes } from "../Client/Tribes";
 import { NewTribe, Tribe } from "../Client/Tribe";
 import { AddTribeModal } from "./AddTribeModal";
-import TribeRoleTypeList from "./TribeRoleTypeList";
+import {
+  NewTribeRoleType,
+  TribeRoleType,
+  useTribeRoleTypes,
+} from "../Client/TribeRoleTypes";
+import { AddTribeRoleTypeModal } from "./AddTribeRoleTypeModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -24,59 +29,55 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface TribeListProps {}
+interface TribeRoleTypeListProps {}
 
-export function TribeList(props: TribeListProps) {
+export function TribeRoleTypeList(props: TribeRoleTypeListProps) {
   const { classes, theme } = useStyles();
-  const { tribes, loading, add, addError, adding } = useTribes();
+  const { roleTypes, addTribeRoleType, loading, addError, adding } =
+    useTribeRoleTypes();
   const [addTribeModalOpen, setAddTribeModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
 
-  const rows = tribes.map((row: Tribe) => {
+  const rows = roleTypes.map((row: TribeRoleType) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
         <td>
-          <Link to={`tribes/${id}`}>{row.name}</Link>
-        </td>
-        <td>
-          <Link to={`tribes/${id}`}>{row.lead_full_name}</Link>
+          <Link to={`triberoletypes/${id}`}>{row.name}</Link>
         </td>
       </tr>
     );
   });
 
-  const submit = async (newTribe: NewTribe) => {
-    await add(newTribe);
+  const submit = async (newTribe: NewTribeRoleType) => {
+    await addTribeRoleType(newTribe);
     setAddTribeModalOpen(false);
   };
 
   return (
     <>
       <div>
-        <Title order={3}>Tribes</Title>
+        <Title order={3}>Tribe Role Types</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Lead</th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddTribeModalOpen(true)}>Add Tribe</Button>
+          <Button onClick={() => setAddTribeModalOpen(true)}>
+            Add Role Type
+          </Button>
         </div>
       </div>
-      <div>
-        <TribeRoleTypeList />
-      </div>
-      <AddTribeModal
+      <AddTribeRoleTypeModal
         opened={addTribeModalOpen}
         onClose={() => setAddTribeModalOpen(false)}
         onSubmit={submit}
@@ -85,4 +86,4 @@ export function TribeList(props: TribeListProps) {
   );
 }
 
-export default TribeList;
+export default TribeRoleTypeList;

@@ -12,6 +12,8 @@ import TribeHome from "./Delivery/TribeHome";
 import TribeList from "./Delivery/TribeList";
 import Practice from "./Capability/Practice";
 import PracticeList from "./Capability/PracticeList";
+import TribeRoleTypeList from "./Delivery/TribeRoleTypeList";
+import TribeRoleTypeHome from "./Delivery/TribeRoleTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -29,7 +31,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route index element={<PracticeList />} />
           </Route>
           <Route path="delivery" element={<Capability />}>
-            <Route path=":tribeId" element={<TribeHome />} />
+            <Route path="tribes/:tribeId" element={<TribeHome />} />
+            <Route
+              path="triberoletypes/:roleTypeId"
+              element={<TribeRoleTypeHome />}
+            />
             <Route index element={<TribeList />} />
           </Route>
         </Route>

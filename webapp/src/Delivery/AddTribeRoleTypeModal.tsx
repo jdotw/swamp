@@ -14,7 +14,7 @@ type AddTribeFormValues = {
   name: string;
 };
 
-export function AddTribeModal({
+export function AddTribeRoleTypeModal({
   opened,
   onSubmit,
   onClose,
@@ -43,13 +43,13 @@ export function AddTribeModal({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Edit Tribe">
+    <Modal opened={opened} onClose={onClose} title="Add Tribe Role Type">
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
           <TextInput
             withAsterisk
             label="Name"
-            placeholder="tribe name"
+            placeholder="tribe role type name"
             {...form.getInputProps("name")}
           />
           <Group position="right" mt="md">

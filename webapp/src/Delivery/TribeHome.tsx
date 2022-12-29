@@ -11,7 +11,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import { useTribe, NewTribe, Tribe, NewSquad } from "../Client/Tribe";
-import { AddTribeModal } from "./TribeAddModal";
+import { AddTribeModal } from "./AddTribeModal";
 
 const useStyles = createStyles((theme) => ({
   headline: {

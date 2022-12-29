@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface UseCRUDProps {
-  domain: string;
+  domain?: string;
   path: string;
 }
 
@@ -9,25 +9,11 @@ const config = {
   domain: "localhost:8000",
 };
 
-export function useCRUD<ItemType, ChildItemType>({
-  domain,
+export function useCRUD<ItemType, NewItemType>({
+  domain = config.domain,
   path,
 }: UseCRUDProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(undefined);
-
-  const [item, setItem] = useState<ItemType>();
-
-  const [updating, setUpdating] = useState(false);
-  const [updateError, setUpdateError] = useState(undefined);
-
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState(undefined);
-
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState(undefined);
-
-  const url = `http://${domain}/${path}`;
+  const url = `http://${domain}${path}`;
 
   const authHeaders = async () => {
     // const accessToken = await getAccessTokenSilently({
@@ -41,8 +27,7 @@ export function useCRUD<ItemType, ChildItemType>({
     };
   };
 
-  const retrieveItem = async () => {
-    setLoading(true);
+  const getAll = async () => {
     try {
       const response = await fetch(url, {
         headers: {
@@ -50,39 +35,53 @@ export function useCRUD<ItemType, ChildItemType>({
         },
       });
       const response_json = await response.json();
-      setItem(response_json);
-      setError(undefined);
+      return response_json;
     } catch (error: any) {
-      setItem(undefined);
-      setError(error);
-    } finally {
-      setLoading(false);
+      return error;
     }
   };
 
-  const updateItem = async (updatedItem: ItemType) => {
-    try {
-      setUpdating(true);
-      const response = await fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(updatedItem),
-        headers: {
-          "Content-Type": "application/json",
-          ...(await authHeaders()),
-        },
-      });
-      setItem(updatedItem);
-      setUpdateError(undefined);
-    } catch (error: any) {
-      setUpdateError(error);
-    } finally {
-      setUpdating(false);
-    }
-  };
+  // const retrieveItem = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch(url, {
+  //       headers: {
+  //         ...(await authHeaders()),
+  //       },
+  //     });
+  //     const response_json = await response.json();
+  //     setItem(response_json);
+  //     setError(undefined);
+  //   } catch (error: any) {
+  //     setItem(undefined);
+  //     setError(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const createItem = async (childItem: ChildItemType) => {
+  // const updateItem = async (updatedItem: ItemType) => {
+  //   try {
+  //     setUpdating(true);
+  //     const response = await fetch(url, {
+  //       method: "PUT",
+  //       body: JSON.stringify(updatedItem),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         ...(await authHeaders()),
+  //       },
+  //     });
+  //     setItem(updatedItem);
+  //     setUpdateError(undefined);
+  //   } catch (error: any) {
+  //     setUpdateError(error);
+  //   } finally {
+  //     setUpdating(false);
+  //   }
+  // };
+
+  const createItem = async (childItem: NewItemType) => {
     try {
-      setCreating(true);
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(childItem),
@@ -91,49 +90,38 @@ export function useCRUD<ItemType, ChildItemType>({
           ...(await authHeaders()),
         },
       });
-      const response_json: ChildItemType = await response.json();
-      const updatedItem: Item = {
-        ...item!,
-        squads: [...item!.squads, response_json],
-      };
-      setItem(updatedItem);
-      setCreateError(undefined);
+      const response_json: ItemType = await response.json();
+      return response_json;
     } catch (error: any) {
-      setCreateError(error);
-    } finally {
-      setCreating(false);
+      return error;
     }
   };
 
-  const deleteItem = async () => {
-    try {
-      setDeleting(true);
-      const response = await fetch(url, {
-        method: "DELETE",
-        headers: {
-          ...(await authHeaders()),
-        },
-      });
-      await response.json();
-      setDeleteError(undefined);
-    } catch (error: any) {
-      setDeleteError(error);
-    } finally {
-      setDeleting(false);
-    }
-  };
+  // const deleteItem = async () => {
+  //   try {
+  //     setDeleting(true);
+  //     const response = await fetch(url, {
+  //       method: "DELETE",
+  //       headers: {
+  //         ...(await authHeaders()),
+  //       },
+  //     });
+  //     await response.json();
+  //     setDeleteError(undefined);
+  //   } catch (error: any) {
+  //     setDeleteError(error);
+  //   } finally {
+  //     setDeleting(false);
+  //   }
+  // };
 
   return {
+    getAll,
+    // createItem,
+    // retrieveItem,
+    // updateItem,
+    // deleteItem,
+    // item,
     createItem,
-    retrieveItem,
-    updateItem,
-    deleteItem,
-    loading,
-    item,
-    error,
-    updating,
-    updateError,
-    creating,
-    createError,
   };
 }
