@@ -23,6 +23,7 @@ builder.Services.AddDbContext<DeliveryDbContext>(options =>
 
 builder.Services.AddScoped<ISquadRepository, SquadRepository>();
 builder.Services.AddScoped<ITribeRepository, TribeRepository>();
+builder.Services.AddScoped<ITribeRoleRepository, TribeRoleRepository>();
 builder.Services.AddScoped<ITribeRoleTypeRepository, TribeRoleTypeRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

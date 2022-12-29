@@ -16,5 +16,9 @@ public class AutoMapperProfiles : Profile
 
     CreateMap<TribeRoleType, TribeRoleTypeDto>().ReverseMap();
     CreateMap<MutateTribeRoleTypeDto, TribeRoleType>();
+
+    CreateMap<TribeRole, TribeRoleDto>().ReverseMap();
+    CreateMap<AddTribeRoleDto, TribeRole>();
+    CreateMap<UpdateTribeRoleDto, TribeRole>();
   }
 }

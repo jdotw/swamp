@@ -15,6 +15,7 @@ namespace Delivery.Repository
 
     public DeliveryDbContext(DbContextOptions options) : base(options)
     {
+
     }
   }
 }
