@@ -14,6 +14,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons";
+import { NavLink } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -81,15 +82,9 @@ export function LinksGroup({
   const [opened, setOpened] = useState(initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
+    <NavLink to={link.link} key={link.label} className={classes.link}>
       {link.label}
-    </Text>
+    </NavLink>
   ));
 
   return (
@@ -123,16 +118,6 @@ export function LinksGroup({
     </>
   );
 }
-
-const mockdata = {
-  label: "Releases",
-  icon: IconCalendarStats,
-  links: [
-    { label: "Upcoming releases", link: "/" },
-    { label: "Previous releases", link: "/" },
-    { label: "Releases schedule", link: "/" },
-  ],
-};
 
 export function NavbarLinksGroup() {
   return (
