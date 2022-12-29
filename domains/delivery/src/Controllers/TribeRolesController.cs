@@ -44,7 +44,8 @@ public class TribeRolesController : ControllerBase
     var role = _mapper.Map<TribeRole>(roleDto);
     role.TribeId = tribeId;
     await _repository.AddAsync(role);
-    return CreatedAtAction("GetTribe", new { id = role.Id }, _mapper.Map<TribeRoleDto>(role));
+    role = await _repository.GetDetailsAsync(role.Id);
+    return (role is not null) ? CreatedAtAction(nameof(Create), new { id = role.Id }, _mapper.Map<TribeRoleDto>(role)) : BadRequest();
   }
 
   // PUT: /tribes/1/roles/5
