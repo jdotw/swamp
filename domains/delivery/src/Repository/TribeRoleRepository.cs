@@ -14,21 +14,25 @@ public class TribeRoleRepository : RepositoryBase<TribeRole>, ITribeRoleReposito
   public async Task<IEnumerable<TribeRole>> GetAllAsync(int tribeId)
   {
     return await FindAllAsync()
-        .Where(r => r.TribeId == tribeId)
-        .Include(r => r.TribeRoleType)
-        .Include(r => r.Tribe)
-        // .OrderBy(s => s.Name)
-        .ToListAsync();
+      .AsNoTracking()
+      .Where(r => r.TribeId == tribeId)
+      .Include(r => r.TribeRoleType)
+      .Include(r => r.Tribe)
+      // .OrderBy(s => s.Name)
+      .ToListAsync();
   }
 
   public async Task<TribeRole?> GetAsync(int id)
   {
-    return await FindByConditionAsync(r => r.Id.Equals(id)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(r => r.Id.Equals(id))
+      .AsNoTracking()
+      .FirstOrDefaultAsync();
   }
 
   public async Task<TribeRole?> GetDetailsAsync(int id)
   {
     return await FindByConditionAsync(r => r.Id.Equals(id))
+      .AsNoTracking()
       .Include(r => r.TribeRoleType)
       .Include(r => r.Tribe)
       .FirstOrDefaultAsync();
