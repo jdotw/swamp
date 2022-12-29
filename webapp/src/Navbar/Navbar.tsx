@@ -7,6 +7,7 @@ import {
   IconClipboardList,
 } from "@tabler/icons";
 import { NavLink } from "react-router-dom";
+import { LinksGroup } from "./NavbarLinksGroup";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -94,7 +95,17 @@ const useStyles = createStyles((theme, _params, getRef) => {
 const data = [
   { link: "/people", label: "People", icon: IconUsers },
   { link: "/capability", label: "Capability", icon: IconBulb },
-  { link: "/delivery", label: "Delivery", icon: IconClipboardList },
+  {
+    link: "/delivery",
+    label: "Delivery",
+    icon: IconClipboardList,
+    links: [
+      { label: "Overview", link: "/" },
+      { label: "Forecasts", link: "/" },
+      { label: "Outlook", link: "/" },
+      { label: "Real time", link: "/" },
+    ],
+  },
 ];
 
 interface NavbarSimpleColoredProps {
@@ -107,24 +118,26 @@ export function NavbarSimpleColored(props: NavbarSimpleColoredProps) {
   const [active, setActive] = useState("People");
   const { hidden, onLinkClicked } = props;
 
-  const links = data.map((item) => (
-    <NavLink
-      to={item.link}
-      key={item.label}
-      className={({ isActive }) =>
-        cx(classes.link, {
-          [classes.linkActive]: isActive,
-        })
-      }
-      onClick={(event) => {
-        setActive(item.label);
-        onLinkClicked();
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </NavLink>
-  ));
+  const links = data.map((item) => <LinksGroup {...item} key={item.label} />);
+
+  // const links = data.map((item) => (
+  //   <NavLink
+  //     to={item.link}
+  //     key={item.label}
+  //     className={({ isActive }) =>
+  //       cx(classes.link, {
+  //         [classes.linkActive]: isActive,
+  //       })
+  //     }
+  //     onClick={(event) => {
+  //       setActive(item.label);
+  //       onLinkClicked();
+  //     }}
+  //   >
+  //     <item.icon className={classes.linkIcon} stroke={1.5} />
+  //     <span>{item.label}</span>
+  //   </NavLink>
+  // ));
 
   return (
     <Navbar
