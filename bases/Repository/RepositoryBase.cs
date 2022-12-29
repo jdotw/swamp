@@ -23,8 +23,7 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEnti
     return _context.Set<TEntity>().Where(expression);
   }
 
-
-  public async Task AddAsync(TEntity obj)
+  public virtual async Task AddAsync(TEntity obj)
   {
     await _context.Set<TEntity>().AddAsync(obj);
   }
