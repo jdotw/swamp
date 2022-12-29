@@ -32,10 +32,11 @@ public class LineManagerRepository : RepositoryBase<LineManager>, ILineManagerRe
 
   public async Task<int> UpdateLineManagerAsync(LineManager lineManager)
   {
-    var dbLineManager = await GetLineManagerByIdAsync(lineManager.Id);
+    var dbLineManager = await FindByConditionAsync(l => l.Id.Equals(lineManager.Id))
+      .FirstOrDefaultAsync();
     if (dbLineManager is not null)
     {
-      // dbLineManager.Name = lineManager.Name;
+      dbLineManager.EndDate = lineManager.EndDate;
       Update(dbLineManager);
       return await SaveAsync();
     }
