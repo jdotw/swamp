@@ -1,22 +1,10 @@
-import {
-  AppShell,
-  Aside,
-  Burger,
-  Footer,
-  Header,
-  MantineProvider,
-  MediaQuery,
-  Navbar,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
 import { Outlet } from "react-router";
 
 import "./App.css";
 import { HeaderSimple } from "./Header/Header";
-import { NavbarSimpleColored } from "./Navbar/Navbar";
+import { SideNavbar } from "./Navbar/SideNavbar";
 
 function App() {
   const [burgerOpened, { toggle: toggleBurgerOpened }] = useDisclosure(false);
@@ -26,10 +14,10 @@ function App() {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={
-        <NavbarSimpleColored
+        <SideNavbar
           hidden={!burgerOpened}
           onLinkClicked={toggleBurgerOpened}
-        ></NavbarSimpleColored>
+        ></SideNavbar>
       }
       // aside={
       //   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>

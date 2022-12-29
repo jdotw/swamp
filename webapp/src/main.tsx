@@ -34,11 +34,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </Route>
           <Route path="delivery" element={<DeliveryShell />}>
             <Route index element={<DeliveryHome />} />
-            <Route path="tribes/:tribeId" element={<TribeHome />} />
-            <Route
-              path="triberoletypes/:roleTypeId"
-              element={<TribeRoleTypeHome />}
-            />
+            <Route path="tribes" element={<TribeList />}>
+              <Route path=":tribeId" element={<TribeHome />} />
+            </Route>
+            <Route path="triberoletypes" element={<TribeRoleTypeList />}>
+              <Route
+                path="triberoletypes/:roleTypeId"
+                element={<TribeRoleTypeHome />}
+              />
+            </Route>
           </Route>
         </Route>
       </Routes>

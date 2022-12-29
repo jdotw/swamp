@@ -73,9 +73,6 @@ export function TribeList(props: TribeListProps) {
           <Button onClick={() => setAddTribeModalOpen(true)}>Add Tribe</Button>
         </div>
       </div>
-      <div>
-        <TribeRoleTypeList />
-      </div>
       <AddTribeModal
         opened={addTribeModalOpen}
         onClose={() => setAddTribeModalOpen(false)}
