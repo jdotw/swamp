@@ -16,6 +16,7 @@ import TribeRoleTypeList from "./Delivery/TribeRoleTypes/TribeRoleTypeList";
 import TribeRoleTypeHome from "./Delivery/TribeRoleTypes/TribeRoleType/TribeRoleTypeHome";
 import DeliveryShell from "./Delivery/DeliveryShell";
 import DeliveryHome from "./Delivery/DeliveryHome";
+import SquadHome from "./Delivery/Squads/SquadHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -24,20 +25,41 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
+
+          {/* People */}
           <Route path="people" element={<People />}>
             <Route index element={<PeopleList />} />
             <Route path=":individualId" element={<Individual />} />
           </Route>
+
+          {/* Capability */}
           <Route path="capability" element={<Capability />}>
             <Route index element={<PracticeList />} />
             <Route path=":practiceId" element={<Practice />} />
           </Route>
+
+          {/* Delivery */}
           <Route path="delivery" element={<DeliveryShell />}>
             <Route index element={<DeliveryHome />} />
-            <Route path="tribes" element={<TribeList />}>
-              <Route path=":tribeId" element={<TribeHome />} />
+
+            {/* Tribes */}
+            <Route path="tribes">
+              <Route index element={<TribeList />} />
+              <Route path=":tribeId">
+                <Route index element={<TribeHome />} />
+
+                {/* Squads */}
+                <Route path="squads">
+                  <Route path=":squadId">
+                    <Route index element={<SquadHome />} />
+                  </Route>
+                </Route>
+              </Route>
             </Route>
-            <Route path="triberoletypes" element={<TribeRoleTypeList />}>
+
+            {/* Tribe Roles */}
+            <Route path="triberoletypes">
+              <Route index element={<TribeRoleTypeList />} />
               <Route
                 path="triberoletypes/:roleTypeId"
                 element={<TribeRoleTypeHome />}
