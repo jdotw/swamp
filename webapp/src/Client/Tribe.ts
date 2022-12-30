@@ -28,6 +28,12 @@ export type NewTribe = {
   name: string;
 };
 
+export type NewTribeRole = {
+  tribe_id: string;
+  individual_id: string;
+  tribe_role_type_id: string;
+};
+
 interface UseTribeProps {
   id?: string;
 }
@@ -44,7 +50,10 @@ export function useTribe({ id }: UseTribeProps) {
   const [addSquadError, setAddSquadError] = useState(undefined);
 
   const [roles, setRoles] = useState<TribeRole[]>([]);
-  const { getAll: getRoles } = useCRUD<TribeRole, undefined>({
+  const { getAll: getRoles, createItem: addRoleItem } = useCRUD<
+    TribeRole,
+    NewTribeRole
+  >({
     domain: "localhost:5173",
     path: `/api/delivery/tribes/${id}/roles`,
   });
@@ -80,6 +89,11 @@ export function useTribe({ id }: UseTribeProps) {
   const loadRoles = async () => {
     const roles = await getRoles();
     setRoles(roles);
+  };
+
+  const addRole = async (newRole: NewTribeRole) => {
+    const role = await addRoleItem(newRole);
+    setRoles([...roles, role]);
   };
 
   const update = async (updatedTribe: Tribe) => {
@@ -164,5 +178,6 @@ export function useTribe({ id }: UseTribeProps) {
     addingSquad,
     addSquadError,
     roles,
+    addRole,
   };
 }
