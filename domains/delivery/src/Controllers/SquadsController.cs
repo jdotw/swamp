@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Delivery.Controllers;
 
 [ApiController]
-[Route("tribes/{tribeId}/[controller]")]
+[Route("tribes/{tribeId}/squads")]
 public class SquadsController : ControllerBase
 {
   private readonly ISquadRepository _squadRepository;
@@ -18,7 +18,7 @@ public class SquadsController : ControllerBase
     _mapper = mapper;
   }
 
-  // GET: api/Squads
+  // GET: /tribes/1/squads
   [HttpGet]
   public async Task<IActionResult> GetSquads()
   {
@@ -27,7 +27,7 @@ public class SquadsController : ControllerBase
     return Ok(squadsDto);
   }
 
-  // GET: api/Squads/5
+  // GET: /tribes/1/squads/5
   [HttpGet("{id}")]
   public async Task<IActionResult> GetSquad(int id)
   {
@@ -37,7 +37,7 @@ public class SquadsController : ControllerBase
     return Ok(squadDto);
   }
 
-  // POST: api/Squads
+  // POST: /tribes/1/squads
   [HttpPost]
   public async Task<IActionResult> PostSquad(int tribeId, SquadDto squadDto)
   {
@@ -47,7 +47,7 @@ public class SquadsController : ControllerBase
     return CreatedAtAction("GetSquad", new { tribeId = tribeId, id = squad.Id }, _mapper.Map<SquadDto>(squad));
   }
 
-  // PUT: api/Squads/5
+  // PUT: /tribes/1/squads/5
   [HttpPut("{id}")]
   public async Task<IActionResult> PutSquad(int id, Squad squadDto)
   {
@@ -57,7 +57,7 @@ public class SquadsController : ControllerBase
     return (updated > 0) ? NoContent() : NotFound();
   }
 
-  // DELETE: api/Squads/5
+  // DELETE: /tribes/1/squads/5
   [HttpDelete("{id}")]
   public async Task<IActionResult> DeleteSquad(int id)
   {
