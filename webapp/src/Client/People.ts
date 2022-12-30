@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { Individual } from "./Individual";
 
 export function usePeople() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(undefined);
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState<Individual[]>([]);
 
   const load = async () => {
     const domain = "localhost:8080";
