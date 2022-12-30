@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
+import { useCRUD } from "../CRUD/CRUD";
+import { Individual } from "./Individual";
 import { Squad } from "./Squad";
+import { TribeRoleType } from "./TribeRoleTypes";
 
 export type Tribe = {
   id: string;
   name: string;
   lead_full_name: string;
   squads: Squad[];
+  roles: TribeRole[];
+};
+
+export type TribeRole = {
+  id: string;
+  individual_id: string;
+  tribe_role_type: TribeRoleType;
+  tribe_id: string;
+  individual: Individual;
 };
 
 export type NewSquad = {
@@ -30,6 +42,12 @@ export function useTribe({ id }: UseTribeProps) {
 
   const [addingSquad, setAddingSquad] = useState(false);
   const [addSquadError, setAddSquadError] = useState(undefined);
+
+  const [roles, setRoles] = useState<TribeRole[]>([]);
+  const { getAll: getRoles } = useCRUD<TribeRole, undefined>({
+    domain: "localhost:5173",
+    path: `/api/delivery/tribes/${id}/roles`,
+  });
 
   const load = async () => {
     const domain = "localhost:8080";
@@ -57,6 +75,12 @@ export function useTribe({ id }: UseTribeProps) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadRoles = async () => {
+    const roles = await getRoles();
+    console.log("GOT ROLES: ", roles);
+    setRoles(roles);
   };
 
   const update = async (updatedTribe: Tribe) => {
@@ -126,6 +150,7 @@ export function useTribe({ id }: UseTribeProps) {
   useEffect(() => {
     if (id) {
       load();
+      loadRoles();
     }
   }, [id]);
 
@@ -139,5 +164,6 @@ export function useTribe({ id }: UseTribeProps) {
     addSquad,
     addingSquad,
     addSquadError,
+    roles,
   };
 }
