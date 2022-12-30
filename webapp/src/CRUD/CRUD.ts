@@ -27,18 +27,14 @@ export function useCRUD<ItemType, NewItemType>({
     };
   };
 
-  const getAll = async () => {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          ...(await authHeaders()),
-        },
-      });
-      const response_json = await response.json();
-      return response_json;
-    } catch (error: any) {
-      return error;
-    }
+  const getAll = async (): Promise<ItemType[]> => {
+    const response = await fetch(url, {
+      headers: {
+        ...(await authHeaders()),
+      },
+    });
+    const response_json = (await response.json()) as ItemType[];
+    return response_json;
   };
 
   // const retrieveItem = async () => {
