@@ -21,10 +21,10 @@ public class Individuals : ControllerBase
   }
 
   // GET: /individuals
-  [HttpGet]
-  public async Task<IActionResult> GetIndividuals()
+  [HttpGet()]
+  public async Task<IActionResult> GetIndividuals([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var individuals = await _repository.GetAllIndividualsAsync();
+    var individuals = await _repository.GetAllIndividualsAsync(ids);
     var individualsDto = _mapper.Map<IEnumerable<IndividualDto>>(individuals);
     return Ok(individualsDto);
   }
@@ -33,7 +33,7 @@ public class Individuals : ControllerBase
   [HttpGet("{id}")]
   public async Task<IActionResult> GetIndividual(int id)
   {
-    var individual = await _repository.GetIndividualByIdAsync(id);
+    var individual = await _repository.GetIndividualWithDetailsAsync(id);
     if (individual is null) return NotFound();
     var individualDto = _mapper.Map<IndividualDto>(individual);
     return Ok(individualDto);
