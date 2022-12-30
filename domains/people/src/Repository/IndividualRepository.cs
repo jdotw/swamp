@@ -11,11 +11,11 @@ public class IndividualRepository : RepositoryBase<Individual>, IIndividualRepos
   {
   }
 
-  public async Task<IEnumerable<Individual>> GetAllIndividualsAsync()
+  public async Task<IEnumerable<Individual>> GetAllIndividualsAsync(List<int>? filterIds = null)
   {
-    //     var result = context.Individuals.Include(p => p.Identities.OrderByDescending(c => c.Id).Take(1));
     return await FindAllAsync()
         .Include(p => p.Identities.OrderByDescending(c => c.Id).Take(1))
+        .Where(s => filterIds == null || filterIds.Contains(s.Id))
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
