@@ -27,6 +27,9 @@ builder.Services.AddScoped<ITribeRoleRepository, TribeRoleRepository>();
 builder.Services.AddScoped<ITribeRoleTypeRepository, TribeRoleTypeRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+// Add services to the container.
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
