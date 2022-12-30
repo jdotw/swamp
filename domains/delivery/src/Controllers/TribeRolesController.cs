@@ -56,10 +56,18 @@ public class TribeRolesController : ControllerBase
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int tribeId, int id)
   {
-    var role = await _repository.GetDetailsAsync(id);
+    var role = await GetRoleWithIndividual(tribeId, id);
     if (role is null) return NotFound();
+    return Ok(role);
+  }
+
+  private async Task<TribeRoleDto?> GetRoleWithIndividual(int tribeId, int id)
+  {
+    var role = await _repository.GetDetailsAsync(id);
+    if (role is null) return null;
     var roleDto = _mapper.Map<TribeRoleDto>(role);
-    return Ok(roleDto);
+    roleDto.Individual = await GetIndividuals(new() { role.IndividualId }).ContinueWith(t => t.Result[role.IndividualId]);
+    return roleDto;
   }
 
   // POST: /tribes/1/roles
@@ -68,9 +76,10 @@ public class TribeRolesController : ControllerBase
   {
     var role = _mapper.Map<TribeRole>(roleDto);
     role.TribeId = tribeId;
-    await _repository.AddAsync(role);
-    role = await _repository.GetDetailsAsync(role.Id);
-    return (role is not null) ? CreatedAtAction(nameof(Create), new { id = role.Id }, _mapper.Map<TribeRoleDto>(role)) : BadRequest();
+    var result = await _repository.AddAsync(role);
+    if (result <= 0) return BadRequest();
+    var roleWithIndividual = await GetRoleWithIndividual(tribeId, role.Id);
+    return CreatedAtAction(nameof(Create), new { id = role.Id }, roleWithIndividual);
   }
 
   // PUT: /tribes/1/roles/5
