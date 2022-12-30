@@ -1,5 +1,13 @@
 namespace Delivery.DTOs;
 
+public class TribeRoleDtoIndividual
+{
+  public int Id { get; set; }
+  public string FirstName { get; set; } = null!;
+  public string LastName { get; set; } = null!;
+  public string MiddleNames { get; set; } = null!;
+}
+
 public class TribeRoleDto
 {
   public int Id { get; set; }
@@ -8,6 +16,9 @@ public class TribeRoleDto
   public TribeDto Tribe { get; set; } = null!;
   public DateTimeOffset StartDate { get; set; }
   public DateTimeOffset? EndDate { get; set; }
+
+  // From People service
+  public TribeRoleDtoIndividual Individual { get; set; } = null!;
 }
 
 public class AddTribeRoleDto
