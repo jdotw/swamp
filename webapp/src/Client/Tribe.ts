@@ -79,7 +79,6 @@ export function useTribe({ id }: UseTribeProps) {
 
   const loadRoles = async () => {
     const roles = await getRoles();
-    console.log("GOT ROLES: ", roles);
     setRoles(roles);
   };
 
