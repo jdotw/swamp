@@ -1,4 +1,6 @@
+using Capability.Repository;
 using JorgeSerrano.Json;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,10 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<CapabilityDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("CapabilityDatabase"))
+            .UseSnakeCaseNamingConvention());
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
