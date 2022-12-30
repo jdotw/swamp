@@ -22,6 +22,7 @@ builder.Services.AddDbContext<DeliveryDbContext>(options =>
             .UseSnakeCaseNamingConvention());
 
 builder.Services.AddScoped<ISquadRepository, SquadRepository>();
+builder.Services.AddScoped<ISquadRoleRepository, SquadRoleRepository>();
 builder.Services.AddScoped<ISquadRoleTypeRepository, SquadRoleTypeRepository>();
 builder.Services.AddScoped<ITribeRepository, TribeRepository>();
 builder.Services.AddScoped<ITribeRoleRepository, TribeRoleRepository>();

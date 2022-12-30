@@ -13,6 +13,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<SquadRoleType, SquadRoleTypeDto>().ReverseMap();
     CreateMap<MutateSquadRoleTypeDto, SquadRoleType>();
 
+    CreateMap<SquadRole, SquadRoleDto>().ReverseMap();
+    CreateMap<AddSquadRoleDto, SquadRole>();
+    CreateMap<UpdateSquadRoleDto, SquadRole>();
+
     CreateMap<Tribe, TribeDto>().ReverseMap();
     CreateMap<AddTribeDto, Tribe>();
     CreateMap<UpdateTribeDto, Tribe>();
