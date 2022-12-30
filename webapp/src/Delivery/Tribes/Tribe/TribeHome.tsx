@@ -10,8 +10,9 @@ import {
 } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
-import { useTribe, NewTribe, Tribe, NewSquad } from "../../../Client/Tribe";
+import { useTribe, NewSquad, NewTribeRole } from "../../../Client/Tribe";
 import { AddTribeModal } from "../AddTribeModal";
+import { AddRoleModal } from "./AddRoleModal";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -31,17 +32,17 @@ interface TribeHomeProps {}
 
 export function TribeHome(props: TribeHomeProps) {
   const { tribeId: id } = useParams();
-  const { classes, theme } = useStyles();
-  const { tribe, roles, loading, addSquad, addSquadError, addingSquad } =
-    useTribe({
-      id: id,
-    });
+  const { classes } = useStyles();
+  const { tribe, roles, addRole, loading, addSquad } = useTribe({
+    id: id,
+  });
   const [addSquadModalOpen, setAddSquadModalOpen] = useState(false);
+  const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
-  if (!tribe) {
+  if (!id || !tribe) {
     return <div>Tribe not found</div>;
   }
 
@@ -85,6 +86,11 @@ export function TribeHome(props: TribeHomeProps) {
     setAddSquadModalOpen(false);
   };
 
+  const submitRole = async (newRole: NewTribeRole) => {
+    await addRole(newRole);
+    setAddRoleModalOpen(false);
+  };
+
   return (
     <>
       <div>
@@ -118,13 +124,19 @@ export function TribeHome(props: TribeHomeProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddSquadModalOpen(true)}>Add Role</Button>
+          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
         </div>
       </div>
       <AddTribeModal
         opened={addSquadModalOpen}
         onClose={() => setAddSquadModalOpen(false)}
         onSubmit={submit}
+      />
+      <AddRoleModal
+        tribeId={id}
+        opened={addRoleModalOpen}
+        onClose={() => setAddRoleModalOpen(false)}
+        onSubmit={submitRole}
       />
     </>
   );
