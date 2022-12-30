@@ -1,4 +1,4 @@
-namespace Delivery.Entities;
+namespace Capability.Entities;
 
 using Base.Entities;
 

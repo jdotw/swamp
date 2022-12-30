@@ -1,4 +1,4 @@
-namespace Delivery.Entities;
+namespace Capability.Entities;
 
 using Base.Entities;
 
@@ -12,5 +12,4 @@ public class Chapter : EntityBase
   public Practice Practice { get; set; } = null!;
 
   public List<ChapterRole> ChapterRoles { get; set; } = new List<ChapterRole>();
-
 }
