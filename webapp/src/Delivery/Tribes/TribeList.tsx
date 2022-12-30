@@ -8,7 +8,7 @@ import {
   Container,
   Title,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Loading from "../../Loading/Loading";
 import { useTribes } from "../../Client/Tribes";
 import { NewTribe, Tribe } from "../../Client/Tribe";
@@ -40,10 +40,10 @@ export function TribeList(props: TribeListProps) {
     return (
       <tr key={id}>
         <td>
-          <Link to={`tribes/${id}`}>{row.name}</Link>
+          <Link to={`${id}`}>{row.name}</Link>
         </td>
         <td>
-          <Link to={`tribes/${id}`}>{row.lead_full_name}</Link>
+          <Link to={`${id}`}>{row.lead_full_name}</Link>
         </td>
       </tr>
     );
@@ -73,6 +73,7 @@ export function TribeList(props: TribeListProps) {
           <Button onClick={() => setAddTribeModalOpen(true)}>Add Tribe</Button>
         </div>
       </div>
+      <Outlet />
       <AddTribeModal
         opened={addTribeModalOpen}
         onClose={() => setAddTribeModalOpen(false)}
