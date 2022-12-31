@@ -20,15 +20,15 @@ public class IndividualRepository : RepositoryBase<Individual>, IIndividualRepos
         .ToListAsync();
   }
 
-  public async Task<Individual?> GetIndividualByIdAsync(int individualId)
+  public async Task<Individual?> GetIndividualByIdAsync(int id)
   {
-    return await FindByConditionAsync(individual => individual.Id.Equals(individualId)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Individual?> GetIndividualWithDetailsAsync(int individualId)
+  public async Task<Individual?> GetIndividualWithDetailsAsync(int id)
   {
-    return await FindByConditionAsync(individual => individual.Id.Equals(individualId))
-        .Include(s => s.Identities)
+    return await FindByConditionAsync(i => i.Id.Equals(id))
+        .Include(i => i.Identities)
         .FirstOrDefaultAsync();
   }
 
@@ -38,22 +38,22 @@ public class IndividualRepository : RepositoryBase<Individual>, IIndividualRepos
     return await SaveAsync();
   }
 
-  public async Task<int> UpdateIndividualAsync(Individual individual)
+  public async Task<int> UpdateIndividualAsync(Individual updatedIndividual)
   {
-    var dbIndividual = await FindByConditionAsync(i => i.Id.Equals(individual.Id))
+    var dbIndividual = await FindByConditionAsync(i => i.Id.Equals(updatedIndividual.Id))
       .AsNoTracking()
       .FirstOrDefaultAsync();
     if (dbIndividual is not null)
     {
-      Update(individual);
+      Update(dbIndividual);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteIndividualAsync(int individualId)
+  public async Task<int> DeleteIndividualAsync(int id)
   {
-    Delete(individualId);
+    Delete(id);
     return await SaveAsync();
   }
 }

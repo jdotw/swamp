@@ -22,7 +22,7 @@ public class LineManagers : ControllerBase
 
   // GET: /individuals/5/line-managers
   [HttpGet]
-  public async Task<IActionResult> GetLineManagers(int individualId)
+  public async Task<IActionResult> GetAll(int individualId)
   {
     var lineManagers = await _repository.GetAllLineManagersAsync(individualId);
     var lineManagersDto = _mapper.Map<IEnumerable<LineManagerDto>>(lineManagers);
@@ -31,7 +31,7 @@ public class LineManagers : ControllerBase
 
   // GET: /individuals/5/line-managers/5
   [HttpGet("{id}")]
-  public async Task<IActionResult> GetLineManagerById(int individualId, int id)
+  public async Task<IActionResult> Get(int individualId, int id)
   {
     var lineManager = await _repository.GetLineManagerByIdAsync(id);
     if (lineManager is null) return NotFound();
@@ -41,17 +41,17 @@ public class LineManagers : ControllerBase
 
   // POST: /individuals/5/line-managers
   [HttpPost]
-  public async Task<IActionResult> AddLineManager(int individualId, AddLineManagerDto lineManagerDto)
+  public async Task<IActionResult> Create(int individualId, AddLineManagerDto lineManagerDto)
   {
     var lineManager = _mapper.Map<LineManager>(lineManagerDto);
     lineManager.IndividualId = individualId;
     await _repository.AddLineManagerAsync(lineManager);
-    return CreatedAtAction(nameof(AddLineManager), new { id = lineManager.Id }, _mapper.Map<LineManagerDto>(lineManager));
+    return CreatedAtAction(nameof(Create), new { id = lineManager.Id }, _mapper.Map<LineManagerDto>(lineManager));
   }
 
   // PUT: /individuals/5/line-managers/5
   [HttpPut("{id}")]
-  public async Task<IActionResult> Update(int id, MutateLineManagerDto lineManagerDto)
+  public async Task<IActionResult> Update(int id, UpdateLineManagerDto lineManagerDto)
   {
     var lineManager = _mapper.Map<LineManager>(lineManagerDto);
     lineManager.Id = id;

@@ -19,9 +19,9 @@ public class LineManagerRepository : RepositoryBase<LineManager>, ILineManagerRe
         .ToListAsync();
   }
 
-  public async Task<LineManager?> GetLineManagerByIdAsync(int lineManagerId)
+  public async Task<LineManager?> GetLineManagerByIdAsync(int id)
   {
-    return await FindByConditionAsync(lineManager => lineManager.Id.Equals(lineManagerId)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(m => m.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
   public async Task<int> AddLineManagerAsync(LineManager lineManager)
@@ -30,13 +30,14 @@ public class LineManagerRepository : RepositoryBase<LineManager>, ILineManagerRe
     return await SaveAsync();
   }
 
-  public async Task<int> UpdateLineManagerAsync(LineManager lineManager)
+  public async Task<int> UpdateLineManagerAsync(LineManager updatedLineManager)
   {
-    var dbLineManager = await FindByConditionAsync(l => l.Id.Equals(lineManager.Id))
+    var dbLineManager = await FindByConditionAsync(m => m.Id.Equals(updatedLineManager.Id))
       .FirstOrDefaultAsync();
     if (dbLineManager is not null)
     {
-      dbLineManager.EndDate = lineManager.EndDate;
+      if (updatedLineManager.EndDate is not null)
+        dbLineManager.EndDate = updatedLineManager.EndDate;
       Update(dbLineManager);
       return await SaveAsync();
     }

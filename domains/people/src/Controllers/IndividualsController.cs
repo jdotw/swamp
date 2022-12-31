@@ -22,7 +22,7 @@ public class Individuals : ControllerBase
 
   // GET: /individuals
   [HttpGet()]
-  public async Task<IActionResult> GetIndividuals([FromQuery(Name = "id")] List<int>? ids = null)
+  public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var individuals = await _repository.GetAllIndividualsAsync(ids);
     var individualsDto = _mapper.Map<IEnumerable<IndividualDto>>(individuals);
@@ -31,7 +31,7 @@ public class Individuals : ControllerBase
 
   // GET: /individuals/5
   [HttpGet("{id}")]
-  public async Task<IActionResult> GetIndividual(int id)
+  public async Task<IActionResult> Get(int id)
   {
     var individual = await _repository.GetIndividualWithDetailsAsync(id);
     if (individual is null) return NotFound();
@@ -41,16 +41,16 @@ public class Individuals : ControllerBase
 
   // POST: /individuals
   [HttpPost]
-  public async Task<IActionResult> AddIndividual(MutateIndividualDto individualDto)
+  public async Task<IActionResult> Create(MutateIndividualDto individualDto)
   {
     var individual = _mapper.Map<Individual>(individualDto);
     await _repository.AddIndividualAsync(individual);
-    return CreatedAtAction(nameof(AddIndividual), new { id = individual.Id }, _mapper.Map<IndividualDto>(individual));
+    return CreatedAtAction(nameof(Create), new { id = individual.Id }, _mapper.Map<IndividualDto>(individual));
   }
 
   // PUT: /individuals/5
   [HttpPut("{id}")]
-  public async Task<IActionResult> UpdateIndividual(int id, MutateIndividualDto individualDto)
+  public async Task<IActionResult> Update(int id, MutateIndividualDto individualDto)
   {
     var individual = _mapper.Map<Individual>(individualDto);
     individual.Id = id;
@@ -60,7 +60,7 @@ public class Individuals : ControllerBase
 
   // DELETE: /individuals/5
   [HttpDelete("{id}")]
-  public async Task<IActionResult> DeleteIndividual(int id)
+  public async Task<IActionResult> Delete(int id)
   {
     var deleted = await _repository.DeleteIndividualAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
