@@ -9,7 +9,7 @@ public class LineManagerDto
   public DateTimeOffset EndDate { get; set; }
 }
 
-public class MutateLineManagerDto
+public class UpdateLineManagerDto
 {
   public DateTimeOffset? EndDate { get; set; }
 }
