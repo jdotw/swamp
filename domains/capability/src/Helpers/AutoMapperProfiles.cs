@@ -9,6 +9,8 @@ public class AutoMapperProfiles : Profile
   public AutoMapperProfiles()
   {
     CreateMap<Chapter, ChapterDto>().ReverseMap();
+    CreateMap<AddChapterDto, Chapter>();
+    CreateMap<UpdateChapterDto, Chapter>();
 
     CreateMap<ChapterRoleType, ChapterRoleTypeDto>().ReverseMap();
     CreateMap<MutateChapterRoleTypeDto, ChapterRoleType>();
