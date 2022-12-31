@@ -28,7 +28,7 @@ public class IndividualRepository : RepositoryBase<Individual>, IIndividualRepos
   public async Task<Individual?> GetIndividualWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-        .Include(i => i.Identities)
+        .Include(p => p.Identities.OrderByDescending(c => c.Id).Take(1))
         .FirstOrDefaultAsync();
   }
 
