@@ -21,6 +21,13 @@ builder.Services.AddDbContext<CapabilityDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("CapabilityDatabase"))
             .UseSnakeCaseNamingConvention());
 
+builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
+builder.Services.AddScoped<IChapterRoleRepository, ChapterRoleRepository>();
+builder.Services.AddScoped<IChapterRoleTypeRepository, ChapterRoleTypeRepository>();
+builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
+builder.Services.AddScoped<IPracticeRoleRepository, PracticeRoleRepository>();
+builder.Services.AddScoped<IPracticeRoleTypeRepository, PracticeRoleTypeRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpClient();
