@@ -41,7 +41,7 @@ public class Individuals : ControllerBase
 
   // POST: /individuals
   [HttpPost]
-  public async Task<IActionResult> Create(MutateIndividualDto individualDto)
+  public async Task<IActionResult> Create(CreateIndividualDto individualDto)
   {
     var individual = _mapper.Map<Individual>(individualDto);
     await _repository.AddIndividualAsync(individual);
@@ -50,7 +50,7 @@ public class Individuals : ControllerBase
 
   // PUT: /individuals/5
   [HttpPut("{id}")]
-  public async Task<IActionResult> Update(int id, MutateIndividualDto individualDto)
+  public async Task<IActionResult> Update(int id, UpdateIndividualDto individualDto)
   {
     var individual = _mapper.Map<Individual>(individualDto);
     individual.Id = id;
