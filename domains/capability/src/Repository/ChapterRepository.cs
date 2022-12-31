@@ -18,39 +18,41 @@ public class ChapterRepository : RepositoryBase<Chapter>, IChapterRepository
         .ToListAsync();
   }
 
-  public async Task<Chapter?> GetChapterByIdAsync(int ChapterId)
+  public async Task<Chapter?> GetChapterByIdAsync(int id)
   {
-    return await FindByConditionAsync(Chapter => Chapter.Id.Equals(ChapterId)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(c => c.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Chapter?> GetChapterWithDetailsAsync(int ChapterId)
+  public async Task<Chapter?> GetChapterWithDetailsAsync(int id)
   {
-    return await FindByConditionAsync(Chapter => Chapter.Id.Equals(ChapterId))
-        .Include(s => s.ChapterRoles)
+    return await FindByConditionAsync(c => c.Id.Equals(id))
+        .Include(c => c.ChapterRoles)
         .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddChapterAsync(Chapter Chapter)
+  public async Task<int> AddChapterAsync(Chapter chapter)
   {
-    await AddAsync(Chapter);
+    await AddAsync(chapter);
     return await SaveAsync();
   }
 
-  public async Task<int> UpdateChapterAsync(Chapter Chapter)
+  public async Task<int> UpdateChapterAsync(Chapter updatedChapter)
   {
-    var dbChapter = await GetChapterByIdAsync(Chapter.Id);
+    var dbChapter = await GetChapterByIdAsync(updatedChapter.Id);
     if (dbChapter is not null)
     {
-      dbChapter.Name = Chapter.Name;
+      dbChapter.Name = updatedChapter.Name;
+      if (updatedChapter.DisbandedDate is not null)
+        dbChapter.DisbandedDate = updatedChapter.DisbandedDate;
       Update(dbChapter);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteChapterAsync(int ChapterId)
+  public async Task<int> DeleteChapterAsync(int id)
   {
-    Delete(ChapterId);
+    Delete(id);
     return await SaveAsync();
   }
 }
