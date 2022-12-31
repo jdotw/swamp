@@ -41,7 +41,7 @@ public class LineManagers : ControllerBase
 
   // POST: /individuals/5/line-managers
   [HttpPost]
-  public async Task<IActionResult> Create(int individualId, AddLineManagerDto lineManagerDto)
+  public async Task<IActionResult> Create(int individualId, CreateLineManagerDto lineManagerDto)
   {
     var lineManager = _mapper.Map<LineManager>(lineManagerDto);
     lineManager.IndividualId = individualId;

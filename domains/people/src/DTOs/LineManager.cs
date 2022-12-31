@@ -9,15 +9,14 @@ public class LineManagerDto
   public DateTimeOffset EndDate { get; set; }
 }
 
-public class UpdateLineManagerDto
-{
-  public DateTimeOffset? EndDate { get; set; }
-}
-
-public class AddLineManagerDto
+public class CreateLineManagerDto
 {
   public required int ManagerId { get; set; }
   public DateTimeOffset StartDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? EndDate { get; set; }
 }
 
+public class UpdateLineManagerDto
+{
+  public DateTimeOffset? EndDate { get; set; }
+}
