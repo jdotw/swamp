@@ -45,6 +45,7 @@ public class IndividualRepository : RepositoryBase<Individual>, IIndividualRepos
       .FirstOrDefaultAsync();
     if (dbIndividual is not null)
     {
+      dbIndividual.Identities = updatedIndividual.Identities;
       Update(dbIndividual);
       return await SaveAsync();
     }
