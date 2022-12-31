@@ -18,14 +18,14 @@ public class SquadRepository : RepositoryBase<Squad>, ISquadRepository
         .ToListAsync();
   }
 
-  public async Task<Squad?> GetSquadByIdAsync(int squadId)
+  public async Task<Squad?> GetSquadByIdAsync(int id)
   {
-    return await FindByConditionAsync(squad => squad.Id.Equals(squadId)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(s => s.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Squad?> GetSquadWithDetailsAsync(int squadId)
+  public async Task<Squad?> GetSquadWithDetailsAsync(int id)
   {
-    return await FindByConditionAsync(squad => squad.Id.Equals(squadId))
+    return await FindByConditionAsync(s => s.Id.Equals(id))
         .Include(s => s.SquadRoles)
         .FirstOrDefaultAsync();
   }
@@ -36,21 +36,23 @@ public class SquadRepository : RepositoryBase<Squad>, ISquadRepository
     return await SaveAsync();
   }
 
-  public async Task<int> UpdateSquadAsync(Squad squad)
+  public async Task<int> UpdateSquadAsync(Squad updatedSquad)
   {
-    var dbSquad = await GetSquadByIdAsync(squad.Id);
+    var dbSquad = await GetSquadByIdAsync(updatedSquad.Id);
     if (dbSquad is not null)
     {
-      dbSquad.Name = squad.Name;
+      dbSquad.Name = updatedSquad.Name;
+      if (updatedSquad.DisbandedDate is not null)
+        dbSquad.DisbandedDate = updatedSquad.DisbandedDate;
       Update(dbSquad);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteSquadAsync(int squadId)
+  public async Task<int> DeleteSquadAsync(int id)
   {
-    Delete(squadId);
+    Delete(id);
     return await SaveAsync();
   }
 }
