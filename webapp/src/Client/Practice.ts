@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
+import ChapterHome from "../Capability/Chapters/ChapterHome";
+import { useCRUD } from "../CRUD/CRUD";
+import { Individual } from "./Individual";
+import { PracticeRoleType } from "./PracticeRoleTypes";
 
 export type Practice = {
   id: string;
   name: string;
   lead_full_name: string;
+  chapters: Chapter[];
 };
 
 export type NewPractice = {
   name: string;
 };
 
+export type Chapter = {
+  id: string;
+  name: string;
+};
+
 export type NewChapter = {
   name: string;
+};
+
+export type PracticeRole = {
+  id: string;
+  individual_id: string;
+  prictice_role_type: PracticeRoleType;
+  prictice_id: string;
+  individual: Individual;
 };
 
 export type NewPracticeRole = {
@@ -31,6 +49,23 @@ export function usePractice({ id }: UsePracticeProps) {
 
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(undefined);
+
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState(undefined);
+
+  const [roles, setRoles] = useState<PracticeRole[]>([]);
+  const { getAll: getRoles, createItem: addRoleItem } = useCRUD<
+    PracticeRole,
+    NewPracticeRole
+  >({
+    domain: "localhost:5173",
+    path: `/api/delivery/tribes/${id}/roles`,
+  });
+
+  const { createItem } = useCRUD<Chapter, NewChapter>({
+    domain: "localhost:5173",
+    path: `/api/capability/practices/${id}/chapters`,
+  });
 
   const load = async () => {
     const domain = "localhost:8080";
@@ -89,11 +124,49 @@ export function usePractice({ id }: UsePracticeProps) {
     }
   };
 
+  const addChapter = async (chapter: NewChapter) => {
+    setAdding(true);
+    try {
+      const newChapter = await createItem(chapter);
+      setPractice({
+        ...practice!,
+        chapters: [...practice!.chapters, newChapter],
+      });
+    } catch (error: any) {
+      setAddError(error);
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const loadRoles = async () => {
+    const roles = await getRoles();
+    setRoles(roles);
+  };
+
+  const addRole = async (newRole: NewPracticeRole) => {
+    const role = await addRoleItem(newRole);
+    setRoles([...roles, role]);
+  };
+
   useEffect(() => {
     if (id) {
       load();
+      loadRoles();
     }
   }, [id]);
 
-  return { loading, practice, error, update, updating, updateError };
+  return {
+    loading,
+    practice,
+    error,
+    update,
+    updating,
+    updateError,
+    addChapter,
+    addError,
+    adding,
+    roles,
+    addRole,
+  };
 }
