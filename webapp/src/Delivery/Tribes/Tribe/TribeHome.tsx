@@ -11,7 +11,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
 import { useTribe, NewSquad, NewTribeRole } from "../../../Client/Tribe";
-import { AddTribeModal } from "../AddTribeModal";
+import { AddSquadModal } from "./AddSquadModal";
 import { AddRoleModal } from "./AddRoleModal";
 
 const useStyles = createStyles((theme) => ({
@@ -127,7 +127,7 @@ export function TribeHome(props: TribeHomeProps) {
           <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
         </div>
       </div>
-      <AddTribeModal
+      <AddSquadModal
         opened={addSquadModalOpen}
         onClose={() => setAddSquadModalOpen(false)}
         onSubmit={submit}
