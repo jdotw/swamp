@@ -43,7 +43,7 @@ public class PracticesController : ControllerBase
   {
     var practice = _mapper.Map<Practice>(practiceDto);
     await _practiceRepository.AddPracticeAsync(practice);
-    return CreatedAtAction("GetPractice", new { id = practice.Id }, _mapper.Map<PracticeDto>(practice));
+    return CreatedAtAction(nameof(Create), new { id = practice.Id }, _mapper.Map<PracticeDto>(practice));
   }
 
   // PUT: /practices/5
