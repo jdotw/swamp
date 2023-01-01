@@ -25,7 +25,7 @@ export function AddChapterModal({
     },
 
     validate: {
-      name: (value) => (/^[\s\w]+$/.test(value) ? null : "Name is required"),
+      name: (value) => (/^(?!\s*$).+/.test(value) ? null : "Name is required"),
     },
   });
 

@@ -32,9 +32,9 @@ export function EditIndividualModal({
 
     validate: {
       first_name: (value) =>
-        /^\S+$/.test(value) ? null : "First name is required",
+        /^(?!\s*$).+/.test(value) ? null : "First name is required",
       last_name: (value) =>
-        /^\S+$/.test(value) ? null : "Last name is required",
+        /^(?!\s*$).+/.test(value) ? null : "Last name is required",
     },
   });
 
