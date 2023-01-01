@@ -14,7 +14,8 @@ public class AddTribeDto
   public DateTimeOffset FormedDate { get; set; } = DateTimeOffset.UtcNow;
 }
 
-public class UpdateTribeDto : AddTribeDto
+public class UpdateTribeDto
 {
+  public required string Name { get; set; }
   public DateTimeOffset? DisbandedDate { get; set; }
 }
