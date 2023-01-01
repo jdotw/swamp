@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\..\bases\bases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="integration_tests" />
+  </ItemGroup>
+
 </Project>
