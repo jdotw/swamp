@@ -37,14 +37,12 @@ public class TribeRepository : RepositoryBase<Tribe>, ITribeRepository
     return await SaveAsync();
   }
 
-  public async Task<int> UpdateTribeAsync(Tribe updatedTribe)
+  public async Task<int> UpdateTribeAsync(Tribe tribe)
   {
-    var dbTribe = await GetTribeByIdAsync(updatedTribe.Id);
+    var dbTribe = await GetTribeByIdAsync(tribe.Id);
     if (dbTribe is not null)
     {
-      dbTribe.Name = updatedTribe.Name;
-      if (updatedTribe.DisbandedDate is not null)
-        dbTribe.DisbandedDate = updatedTribe.DisbandedDate;
+      dbTribe.Name = tribe.Name;
       Update(dbTribe);
       return await SaveAsync();
     }
