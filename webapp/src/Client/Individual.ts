@@ -23,7 +23,6 @@ export function useIndividual({ id }: UseIndividualProps) {
 
   const { retrieveItem, updateItem } = useCRUD<Individual, undefined>({
     path: "/api/people/individuals",
-    domain: "localhost:5173",
   });
 
   const load = async (id: string) => {

@@ -21,7 +21,6 @@ export function useSquad({ tribeId, id }: UseSquadProps) {
   // const [adding, setAdding] = useState(false);
 
   const { getAll: getMembers } = useCRUD<Individual, undefined>({
-    domain: "localhost:5173",
     path: `/api/delivery/tribes/${tribeId}/squads/${id}/members`,
   });
 

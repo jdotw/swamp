@@ -54,7 +54,6 @@ export function useTribe({ id }: UseTribeProps) {
     TribeRole,
     NewTribeRole
   >({
-    domain: "localhost:5173",
     path: `/api/delivery/tribes/${id}/roles`,
   });
 

@@ -6,7 +6,7 @@ interface UseCRUDProps {
 }
 
 const config = {
-  domain: "localhost:8000",
+  domain: "localhost:5173",
 };
 
 export function useCRUD<ItemType, NewItemType>({

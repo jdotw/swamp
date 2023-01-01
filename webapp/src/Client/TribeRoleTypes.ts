@@ -19,7 +19,6 @@ export function useTribeRoleTypes() {
   const [adding, setAdding] = useState(false);
 
   const { getAll, createItem } = useCRUD<TribeRoleType, NewTribeRoleType>({
-    domain: "localhost:5173",
     path: "/api/delivery/triberoletypes",
   });
 

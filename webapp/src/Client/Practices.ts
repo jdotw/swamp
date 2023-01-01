@@ -8,7 +8,6 @@ export function usePractices() {
   const [practices, setPractices] = useState<Practice[]>([]);
 
   const { getAll, createItem } = useCRUD<Practice, NewPractice>({
-    domain: "localhost:5173",
     path: "/api/capability/practices",
   });
 

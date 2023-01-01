@@ -59,12 +59,10 @@ export function usePractice({ id }: UsePracticeProps) {
     PracticeRole,
     NewPracticeRole
   >({
-    domain: "localhost:5173",
     path: `/api/capability/practices/${id}/roles`,
   });
 
   const { createItem } = useCRUD<Chapter, NewChapter>({
-    domain: "localhost:5173",
     path: `/api/capability/practices/${id}/chapters`,
   });
 
