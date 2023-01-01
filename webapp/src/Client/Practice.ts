@@ -6,6 +6,20 @@ export type Practice = {
   lead_full_name: string;
 };
 
+export type NewPractice = {
+  name: string;
+};
+
+export type NewChapter = {
+  name: string;
+};
+
+export type NewPracticeRole = {
+  practice_id: string;
+  individual_id: string;
+  practice_role_type_id: string;
+};
+
 interface UsePracticeProps {
   id?: string;
 }
