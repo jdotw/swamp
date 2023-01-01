@@ -17,6 +17,8 @@ import {
 } from "../../../Client/Practice";
 import { AddPracticeModal } from "../AddPracticeModal";
 import { AddRoleModal } from "./AddRoleModal";
+import { AddChapterModal } from "./AddChapterModal";
+import { usePracticeRoleTypes } from "../../../Client/PracticeRoleTypes";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -37,9 +39,10 @@ interface PracticeHomeProps {}
 export function PracticeHome(props: PracticeHomeProps) {
   const { practiceId: id } = useParams();
   const { classes } = useStyles();
-  const { practice, roles, addRole, loading, addChapter } = usePractice({
+  const { practice, loading, addChapter } = usePractice({
     id: id,
   });
+  const { roles, addRole, loading: loadingRoles } = usePracticeRoleTypes();
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 
@@ -133,7 +136,7 @@ export function PracticeHome(props: PracticeHomeProps) {
           <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
         </div>
       </div>
-      <AddPracticeModal
+      <AddChapterModal
         opened={addChapterModalOpen}
         onClose={() => setAddChapterModalOpen(false)}
         onSubmit={submit}
