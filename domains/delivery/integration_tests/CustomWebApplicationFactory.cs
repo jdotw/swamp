@@ -44,6 +44,9 @@ public class CustomWebApplicationFactory<TProgram, TSeed>
       // Create open SqliteConnection so EF won't automatically close it.
       services.AddDbContext<DeliveryDbContext>((container, options) =>
       {
+        // A new DbContext is created per-test, but note
+        // that is uses the shared _connection that persists
+        // across all tests in a given Test Class. 
         options.UseSqlite(_connection);
         options.UseSnakeCaseNamingConvention();
       });
@@ -57,9 +60,10 @@ public class CustomWebApplicationFactory<TProgram, TSeed>
         var db = scopedServices.GetRequiredService<DeliveryDbContext>();
         var seeder = scopedServices.GetRequiredService<ISeedDataClass>();
 
+        // This will initiaze the per-Test-Class database
+        // Note that the database is not dropped after each test
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
-
         seeder.InitializeDbForTests();
       }
     });

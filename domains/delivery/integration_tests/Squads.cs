@@ -139,6 +139,9 @@ public class SquadsSeedDataClass : ISeedDataClass
 
   public void InitializeDbForTests()
   {
+    // Performs DB initialization before the 
+    // start of all tests in the SquadTests class.
+    // The DB is not re-initialized between tests.
     var result = _db.Tribes.Add(new Tribe
     {
       Name = "Existing Tribe",
