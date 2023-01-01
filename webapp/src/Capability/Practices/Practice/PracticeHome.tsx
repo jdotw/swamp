@@ -1,7 +1,9 @@
 import React from "react";
+import { Outlet, useParams } from "react-router";
 
 function PracticeHome() {
-  return <div>PracticeHome</div>;
+  let { practiceId } = useParams();
+  return <div>PracticeHome: {practiceId}</div>;
 }
 
 export default PracticeHome;

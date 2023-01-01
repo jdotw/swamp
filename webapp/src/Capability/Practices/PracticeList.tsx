@@ -1,6 +1,6 @@
 import React from "react";
-import { usePeople } from "../Client/People";
-import { Individual } from "../Client/Individual";
+import { usePeople } from "../../Client/People";
+import { Individual } from "../../Client/Individual";
 
 import {
   createStyles,
@@ -12,9 +12,9 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import Loading from "../Loading/Loading";
-import { usePractices } from "../Client/Practices";
-import { Practice as PracticeType } from "../Client/Practice";
+import Loading from "../../Loading/Loading";
+import { usePractices } from "../../Client/Practices";
+import { Practice as PracticeType } from "../../Client/Practice";
 
 const useStyles = createStyles((theme) => ({}));
 
