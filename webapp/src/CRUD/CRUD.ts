@@ -77,20 +77,16 @@ export function useCRUD<ItemType, NewItemType>({
   // };
 
   const createItem = async (childItem: NewItemType) => {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(childItem),
-        headers: {
-          "Content-Type": "application/json",
-          ...(await authHeaders()),
-        },
-      });
-      const response_json: ItemType = await response.json();
-      return response_json;
-    } catch (error: any) {
-      return error;
-    }
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(childItem),
+      headers: {
+        "Content-Type": "application/json",
+        ...(await authHeaders()),
+      },
+    });
+    const response_json: ItemType = await response.json();
+    return response_json;
   };
 
   // const deleteItem = async () => {
