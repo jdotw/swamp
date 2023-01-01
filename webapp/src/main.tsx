@@ -7,7 +7,7 @@ import { People } from "./People/People";
 import PeopleList from "./People/PeopleList";
 import Individual from "./People/Individual";
 import { MantineProvider } from "@mantine/core";
-import Capability from "./Capability/Capability";
+import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
 import TribeList from "./Delivery/Tribes/TribeList";
 import Practice from "./Capability/Practice";
@@ -17,6 +17,11 @@ import TribeRoleTypeHome from "./Delivery/TribeRoleTypes/TribeRoleType/TribeRole
 import DeliveryShell from "./Delivery/DeliveryShell";
 import DeliveryHome from "./Delivery/DeliveryHome";
 import SquadHome from "./Delivery/Squads/SquadHome";
+import CapabilityHome from "./Capability/CapabilityHome";
+import PracticeHome from "./Capability/Practices/Practice/PracticeHome";
+import ChapterHome from "./Capability/Chapters/ChapterHome";
+import PracticeRoleTypeList from "./Capability/PracticeRoleTypes/PracticeRoleTypeList";
+import PracticeRoleTypeHome from "./Capability/PracticeRoleTypes/PracticeRoleType/PracticeRoleTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -33,9 +38,32 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           </Route>
 
           {/* Capability */}
-          <Route path="capability" element={<Capability />}>
-            <Route index element={<PracticeList />} />
-            <Route path=":practiceId" element={<Practice />} />
+          <Route path="capability" element={<CapabilityShell />}>
+            <Route index element={<CapabilityHome />} />
+
+            {/* Practices */}
+            <Route path="practices">
+              <Route index element={<PracticeList />} />
+              <Route path=":practiceId">
+                <Route index element={<PracticeHome />} />
+
+                {/* Chapters */}
+                <Route path="chapters">
+                  <Route path=":chapterId">
+                    <Route index element={<ChapterHome />} />
+                  </Route>
+                </Route>
+              </Route>
+            </Route>
+
+            {/* Practice Roles */}
+            <Route path="practiceroletypes">
+              <Route index element={<PracticeRoleTypeList />} />
+              <Route
+                path="practiceroletypes/:roleTypeId"
+                element={<PracticeRoleTypeHome />}
+              />
+            </Route>
           </Route>
 
           {/* Delivery */}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router";
 
-function Capability() {
+function CapabilityShell() {
   return (
     <div>
       <Outlet />
@@ -9,4 +9,4 @@ function Capability() {
   );
 }
 
-export default Capability;
+export default CapabilityShell;

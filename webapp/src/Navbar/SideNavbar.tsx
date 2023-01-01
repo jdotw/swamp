@@ -44,7 +44,16 @@ const useStyles = createStyles((theme) => ({
 
 const data = [
   { link: "/people", label: "People", icon: IconUsers },
-  { link: "/capability", label: "Capability", icon: IconBulb },
+  {
+    link: "/capability",
+    label: "Capability",
+    icon: IconBulb,
+    links: [
+      { label: "Home", link: "/capability" },
+      { label: "Practices", link: "/capability/practices" },
+      { label: "Roles", link: "/capability/practiceroletypes" },
+    ],
+  },
   {
     link: "/delivery",
     label: "Delivery",
