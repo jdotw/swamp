@@ -39,14 +39,14 @@ interface PracticeHomeProps {}
 export function PracticeHome(props: PracticeHomeProps) {
   const { practiceId: id } = useParams();
   const { classes } = useStyles();
-  const { practice, loading, addChapter } = usePractice({
-    id: id,
-  });
-  const { roles, addRole, loading: loadingRoles } = usePracticeRoleTypes();
+  const { practice, loading, addChapter, roles, addRole, loadingRoles } =
+    usePractice({
+      id: id,
+    });
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 
-  if (loading) {
+  if (loading || loadingRoles) {
     return <Loading />;
   }
   if (!id || !practice) {
@@ -60,9 +60,6 @@ export function PracticeHome(props: PracticeHomeProps) {
           <tr key={id}>
             <td>
               <Link to={`chapters/${id}`}>{row.name}</Link>
-            </td>
-            <td>
-              <Link to={`chapters/${id}`}>{row.lead_full_name}</Link>
             </td>
           </tr>
         );
@@ -108,7 +105,6 @@ export function PracticeHome(props: PracticeHomeProps) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Lead</th>
               </tr>
             </thead>
             <tbody>{chapterRows}</tbody>

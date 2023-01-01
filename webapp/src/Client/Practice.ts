@@ -27,8 +27,8 @@ export type NewChapter = {
 export type PracticeRole = {
   id: string;
   individual_id: string;
-  prictice_role_type: PracticeRoleType;
-  prictice_id: string;
+  practice_role_type: PracticeRoleType;
+  practice_id: string;
   individual: Individual;
 };
 
@@ -53,13 +53,14 @@ export function usePractice({ id }: UsePracticeProps) {
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState(undefined);
 
+  const [loadingRoles, setLoadingRoles] = useState(true);
   const [roles, setRoles] = useState<PracticeRole[]>([]);
   const { getAll: getRoles, createItem: addRoleItem } = useCRUD<
     PracticeRole,
     NewPracticeRole
   >({
     domain: "localhost:5173",
-    path: `/api/delivery/tribes/${id}/roles`,
+    path: `/api/capability/practices/${id}/roles`,
   });
 
   const { createItem } = useCRUD<Chapter, NewChapter>({
@@ -142,10 +143,12 @@ export function usePractice({ id }: UsePracticeProps) {
   const loadRoles = async () => {
     const roles = await getRoles();
     setRoles(roles);
+    setLoadingRoles(false);
   };
 
   const addRole = async (newRole: NewPracticeRole) => {
     const role = await addRoleItem(newRole);
+    console.log("ADD ROLE: ", role);
     setRoles([...roles, role]);
   };
 
@@ -166,6 +169,7 @@ export function usePractice({ id }: UsePracticeProps) {
     addChapter,
     addError,
     adding,
+    loadingRoles,
     roles,
     addRole,
   };

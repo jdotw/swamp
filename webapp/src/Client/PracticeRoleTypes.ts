@@ -21,7 +21,7 @@ export function usePracticeRoleTypes() {
   const { getAll, createItem } = useCRUD<PracticeRoleType, NewPracticeRoleType>(
     {
       domain: "localhost:5173",
-      path: "/api/delivery/practiceroletypes",
+      path: "/api/capability/practiceroletypes",
     }
   );
 
