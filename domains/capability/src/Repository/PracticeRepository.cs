@@ -37,12 +37,14 @@ public class PracticeRepository : RepositoryBase<Practice>, IPracticeRepository
     return await SaveAsync();
   }
 
-  public async Task<int> UpdatePracticeAsync(Practice practice)
+  public async Task<int> UpdatePracticeAsync(Practice updatedPractice)
   {
-    var dbPractice = await GetPracticeByIdAsync(practice.Id);
+    var dbPractice = await GetPracticeByIdAsync(updatedPractice.Id);
     if (dbPractice is not null)
     {
-      dbPractice.Name = practice.Name;
+      dbPractice.Name = updatedPractice.Name;
+      if (updatedPractice.DisbandedDate is not null)
+        dbPractice.DisbandedDate = updatedPractice.DisbandedDate;
       Update(dbPractice);
       return await SaveAsync();
     }
