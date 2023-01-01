@@ -141,6 +141,8 @@ public class TribesSeedDataClass : ISeedDataClass
 
   public void InitializeDbForTests()
   {
-    _db.SaveChanges(true);
+    // Performs DB initialization before the 
+    // start of all tests in the TribeTests class.
+    // The DB is not re-initialized between tests.
   }
 }
