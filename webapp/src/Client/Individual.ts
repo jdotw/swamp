@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useCRUD } from "../CRUD/CRUD";
 
 export type Individual = {
   id: string;
@@ -20,25 +21,14 @@ export function useIndividual({ id }: UseIndividualProps) {
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(undefined);
 
-  const load = async () => {
-    const domain = "localhost:8080";
+  const { retrieveItem, updateItem } = useCRUD<Individual, undefined>({
+    path: "/api/people/individuals",
+    domain: "localhost:5173",
+  });
+
+  const load = async (id: string) => {
     try {
-      // const accessToken = await getAccessTokenSilently({
-      //   audience: `http://${domain}/`,
-      //   scope: "read:category",
-      // });
-      // console.log("TOKEN: ", accessToken);
-
-      const url = `/api/people/individuals/${id}`;
-
-      const response = await fetch(url, {
-        // headers: {
-        //   Authorization: `Bearer ${accessToken}`,
-        // },
-      });
-
-      const response_json = await response.json();
-      setIndividual(response_json);
+      setIndividual(await retrieveItem(id));
       setError(undefined);
     } catch (error: any) {
       setIndividual(undefined);
@@ -49,27 +39,15 @@ export function useIndividual({ id }: UseIndividualProps) {
   };
 
   const update = async (updatedIndividual: Individual) => {
-    const domain = "localhost:8080";
+    setUpdating(true);
     try {
-      // const accessToken = await getAccessTokenSilently({
-      //   audience: `http://${domain}/`,
-      //   scope: "read:category",
-      // });
-      // console.log("TOKEN: ", accessToken);
-
-      const url = `/api/people/individuals/${id}`;
-
-      setUpdating(true);
-      const response = await fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(updatedIndividual),
-        headers: {
-          "Content-Type": "application/json",
-          //   Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setIndividual(updatedIndividual);
-      setUpdateError(undefined);
+      const didUpdate = await updateItem(
+        updatedIndividual.id,
+        updatedIndividual
+      );
+      if (didUpdate) {
+        setIndividual(updatedIndividual);
+      }
     } catch (error: any) {
       setUpdateError(error);
     } finally {
@@ -79,7 +57,7 @@ export function useIndividual({ id }: UseIndividualProps) {
 
   useEffect(() => {
     if (id) {
-      load();
+      load(id);
     }
   }, [id]);
 

@@ -37,44 +37,28 @@ export function useCRUD<ItemType, NewItemType>({
     return response_json;
   };
 
-  // const retrieveItem = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch(url, {
-  //       headers: {
-  //         ...(await authHeaders()),
-  //       },
-  //     });
-  //     const response_json = await response.json();
-  //     setItem(response_json);
-  //     setError(undefined);
-  //   } catch (error: any) {
-  //     setItem(undefined);
-  //     setError(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const retrieveItem = async (id: string) => {
+    const itemUrl = `${url}/${id}`;
+    const response = await fetch(itemUrl, {
+      headers: {
+        ...(await authHeaders()),
+      },
+    });
+    return (await response.json()) as ItemType;
+  };
 
-  // const updateItem = async (updatedItem: ItemType) => {
-  //   try {
-  //     setUpdating(true);
-  //     const response = await fetch(url, {
-  //       method: "PUT",
-  //       body: JSON.stringify(updatedItem),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         ...(await authHeaders()),
-  //       },
-  //     });
-  //     setItem(updatedItem);
-  //     setUpdateError(undefined);
-  //   } catch (error: any) {
-  //     setUpdateError(error);
-  //   } finally {
-  //     setUpdating(false);
-  //   }
-  // };
+  const updateItem = async (id: string, updatedItem: ItemType) => {
+    const itemUrl = `${url}/${id}`;
+    const response = await fetch(itemUrl, {
+      method: "PUT",
+      body: JSON.stringify(updatedItem),
+      headers: {
+        "Content-Type": "application/json",
+        ...(await authHeaders()),
+      },
+    });
+    return response.status === 204;
+  };
 
   const createItem = async (childItem: NewItemType) => {
     const response = await fetch(url, {
@@ -110,8 +94,8 @@ export function useCRUD<ItemType, NewItemType>({
   return {
     getAll,
     // createItem,
-    // retrieveItem,
-    // updateItem,
+    retrieveItem,
+    updateItem,
     // deleteItem,
     // item,
     createItem,
