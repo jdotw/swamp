@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useCRUD } from "../CRUD/CRUD";
 import { Practice } from "./Practice";
 
 export function usePractices() {
@@ -6,30 +7,21 @@ export function usePractices() {
   const [error, setError] = useState(undefined);
   const [practices, setPractices] = useState<Practice[]>([]);
 
+  const { getAll } = useCRUD<Practice, undefined>({
+    domain: "localhost:5173",
+    path: "/api/capability/practices",
+  });
+
   const load = async () => {
-    const domain = "localhost:8080";
     try {
-      // const accessToken = await getAccessTokenSilently({
-      //   audience: `http://${domain}/`,
-      //   scope: "read:category",
-      // });
-      // console.log("TOKEN: ", accessToken);
-
-      const url = `/api/capability/practices`;
-
-      const response = await fetch(url, {
-        // headers: {
-        //   Authorization: `Bearer ${accessToken}`,
-        // },
-      });
-
-      const response_json = await response.json();
-      setPractices(response_json);
-      setError(undefined);
-      setLoading(false);
+      const practices = await getAll();
+      console.log("PRACTICES: ", practices);
+      setPractices(practices);
     } catch (error: any) {
+      console.log("ERROR: ", error);
       setPractices([]);
       setError(error);
+    } finally {
       setLoading(false);
     }
   };
