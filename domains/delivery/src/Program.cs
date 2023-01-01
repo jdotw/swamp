@@ -46,11 +46,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 // migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-  var dataContext = scope.ServiceProvider.GetRequiredService<DeliveryDbContext>();
-  dataContext.Database.Migrate();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//   var dataContext = scope.ServiceProvider.GetRequiredService<DeliveryDbContext>();
+//   dataContext.Database.Migrate();
+// }
 
 app.Run();
 

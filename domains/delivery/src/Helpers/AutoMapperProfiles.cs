@@ -9,6 +9,8 @@ public class AutoMapperProfiles : Profile
   public AutoMapperProfiles()
   {
     CreateMap<Squad, SquadDto>().ReverseMap();
+    CreateMap<AddSquadDto, Squad>();
+    CreateMap<UpdateSquadDto, Squad>();
 
     CreateMap<SquadRoleType, SquadRoleTypeDto>().ReverseMap();
     CreateMap<MutateSquadRoleTypeDto, SquadRoleType>();

@@ -52,6 +52,7 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> Update(int id, UpdateSquadDto squadDto)
   {
     var squad = _mapper.Map<Squad>(squadDto);
+    squad.Id = id;
     var updated = await _squadRepository.UpdateSquadAsync(squad);
     return (updated > 0) ? NoContent() : NotFound();
   }
@@ -61,6 +62,7 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> Delete(int id)
   {
     var deleted = await _squadRepository.DeleteSquadAsync(id);
+    Console.WriteLine($"Deleted {deleted} squad(s) with id={id}.");
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

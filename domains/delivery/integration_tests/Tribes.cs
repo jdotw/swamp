@@ -4,21 +4,21 @@ using Delivery.DTOs;
 using Delivery.Entities;
 using JorgeSerrano.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using FluentAssertions;
+using Delivery.Repository;
 
 namespace Delivery.IntegrationTests;
 
 public class BasicTests
-    : IClassFixture<CustomWebApplicationFactory<Program>>
+    : IClassFixture<CustomWebApplicationFactory<Program, TribesSeedDataClass>>
 {
-  private readonly CustomWebApplicationFactory<Program> _factory;
+  private readonly CustomWebApplicationFactory<Program, TribesSeedDataClass> _factory;
   private readonly JsonSerializerOptions _options;
   private readonly HttpClient _client;
 
   private readonly string _path = "/tribes";
 
-  public BasicTests(CustomWebApplicationFactory<Program> factory)
+  public BasicTests(CustomWebApplicationFactory<Program, TribesSeedDataClass> factory)
   {
     _factory = factory;
     _options = new JsonSerializerOptions()
@@ -127,5 +127,20 @@ public class BasicTests
     Assert.Contains("404 (Not Found)", ex.Message);
     Assert.NotNull(tribes);
     Assert.DoesNotContain(tribes, t => t.Name == name);
+  }
+}
+
+public class TribesSeedDataClass : ISeedDataClass
+{
+  private readonly DeliveryDbContext _db;
+
+  public TribesSeedDataClass(DeliveryDbContext db)
+  {
+    _db = db;
+  }
+
+  public void InitializeDbForTests()
+  {
+    _db.SaveChanges(true);
   }
 }
