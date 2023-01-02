@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCRUD } from "../CRUD/CRUD";
 import { Individual } from "./Individual";
+import { SquadRoleType } from "./SquadRoleTypes";
 
 export type Squad = {
   id: string;
@@ -14,7 +15,7 @@ export type SquadRole = {
   individual_id: string;
   squad_id: string;
   squad_role_type_id: string;
-  // squad_role_type: SquadRoleType;
+  squad_role_type: SquadRoleType;
 };
 
 export type NewSquadRole = {

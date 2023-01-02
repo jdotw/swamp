@@ -52,6 +52,9 @@ function SquadHome(props: SquadHomeProps) {
         <td>
           <Link to={`${id}`}>{row.individual.last_name}</Link>
         </td>
+        <td>
+          <Link to={`${id}`}>{row.squad_role_type.name}</Link>
+        </td>
       </tr>
     );
   });
@@ -72,6 +75,7 @@ function SquadHome(props: SquadHomeProps) {
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Role</th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>
