@@ -11,7 +11,8 @@ import {
 import { Link, Outlet } from "react-router-dom";
 import Loading from "../../Loading/Loading";
 import { Individual } from "../../Client/Individual";
-import { useSquad } from "../../Client/Squad";
+import { NewSquadRole, SquadRole, useSquad } from "../../Client/Squad";
+import { AddRoleModal } from "./AddRoleModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -27,7 +28,7 @@ interface SquadHomeProps {}
 function SquadHome(props: SquadHomeProps) {
   const { tribeId, squadId: id } = useParams();
   const { classes, theme } = useStyles();
-  const { loading, members } = useSquad({
+  const { squad, loading, roles, addRole } = useSquad({
     tribeId,
     id,
   });
@@ -37,29 +38,33 @@ function SquadHome(props: SquadHomeProps) {
     return <Loading />;
   }
 
-  const rows = members.map((row: Individual) => {
+  if (!id || !tribeId || !squad) {
+    return <div>Squad not found</div>;
+  }
+
+  const rows = roles.map((row: SquadRole) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
         <td>
-          <Link to={`${id}`}>{row.first_name}</Link>
+          <Link to={`${id}`}>{row.individual.first_name}</Link>
         </td>
         <td>
-          <Link to={`${id}`}>{row.last_name}</Link>
+          <Link to={`${id}`}>{row.individual.last_name}</Link>
         </td>
       </tr>
     );
   });
 
-  // const submit = async (newTribe: NewTribe) => {
-  //   await add(newTribe);
-  //   setAddModalOpen(false);
-  // };
+  const submitAddRole = async (newRole: NewSquadRole) => {
+    await addRole(newRole);
+    setAddModalOpen(false);
+  };
 
   return (
     <>
       <div>
-        <Title order={3}>Squad</Title>
+        <Title order={3}>Squad: {squad.name}</Title>
         <Title order={4}>Members</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
@@ -76,11 +81,13 @@ function SquadHome(props: SquadHomeProps) {
           <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
         </div>
       </div>
-      {/* <AddIndividualModal
+      <AddRoleModal
+        tribeId={tribeId}
+        squadId={id}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
-        onSubmit={submit}
-      /> */}
+        onSubmit={submitAddRole}
+      />
     </>
   );
 }
