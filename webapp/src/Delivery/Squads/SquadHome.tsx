@@ -27,7 +27,10 @@ interface SquadHomeProps {}
 function SquadHome(props: SquadHomeProps) {
   const { tribeId, squadId: id } = useParams();
   const { classes, theme } = useStyles();
-  const { members, loading } = useSquad({ tribeId, id });
+  const { loading, members } = useSquad({
+    tribeId,
+    id,
+  });
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   if (loading) {
