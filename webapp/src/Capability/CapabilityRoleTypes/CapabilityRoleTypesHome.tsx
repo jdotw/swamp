@@ -13,7 +13,7 @@ import {
   NewChapterRoleType,
   useChapterRoleTypes,
 } from "../../Client/ChapterRoleTypes";
-import { AddChapterRoleTypeModal } from "./AddChaperRoleTypeModal";
+import { AddChapterRoleTypeModal } from "./AddChapterRoleTypeModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
