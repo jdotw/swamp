@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Individual } from "../Client/Individual";
+import { Individual } from "../../Client/Individual";
 
 interface IndividualCardProps {
   individual: Individual;

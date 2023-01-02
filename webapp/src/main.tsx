@@ -3,9 +3,9 @@ import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from "./Components/Home";
-import { People } from "./People/People";
-import PeopleList from "./People/PeopleList";
-import Individual from "./People/Individual";
+import { PeopleShell } from "./People/PeopleShell";
+import { PeopleHome } from "./People/PeopleHome";
+import Individual from "./People/Individuals/Individual";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
@@ -33,8 +33,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route index element={<Home />} />
 
           {/* People */}
-          <Route path="people" element={<People />}>
-            <Route index element={<PeopleList />} />
+          <Route path="people" element={<PeopleShell />}>
+            <Route index element={<PeopleHome />} />
             <Route path=":individualId" element={<Individual />} />
           </Route>
 

@@ -1,24 +1,15 @@
 import React from "react";
 import { usePeople } from "../Client/People";
 import { Individual } from "../Client/Individual";
-
-import {
-  createStyles,
-  Table,
-  Progress,
-  Anchor,
-  Text,
-  Group,
-  ScrollArea,
-} from "@mantine/core";
+import { createStyles, Table, ScrollArea } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
 const useStyles = createStyles((theme) => ({}));
 
-interface PeopleListProps {}
+interface PeopleHomeProps {}
 
-export function PeopleList(props: PeopleListProps) {
+export function PeopleHome(props: PeopleHomeProps) {
   const { classes, theme } = useStyles();
   const { people, loading: loadingPeople } = usePeople();
 
@@ -63,4 +54,4 @@ export function PeopleList(props: PeopleListProps) {
   );
 }
 
-export default PeopleList;
+export default PeopleHome;

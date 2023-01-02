@@ -3,8 +3,8 @@ import { useParams } from "react-router";
 import {
   useIndividual,
   Individual as IndividualType,
-} from "../Client/Individual";
-import Loading from "../Loading/Loading";
+} from "../../Client/Individual";
+import Loading from "../../Loading/Loading";
 import { IndividualCard } from "./Card";
 import { EditIndividualModal } from "./EditModal";
 
