@@ -1,7 +1,7 @@
 import React from "react";
 
 function PracticeRoleTypeHome() {
-  return <div>PracticeRoleTypeHome</div>;
+  return <div>New PracticeRoleTypeHome</div>;
 }
 
 export default PracticeRoleTypeHome;

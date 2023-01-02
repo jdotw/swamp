@@ -20,8 +20,9 @@ import SquadHome from "./Delivery/Squads/SquadHome";
 import CapabilityHome from "./Capability/CapabilityHome";
 import PracticeHome from "./Capability/Practices/Practice/PracticeHome";
 import ChapterHome from "./Capability/Chapters/ChapterHome";
-import PracticeRoleTypeList from "./Capability/PracticeRoleTypes/PracticeRoleTypeList";
-import PracticeRoleTypeHome from "./Capability/PracticeRoleTypes/PracticeRoleType/PracticeRoleTypeHome";
+import CapabilityRoleTypesHome from "./Capability/CapabilityRoleTypes/CapabilityRoleTypesHome";
+import PracticeRoleTypeHome from "./Capability/CapabilityRoleTypes/PracticeRoleType/PracticeRoleTypeHome";
+import ChapterRoleTypeHome from "./Capability/CapabilityRoleTypes/ChapterRoleType/ChapterRoleTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -56,12 +57,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               </Route>
             </Route>
 
-            {/* Practice Roles */}
-            <Route path="practiceroletypes">
-              <Route index element={<PracticeRoleTypeList />} />
+            {/* Roles Types */}
+            <Route path="roletypes">
+              <Route index element={<CapabilityRoleTypesHome />} />
               <Route
                 path="practiceroletypes/:roleTypeId"
                 element={<PracticeRoleTypeHome />}
+              />
+              <Route
+                path="chapterroletypes/:roleTypeId"
+                element={<ChapterRoleTypeHome />}
               />
             </Route>
           </Route>

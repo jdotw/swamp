@@ -1,19 +1,10 @@
-import React, { useState } from "react";
-
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Button,
-  Container,
-  Title,
-} from "@mantine/core";
-import { Link, Outlet } from "react-router-dom";
+import { useState } from "react";
+import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
+import { Link } from "react-router-dom";
 import Loading from "../../Loading/Loading";
 import { usePractices } from "../../Client/Practices";
 import { NewPractice, Practice } from "../../Client/Practice";
 import { AddPracticeModal } from "./AddPracticeModal";
-import PracticeRoleTypeList from "../PracticeRoleTypes/PracticeRoleTypeList";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {

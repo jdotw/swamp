@@ -51,7 +51,7 @@ const data = [
     links: [
       { label: "Home", link: "/capability" },
       { label: "Practices", link: "/capability/practices" },
-      { label: "Roles", link: "/capability/practiceroletypes" },
+      { label: "Roles", link: "/capability/roletypes" },
     ],
   },
   {
