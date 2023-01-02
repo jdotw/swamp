@@ -37,6 +37,19 @@ export function useCRUD<ItemType, NewItemType>({
     return response_json;
   };
 
+  const createItem = async (childItem: NewItemType) => {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(childItem),
+      headers: {
+        "Content-Type": "application/json",
+        ...(await authHeaders()),
+      },
+    });
+    const response_json: ItemType = await response.json();
+    return response_json;
+  };
+
   const retrieveItem = async (id: string) => {
     const itemUrl = `${url}/${id}`;
     const response = await fetch(itemUrl, {
@@ -60,44 +73,27 @@ export function useCRUD<ItemType, NewItemType>({
     return response.status === 204;
   };
 
-  const createItem = async (childItem: NewItemType) => {
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(childItem),
+  const deleteItem = async (id: string) => {
+    const itemUrl = `${url}/${id}`;
+    const response = await fetch(itemUrl, {
+      method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         ...(await authHeaders()),
       },
     });
-    const response_json: ItemType = await response.json();
-    return response_json;
   };
 
-  // const deleteItem = async () => {
-  //   try {
-  //     setDeleting(true);
-  //     const response = await fetch(url, {
-  //       method: "DELETE",
-  //       headers: {
-  //         ...(await authHeaders()),
-  //       },
-  //     });
-  //     await response.json();
-  //     setDeleteError(undefined);
-  //   } catch (error: any) {
-  //     setDeleteError(error);
-  //   } finally {
-  //     setDeleting(false);
-  //   }
-  // };
+  const urlForPath = (path: string) => {
+    return `http://${domain}${path}`;
+  };
 
   return {
     getAll,
-    // createItem,
+    createItem,
     retrieveItem,
     updateItem,
-    // deleteItem,
-    // item,
-    createItem,
+    deleteItem,
+    authHeaders, // For testing, should probably move elsewhere
+    urlForPath, // For testing, should probably move elsewhere
   };
 }
