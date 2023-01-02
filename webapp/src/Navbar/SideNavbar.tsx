@@ -61,7 +61,7 @@ const data = [
     links: [
       { label: "Home", link: "/delivery" },
       { label: "Tribes", link: "/delivery/tribes" },
-      { label: "Roles", link: "/delivery/triberoletypes" },
+      { label: "Roles", link: "/delivery/roletypes" },
     ],
   },
 ];

@@ -1,24 +1,23 @@
-import { useState } from "react";
-import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
-import { TextInput, Checkbox, Box } from "@mantine/core";
+import { Button, Modal, Group } from "@mantine/core";
+import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewTribe, Tribe } from "../../Client/Tribe";
+import { NewSquadRoleType } from "../../Client/SquadRoleTypes";
 
-interface AddTribeFormProps {
+interface AddSquadRoleTypeModalProps {
   opened: boolean;
-  onSubmit: (tribe: NewTribe) => void;
+  onSubmit: (roleType: NewSquadRoleType) => void;
   onClose: () => void;
 }
 
-type AddTribeFormValues = {
+type AddSquadRoleTypeModalValues = {
   name: string;
 };
 
-export function AddTribeRoleTypeModal({
+export function AddSquadRoleTypeModal({
   opened,
   onSubmit,
   onClose,
-}: AddTribeFormProps) {
+}: AddSquadRoleTypeModalProps) {
   const form = useForm({
     initialValues: {
       name: "",
@@ -29,12 +28,11 @@ export function AddTribeRoleTypeModal({
     },
   });
 
-  const submitForm = (values: AddTribeFormValues) => {
-    // Make sure we update a copy, not the actual tribe
-    let tribe: NewTribe = {
+  const submitForm = (values: AddSquadRoleTypeModalValues) => {
+    let newRoleType: NewSquadRoleType = {
       name: values.name,
     };
-    onSubmit(tribe);
+    onSubmit(newRoleType);
   };
 
   const cancelClicked = () => {
@@ -43,13 +41,13 @@ export function AddTribeRoleTypeModal({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Add Tribe Role Type">
+    <Modal opened={opened} onClose={onClose} title="Add Squad Role Type">
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
           <TextInput
             withAsterisk
             label="Name"
-            placeholder="tribe role type name"
+            placeholder="squad role type name"
             {...form.getInputProps("name")}
           />
           <Group position="right" mt="md">

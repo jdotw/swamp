@@ -10,10 +10,7 @@ import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
 import TribeList from "./Delivery/Tribes/TribeList";
-import Practice from "./Capability/Practices/Practice/PracticeHome";
 import PracticeList from "./Capability/Practices/PracticeList";
-import TribeRoleTypeList from "./Delivery/TribeRoleTypes/TribeRoleTypeList";
-import TribeRoleTypeHome from "./Delivery/TribeRoleTypes/TribeRoleType/TribeRoleTypeHome";
 import DeliveryShell from "./Delivery/DeliveryShell";
 import DeliveryHome from "./Delivery/DeliveryHome";
 import SquadHome from "./Delivery/Squads/SquadHome";
@@ -23,6 +20,9 @@ import ChapterHome from "./Capability/Chapters/ChapterHome";
 import CapabilityRoleTypesHome from "./Capability/CapabilityRoleTypes/CapabilityRoleTypesHome";
 import PracticeRoleTypeHome from "./Capability/CapabilityRoleTypes/PracticeRoleType/PracticeRoleTypeHome";
 import ChapterRoleTypeHome from "./Capability/CapabilityRoleTypes/ChapterRoleType/ChapterRoleTypeHome";
+import DeliveryRoleTypesHome from "./Delivery/DeliveryRoleTypes/DeliveryRoleTypesHome";
+import SquadRoleTypeHome from "./Delivery/DeliveryRoleTypes/SquadRoleType/SquadRoleTypeHome";
+import TribeRoleTypeHome from "./Delivery/DeliveryRoleTypes/TribeRoleType/TribeRoleTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -90,12 +90,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               </Route>
             </Route>
 
-            {/* Tribe Roles */}
-            <Route path="triberoletypes">
-              <Route index element={<TribeRoleTypeList />} />
+            {/* Roles Types */}
+            <Route path="roletypes">
+              <Route index element={<DeliveryRoleTypesHome />} />
               <Route
                 path="triberoletypes/:roleTypeId"
                 element={<TribeRoleTypeHome />}
+              />
+              <Route
+                path="squadroletypes/:roleTypeId"
+                element={<SquadRoleTypeHome />}
               />
             </Route>
           </Route>
