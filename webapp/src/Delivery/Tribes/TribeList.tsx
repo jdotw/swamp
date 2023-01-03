@@ -41,9 +41,6 @@ export function TribeList(props: TribeListProps) {
         <td>
           <Link to={`${id}`}>{row.name}</Link>
         </td>
-        <td>
-          <Link to={`${id}`}>{row.lead_full_name}</Link>
-        </td>
       </tr>
     );
   });
@@ -62,7 +59,6 @@ export function TribeList(props: TribeListProps) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Lead</th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>

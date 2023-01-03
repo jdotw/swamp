@@ -7,7 +7,6 @@ import { TribeRoleType } from "./TribeRoleTypes";
 export type Tribe = {
   id: string;
   name: string;
-  lead_full_name: string;
   squads: Squad[];
   roles: TribeRole[];
 };

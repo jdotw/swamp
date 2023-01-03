@@ -33,9 +33,6 @@ export function PracticeList(props: PracticeListProps) {
         <td>
           <Link to={`${id}`}>{row.name}</Link>
         </td>
-        <td>
-          <Link to={`${id}`}>{row.lead_full_name}</Link>
-        </td>
       </tr>
     );
   });
@@ -54,7 +51,6 @@ export function PracticeList(props: PracticeListProps) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Lead</th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>

@@ -54,9 +54,6 @@ export function TribeHome(props: TribeHomeProps) {
             <td>
               <Link to={`squads/${id}`}>{row.name}</Link>
             </td>
-            <td>
-              <Link to={`squads/${id}`}>{row.lead_full_name}</Link>
-            </td>
           </tr>
         );
       })
@@ -101,7 +98,6 @@ export function TribeHome(props: TribeHomeProps) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Lead</th>
               </tr>
             </thead>
             <tbody>{squadRows}</tbody>
