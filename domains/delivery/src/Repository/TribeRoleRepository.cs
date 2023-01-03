@@ -11,14 +11,25 @@ public class TribeRoleRepository : RepositoryBase<TribeRole>, ITribeRoleReposito
   {
   }
 
-  public async Task<IEnumerable<TribeRole>> GetAllAsync(int tribeId)
+  public async Task<IEnumerable<TribeRole>> GetAllAsync(int tribeId, List<int>? individualIds = null)
   {
     return await FindAllAsync()
       .AsNoTracking()
-      .Where(r => r.TribeId == tribeId)
+      .Where(r => r.TribeId == tribeId
+        && (individualIds == null || individualIds.Contains(r.IndividualId)))
       .Include(r => r.TribeRoleType)
       .Include(r => r.Tribe)
       // .OrderBy(s => s.Name)
+      .ToListAsync();
+  }
+
+  public async Task<IEnumerable<TribeRole>> GetAllByIndividualIdAsync(int individualId)
+  {
+    return await FindAllAsync()
+      .AsNoTracking()
+      .Where(r => r.IndividualId == individualId)
+      .Include(r => r.TribeRoleType)
+      .Include(r => r.Tribe)
       .ToListAsync();
   }
 
