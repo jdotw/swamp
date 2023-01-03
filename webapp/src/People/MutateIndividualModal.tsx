@@ -4,7 +4,7 @@ import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Individual, MutateIndividual } from "../Client/Individual";
 
-enum MutateIndividualModalMode {
+export enum MutateIndividualModalMode {
   Edit,
   Create,
 }
@@ -15,6 +15,7 @@ interface MutateIndividualModalProps {
   onSubmit: (updatedIndividual: MutateIndividual) => void;
   onClose: () => void;
   mode?: MutateIndividualModalMode;
+  title: string;
 }
 
 type MutateIndividualModalValues = {
@@ -30,6 +31,7 @@ export function MutateIndividualModal({
   onSubmit,
   onClose,
   mode = MutateIndividualModalMode.Create,
+  title,
 }: MutateIndividualModalProps) {
   const form = useForm({
     initialValues: {
@@ -74,7 +76,7 @@ export function MutateIndividualModal({
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Mutate Individual">
+    <Modal opened={opened} onClose={onClose} title={title}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
           {mode === MutateIndividualModalMode.Create && (
@@ -106,7 +108,10 @@ export function MutateIndividualModal({
             <Button variant="outline" onClick={cancelClicked}>
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">
+              {mode === MutateIndividualModalMode.Create && "Add"}
+              {mode === MutateIndividualModalMode.Edit && "Save"}
+            </Button>
           </Group>
         </form>
       </Box>

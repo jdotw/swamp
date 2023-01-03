@@ -6,7 +6,10 @@ import {
   MutateIndividual,
 } from "../../Client/Individual";
 import Loading from "../../Loading/Loading";
-import { MutateIndividualModal } from "../MutateIndividualModal";
+import {
+  MutateIndividualModal,
+  MutateIndividualModalMode,
+} from "../MutateIndividualModal";
 import { IndividualCard } from "./Card";
 
 function Individual() {
@@ -40,6 +43,8 @@ function Individual() {
     <>
       <IndividualCard individual={individual} onEditClicked={onEditClicked} />
       <MutateIndividualModal
+        title={"Edit Individual"}
+        mode={MutateIndividualModalMode.Edit}
         opened={editModalOpened}
         individual={individual}
         onSubmit={onEditSubmit}

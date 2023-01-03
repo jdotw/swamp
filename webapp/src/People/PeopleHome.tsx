@@ -73,11 +73,12 @@ export function PeopleHome(props: PeopleHomeProps) {
         </ScrollArea>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddIndividualModalOpen(true)}>
-            Add Individual
+            Onboard Individual
           </Button>
         </div>
       </div>
       <MutateIndividualModal
+        title={"Onboard Individual"}
         opened={addIndividualModalOpen}
         onSubmit={onAddSubmit}
         onClose={() => setAddIndividualModalOpen(false)}
