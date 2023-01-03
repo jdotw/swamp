@@ -30,17 +30,27 @@ public class TribeRolesController : ControllerBase
   }
 
   // GET: /tribes/1/roles
+  // GET: /tribes/1/roles?individual_id=1&individual_id=2
   [HttpGet]
-  public async Task<IActionResult> GetAll(int tribeId)
+  public async Task<IActionResult> GetAll(int tribeId, [FromQuery(Name = "individual_id")] List<int>? individualIds = null)
   {
-    var roles = await _repository.GetAllAsync(tribeId);
+    var roles = await _repository.GetAllAsync(tribeId, individualIds);
     var rolesDto = _mapper.Map<IEnumerable<TribeRoleDto>>(roles);
-    var individualIds = rolesDto.Select(r => r.IndividualId).Distinct();
-    var individualsById = await GetIndividuals(individualIds.ToList());
-    foreach (var role in rolesDto)
+    if (individualIds == null)
     {
-      role.Individual = individualsById[role.IndividualId];
+      // If individualIds is null, we fetch the individuals
+      // that are associated with the roles. The assumption here
+      // is that if you're querying for a specific individual,
+      // then you likely already have that individiual's details
+      // and don't need us to return it here (saves some JOINs)
+      var resultsIndividualIds = rolesDto.Select(r => r.IndividualId).Distinct();
+      var individualsById = await GetIndividuals(resultsIndividualIds.ToList());
+      foreach (var role in rolesDto)
+      {
+        role.Individual = individualsById[role.IndividualId];
+      }
     }
+
     return Ok(rolesDto);
   }
 
