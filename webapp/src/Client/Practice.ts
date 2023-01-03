@@ -7,7 +7,6 @@ import { PracticeRoleType } from "./PracticeRoleTypes";
 export type Practice = {
   id: string;
   name: string;
-  lead_full_name: string;
   chapters: Chapter[];
 };
 
@@ -26,10 +25,15 @@ export type NewChapter = {
 
 export type PracticeRole = {
   id: string;
+
   individual_id: string;
-  practice_role_type: PracticeRoleType;
-  practice_id: string;
   individual: Individual;
+
+  practice_role_type_id: string;
+  practice_role_type: PracticeRoleType;
+
+  practice_id: string;
+  practice: Practice;
 };
 
 export type NewPracticeRole = {
