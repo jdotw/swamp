@@ -1,31 +1,17 @@
 import { useEffect, useState } from "react";
+import { useBackend } from "./Backend";
 
 interface UseCRUDProps {
   domain?: string;
   path: string;
 }
 
-const config = {
-  domain: "localhost:5173",
-};
+export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
+  const { authHeaders, urlForPath } = useBackend({
+    domain,
+  });
 
-export function useCRUD<ItemType, NewItemType>({
-  domain = config.domain,
-  path,
-}: UseCRUDProps) {
-  const url = `http://${domain}${path}`;
-
-  const authHeaders = async () => {
-    // const accessToken = await getAccessTokenSilently({
-    //   audience: `http://${domain}/`,
-    //   scope: "read:category",
-    // });
-    // console.log("TOKEN: ", accessToken);
-    const accessToken = `TOKEN-${domain}`;
-    return {
-      Authorization: `Bearer ${accessToken}`,
-    };
-  };
+  const url = urlForPath(path);
 
   const getAll = async (): Promise<ItemType[]> => {
     const response = await fetch(url, {
@@ -83,17 +69,13 @@ export function useCRUD<ItemType, NewItemType>({
     });
   };
 
-  const urlForPath = (path: string) => {
-    return `http://${domain}${path}`;
-  };
-
   return {
     getAll,
     createItem,
     retrieveItem,
     updateItem,
     deleteItem,
-    authHeaders, // For testing, should probably move elsewhere
-    urlForPath, // For testing, should probably move elsewhere
+    urlForPath,
+    authHeaders,
   };
 }
