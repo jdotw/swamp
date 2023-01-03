@@ -5,7 +5,7 @@ export type Individual = {
   id: string;
   external_id: string;
   first_name: string;
-  middle_names: string;
+  middle_names?: string;
   last_name: string;
 };
 

@@ -20,7 +20,7 @@ interface MutateIndividualModalProps {
 
 type MutateIndividualModalValues = {
   first_name: string;
-  middle_names: string;
+  middle_names?: string;
   last_name: string;
   external_id: string;
 };
