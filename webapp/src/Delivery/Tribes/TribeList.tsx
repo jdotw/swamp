@@ -13,7 +13,6 @@ import Loading from "../../Loading/Loading";
 import { useTribes } from "../../Client/Tribes";
 import { NewTribe, Tribe } from "../../Client/Tribe";
 import { AddTribeModal } from "./AddTribeModal";
-import TribeRoleTypeList from "../TribeRoleTypes/TribeRoleTypeList";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {

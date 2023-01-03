@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { Individual } from "./Individual";
+import { useCRUD } from "../CRUD/CRUD";
+import { Individual, MutateIndividual } from "./Individual";
 
 export function usePeople() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(undefined);
   const [people, setPeople] = useState<Individual[]>([]);
+
+  const { createItem } = useCRUD<Individual, MutateIndividual>({
+    path: "/api/people/individuals",
+  });
 
   const load = async () => {
     const domain = "localhost:8080";
@@ -34,9 +39,18 @@ export function usePeople() {
     }
   };
 
+  const add = async (newIndividual: MutateIndividual) => {
+    try {
+      const response = await createItem(newIndividual);
+      setPeople([...people, response]);
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+
   useEffect(() => {
     load();
   }, []);
 
-  return { loading, people, error };
+  return { loading, people, error, add };
 }

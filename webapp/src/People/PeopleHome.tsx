@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { usePeople } from "../Client/People";
-import { Individual } from "../Client/Individual";
-import { createStyles, Table, ScrollArea } from "@mantine/core";
+import {
+  Individual,
+  MutateIndividual,
+  useIndividual,
+} from "../Client/Individual";
+import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import { MutateIndividualModal } from "./MutateIndividualModal";
 
-const useStyles = createStyles((theme) => ({}));
+const useStyles = createStyles((theme) => ({
+  buttonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 20,
+  },
+}));
 
 interface PeopleHomeProps {}
 
 export function PeopleHome(props: PeopleHomeProps) {
   const { classes, theme } = useStyles();
-  const { people, loading: loadingPeople } = usePeople();
+  const { people, loading: loadingPeople, add: addIndividual } = usePeople();
+  const [addIndividualModalOpen, setAddIndividualModalOpen] = useState(false);
 
   if (loadingPeople) {
     return <Loading />;
@@ -37,20 +50,39 @@ export function PeopleHome(props: PeopleHomeProps) {
     );
   });
 
+  const onAddSubmit = async (newIndividual: MutateIndividual) => {
+    await addIndividual(newIndividual);
+    setAddIndividualModalOpen(false);
+  };
+
   return (
-    <ScrollArea>
-      <Table verticalSpacing="xs">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>External ID</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-    </ScrollArea>
+    <>
+      <div>
+        <ScrollArea>
+          <Table verticalSpacing="xs">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>External ID</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        </ScrollArea>
+        <div className={classes.buttonBar}>
+          <Button onClick={() => setAddIndividualModalOpen(true)}>
+            Add Individual
+          </Button>
+        </div>
+      </div>
+      <MutateIndividualModal
+        opened={addIndividualModalOpen}
+        onSubmit={onAddSubmit}
+        onClose={() => setAddIndividualModalOpen(false)}
+      />
+    </>
   );
 }
 

@@ -28,7 +28,13 @@ export function useIndividual({ id }: UseIndividualProps) {
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(undefined);
 
-  const { retrieveItem, updateItem } = useCRUD<Individual, MutateIndividual>({
+  const [adding, setAdding] = useState(false);
+  const [addingError, setAddingError] = useState(undefined);
+
+  const { retrieveItem, updateItem, createItem } = useCRUD<
+    Individual,
+    MutateIndividual
+  >({
     path: "/api/people/individuals",
   });
 

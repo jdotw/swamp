@@ -8,7 +8,6 @@ import {
 import Loading from "../../Loading/Loading";
 import { MutateIndividualModal } from "../MutateIndividualModal";
 import { IndividualCard } from "./Card";
-import { EditIndividualModal } from "./EditModal";
 
 function Individual() {
   const { individualId: id } = useParams();
