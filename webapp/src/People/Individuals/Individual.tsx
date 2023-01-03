@@ -3,13 +3,15 @@ import { useParams } from "react-router";
 import {
   useIndividual,
   Individual as IndividualType,
+  MutateIndividual,
 } from "../../Client/Individual";
 import Loading from "../../Loading/Loading";
+import { MutateIndividualModal } from "../MutateIndividualModal";
 import { IndividualCard } from "./Card";
 import { EditIndividualModal } from "./EditModal";
 
 function Individual() {
-  let { individualId: id } = useParams();
+  const { individualId: id } = useParams();
   const {
     individual,
     loading: loadingIndividual,
@@ -22,12 +24,12 @@ function Individual() {
   if (loadingIndividual) {
     return <Loading />;
   }
-  if (!individual) {
+  if (!id || !individual) {
     return <div>Individual not found</div>;
   }
 
-  const onEditFormSubmit = async (individual: IndividualType) => {
-    await updateIndividual(individual);
+  const onEditSubmit = async (updatedIndividual: MutateIndividual) => {
+    await updateIndividual(id, updatedIndividual);
     setEditModalOpened(false);
   };
 
@@ -38,10 +40,10 @@ function Individual() {
   return (
     <>
       <IndividualCard individual={individual} onEditClicked={onEditClicked} />
-      <EditIndividualModal
+      <MutateIndividualModal
         opened={editModalOpened}
         individual={individual}
-        onEditFormSubmit={onEditFormSubmit}
+        onSubmit={onEditSubmit}
         onClose={() => setEditModalOpened(false)}
       />
     </>

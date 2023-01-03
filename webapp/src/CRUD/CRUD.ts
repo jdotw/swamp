@@ -60,7 +60,7 @@ export function useCRUD<ItemType, NewItemType>({
     return (await response.json()) as ItemType;
   };
 
-  const updateItem = async (id: string, updatedItem: ItemType) => {
+  const updateItem = async (id: string, updatedItem: NewItemType) => {
     const itemUrl = `${url}/${id}`;
     const response = await fetch(itemUrl, {
       method: "PUT",

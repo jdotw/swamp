@@ -9,6 +9,13 @@ export type Individual = {
   last_name: string;
 };
 
+export type MutateIndividual = {
+  external_id: string;
+  first_name: string;
+  middle_names: string;
+  last_name: string;
+};
+
 interface UseIndividualProps {
   id?: string;
 }
@@ -21,7 +28,7 @@ export function useIndividual({ id }: UseIndividualProps) {
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(undefined);
 
-  const { retrieveItem, updateItem } = useCRUD<Individual, undefined>({
+  const { retrieveItem, updateItem } = useCRUD<Individual, MutateIndividual>({
     path: "/api/people/individuals",
   });
 
@@ -37,15 +44,17 @@ export function useIndividual({ id }: UseIndividualProps) {
     }
   };
 
-  const update = async (updatedIndividual: Individual) => {
+  const update = async (id: string, updatedIndividual: MutateIndividual) => {
     setUpdating(true);
     try {
-      const didUpdate = await updateItem(
-        updatedIndividual.id,
-        updatedIndividual
-      );
+      const didUpdate = await updateItem(id, updatedIndividual);
       if (didUpdate) {
-        setIndividual(updatedIndividual);
+        setIndividual({
+          ...individual!,
+          first_name: updatedIndividual.first_name,
+          middle_names: updatedIndividual.middle_names,
+          last_name: updatedIndividual.last_name,
+        });
       }
     } catch (error: any) {
       setUpdateError(error);
