@@ -17,6 +17,9 @@ export type TribeRole = {
   tribe_role_type: TribeRoleType;
   tribe_id: string;
   individual: Individual;
+  tribe: Tribe;
+  start_date: string;
+  end_date?: string;
 };
 
 export type NewSquad = {

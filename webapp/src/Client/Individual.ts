@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCRUD } from "../CRUD/CRUD";
+import { TribeRole } from "./Tribe";
 
 export type Individual = {
   id: string;
@@ -69,11 +70,32 @@ export function useIndividual({ id }: UseIndividualProps) {
     }
   };
 
+  const { getAll: getTribeRoleItems } = useCRUD<TribeRole, undefined>({
+    path: `/api/delivery/individuals/${id}/triberoles`,
+  });
+
+  const [tribeRoles, setTribeRoles] = useState<TribeRole[]>([]);
+
+  const getTribeRoles = async () => {
+    const result = await getTribeRoleItems();
+    console.log("ROLES: ", result);
+    setTribeRoles(result);
+  };
+
   useEffect(() => {
     if (id) {
       load(id);
     }
   }, [id]);
 
-  return { loading, individual, error, update, updating, updateError };
+  return {
+    loading,
+    individual,
+    error,
+    update,
+    updating,
+    updateError,
+    getTribeRoles,
+    tribeRoles,
+  };
 }
