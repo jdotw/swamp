@@ -22,6 +22,16 @@ public class ChapterRoleRepository : RepositoryBase<ChapterRole>, IChapterRoleRe
       .ToListAsync();
   }
 
+  public async Task<IEnumerable<ChapterRole>> GetAllByIndividualIdAsync(int individualId)
+  {
+    return await FindAllAsync()
+      .AsNoTracking()
+      .Where(r => r.IndividualId == individualId)
+      .Include(r => r.ChapterRoleType)
+      .Include(r => r.Chapter)
+      .ToListAsync();
+  }
+
   public async Task<ChapterRole?> GetAsync(int id)
   {
     return await FindByConditionAsync(r => r.Id.Equals(id))

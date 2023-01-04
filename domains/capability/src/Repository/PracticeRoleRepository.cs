@@ -22,6 +22,16 @@ public class PracticeRoleRepository : RepositoryBase<PracticeRole>, IPracticeRol
       .ToListAsync();
   }
 
+  public async Task<IEnumerable<PracticeRole>> GetAllByIndividualIdAsync(int individualId)
+  {
+    return await FindAllAsync()
+      .AsNoTracking()
+      .Where(r => r.IndividualId == individualId)
+      .Include(r => r.PracticeRoleType)
+      .Include(r => r.Practice)
+      .ToListAsync();
+  }
+
   public async Task<PracticeRole?> GetAsync(int id)
   {
     return await FindByConditionAsync(r => r.Id.Equals(id))
