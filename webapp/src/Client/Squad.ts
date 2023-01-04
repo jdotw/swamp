@@ -10,11 +10,14 @@ export type Squad = {
 
 export type SquadRole = {
   id: string;
-  individual: Individual;
   individual_id: string;
+  individual: Individual;
   squad_id: string;
+  squad: Squad;
   squad_role_type_id: string;
   squad_role_type: SquadRoleType;
+  start_date: string;
+  end_date?: string;
 };
 
 export type NewSquadRole = {
