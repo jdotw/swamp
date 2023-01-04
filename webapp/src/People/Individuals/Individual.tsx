@@ -143,7 +143,7 @@ function Individual() {
             <Link to={id}>
               {timeSinceDateString(
                 new Date(row.start_date),
-                row.end_date ? new Date(row.end_date) : undefined
+                row.end_date ? new Date(row.end_date) : new Date()
               )}
             </Link>
           </td>
