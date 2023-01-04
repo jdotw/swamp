@@ -14,10 +14,8 @@ export function usePractices() {
   const load = async () => {
     try {
       const practices = await getAll();
-      console.log("PRACTICES: ", practices);
       setPractices(practices);
     } catch (error: any) {
-      console.log("ERROR: ", error);
       setPractices([]);
       setError(error);
     } finally {
@@ -28,10 +26,8 @@ export function usePractices() {
   const add = async (newPractice: NewPractice) => {
     try {
       const practice = await createItem(newPractice);
-      console.log("PRACTICE: ", practice);
       setPractices([...practices, practice]);
     } catch (error: any) {
-      console.log("ERROR: ", error);
       setError(error);
     }
   };

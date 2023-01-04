@@ -150,7 +150,6 @@ export function usePractice({ id }: UsePracticeProps) {
 
   const addRole = async (newRole: NewPracticeRole) => {
     const role = await addRoleItem(newRole);
-    console.log("ADD ROLE: ", role);
     setRoles([...roles, role]);
   };
 

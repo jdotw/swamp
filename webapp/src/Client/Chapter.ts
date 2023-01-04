@@ -66,7 +66,6 @@ export function useChapter({ practiceId, id }: UseChapterProps) {
     setLoadingRoles(true);
     try {
       const roles = await getAllRoleItems();
-      console.log("ROLES: ", roles);
       setRoles(roles);
       setLoadingRolesError(undefined);
     } catch (error: any) {
