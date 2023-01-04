@@ -23,10 +23,11 @@ describe("useIndividual", () => {
     expect(hook).toHaveProperty("getTribeRoles");
     expect(hook).toHaveProperty("tribeRoles");
     expect(hook).toHaveProperty("getSquadRoles");
+    expect(hook).toHaveProperty("squadRoles");
   });
 });
 
-describe("when calling getSquadRoles", () => {
+describe("when getting roles", () => {
   const mockGetAll = vi.fn();
   vi.doMock("../CRUD/CRUD", () => ({
     useCRUD: vi.fn(() => {
@@ -46,28 +47,61 @@ describe("when calling getSquadRoles", () => {
     };
   });
 
-  it("should call useCRUD with correct path", async () => {
-    const { useIndividual } = await import("./Individual");
-    const { useCRUD } = await import("../CRUD/CRUD");
-    const hook = useIndividual({ id: "1" });
-    const mockSquadRoles = [
-      {
-        id: Math.floor(Math.random() * 100),
-        individual_id: Math.floor(Math.random() * 100),
-        squad_id: Math.floor(Math.random() * 100),
-        role: Math.floor(Math.random() * 100),
-      },
-    ];
-    mockGetAll.mockResolvedValue(mockSquadRoles);
-    expect(useCRUD).toBeCalled();
-    expect(useCRUD).toHaveBeenCalledWith({
-      path: "/api/delivery/individuals/1/squadroles",
+  describe("when calling getTribeRoles", () => {
+    it("should call useCRUD with correct path", async () => {
+      const { useIndividual } = await import("./Individual");
+      const { useCRUD } = await import("../CRUD/CRUD");
+      const hook = useIndividual({ id: "1" });
+      expect(useCRUD).toBeCalled();
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: "/api/delivery/individuals/1/triberoles",
+      });
     });
-    await hook.getSquadRoles();
-    expect(mockGetAll).toBeCalledTimes(1);
-    expect(mockUseStateSetter).toBeCalledTimes(1);
-    expect(mockUseStateSetter).toHaveBeenCalledWith({
-      squad_roles: mockSquadRoles,
+    it("should return the received tribeRoles", async () => {
+      const { useIndividual } = await import("./Individual");
+      const hook = useIndividual({ id: "1" });
+      const mockTribeRoles = [
+        {
+          id: Math.floor(Math.random() * 100),
+          individual_id: Math.floor(Math.random() * 100),
+          tribe_id: Math.floor(Math.random() * 100),
+          role: Math.floor(Math.random() * 100),
+        },
+      ];
+      mockGetAll.mockResolvedValue(mockTribeRoles);
+      await hook.getTribeRoles();
+      expect(mockGetAll).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toHaveBeenCalledWith(mockTribeRoles);
+    });
+  });
+
+  describe("when calling getSquadRoles", () => {
+    it("should call useCRUD with correct path", async () => {
+      const { useIndividual } = await import("./Individual");
+      const { useCRUD } = await import("../CRUD/CRUD");
+      const hook = useIndividual({ id: "1" });
+      expect(useCRUD).toBeCalled();
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: "/api/delivery/individuals/1/squadroles",
+      });
+    });
+    it("should return the received squadRoles", async () => {
+      const { useIndividual } = await import("./Individual");
+      const hook = useIndividual({ id: "1" });
+      const mockSquadRoles = [
+        {
+          id: Math.floor(Math.random() * 100),
+          individual_id: Math.floor(Math.random() * 100),
+          squad_id: Math.floor(Math.random() * 100),
+          role: Math.floor(Math.random() * 100),
+        },
+      ];
+      mockGetAll.mockResolvedValue(mockSquadRoles);
+      await hook.getSquadRoles();
+      expect(mockGetAll).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toHaveBeenCalledWith(mockSquadRoles);
     });
   });
 });

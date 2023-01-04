@@ -24,9 +24,10 @@ function Individual() {
     individual,
     loading: loadingIndividual,
     update: updateIndividual,
-    tribeRoles,
     getTribeRoles,
+    tribeRoles,
     getSquadRoles,
+    squadRoles,
   } = useIndividual({
     id,
   });
@@ -69,7 +70,7 @@ function Individual() {
         </tr>
       );
     });
-    const squadRows = individual.squad_roles?.map((row: SquadRole) => {
+    const squadRows = squadRoles.map((row: SquadRole) => {
       const id = row.id.toString();
       return (
         <tr key={id}>
@@ -128,7 +129,7 @@ function Individual() {
                 <th>Tenure</th>
               </tr>
             </thead>
-            <tbody>{roleRows()}</tbody>
+            <tbody>{roleRows(individual)}</tbody>
           </Table>
         </ScrollArea>
       </div>

@@ -92,13 +92,11 @@ export function useIndividual({ id }: UseIndividualProps) {
     path: `/api/delivery/individuals/${id}/squadroles`,
   });
 
+  const [squadRoles, setSquadRoles] = useState<SquadRole[]>([]);
+
   const getSquadRoles = async () => {
     const result = await getSquadRoleItems();
-    console.log("ROLES: ", result);
-    setIndividual({
-      ...individual!,
-      squad_roles: result,
-    });
+    setSquadRoles(result);
   };
 
   useEffect(() => {
@@ -114,8 +112,9 @@ export function useIndividual({ id }: UseIndividualProps) {
     update,
     updating,
     updateError,
-    getTribeRoles,
     tribeRoles,
+    getTribeRoles,
+    squadRoles,
     getSquadRoles,
   };
 }
