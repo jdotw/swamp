@@ -8,6 +8,7 @@ import {
   MutateIndividual,
 } from "../../Client/Individual";
 import { PracticeRole } from "../../Client/Practice";
+import { SquadRole } from "../../Client/Squad";
 import { TribeRole } from "../../Client/Tribe";
 import Loading from "../../Loading/Loading";
 import { timeSinceDateString } from "../../Utils/TimeSinceDate";
@@ -25,6 +26,7 @@ function Individual() {
     update: updateIndividual,
     tribeRoles,
     getTribeRoles,
+    getSquadRoles,
   } = useIndividual({
     id,
   });
@@ -32,6 +34,7 @@ function Individual() {
 
   useEffect(() => {
     getTribeRoles();
+    getSquadRoles();
   }, [id]);
 
   if (loadingIndividual) {
@@ -66,7 +69,31 @@ function Individual() {
         </tr>
       );
     });
-    return [...tribeRows];
+    const squadRows = individual.squad_roles?.map((row: SquadRole) => {
+      const id = row.id.toString();
+      return (
+        <tr key={id}>
+          <td>
+            <Link to={id}>Squad</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.squad.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.squad_role_type.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>
+              {timeSinceDateString(
+                new Date(row.start_date),
+                row.end_date ? new Date(row.end_date) : undefined
+              )}
+            </Link>
+          </td>
+        </tr>
+      );
+    });
+    return [...tribeRows, ...squadRows];
   };
 
   const onEditSubmit = async (updatedIndividual: MutateIndividual) => {
