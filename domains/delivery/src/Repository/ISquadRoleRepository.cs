@@ -3,6 +3,7 @@ using Delivery.Entities;
 public interface ISquadRoleRepository
 {
   Task<IEnumerable<SquadRole>> GetAllAsync(int squadId);
+  Task<IEnumerable<SquadRole>> GetAllByIndividualIdAsync(int individualId);
   Task<SquadRole?> GetAsync(int id);
   Task<int> AddAsync(SquadRole role);
   Task<SquadRole?> GetDetailsAsync(int id);

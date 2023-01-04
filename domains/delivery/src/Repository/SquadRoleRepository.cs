@@ -22,6 +22,16 @@ public class SquadRoleRepository : RepositoryBase<SquadRole>, ISquadRoleReposito
       .ToListAsync();
   }
 
+  public async Task<IEnumerable<SquadRole>> GetAllByIndividualIdAsync(int individualId)
+  {
+    return await FindAllAsync()
+      .AsNoTracking()
+      .Where(r => r.IndividualId == individualId)
+      .Include(r => r.SquadRoleType)
+      .Include(r => r.Squad)
+      .ToListAsync();
+  }
+
   public async Task<SquadRole?> GetAsync(int id)
   {
     return await FindByConditionAsync(r => r.Id.Equals(id))
