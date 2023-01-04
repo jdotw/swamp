@@ -11,7 +11,7 @@ vi.mock("react", async () => {
 });
 
 describe("Squad", () => {
-  it("should return paremeters", async () => {
+  it("should return expected paremeters", async () => {
     const { useSquad } = await import("./Squad");
     const hook = useSquad({ tribeId: "1", id: "1" });
     expect(hook).toHaveProperty("squad");
