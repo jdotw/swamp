@@ -32,11 +32,16 @@ export const timeSinceDateString = (
   endDate: Date = new Date()
 ) => {
   const diff = timeSinceDate(startDate, endDate);
+  const dayLabel = diff.days == 1 ? "day" : "days";
+  const monthLabel = diff.months == 1 ? "month" : "months";
+  const yearLabel = diff.years == 1 ? "year" : "years";
   if (diff.years > 0) {
-    return `${diff.years}y${diff.months}m`;
+    return `${diff.years} ${yearLabel} ${diff.months} ${monthLabel}`;
   } else if (diff.months > 0) {
-    return `${diff.months}m`;
+    return `${diff.months} ${monthLabel}`;
   } else if (diff.days > 0) {
-    return `${diff.days}d`;
+    return `${diff.days} ${dayLabel}`;
+  } else {
+    return "today";
   }
 };
