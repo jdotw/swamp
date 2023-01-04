@@ -34,6 +34,9 @@ export type PracticeRole = {
 
   practice_id: string;
   practice: Practice;
+
+  start_date: string;
+  end_date?: string;
 };
 
 export type NewPracticeRole = {

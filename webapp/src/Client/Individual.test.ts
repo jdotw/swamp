@@ -24,6 +24,10 @@ describe("useIndividual", () => {
     expect(hook).toHaveProperty("tribeRoles");
     expect(hook).toHaveProperty("getSquadRoles");
     expect(hook).toHaveProperty("squadRoles");
+    expect(hook).toHaveProperty("getPracticeRoles");
+    expect(hook).toHaveProperty("practiceRoles");
+    expect(hook).toHaveProperty("getChapterRoles");
+    expect(hook).toHaveProperty("chapterRoles");
   });
 });
 
@@ -102,6 +106,64 @@ describe("when getting roles", () => {
       expect(mockGetAll).toBeCalledTimes(1);
       expect(mockUseStateSetter).toBeCalledTimes(1);
       expect(mockUseStateSetter).toHaveBeenCalledWith(mockSquadRoles);
+    });
+  });
+
+  describe("when calling getPracticeRoles", () => {
+    it("should call useCRUD with correct path", async () => {
+      const { useIndividual } = await import("./Individual");
+      const { useCRUD } = await import("../CRUD/CRUD");
+      const hook = useIndividual({ id: "1" });
+      expect(useCRUD).toBeCalled();
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: "/api/delivery/individuals/1/practiceroles",
+      });
+    });
+    it("should return the received practiceRoles", async () => {
+      const { useIndividual } = await import("./Individual");
+      const hook = useIndividual({ id: "1" });
+      const mockPracticeRoles = [
+        {
+          id: Math.floor(Math.random() * 100),
+          individual_id: Math.floor(Math.random() * 100),
+          practice_id: Math.floor(Math.random() * 100),
+          role: Math.floor(Math.random() * 100),
+        },
+      ];
+      mockGetAll.mockResolvedValue(mockPracticeRoles);
+      await hook.getPracticeRoles();
+      expect(mockGetAll).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toHaveBeenCalledWith(mockPracticeRoles);
+    });
+  });
+
+  describe("when calling getChapterRoles", () => {
+    it("should call useCRUD with correct path", async () => {
+      const { useIndividual } = await import("./Individual");
+      const { useCRUD } = await import("../CRUD/CRUD");
+      const hook = useIndividual({ id: "1" });
+      expect(useCRUD).toBeCalled();
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: "/api/delivery/individuals/1/chapterroles",
+      });
+    });
+    it("should return the received squadRoles", async () => {
+      const { useIndividual } = await import("./Individual");
+      const hook = useIndividual({ id: "1" });
+      const mockChapterRoles = [
+        {
+          id: Math.floor(Math.random() * 100),
+          individual_id: Math.floor(Math.random() * 100),
+          squad_id: Math.floor(Math.random() * 100),
+          role: Math.floor(Math.random() * 100),
+        },
+      ];
+      mockGetAll.mockResolvedValue(mockChapterRoles);
+      await hook.getChapterRoles();
+      expect(mockGetAll).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toBeCalledTimes(1);
+      expect(mockUseStateSetter).toHaveBeenCalledWith(mockChapterRoles);
     });
   });
 });

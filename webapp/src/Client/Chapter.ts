@@ -10,11 +10,14 @@ export type Chapter = {
 
 export type ChapterRole = {
   id: string;
-  individual: Individual;
   individual_id: string;
+  individual: Individual;
   chapter_id: string;
+  chapter: Chapter;
   chapter_role_type_id: string;
   chapter_role_type: ChapterRoleType;
+  start_date: string;
+  end_date?: string;
 };
 
 export type NewChapterRole = {

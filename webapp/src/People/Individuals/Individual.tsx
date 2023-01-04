@@ -2,6 +2,7 @@ import { Grid, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { ChapterRole } from "../../Client/Chapter";
 import {
   useIndividual,
   Individual as IndividualType,
@@ -28,6 +29,10 @@ function Individual() {
     tribeRoles,
     getSquadRoles,
     squadRoles,
+    getPracticeRoles,
+    practiceRoles,
+    getChapterRoles,
+    chapterRoles,
   } = useIndividual({
     id,
   });
@@ -36,6 +41,8 @@ function Individual() {
   useEffect(() => {
     getTribeRoles();
     getSquadRoles();
+    getPracticeRoles();
+    getChapterRoles();
   }, [id]);
 
   if (loadingIndividual) {
@@ -94,7 +101,56 @@ function Individual() {
         </tr>
       );
     });
-    return [...tribeRows, ...squadRows];
+
+    const practiceRows = practiceRoles.map((row: PracticeRole) => {
+      const id = row.id.toString();
+      return (
+        <tr key={id}>
+          <td>
+            <Link to={id}>Practice</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.practice.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.practice_role_type.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>
+              {timeSinceDateString(
+                new Date(row.start_date),
+                row.end_date ? new Date(row.end_date) : undefined
+              )}
+            </Link>
+          </td>
+        </tr>
+      );
+    });
+    const chapterRows = chapterRoles.map((row: ChapterRole) => {
+      const id = row.id.toString();
+      return (
+        <tr key={id}>
+          <td>
+            <Link to={id}>Chapter</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.chapter.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>{row.chapter_role_type.name}</Link>
+          </td>
+          <td>
+            <Link to={id}>
+              {timeSinceDateString(
+                new Date(row.start_date),
+                row.end_date ? new Date(row.end_date) : undefined
+              )}
+            </Link>
+          </td>
+        </tr>
+      );
+    });
+    return [...tribeRows, ...squadRows, ...practiceRows, ...chapterRows];
   };
 
   const onEditSubmit = async (updatedIndividual: MutateIndividual) => {

@@ -99,6 +99,28 @@ export function useIndividual({ id }: UseIndividualProps) {
     setSquadRoles(result);
   };
 
+  const { getAll: getPracticeRoleItems } = useCRUD<PracticeRole, undefined>({
+    path: `/api/delivery/individuals/${id}/practiceroles`,
+  });
+
+  const [practiceRoles, setPracticeRoles] = useState<PracticeRole[]>([]);
+
+  const getPracticeRoles = async () => {
+    const result = await getPracticeRoleItems();
+    setPracticeRoles(result);
+  };
+
+  const { getAll: getChapterRoleItems } = useCRUD<ChapterRole, undefined>({
+    path: `/api/delivery/individuals/${id}/chapterroles`,
+  });
+
+  const [chapterRoles, setChapterRoles] = useState<ChapterRole[]>([]);
+
+  const getChapterRoles = async () => {
+    const result = await getChapterRoleItems();
+    setChapterRoles(result);
+  };
+
   useEffect(() => {
     if (id) {
       load(id);
@@ -116,5 +138,9 @@ export function useIndividual({ id }: UseIndividualProps) {
     getTribeRoles,
     squadRoles,
     getSquadRoles,
+    practiceRoles,
+    getPracticeRoles,
+    chapterRoles,
+    getChapterRoles,
   };
 }
