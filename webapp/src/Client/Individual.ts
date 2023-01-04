@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useCRUD } from "../CRUD/CRUD";
+import { ChapterRole } from "./Chapter";
+import { PracticeRole } from "./Practice";
+import { SquadRole } from "./Squad";
 import { TribeRole } from "./Tribe";
 
 export type Individual = {
@@ -8,6 +11,10 @@ export type Individual = {
   first_name: string;
   middle_names?: string;
   last_name: string;
+  tribe_roles: TribeRole[];
+  squad_roles: SquadRole[];
+  practice_roles: PracticeRole[];
+  chapter_roles: ChapterRole[];
 };
 
 export type MutateIndividual = {
@@ -78,8 +85,20 @@ export function useIndividual({ id }: UseIndividualProps) {
 
   const getTribeRoles = async () => {
     const result = await getTribeRoleItems();
-    console.log("ROLES: ", result);
     setTribeRoles(result);
+  };
+
+  const { getAll: getSquadRoleItems } = useCRUD<SquadRole, undefined>({
+    path: `/api/delivery/individuals/${id}/squadroles`,
+  });
+
+  const getSquadRoles = async () => {
+    const result = await getSquadRoleItems();
+    console.log("ROLES: ", result);
+    setIndividual({
+      ...individual!,
+      squad_roles: result,
+    });
   };
 
   useEffect(() => {
@@ -97,5 +116,6 @@ export function useIndividual({ id }: UseIndividualProps) {
     updateError,
     getTribeRoles,
     tribeRoles,
+    getSquadRoles,
   };
 }
