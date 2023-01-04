@@ -6,30 +6,17 @@ using JorgeSerrano.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using FluentAssertions;
+using Capability.Repository;
 
 namespace Capability.IntegrationTests;
 
-public class BasicTests
-    : IClassFixture<CustomWebApplicationFactory<Program>>
+public class PracticeTests
+    : TestsBase<PracticesSeedDataClass>, IClassFixture<CustomWebApplicationFactory<Program>>
 {
-  private readonly CustomWebApplicationFactory<Program> _factory;
-  private readonly JsonSerializerOptions _options;
-  private readonly HttpClient _client;
-
   private readonly string _path = "/practices";
 
-  public BasicTests(CustomWebApplicationFactory<Program> factory)
+  public PracticeTests(CustomWebApplicationFactory<Program> factory) : base(factory)
   {
-    _factory = factory;
-    _options = new JsonSerializerOptions()
-    {
-      PropertyNamingPolicy =
-             new JsonSnakeCaseNamingPolicy()
-    };
-    _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-    {
-      AllowAutoRedirect = false,
-    });
   }
 
   private async Task<PracticeDto?> CreatePractice(string name = "Test Practice")
@@ -127,5 +114,15 @@ public class BasicTests
     Assert.Contains("404 (Not Found)", ex.Message);
     Assert.NotNull(practices);
     Assert.DoesNotContain(practices, t => t.Name == name);
+  }
+}
+
+public class PracticesSeedDataClass : ISeedDataClass
+{
+  public void InitializeDbForTests(CapabilityDbContext db)
+  {
+    // Performs DB initialization before the 
+    // start of all tests in the TribeTests class.
+    // The DB is not re-initialized between tests.
   }
 }
