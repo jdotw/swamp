@@ -100,7 +100,7 @@ export function useIndividual({ id }: UseIndividualProps) {
   };
 
   const { getAll: getPracticeRoleItems } = useCRUD<PracticeRole, undefined>({
-    path: `/api/delivery/individuals/${id}/practiceroles`,
+    path: `/api/capability/individuals/${id}/practiceroles`,
   });
 
   const [practiceRoles, setPracticeRoles] = useState<PracticeRole[]>([]);
@@ -111,13 +111,14 @@ export function useIndividual({ id }: UseIndividualProps) {
   };
 
   const { getAll: getChapterRoleItems } = useCRUD<ChapterRole, undefined>({
-    path: `/api/delivery/individuals/${id}/chapterroles`,
+    path: `/api/capability/individuals/${id}/chapterroles`,
   });
 
   const [chapterRoles, setChapterRoles] = useState<ChapterRole[]>([]);
 
   const getChapterRoles = async () => {
     const result = await getChapterRoleItems();
+    console.log("CHAP ROLES: ", result);
     setChapterRoles(result);
   };
 

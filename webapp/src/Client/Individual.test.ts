@@ -116,7 +116,7 @@ describe("when getting roles", () => {
       const hook = useIndividual({ id: "1" });
       expect(useCRUD).toBeCalled();
       expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/delivery/individuals/1/practiceroles",
+        path: "/api/capability/individuals/1/practiceroles",
       });
     });
     it("should return the received practiceRoles", async () => {
@@ -145,7 +145,7 @@ describe("when getting roles", () => {
       const hook = useIndividual({ id: "1" });
       expect(useCRUD).toBeCalled();
       expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/delivery/individuals/1/chapterroles",
+        path: "/api/capability/individuals/1/chapterroles",
       });
     });
     it("should return the received squadRoles", async () => {
