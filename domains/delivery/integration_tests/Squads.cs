@@ -11,26 +11,12 @@ using Delivery.Repository;
 namespace Delivery.IntegrationTests;
 
 public class SquadTests
-    : IClassFixture<CustomWebApplicationFactory<Program, SquadsSeedDataClass>>
+    : TestsBase<SquadsSeedDataClass>, IClassFixture<CustomWebApplicationFactory<Program>>
 {
-  private readonly CustomWebApplicationFactory<Program, SquadsSeedDataClass> _factory;
-  private readonly JsonSerializerOptions _options;
-  private readonly HttpClient _client;
-
   private readonly string _path = "/tribes/1/squads";
 
-  public SquadTests(CustomWebApplicationFactory<Program, SquadsSeedDataClass> factory)
+  public SquadTests(CustomWebApplicationFactory<Program> factory) : base(factory)
   {
-    _factory = factory;
-    _options = new JsonSerializerOptions()
-    {
-      PropertyNamingPolicy =
-             new JsonSnakeCaseNamingPolicy()
-    };
-    _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-    {
-      AllowAutoRedirect = false,
-    });
   }
 
   private async Task<SquadDto?> CreateSquad(string name = "Test Squad")
@@ -130,43 +116,36 @@ public class SquadTests
 
 public class SquadsSeedDataClass : ISeedDataClass
 {
-  private readonly DeliveryDbContext _db;
-
-  public SquadsSeedDataClass(DeliveryDbContext db)
-  {
-    _db = db;
-  }
-
-  public void InitializeDbForTests()
+  public void InitializeDbForTests(DeliveryDbContext db)
   {
     // Performs DB initialization before the 
     // start of all tests in the SquadTests class.
     // The DB is not re-initialized between tests.
-    var result = _db.Tribes.Add(new Tribe
+    var result = db.Tribes.Add(new Tribe
     {
       Name = "Existing Tribe",
       FormedDate = DateTime.UtcNow,
       DisbandedDate = null
     });
-    _db.SaveChanges(true);
+    db.SaveChanges(true);
 
-    var squadResult1 = _db.Squads.Add(new Squad
+    var squadResult1 = db.Squads.Add(new Squad
     {
       Name = "Squad To Be Updated",
       FormedDate = DateTime.UtcNow,
       DisbandedDate = null,
       TribeId = result.Entity.Id
     });
-    _db.SaveChanges(true);
+    db.SaveChanges(true);
 
-    var squadResult2 = _db.Squads.Add(new Squad
+    var squadResult2 = db.Squads.Add(new Squad
     {
       Name = "Squad To Be Deleted",
       FormedDate = DateTime.UtcNow,
       DisbandedDate = null,
       TribeId = result.Entity.Id
     });
-    _db.SaveChanges(true);
+    db.SaveChanges(true);
   }
 }
 

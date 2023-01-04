@@ -9,27 +9,13 @@ using Delivery.Repository;
 
 namespace Delivery.IntegrationTests;
 
-public class BasicTests
-    : IClassFixture<CustomWebApplicationFactory<Program, TribesSeedDataClass>>
+public class TribeTests
+    : TestsBase<TribesSeedDataClass>, IClassFixture<CustomWebApplicationFactory<Program>>
 {
-  private readonly CustomWebApplicationFactory<Program, TribesSeedDataClass> _factory;
-  private readonly JsonSerializerOptions _options;
-  private readonly HttpClient _client;
-
   private readonly string _path = "/tribes";
 
-  public BasicTests(CustomWebApplicationFactory<Program, TribesSeedDataClass> factory)
+  public TribeTests(CustomWebApplicationFactory<Program> factory) : base(factory)
   {
-    _factory = factory;
-    _options = new JsonSerializerOptions()
-    {
-      PropertyNamingPolicy =
-             new JsonSnakeCaseNamingPolicy()
-    };
-    _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-    {
-      AllowAutoRedirect = false,
-    });
   }
 
   private async Task<TribeDto?> CreateTribe(string name = "Test Tribe")
@@ -132,14 +118,7 @@ public class BasicTests
 
 public class TribesSeedDataClass : ISeedDataClass
 {
-  private readonly DeliveryDbContext _db;
-
-  public TribesSeedDataClass(DeliveryDbContext db)
-  {
-    _db = db;
-  }
-
-  public void InitializeDbForTests()
+  public void InitializeDbForTests(DeliveryDbContext db)
   {
     // Performs DB initialization before the 
     // start of all tests in the TribeTests class.

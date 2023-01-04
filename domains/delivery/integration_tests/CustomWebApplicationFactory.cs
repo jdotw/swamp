@@ -7,10 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Delivery.IntegrationTests;
 
-public class CustomWebApplicationFactory<TProgram, TSeed>
+public class CustomWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram>
       where TProgram : class
-      where TSeed : class, ISeedDataClass
 {
   private readonly DbConnection _connection;
 
@@ -50,22 +49,6 @@ public class CustomWebApplicationFactory<TProgram, TSeed>
         options.UseSqlite(_connection);
         options.UseSnakeCaseNamingConvention();
       });
-
-      services.AddScoped<ISeedDataClass, TSeed>();
-
-      var sp = services.BuildServiceProvider();
-      using (var scope = sp.CreateScope())
-      {
-        var scopedServices = scope.ServiceProvider;
-        var db = scopedServices.GetRequiredService<DeliveryDbContext>();
-        var seeder = scopedServices.GetRequiredService<ISeedDataClass>();
-
-        // This will initiaze the per-Test-Class database
-        // Note that the database is not dropped after each test
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-        seeder.InitializeDbForTests();
-      }
     });
 
     builder.UseEnvironment("Development");
