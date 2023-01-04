@@ -63,7 +63,14 @@ public class SquadRolesController : ControllerBase
     var role = await _repository.GetDetailsAsync(id);
     if (role is null) return null;
     var roleDto = _mapper.Map<SquadRoleDto>(role);
-    roleDto.Individual = await GetIndividuals(new() { role.IndividualId }).ContinueWith(t => t.Result[role.IndividualId]);
+    try
+    {
+      roleDto.Individual = await GetIndividuals(new() { role.IndividualId }).ContinueWith(t => t.Result[role.IndividualId]);
+    }
+    catch (System.Exception)
+    {
+      _logger.LogWarning("Could not get individual with id {individualId}", role.IndividualId);
+    }
     return roleDto;
   }
 
