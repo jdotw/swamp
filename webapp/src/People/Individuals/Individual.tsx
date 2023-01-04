@@ -129,7 +129,7 @@ function Individual() {
                 <th>Tenure</th>
               </tr>
             </thead>
-            <tbody>{roleRows(individual)}</tbody>
+            <tbody>{roleRows()}</tbody>
           </Table>
         </ScrollArea>
       </div>
