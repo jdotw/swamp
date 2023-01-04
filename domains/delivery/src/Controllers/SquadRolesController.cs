@@ -33,10 +33,17 @@ public class SquadRolesController : ControllerBase
     var roles = await _repository.GetAllAsync(squadId);
     var rolesDto = _mapper.Map<IEnumerable<SquadRoleDto>>(roles);
     var individualIds = rolesDto.Select(r => r.IndividualId).Distinct();
-    var individualsById = await GetIndividuals(individualIds.ToList());
-    foreach (var role in rolesDto)
+    try
     {
-      role.Individual = individualsById[role.IndividualId];
+      var individualsById = await GetIndividuals(individualIds.ToList());
+      foreach (var role in rolesDto)
+      {
+        role.Individual = individualsById[role.IndividualId];
+      }
+    }
+    catch (System.Exception)
+    {
+      _logger.LogWarning("Failed to get individuals");
     }
     return Ok(rolesDto);
   }
