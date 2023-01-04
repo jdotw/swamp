@@ -15,8 +15,6 @@ public class SquadRoleTests
 {
   public SquadRoleTests(CustomWebApplicationFactory<Program> factory) : base(factory)
   {
-    Console.WriteLine("At Constructor _seedData: " + _seedData);
-    Console.WriteLine("At Constructor _seedData.ExistingSquadRoleTypeId: " + _seedData.ExistingSquadRoleTypeId);
   }
 
   private string _basePath(int? tribeId = null, int? squadId = null)
@@ -41,7 +39,6 @@ public class SquadRoleTests
     var tribeId = _seedData.ExistingTribeId;
     var squadRoleTypeId = _seedData.ExistingSquadRoleTypeId;
     var squadId = _seedData.ExistingSquadId;
-    Console.WriteLine("In Test: squadId: " + squadId);
 
     // Act
     var role = await CreateSquadRole(tribeId, individualId, squadRoleTypeId, squadId);
@@ -64,7 +61,6 @@ public class SquadRoleTests
                                               _seedData.ExistingSquadId);
 
     // Act
-    Console.WriteLine("BASE: " + _basePath());
     var squads = await _client.GetFromJsonAsync<List<SquadRoleDto>>(_basePath(), _options);
 
     // Assert

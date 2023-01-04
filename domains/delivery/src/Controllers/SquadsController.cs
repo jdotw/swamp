@@ -62,7 +62,6 @@ public class SquadsController : ControllerBase
   public async Task<IActionResult> Delete(int id)
   {
     var deleted = await _squadRepository.DeleteSquadAsync(id);
-    Console.WriteLine($"Deleted {deleted} squad(s) with id={id}.");
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

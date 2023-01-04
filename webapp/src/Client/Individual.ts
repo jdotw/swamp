@@ -118,7 +118,6 @@ export function useIndividual({ id }: UseIndividualProps) {
 
   const getChapterRoles = async () => {
     const result = await getChapterRoleItems();
-    console.log("CHAP ROLES: ", result);
     setChapterRoles(result);
   };
 
