@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
-import SideNavbar from "./SideNavbar";
+import { SideNavbar } from "./SideNavbar";
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
