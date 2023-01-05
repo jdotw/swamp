@@ -23,6 +23,12 @@ import ChapterRoleTypeHome from "./Capability/CapabilityRoleTypes/ChapterRoleTyp
 import DeliveryRoleTypesHome from "./Delivery/DeliveryRoleTypes/DeliveryRoleTypesHome";
 import SquadRoleTypeHome from "./Delivery/DeliveryRoleTypes/SquadRoleType/SquadRoleTypeHome";
 import TribeRoleTypeHome from "./Delivery/DeliveryRoleTypes/TribeRoleType/TribeRoleTypeHome";
+import OrgShell from "./Org/OrgShell";
+import OrgHome from "./Org/OrgHome";
+import OrgUnitList from "./Org/Units/OrgUnitList";
+import OrgUnitHome from "./Org/Units/OrgUnitHome";
+import OrgRoleTypesList from "./Org/Roles/OrgRoleTypesList";
+import OrgRoleTypeHome from "./Org/Roles/OrgRoleTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -36,6 +42,28 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="people" element={<PeopleShell />}>
             <Route index element={<PeopleHome />} />
             <Route path=":individualId" element={<Individual />} />
+          </Route>
+
+          {/* Organisation */}
+          <Route path="org" element={<OrgShell />}>
+            <Route index element={<OrgHome />} />
+
+            {/* Practices */}
+            <Route path="units">
+              <Route index element={<OrgUnitList />} />
+              <Route path=":unitId">
+                <Route index element={<OrgUnitHome />} />
+              </Route>
+            </Route>
+
+            {/* Roles Types */}
+            <Route path="roletypes">
+              <Route index element={<OrgRoleTypesList />} />
+              <Route
+                path="roletypes/:roleTypeId"
+                element={<OrgRoleTypeHome />}
+              />
+            </Route>
           </Route>
 
           {/* Capability */}
