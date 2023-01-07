@@ -22,35 +22,26 @@ import { IndividualCard } from "./Card";
 function IndividualHome() {
   const { individualId: id } = useParams();
   const {
-    individual,
-    loading: loadingIndividual,
-    update: updateIndividual,
-    getTribeRoles,
+    items,
+    loading,
+    updateItem,
     tribeRoles,
-    getSquadRoles,
     squadRoles,
-    getPracticeRoles,
     practiceRoles,
-    getChapterRoles,
     chapterRoles,
   } = useIndividual({
     id,
   });
   const [editModalOpened, setEditModalOpened] = useState(false);
 
-  useEffect(() => {
-    getTribeRoles();
-    getSquadRoles();
-    getPracticeRoles();
-    getChapterRoles();
-  }, [id]);
-
-  if (loadingIndividual) {
+  if (loading) {
     return <Loading />;
   }
-  if (!id || !individual) {
+  if (!id || items.length < 1) {
     return <div>Individual not found</div>;
   }
+
+  const individual = items[0];
 
   const roleRows = () => {
     const tribeRows = tribeRoles.map((row: TribeRole) => {
@@ -154,7 +145,7 @@ function IndividualHome() {
   };
 
   const onEditSubmit = async (updatedIndividual: MutateIndividual) => {
-    await updateIndividual(id, updatedIndividual);
+    await updateItem(id, updatedIndividual);
     setEditModalOpened(false);
   };
 
