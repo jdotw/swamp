@@ -2,7 +2,7 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Mock, vi } from "vitest";
 import { useIndividual } from "../Client/Individual";
-import { addTestPolyfills } from "../TestHelpers/UITestHelpers";
+import { addTestPolyfills } from "../../test/UITestHelpers";
 import IndividualList from "./IndividualList";
 import userEvent from "@testing-library/user-event";
 

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { addTestPolyfills } from "../../TestHelpers/UITestHelpers";
+import { addTestPolyfills } from "../../../test/UITestHelpers";
 import OrgUnitList from "./OrgUnitList";
 
 addTestPolyfills();

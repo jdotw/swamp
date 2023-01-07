@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { addTestPolyfills } from "../../TestHelpers/UITestHelpers";
+import { addTestPolyfills } from "../../../test/UITestHelpers";
 
 addTestPolyfills();
 

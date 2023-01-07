@@ -4,7 +4,7 @@ import { Mock, vi } from "vitest";
 import {
   addTestPolyfills,
   expectTableToHave,
-} from "../../TestHelpers/UITestHelpers";
+} from "../../../test/UITestHelpers";
 import IndividualHome from "./IndividualHome";
 import { useIndividual } from "../../Client/Individual";
 import { act } from "react-dom/test-utils";

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
-import { addTestPolyfills } from "../TestHelpers/UITestHelpers";
+import { addTestPolyfills } from "../../test/UITestHelpers";
 import { SideNavbar } from "./SideNavbar";
 
 addTestPolyfills();

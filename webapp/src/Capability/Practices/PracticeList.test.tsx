@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import {
   addTestPolyfills,
   expectTableToHave,
-} from "../../TestHelpers/UITestHelpers";
+} from "../../../test/UITestHelpers";
 import PracticeList from "./PracticeList";
 import { Practice, usePractice } from "../../Client/Practice";
 
