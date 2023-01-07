@@ -1,24 +1,15 @@
-import React, { useState } from "react";
-
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Button,
-  Container,
-  Title,
-} from "@mantine/core";
+import { useState } from "react";
+import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
-import {
-  usePractice,
-  NewChapter,
-  NewPracticeRole,
-} from "../../../Client/Practice";
-import { AddPracticeModal } from "../AddPracticeModal";
 import { AddRoleModal } from "./AddRoleModal";
 import { AddChapterModal } from "./AddChapterModal";
-import { usePracticeRoleTypes } from "../../../Client/PracticeRoleTypes";
+import { usePractice } from "../../../Client/Practice";
+import {
+  MutatePracticeRole,
+  usePracticeRole,
+} from "../../../Client/PracticeRole";
+import { MutateChapter } from "../../../Client/ChapterRole";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -39,12 +30,13 @@ interface PracticeHomeProps {}
 export function PracticeHome(props: PracticeHomeProps) {
   const { practiceId: id } = useParams();
   const { classes } = useStyles();
-  const { practice, loading, addChapter, roles, addRole, loadingRoles } =
-    usePractice({
-      id: id,
-    });
+  const { items, loading, createItem: createChapter } = usePractice();
+  // const { items: roles, loading: loadingRoles } = usePracticeRole();
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
+
+  const practice = items.length > 0 ? items[0] : undefined;
+  const loadingRoles = false;
 
   if (loading || loadingRoles) {
     return <Loading />;
@@ -66,34 +58,34 @@ export function PracticeHome(props: PracticeHomeProps) {
       })
     : null;
 
-  const roleRows = roles
-    ? roles.map((row) => {
-        const id = row.id.toString();
-        return (
-          <tr key={id}>
-            <td>
-              <Link to={`${id}`}>{row.individual.first_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.individual.last_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.practice_role_type.name}</Link>
-            </td>
-          </tr>
-        );
-      })
-    : null;
+  // const roleRows = roles
+  //   ? roles.map((row) => {
+  //       const id = row.id.toString();
+  //       return (
+  //         <tr key={id}>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.first_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.last_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.practice_role_type.name}</Link>
+  //           </td>
+  //         </tr>
+  //       );
+  //     })
+  //   : null;
 
-  const submit = async (newChapter: NewChapter) => {
-    await addChapter(newChapter);
+  const submit = async (newChapter: MutateChapter) => {
+    await createChapter(newChapter);
     setAddChapterModalOpen(false);
   };
 
-  const submitRole = async (newRole: NewPracticeRole) => {
-    await addRole(newRole);
-    setAddRoleModalOpen(false);
-  };
+  // const submitRole = async (newRole: MutatePracticeRole) => {
+  //   await createRole(newRole);
+  //   setAddRoleModalOpen(false);
+  // };
 
   return (
     <>
@@ -101,7 +93,7 @@ export function PracticeHome(props: PracticeHomeProps) {
         <Title order={3}>Practice: {practice.name}</Title>
         <Title order={4}>Chapters</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid="chapters-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -117,7 +109,7 @@ export function PracticeHome(props: PracticeHomeProps) {
         </div>
         <Title order={4}>Practice Roles</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid="practice-roles-table">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -125,7 +117,7 @@ export function PracticeHome(props: PracticeHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            <tbody>{roleRows}</tbody>
+            {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
@@ -137,12 +129,12 @@ export function PracticeHome(props: PracticeHomeProps) {
         onClose={() => setAddChapterModalOpen(false)}
         onSubmit={submit}
       />
-      <AddRoleModal
+      {/* <AddRoleModal
         practiceId={id}
         opened={addRoleModalOpen}
         onClose={() => setAddRoleModalOpen(false)}
         onSubmit={submitRole}
-      />
+      /> */}
     </>
   );
 }
