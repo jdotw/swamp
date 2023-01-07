@@ -19,7 +19,7 @@ import {
 } from "../MutateIndividualModal";
 import { IndividualCard } from "./Card";
 
-function Individual() {
+function IndividualHome() {
   const { individualId: id } = useParams();
   const {
     individual,
@@ -201,4 +201,4 @@ function Individual() {
   );
 }
 
-export default Individual;
+export default IndividualHome;
