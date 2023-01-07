@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { usePeople } from "../Client/People";
-import {
-  Individual,
-  MutateIndividual,
-  useIndividual,
-} from "../Client/Individual";
+import { Individual, MutateIndividual } from "../Client/Individual";
 import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
