@@ -47,7 +47,7 @@ function IndividualHome() {
     const tribeRows = tribeRoles.map((row: TribeRole) => {
       const id = row.id.toString();
       return (
-        <tr key={id}>
+        <tr key={"role" + id}>
           <td>
             <Link to={id}>Tribe</Link>
           </td>
@@ -71,7 +71,7 @@ function IndividualHome() {
     const squadRows = squadRoles.map((row: SquadRole) => {
       const id = row.id.toString();
       return (
-        <tr key={id}>
+        <tr key={"squad" + id}>
           <td>
             <Link to={id}>Squad</Link>
           </td>
@@ -96,7 +96,7 @@ function IndividualHome() {
     const practiceRows = practiceRoles.map((row: PracticeRole) => {
       const id = row.id.toString();
       return (
-        <tr key={id}>
+        <tr key={"pratice" + id}>
           <td>
             <Link to={id}>Practice</Link>
           </td>
@@ -120,7 +120,7 @@ function IndividualHome() {
     const chapterRows = chapterRoles.map((row: ChapterRole) => {
       const id = row.id.toString();
       return (
-        <tr key={id}>
+        <tr key={"chapter" + id}>
           <td>
             <Link to={id}>Chapter</Link>
           </td>
