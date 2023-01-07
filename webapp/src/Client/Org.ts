@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCRUD } from "../CRUD/CRUD";
 
 export type Org = {
@@ -13,83 +13,86 @@ export type MutateOrg = {
 };
 
 export interface UseOrgProps {
-  id?: string;
+  loadOnMount: boolean;
 }
 
-export function useOrg({ id }: UseOrgProps) {
-  const [org, setOrg] = useState<Org>(); // If id is specified, this will be loaded
-  const [allOrgs, setAllOrgs] = useState<Org[]>([]); // If id is not specified, this will be loaded
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(undefined);
+export function useOrg({ loadOnMount = true }: UseOrgProps) {
+  const [items, setItems] = useState<Org[]>([]);
 
-  const [updating, setUpdating] = useState(false);
-  const [updateError, setUpdateError] = useState(undefined);
-  const [creating, setCreating] = useState(false);
-  const [creatingError, setCreatingError] = useState(undefined);
-  const [deleting, setDeleting] = useState(false);
-  const [deletingError, setDeletingError] = useState(undefined);
+  const [loading, setLoading] = useState(loadOnMount);
+  const [error, setError] = useState<Error>();
 
-  const { getAll, retrieveItem, updateItem, createItem } = useCRUD<
-    Org,
-    MutateOrg
-  >({
-    path: id ? `/api/people/orgs/${id}` : "/api/people/orgs",
+  const {
+    getAll,
+    retrieveItem: crudRetrieveItem,
+    createItem: crudCreateItem,
+    updateItem: crudUpdateItem,
+    deleteItem: crudDeleteItem,
+  } = useCRUD<Org, MutateOrg>({
+    path: "/api/people/orgs",
   });
 
-  const load = async () => {
-    console.log("Loading orgs");
+  const reload = async () => {
+    setLoading(true);
     try {
-      id ? setOrg(await retrieveItem(id)) : setAllOrgs(await getAll());
+      const result = await getAll();
+      if (result) {
+        setItems(result);
+      }
       setError(undefined);
     } catch (error: any) {
-      setOrg(undefined);
       setError(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const update = async (id: string, updatedOrg: MutateOrg) => {
-    setUpdating(true);
-    try {
-      const didUpdate = await updateItem(id, updatedOrg);
-      if (didUpdate) {
-        setOrg({
-          ...org!,
-          name: updatedOrg.name,
-          external_id: updatedOrg.external_id,
-        });
-      }
-    } catch (error: any) {
-      setUpdateError(error);
-    } finally {
-      setUpdating(false);
+  const createItem = async (newOrg: MutateOrg) => {
+    const createdOrg = await crudCreateItem(newOrg);
+    setItems([...items, createdOrg]);
+  };
+
+  const retrieveItem = async (id: string) => {
+    const result = await crudRetrieveItem(id);
+    let index = items.findIndex((org) => org.id === id);
+    if (index >= 0) {
+      items[index] = { ...items[index], ...result };
+    } else {
+      setItems([...items, result]);
     }
   };
 
-  const create = async (newOrg: MutateOrg) => {
-    setCreating(true);
-    try {
-      const newOrg = await createItem(newOrg);
-      setOrg(newOrg);
-    } catch (error: any) {
-      setCreatingError(error);
-    } finally {
-      setCreating(false);
+  const updateItem = async (id: string, updatedOrg: MutateOrg) => {
+    const didUpdate = await crudUpdateItem(id, updatedOrg);
+    if (didUpdate) {
+      let index = items.findIndex((org) => org.id === id);
+      if (index >= 0) {
+        items[index] = { ...items[index], ...updatedOrg };
+      }
     }
   };
+
+  const deleteItem = async (id: string) => {
+    const didDelete = await crudDeleteItem(id);
+    if (didDelete) {
+      setItems(items.filter((org) => org.id !== id));
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (loadOnMount) await reload();
+    })();
+  }, []);
 
   return {
-    org,
-    allOrgs,
-    load,
+    items,
     loading,
     error,
-    update,
-    updating,
-    updateError,
-    create,
-    creating,
-    creatingError,
+    reload,
+    createItem,
+    retrieveItem,
+    updateItem,
+    deleteItem,
   };
 }
