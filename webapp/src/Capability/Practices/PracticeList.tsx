@@ -2,9 +2,8 @@ import { useState } from "react";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading/Loading";
-import { usePractices } from "../../Client/Practices";
-import { NewPractice, Practice } from "../../Client/Practice";
 import { AddPracticeModal } from "./AddPracticeModal";
+import { MutatePractice, Practice, usePractice } from "../../Client/Practice";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -19,14 +18,14 @@ interface PracticeListProps {}
 
 export function PracticeList(props: PracticeListProps) {
   const { classes, theme } = useStyles();
-  const { practices, loading, add } = usePractices();
+  const { items, loading, createItem } = usePractice();
   const [addPracticeModalOpen, setAddPracticeModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
 
-  const rows = practices.map((row: Practice) => {
+  const rows = items.map((row: Practice) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
@@ -37,8 +36,8 @@ export function PracticeList(props: PracticeListProps) {
     );
   });
 
-  const submit = async (newPractice: NewPractice) => {
-    await add(newPractice);
+  const submit = async (newPractice: MutatePractice) => {
+    await createItem(newPractice);
     setAddPracticeModalOpen(false);
   };
 

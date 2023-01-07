@@ -17,7 +17,7 @@ export type MutatePractice = {
 
 export interface UsePracticeProps extends UseCRUDProps {}
 
-export function usePractice(props: UsePracticeProps) {
+export function usePractice(props?: UsePracticeProps) {
   const {
     items,
     loading,
