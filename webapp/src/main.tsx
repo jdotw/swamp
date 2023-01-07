@@ -4,8 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from "./Components/Home";
 import { PeopleShell } from "./People/PeopleShell";
-import { PeopleHome } from "./People/PeopleHome";
-import Individual from "./People/Individuals/Individual";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
@@ -29,6 +27,8 @@ import OrgUnitList from "./Org/Units/OrgUnitList";
 import OrgUnitHome from "./Org/Units/OrgUnitHome";
 import OrgRoleTypesList from "./Org/Roles/OrgRoleTypesList";
 import OrgRoleTypeHome from "./Org/Roles/OrgRoleTypeHome";
+import IndividualList from "./People/IndividualList";
+import IndividualHome from "./People/Individuals/IndividualHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -40,8 +40,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 
           {/* People */}
           <Route path="people" element={<PeopleShell />}>
-            <Route index element={<PeopleHome />} />
-            <Route path=":individualId" element={<Individual />} />
+            <Route index element={<IndividualList />} />
+            <Route path=":individualId" element={<IndividualHome />} />
           </Route>
 
           {/* Organisation */}
