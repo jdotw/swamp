@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ChapterHome from "../Capability/Chapters/ChapterHome";
 import { useCRUD } from "../CRUD/CRUD";
+import { Chapter } from "./Chapter";
 import { Individual } from "./Individual";
 import { PracticeRoleType } from "./PracticeRoleTypes";
 
@@ -10,16 +11,7 @@ export type Practice = {
   chapters: Chapter[];
 };
 
-export type NewPractice = {
-  name: string;
-};
-
-export type Chapter = {
-  id: string;
-  name: string;
-};
-
-export type NewChapter = {
+export type MutatePractice = {
   name: string;
 };
 
