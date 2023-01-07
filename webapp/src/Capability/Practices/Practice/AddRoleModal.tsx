@@ -2,14 +2,14 @@ import { Button, Modal, Group, Select } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useIndividual } from "../../../Client/Individual";
-import { NewPracticeRole } from "../../../Client/Practice";
+import { MutatePracticeRole } from "../../../Client/PracticeRole";
 import { usePracticeRoleTypes } from "../../../Client/PracticeRoleTypes";
 import Loading from "../../../Loading/Loading";
 
 interface AddRoleModalProps {
   practiceId: string;
   opened: boolean;
-  onSubmit: (role: NewPracticeRole) => void;
+  onSubmit: (role: MutatePracticeRole) => void;
   onClose: () => void;
 }
 
@@ -55,7 +55,7 @@ export function AddRoleModal({
 
   const submitForm = (values: AddPracticeFormValues) => {
     // Make sure we update a copy, not the actual practice
-    let role: NewPracticeRole = {
+    let role: MutatePracticeRole = {
       practice_id: practiceId,
       individual_id: values.individual_id,
       practice_role_type_id: values.role_type_id,

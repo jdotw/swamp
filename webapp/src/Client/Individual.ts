@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { e } from "vitest/dist/index-761e769b";
 import { useCRUD } from "../CRUD/CRUD";
-import { ChapterRole } from "./Chapter";
-import { PracticeRole } from "./Practice";
+import { ChapterRole } from "./ChapterRole";
+import { PracticeRole } from "./PracticeRole";
 import { SquadRole } from "./Squad";
 import { TribeRole } from "./Tribe";
 

@@ -2,13 +2,13 @@ import { Grid, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { ChapterRole } from "../../Client/Chapter";
+import { ChapterRole } from "../../Client/ChapterRole";
 import {
   useIndividual,
   Individual as IndividualType,
   MutateIndividual,
 } from "../../Client/Individual";
-import { PracticeRole } from "../../Client/Practice";
+import { PracticeRole } from "../../Client/PracticeRole";
 import { SquadRole } from "../../Client/Squad";
 import { TribeRole } from "../../Client/Tribe";
 import Loading from "../../Loading/Loading";

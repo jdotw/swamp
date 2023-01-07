@@ -106,6 +106,7 @@ describe("usePractice hook", () => {
       const expectedItem: Practice = {
         id: itemId,
         name: "Practice Name",
+        chapters: [],
       };
       const hook = await renderUsePracticeHook();
       mockRetrieveItem.mockResolvedValueOnce(expectedItem);

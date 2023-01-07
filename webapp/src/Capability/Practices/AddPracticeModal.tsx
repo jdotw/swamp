@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewPractice, Practice } from "../../Client/Practice";
+import { MutatePractice, Practice } from "../../Client/Practice";
 
 interface AddPracticeFormProps {
   opened: boolean;
-  onSubmit: (practice: NewPractice) => void;
+  onSubmit: (practice: MutatePractice) => void;
   onClose: () => void;
 }
 
@@ -31,7 +31,7 @@ export function AddPracticeModal({
 
   const submitForm = (values: AddPracticeFormValues) => {
     // Make sure we update a copy, not the actual practice
-    let practice: NewPractice = {
+    let practice: MutatePractice = {
       name: values.name,
     };
     onSubmit(practice);
