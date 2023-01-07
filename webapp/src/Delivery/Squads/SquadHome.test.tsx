@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { addTestPolyfills } from "../../TestHelpers/UITestHelpers";
 
-global.ResizeObserver = require("resize-observer-polyfill");
+addTestPolyfills();
 
 describe("SquadHome", () => {
   const mockedUseSquad = vi.fn();

@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { addTestPolyfills } from "../../TestHelpers/UITestHelpers";
 import OrgUnitList from "./OrgUnitList";
 
-global.ResizeObserver = require("resize-observer-polyfill");
+addTestPolyfills();
 
 const renderOrgUnitList = () => {
   const route = "/org/units";
