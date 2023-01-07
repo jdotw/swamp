@@ -42,10 +42,19 @@ export function useIndividual(props?: UseIndividualProps) {
     deleteItem,
   } = useCRUD<Individual, MutateIndividual>({
     path: "/api/people/individuals",
-    loadOnMount: props?.id ? false : props?.loadOnMount,
+    loadOnMount: props?.id
+      ? false
+      : props?.loadOnMount === undefined
+      ? true
+      : props?.loadOnMount,
   });
 
   const { id } = props || { id: undefined };
+  const loadTribesOnMount = props?.id
+    ? props?.loadOnMount === undefined
+      ? true
+      : props?.loadOnMount
+    : false;
 
   const {
     items: tribeRoles,
@@ -54,6 +63,7 @@ export function useIndividual(props?: UseIndividualProps) {
     reload: reloadTribeRoles,
   } = useCRUD<TribeRole, undefined>({
     path: `/api/delivery/individuals/${id}/triberoles`,
+    loadOnMount: loadTribesOnMount,
   });
 
   const {
@@ -63,6 +73,7 @@ export function useIndividual(props?: UseIndividualProps) {
     reload: reloadSquadRoles,
   } = useCRUD<SquadRole, undefined>({
     path: `/api/delivery/individuals/${id}/squadroles`,
+    loadOnMount: loadTribesOnMount,
   });
 
   const {
@@ -71,7 +82,8 @@ export function useIndividual(props?: UseIndividualProps) {
     error: practiceRolesError,
     reload: reloadPracticeRoles,
   } = useCRUD<PracticeRole, undefined>({
-    path: `/api/delivery/individuals/${id}/practiceroles`,
+    path: `/api/capability/individuals/${id}/practiceroles`,
+    loadOnMount: loadTribesOnMount,
   });
 
   const {
@@ -80,7 +92,8 @@ export function useIndividual(props?: UseIndividualProps) {
     error: chapterRolesError,
     reload: reloadChapterRoles,
   } = useCRUD<ChapterRole, undefined>({
-    path: `/api/delivery/individuals/${id}/chapterroles`,
+    path: `/api/capability/individuals/${id}/chapterroles`,
+    loadOnMount: loadTribesOnMount,
   });
 
   const reloadRoles = async () => {

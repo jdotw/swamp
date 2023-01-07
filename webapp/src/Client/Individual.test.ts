@@ -168,11 +168,30 @@ describe("useIndividual hook", () => {
       first_name: "New",
       last_name: "Individual",
     };
-    it("should not perform the initial load", async () => {
+    it("should not perform the initial load for all individuals", async () => {
       await renderUseIndividualHook({ id: individualId });
-      expect(useCRUD).toBeCalledWith({
+      expect(useCRUD).toHaveBeenNthCalledWith(1, {
         path,
         loadOnMount: false,
+      });
+    });
+    it("should perform the initial load for the role useCRUDs", async () => {
+      await renderUseIndividualHook({ id: individualId });
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: `/api/delivery/individuals/${individualId}/triberoles`,
+        loadOnMount: true,
+      });
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: `/api/delivery/individuals/${individualId}/squadroles`,
+        loadOnMount: true,
+      });
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: `/api/capability/individuals/${individualId}/practiceroles`,
+        loadOnMount: true,
+      });
+      expect(useCRUD).toHaveBeenCalledWith({
+        path: `/api/capability/individuals/${individualId}/chapterroles`,
+        loadOnMount: true,
       });
     });
     it("should call retrieveItem with the specified id", async () => {
