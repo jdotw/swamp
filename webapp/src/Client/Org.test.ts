@@ -1,12 +1,19 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Mock, vi } from "vitest";
+import { e, s } from "vitest/dist/index-761e769b";
 import { useCRUD } from "../CRUD/CRUD";
 import { MutateOrg, Org, useOrg, UseOrgProps } from "./Org";
 
-const renderUseOrgHook = async (props: UseOrgProps = { loadOnMount: true }) => {
+interface RenderUseOrgHookProps extends UseOrgProps {
+  waitForLoad?: boolean;
+}
+
+const renderUseOrgHook = async (
+  props: RenderUseOrgHookProps = { loadOnMount: true, waitForLoad: true }
+) => {
   const hook = renderHook(() => useOrg(props));
-  if (props.loadOnMount) {
+  if (props.loadOnMount && props.waitForLoad) {
     await waitFor(() => {
       expect(hook.result.current.loading).toBeFalsy();
     });
@@ -20,13 +27,13 @@ vi.mock("../CRUD/CRUD", () => {
   };
 });
 
-const mockGetAll = vi.fn();
+const mockReload = vi.fn();
 const mockCreateItem = vi.fn();
 const mockRetrieveItem = vi.fn();
 const mockUpdateItem = vi.fn();
 const mockDeleteItem = vi.fn();
 (useCRUD as Mock<any[], any>).mockReturnValue({
-  getAll: mockGetAll,
+  reload: mockReload,
   retrieveItem: mockRetrieveItem,
   createItem: mockCreateItem,
   updateItem: mockUpdateItem,
@@ -46,184 +53,74 @@ describe("useOrg hook", () => {
     expect(hook.result.current).toHaveProperty("updateItem");
     expect(hook.result.current).toHaveProperty("deleteItem");
   });
-
-  it("should have loading set to true on creation", async () => {
-    // Can't use renderUseOrgHook here because
-    // it waits for loading to be false
-    const hook = renderHook(() => useOrg({}));
-    expect(hook.result.current.loading).toBe(true);
-    await waitFor(() => {
-      expect(hook.result.current.loading).toBeFalsy();
+  describe("reload function", () => {
+    it("should call useCRUD's reload function", async () => {
+      const hook = await renderUseOrgHook();
+      act(() => {
+        hook.result.current.reload();
+      });
+      expect(mockReload).toBeCalledTimes(1);
     });
   });
-
-  describe("when loading data for a specific org thats not in the list", () => {
-    it("should call useCRUD's retrieveItem", async () => {
-      mockGetAll.mockResolvedValueOnce([]);
+  describe("createItem function", () => {
+    it("should call useCRUD's createItem function", async () => {
+      const newItem = {
+        name: "New Org",
+        parent_id: "123",
+      } as MutateOrg;
       const hook = await renderUseOrgHook();
-      expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/people/orgs",
+      act(() => {
+        hook.result.current.createItem(newItem);
       });
-      expect(mockGetAll).toHaveBeenCalled();
-      expect(hook.result.current.items).toHaveLength(0);
-      mockRetrieveItem.mockResolvedValueOnce({
-        id: "3424",
-        name: "Single Test Org",
-      });
+      expect(mockCreateItem).toBeCalledWith(newItem);
+    });
+  });
+  describe("retrieveItem function", () => {
+    it("should call useCRUD's retrieveItem function", async () => {
+      const itemId = Math.floor(Math.random() * 1000).toString();
+      const expectedItem = {
+        id: itemId,
+        name: "New Org",
+      };
+      const hook = await renderUseOrgHook();
+      mockRetrieveItem.mockResolvedValueOnce(expectedItem);
       await act(async () => {
-        await hook.result.current.retrieveItem("3424");
+        const result = await hook.result.current.retrieveItem(itemId);
+        expect(result).toBe(expectedItem);
       });
-      expect(mockRetrieveItem).toHaveBeenCalled();
-      expect(hook.result.current.items).toHaveLength(1);
+      expect(mockRetrieveItem).toBeCalledWith(itemId);
     });
   });
-
-  describe("when loading data for a specific org that is already in the list", () => {
-    it("should call useCRUD's retrieveItem", async () => {
-      mockGetAll.mockResolvedValueOnce([
-        {
-          id: "3424",
-          name: "Existing Test Org",
-        },
-      ]);
+  describe("updateItem function", () => {
+    it("should call useCRUD's updateItem function", async () => {
+      const itemId = Math.floor(Math.random() * 1000).toString();
+      const itemMutation = {
+        name: "Updated Org Name",
+      };
       const hook = await renderUseOrgHook();
-      expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/people/orgs",
-      });
-      expect(mockGetAll).toHaveBeenCalled();
-      expect(hook.result.current.items).toHaveLength(1);
-      const newerName = "Newer Name from Backend";
-      mockRetrieveItem.mockResolvedValueOnce({
-        id: "3424",
-        name: newerName,
-      });
+      const expectedResult = true;
+      mockUpdateItem.mockResolvedValueOnce(expectedResult);
       await act(async () => {
-        await hook.result.current.retrieveItem("3424");
+        const result = await hook.result.current.updateItem(
+          itemId,
+          itemMutation
+        );
+        expect(result).toBe(expectedResult);
       });
-      expect(mockRetrieveItem).toHaveBeenCalled();
-      expect(hook.result.current.items).toHaveLength(1);
-      expect(hook.result.current.items[0].name).toBe(newerName);
+      expect(mockUpdateItem).toBeCalledWith(itemId, itemMutation);
     });
   });
-
-  describe("when loading all orgs", () => {
-    it("should call useCRUD's getAllItems", async () => {
-      await renderUseOrgHook();
-      expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/people/orgs",
-      });
-      expect(mockGetAll).toHaveBeenCalled();
-      expect(mockRetrieveItem).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("when loadOnMount is false", () => {
-    it("should not call useCRUD's getAllItems", async () => {
-      await renderUseOrgHook({ loadOnMount: false });
-      expect(mockGetAll).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("when an error occurs loading data", () => {
-    it("should set the error property", async () => {
-      mockGetAll.mockRejectedValueOnce(new Error("Test Error"));
+  describe("deleteItem function", () => {
+    it("should call useCRUD's deleteItem function", async () => {
+      const itemId = Math.floor(Math.random() * 1000).toString();
       const hook = await renderUseOrgHook();
-      expect(hook.result.current.error).toBeTruthy();
-    });
-    it("should set the loading state to false", async () => {
-      mockGetAll.mockRejectedValueOnce(new Error("Test Error"));
-      const hook = await renderUseOrgHook();
-      expect(hook.result.current.loading).toBeFalsy();
-    });
-  });
-
-  describe("when creating a new org", () => {
-    it("should call useCRUD's createItem", async () => {
-      const hook = await renderUseOrgHook();
-      await act(async () =>
-        hook.result.current.createItem({
-          name: "Test Org",
-        } as MutateOrg)
-      );
-      expect(mockCreateItem).toHaveBeenCalled();
-    });
-    it("should add the created org to the list of orgs", async () => {
-      const hook = await renderUseOrgHook();
-      expect(hook.result.current.items).toHaveLength(0);
+      const expectedResult = true;
+      mockDeleteItem.mockResolvedValueOnce(expectedResult);
       await act(async () => {
-        await hook.result.current.createItem({
-          name: "Test Org",
-        } as Org);
+        const result = await hook.result.current.deleteItem(itemId);
+        expect(result).toBe(expectedResult);
       });
-      expect(hook.result.current.items).toHaveLength(1);
-    });
-  });
-
-  describe("when updating an org", () => {
-    it("should call useCRUD with the expected path", async () => {
-      const { result } = await renderUseOrgHook();
-      expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/people/orgs",
-      });
-    });
-
-    it("should call useCRUD's updateItem", async () => {
-      const hook = await renderUseOrgHook();
-      await act(async () =>
-        hook.result.current.updateItem("1", {
-          name: "Updated Org",
-        } as MutateOrg)
-      );
-      expect(mockUpdateItem).toHaveBeenCalled();
-    });
-    it("should update the org in the list of orgs", async () => {
-      mockGetAll.mockResolvedValueOnce([
-        {
-          id: "1",
-          name: "Test Org",
-        },
-      ]);
-      mockUpdateItem.mockResolvedValueOnce(true);
-      const hook = await renderUseOrgHook();
-      expect(mockGetAll).toHaveBeenCalledTimes(1);
-      expect(hook.result.current.items).toHaveLength(1);
-      const updatedName = "Updated Test Org Name";
-      await hook.result.current.updateItem("1", {
-        name: updatedName,
-      } as MutateOrg);
-      expect(hook.result.current.items).toHaveLength(1);
-      expect(hook.result.current.items[0].name).toBe(updatedName);
-    });
-  });
-
-  describe("when deleting an org", () => {
-    it("should call useCRUD with the expected path", async () => {
-      const { result } = await renderUseOrgHook();
-      expect(useCRUD).toHaveBeenCalledWith({
-        path: "/api/people/orgs",
-      });
-    });
-
-    it("should call useCRUD's deleteItem", async () => {
-      const hook = await renderUseOrgHook();
-      await act(async () => hook.result.current.deleteItem("1"));
-      expect(mockDeleteItem).toHaveBeenCalled();
-    });
-    it("should remove the org in the list of orgs", async () => {
-      mockGetAll.mockResolvedValueOnce([
-        {
-          id: "1",
-          name: "Test Org",
-        },
-      ]);
-      mockDeleteItem.mockResolvedValueOnce(true);
-      const hook = await renderUseOrgHook();
-      expect(mockGetAll).toHaveBeenCalledTimes(1);
-      expect(hook.result.current.items).toHaveLength(1);
-      await act(async () => {
-        await hook.result.current.deleteItem("1");
-      });
-      expect(hook.result.current.items).toHaveLength(0);
+      expect(mockDeleteItem).toBeCalledWith(itemId);
     });
   });
 });
