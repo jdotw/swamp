@@ -3,7 +3,7 @@ import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { NewChapterRole } from "../../Client/Chapter";
 import { useChapterRoleTypes } from "../../Client/ChapterRoleTypes";
-import { usePeople } from "../../Client/People";
+import { useIndividual } from "../../Client/Individual";
 import Loading from "../../Loading/Loading";
 
 interface AddRoleModalProps {
@@ -27,7 +27,7 @@ export function AddRoleModal({
   chapterId,
 }: AddRoleModalProps) {
   const { loading: loadingRoleTypes, roleTypes } = useChapterRoleTypes();
-  const { loading: loadingPeople, people: individuals } = usePeople();
+  const { loading: loadingPeople, items: individuals } = useIndividual();
 
   const form = useForm({
     initialValues: {

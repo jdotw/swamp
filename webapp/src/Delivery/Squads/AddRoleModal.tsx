@@ -2,9 +2,9 @@ import { Button, Modal, Group, Select } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { NewSquadRole } from "../../Client/Squad";
-import { usePeople } from "../../Client/People";
 import Loading from "../../Loading/Loading";
 import { useSquadRoleTypes } from "../../Client/SquadRoleTypes";
+import { useIndividual } from "../../Client/Individual";
 
 interface AddRoleModalProps {
   tribeId: string;
@@ -27,7 +27,7 @@ export function AddRoleModal({
   squadId,
 }: AddRoleModalProps) {
   const { loading: loadingRoleTypes, roleTypes } = useSquadRoleTypes();
-  const { loading: loadingPeople, people: individuals } = usePeople();
+  const { loading: loadingPeople, items: individuals } = useIndividual();
 
   const form = useForm({
     initialValues: {

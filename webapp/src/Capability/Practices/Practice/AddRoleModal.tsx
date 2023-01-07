@@ -1,7 +1,7 @@
 import { Button, Modal, Group, Select } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { usePeople } from "../../../Client/People";
+import { useIndividual } from "../../../Client/Individual";
 import { NewPracticeRole } from "../../../Client/Practice";
 import { usePracticeRoleTypes } from "../../../Client/PracticeRoleTypes";
 import Loading from "../../../Loading/Loading";
@@ -25,7 +25,7 @@ export function AddRoleModal({
   practiceId,
 }: AddRoleModalProps) {
   const { loading: loadingRoleTypes, roleTypes } = usePracticeRoleTypes();
-  const { loading: loadingPeople, people: individuals } = usePeople();
+  const { loading: loadingPeople, items: individuals } = useIndividual();
 
   const form = useForm({
     initialValues: {
