@@ -1,6 +1,9 @@
-import React, { useState } from "react";
-import { usePeople } from "../Client/People";
-import { Individual, MutateIndividual } from "../Client/Individual";
+import { useState } from "react";
+import {
+  Individual,
+  MutateIndividual,
+  useIndividual,
+} from "../Client/Individual";
 import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
@@ -15,24 +18,21 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface PeopleHomeProps {}
+interface IndividualListProps {}
 
-export function PeopleHome(props: PeopleHomeProps) {
+export function IndividualList(props: IndividualListProps) {
   const { classes, theme } = useStyles();
-  const { people, loading: loadingPeople, add: addIndividual } = usePeople();
+  const { items, loading, createItem } = useIndividual();
   const [addIndividualModalOpen, setAddIndividualModalOpen] = useState(false);
 
-  if (loadingPeople) {
+  if (loading) {
     return <Loading />;
   }
 
-  const rows = people.map((row: Individual) => {
+  const rows = items.map((row: Individual) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
-        <td>
-          <Link to={id}>{row.id}</Link>
-        </td>
         <td>
           <Link to={id}>{row.first_name}</Link>
         </td>
@@ -47,7 +47,7 @@ export function PeopleHome(props: PeopleHomeProps) {
   });
 
   const onAddSubmit = async (newIndividual: MutateIndividual) => {
-    await addIndividual(newIndividual);
+    await createItem(newIndividual);
     setAddIndividualModalOpen(false);
   };
 
@@ -58,7 +58,6 @@ export function PeopleHome(props: PeopleHomeProps) {
           <Table verticalSpacing="xs">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>External ID</th>
@@ -76,11 +75,13 @@ export function PeopleHome(props: PeopleHomeProps) {
       <MutateIndividualModal
         title={"Onboard Individual"}
         opened={addIndividualModalOpen}
-        onSubmit={onAddSubmit}
+        onSubmit={(v) => {
+          onAddSubmit(v);
+        }}
         onClose={() => setAddIndividualModalOpen(false)}
       />
     </>
   );
 }
 
-export default PeopleHome;
+export default IndividualList;
