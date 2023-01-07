@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { e } from "vitest/dist/index-761e769b";
 import { useCRUD } from "../CRUD/CRUD";
 import { ChapterRole } from "./Chapter";
 import { PracticeRole } from "./Practice";
@@ -24,123 +25,121 @@ export type MutateIndividual = {
   last_name: string;
 };
 
-interface UseIndividualProps {
+export interface UseIndividualProps {
+  loadOnMount?: boolean;
   id?: string;
 }
 
-export function useIndividual({ id }: UseIndividualProps) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(undefined);
-  const [individual, setIndividual] = useState<Individual>();
-
-  const [updating, setUpdating] = useState(false);
-  const [updateError, setUpdateError] = useState(undefined);
-
-  const [adding, setAdding] = useState(false);
-  const [addingError, setAddingError] = useState(undefined);
-
-  const { retrieveItem, updateItem, createItem } = useCRUD<
-    Individual,
-    MutateIndividual
-  >({
+export function useIndividual(props?: UseIndividualProps) {
+  const {
+    reload,
+    items,
+    loading,
+    error,
+    createItem,
+    retrieveItem,
+    updateItem,
+    deleteItem,
+  } = useCRUD<Individual, MutateIndividual>({
     path: "/api/people/individuals",
+    loadOnMount: props?.id ? false : props?.loadOnMount,
   });
 
-  const load = async (id: string) => {
-    try {
-      setIndividual(await retrieveItem(id));
-      setError(undefined);
-    } catch (error: any) {
-      setIndividual(undefined);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { id } = props || { id: undefined };
 
-  const update = async (id: string, updatedIndividual: MutateIndividual) => {
-    setUpdating(true);
-    try {
-      const didUpdate = await updateItem(id, updatedIndividual);
-      if (didUpdate) {
-        setIndividual({
-          ...individual!,
-          first_name: updatedIndividual.first_name,
-          middle_names: updatedIndividual.middle_names,
-          last_name: updatedIndividual.last_name,
-        });
-      }
-    } catch (error: any) {
-      setUpdateError(error);
-    } finally {
-      setUpdating(false);
-    }
-  };
-
-  const { getAll: getTribeRoleItems } = useCRUD<TribeRole, undefined>({
+  const {
+    items: tribeRoles,
+    loading: tribeRolesLoading,
+    error: tribeRolesError,
+    reload: reloadTribeRoles,
+  } = useCRUD<TribeRole, undefined>({
     path: `/api/delivery/individuals/${id}/triberoles`,
   });
 
-  const [tribeRoles, setTribeRoles] = useState<TribeRole[]>([]);
-
-  const getTribeRoles = async () => {
-    const result = await getTribeRoleItems();
-    setTribeRoles(result);
-  };
-
-  const { getAll: getSquadRoleItems } = useCRUD<SquadRole, undefined>({
+  const {
+    items: squadRoles,
+    loading: squadRolesLoading,
+    error: squadRolesError,
+    reload: reloadSquadRoles,
+  } = useCRUD<SquadRole, undefined>({
     path: `/api/delivery/individuals/${id}/squadroles`,
   });
 
-  const [squadRoles, setSquadRoles] = useState<SquadRole[]>([]);
-
-  const getSquadRoles = async () => {
-    const result = await getSquadRoleItems();
-    setSquadRoles(result);
-  };
-
-  const { getAll: getPracticeRoleItems } = useCRUD<PracticeRole, undefined>({
-    path: `/api/capability/individuals/${id}/practiceroles`,
+  const {
+    items: practiceRoles,
+    loading: practiceRolesLoading,
+    error: practiceRolesError,
+    reload: reloadPracticeRoles,
+  } = useCRUD<PracticeRole, undefined>({
+    path: `/api/delivery/individuals/${id}/practiceroles`,
   });
 
-  const [practiceRoles, setPracticeRoles] = useState<PracticeRole[]>([]);
-
-  const getPracticeRoles = async () => {
-    const result = await getPracticeRoleItems();
-    setPracticeRoles(result);
-  };
-
-  const { getAll: getChapterRoleItems } = useCRUD<ChapterRole, undefined>({
-    path: `/api/capability/individuals/${id}/chapterroles`,
+  const {
+    items: chapterRoles,
+    loading: chapterRolesLoading,
+    error: chapterRolesError,
+    reload: reloadChapterRoles,
+  } = useCRUD<ChapterRole, undefined>({
+    path: `/api/delivery/individuals/${id}/chapterroles`,
   });
 
-  const [chapterRoles, setChapterRoles] = useState<ChapterRole[]>([]);
-
-  const getChapterRoles = async () => {
-    const result = await getChapterRoleItems();
-    setChapterRoles(result);
+  const reloadRoles = async () => {
+    await reloadTribeRoles();
+    await reloadSquadRoles();
+    await reloadPracticeRoles();
+    await reloadChapterRoles();
   };
 
   useEffect(() => {
-    if (id) {
-      load(id);
+    const individualId = id;
+    if (individualId) {
+      (async () => {
+        const result = await retrieveItem(individualId);
+        await reloadRoles();
+      })();
     }
   }, [id]);
 
+  const [loadingRoles, setLoadingRoles] = useState(false);
+  useEffect(() => {
+    setLoadingRoles(
+      tribeRolesLoading ||
+        squadRolesLoading ||
+        practiceRolesLoading ||
+        chapterRolesLoading
+    );
+  }, [
+    tribeRolesLoading,
+    squadRolesLoading,
+    practiceRolesLoading,
+    chapterRolesLoading,
+  ]);
+
+  const [loadingRolesError, setLoadingRolesError] = useState<any>();
+  useEffect(() => {
+    setLoadingRolesError(
+      tribeRolesError ||
+        squadRolesError ||
+        practiceRolesError ||
+        chapterRolesError
+    );
+  }, [tribeRolesError, squadRolesError, practiceRolesError, chapterRolesError]);
+
   return {
+    items,
     loading,
-    individual,
     error,
-    update,
-    updating,
-    updateError,
+    reload,
+    createItem,
+    retrieveItem,
+    updateItem,
+    deleteItem,
+    reloadRoles,
+    loadingRoles,
+    loadingRolesError,
     tribeRoles,
-    getTribeRoles,
     squadRoles,
-    getSquadRoles,
     practiceRoles,
-    getPracticeRoles,
     chapterRoles,
-    getChapterRoles,
   };
 }
