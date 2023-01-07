@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { e } from "vitest/dist/index-761e769b";
 import { useBackend } from "./Backend";
 
-export interface UseCRUDProps {
+export interface UseCRUDOptionalProps {
   domain?: string;
-  path: string;
   loadOnMount?: boolean;
+}
+
+export interface UseCRUDProps extends UseCRUDOptionalProps {
+  path: string;
 }
 
 interface TypeWithID {
