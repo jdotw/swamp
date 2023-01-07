@@ -36,7 +36,7 @@ export interface UseChapterProps {
   id?: string;
 }
 
-export function useChapter({ practiceId, id }: UseChapterProps) {
+export function useChapterRole({ practiceId, id }: UseChapterProps) {
   const [chapter, setChapter] = useState<Chapter>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(undefined);

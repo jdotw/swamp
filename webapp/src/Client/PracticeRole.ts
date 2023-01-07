@@ -32,7 +32,7 @@ interface UsePracticeProps {
   id?: string;
 }
 
-export function usePractice({ id }: UsePracticeProps) {
+export function usePracticeRole({ id }: UsePracticeProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(undefined);
   const [practice, setPractice] = useState<Practice>();
