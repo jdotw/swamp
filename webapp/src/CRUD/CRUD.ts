@@ -1,17 +1,46 @@
 import { useEffect, useState } from "react";
+import { e } from "vitest/dist/index-761e769b";
 import { useBackend } from "./Backend";
 
-interface UseCRUDProps {
+export interface UseCRUDProps {
   domain?: string;
   path: string;
+  loadOnMount?: boolean;
 }
 
-export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
+interface TypeWithID {
+  id: string;
+}
+
+export function useCRUD<ItemType extends TypeWithID, NewItemType>({
+  domain,
+  path,
+  loadOnMount = true,
+}: UseCRUDProps) {
+  const [items, setItems] = useState<ItemType[]>([]);
+
+  const [loading, setLoading] = useState(loadOnMount);
+  const [error, setError] = useState<Error>();
+
   const { authHeaders, urlForPath } = useBackend({
     domain,
   });
-
   const url = urlForPath(path);
+
+  const reload = async () => {
+    setLoading(true);
+    try {
+      const result = await getAll();
+      if (result) {
+        setItems(result);
+      }
+      setError(undefined);
+    } catch (error: any) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getAll = async (): Promise<ItemType[]> => {
     const response = await fetch(url, {
@@ -23,17 +52,18 @@ export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
     return response_json;
   };
 
-  const createItem = async (childItem: NewItemType) => {
+  const createItem = async (newItem: NewItemType) => {
     const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(childItem),
+      body: JSON.stringify(newItem),
       headers: {
         "Content-Type": "application/json",
         ...(await authHeaders()),
       },
     });
-    const response_json: ItemType = await response.json();
-    return response_json;
+    const createdItem = (await response.json()) as ItemType;
+    setItems([...items, createdItem]);
+    return createdItem;
   };
 
   const retrieveItem = async (id: string) => {
@@ -43,7 +73,14 @@ export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
         ...(await authHeaders()),
       },
     });
-    return (await response.json()) as ItemType;
+    const item = (await response.json()) as ItemType;
+    let index = items.findIndex((item) => item.id === id);
+    if (index >= 0) {
+      items[index] = { ...items[index], ...item };
+    } else {
+      setItems([...items, item]);
+    }
+    return item;
   };
 
   const updateItem = async (id: string, updatedItem: NewItemType) => {
@@ -56,6 +93,10 @@ export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
         ...(await authHeaders()),
       },
     });
+    let index = items.findIndex((item) => item.id === id);
+    if (index >= 0) {
+      items[index] = { ...items[index], ...updatedItem };
+    }
     return response.status === 204;
   };
 
@@ -67,10 +108,21 @@ export function useCRUD<ItemType, NewItemType>({ domain, path }: UseCRUDProps) {
         ...(await authHeaders()),
       },
     });
+    setItems(items.filter((item) => item.id !== id));
+    return response.status === 204;
   };
 
+  useEffect(() => {
+    (async () => {
+      if (loadOnMount) await reload();
+    })();
+  }, []);
+
   return {
-    getAll,
+    items,
+    loading,
+    error,
+    reload,
     createItem,
     retrieveItem,
     updateItem,
