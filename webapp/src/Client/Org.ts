@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCRUD } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDProps } from "../CRUD/CRUD";
 
 export type Org = {
   id: string;
@@ -12,13 +12,9 @@ export type MutateOrg = {
   parent_id?: string;
 };
 
-export interface UseOrgProps {
-  loadOnMount?: boolean;
-}
+export interface UseOrgProps {}
 
-export function useOrg({ loadOnMount = true }: UseOrgProps) {
-  console.log("loadOnMount: ", loadOnMount);
-
+export function useOrg(props?: UseOrgProps) {
   const {
     items,
     loading,
@@ -29,8 +25,8 @@ export function useOrg({ loadOnMount = true }: UseOrgProps) {
     updateItem,
     deleteItem,
   } = useCRUD<Org, MutateOrg>({
+    ...props,
     path: "/api/people/orgs",
-    loadOnMount,
   });
 
   return {

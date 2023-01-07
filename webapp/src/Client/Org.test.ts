@@ -1,23 +1,13 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Mock, vi } from "vitest";
-import { e, s } from "vitest/dist/index-761e769b";
 import { useCRUD } from "../CRUD/CRUD";
 import { MutateOrg, Org, useOrg, UseOrgProps } from "./Org";
 
-interface RenderUseOrgHookProps extends UseOrgProps {
-  waitForLoad?: boolean;
-}
+interface RenderUseOrgHookProps extends UseOrgProps {}
 
-const renderUseOrgHook = async (
-  props: RenderUseOrgHookProps = { loadOnMount: true, waitForLoad: true }
-) => {
+const renderUseOrgHook = async (props?: RenderUseOrgHookProps) => {
   const hook = renderHook(() => useOrg(props));
-  if (props.loadOnMount && props.waitForLoad) {
-    await waitFor(() => {
-      expect(hook.result.current.loading).toBeFalsy();
-    });
-  }
   return hook;
 };
 
@@ -40,7 +30,28 @@ const mockDeleteItem = vi.fn();
   deleteItem: mockDeleteItem,
 });
 
+const path = "/api/people/orgs";
+
 describe("useOrg hook", () => {
+  it("should call useCRUD with expected parameters", async () => {
+    await renderUseOrgHook({ loadOnMount: true });
+    expect(useCRUD).toBeCalledTimes(1);
+    expect(useCRUD).toBeCalledWith({
+      path,
+      loadOnMount: true,
+    });
+  });
+  describe("when loadOnMount=false", () => {
+    it("should call useCRUD with loadOnMount=false", async () => {
+      await renderUseOrgHook({ loadOnMount: false });
+      expect(useCRUD).toBeCalledTimes(1);
+      expect(useCRUD).toBeCalledWith({
+        path,
+        loadOnMount: false,
+      });
+    });
+  });
+
   it("should return expected parameters", async () => {
     const hook = await renderUseOrgHook();
     expect(hook.result.current).toHaveProperty("reload");
