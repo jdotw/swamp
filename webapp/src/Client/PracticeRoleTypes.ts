@@ -3,7 +3,7 @@ import { useCRUD } from "../CRUD/CRUD";
 import { NewPractice, Practice } from "./Practice";
 
 export type PracticeRoleType = {
-  id: number;
+  id: string;
   name: string;
 };
 
