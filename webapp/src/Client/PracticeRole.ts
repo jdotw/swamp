@@ -4,7 +4,7 @@ import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 import { Chapter } from "./Chapter";
 import { Individual } from "./Individual";
 import { Practice } from "./Practice";
-import { PracticeRoleType } from "./PracticeRoleTypes";
+import { PracticeRoleType } from "./PracticeRoleType";
 
 export type PracticeRole = {
   id: string;

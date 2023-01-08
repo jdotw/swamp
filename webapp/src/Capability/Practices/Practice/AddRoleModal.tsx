@@ -3,7 +3,7 @@ import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useIndividual } from "../../../Client/Individual";
 import { MutatePracticeRole } from "../../../Client/PracticeRole";
-import { usePracticeRoleTypes } from "../../../Client/PracticeRoleTypes";
+import { usePracticeRoleType } from "../../../Client/PracticeRoleType";
 import Loading from "../../../Loading/Loading";
 
 interface AddRoleModalProps {
@@ -24,7 +24,7 @@ export function AddRoleModal({
   onClose,
   practiceId,
 }: AddRoleModalProps) {
-  const { loading: loadingRoleTypes, roleTypes } = usePracticeRoleTypes();
+  const { loading: loadingRoleTypes, roleTypes } = usePracticeRoleType();
   const { loading: loadingPeople, items: individuals } = useIndividual();
 
   const form = useForm({

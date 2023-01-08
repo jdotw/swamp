@@ -3,7 +3,7 @@ import ChapterHome from "../Capability/Chapters/ChapterHome";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 import { Chapter } from "./Chapter";
 import { Individual } from "./Individual";
-import { PracticeRoleType } from "./PracticeRoleTypes";
+import { PracticeRoleType } from "./PracticeRoleType";
 
 export type Practice = {
   id: string;

@@ -2,7 +2,7 @@ import { Button, Modal, Group } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { NewPractice } from "../../Client/Practice";
-import { NewPracticeRoleType } from "../../Client/PracticeRoleTypes";
+import { NewPracticeRoleType } from "../../Client/PracticeRoleType";
 
 interface AddPracticeRoleTypeModalProps {
   opened: boolean;
