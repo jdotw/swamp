@@ -12,10 +12,10 @@ export type Individual = {
   first_name: string;
   middle_names?: string;
   last_name: string;
-  tribe_roles: TribeRole[];
-  squad_roles: SquadRole[];
-  practice_roles: PracticeRole[];
-  chapter_roles: ChapterRole[];
+  tribe_roles?: TribeRole[];
+  squad_roles?: SquadRole[];
+  practice_roles?: PracticeRole[];
+  chapter_roles?: ChapterRole[];
 };
 
 export type MutateIndividual = {
