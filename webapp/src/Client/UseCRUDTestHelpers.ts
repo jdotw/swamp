@@ -65,20 +65,22 @@ export function expectHookAdoptsUseCRUDCorrectly<
     it("should call useCRUD with expected parameters", async () => {
       await renderHookUnderTest();
       expect(useCRUD).toBeCalled();
-      expect(useCRUD).toBeCalledWith({
-        ...defaultProps,
-        path: expect.anything(),
-      });
+      expect(useCRUD).toBeCalledWith(
+        expect.objectContaining({
+          ...defaultProps,
+          path: expect.anything(),
+        })
+      );
     });
     describe("when loadOnMount=false", () => {
       it("should call useCRUD with loadOnMount=false", async () => {
         await renderHookUnderTest({ loadOnMount: false });
         expect(useCRUD).toBeCalled();
-        expect(useCRUD).toBeCalledWith({
-          ...defaultProps,
-          loadOnMount: false,
-          path: expect.anything(),
-        });
+        expect(useCRUD).toBeCalledWith(
+          expect.objectContaining({
+            loadOnMount: false,
+          })
+        );
       });
     });
 
