@@ -156,8 +156,7 @@ describe("PracticeHome", () => {
       });
     });
     it("renders a table of practice roles with the expected headers, rows and cells", async () => {
-      const { debug } = renderPage();
-      debug();
+      renderPage();
       expectTableToHave({
         tableTestId: "practice-roles-table",
         rowCount: mockPracticeRoles.length,
