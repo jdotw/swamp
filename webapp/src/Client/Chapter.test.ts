@@ -44,6 +44,7 @@ describe("useChapter hook", () => {
     await renderUseChapterHook({ ...defaultProps, loadOnMount: true });
     expect(useCRUD).toBeCalled();
     expect(useCRUD).toBeCalledWith({
+      ...defaultProps,
       loadOnMount: true,
     });
   });
@@ -52,6 +53,7 @@ describe("useChapter hook", () => {
       await renderUseChapterHook({ ...defaultProps, loadOnMount: false });
       expect(useCRUD).toBeCalled();
       expect(useCRUD).toBeCalledWith({
+        ...defaultProps,
         loadOnMount: false,
       });
     });
