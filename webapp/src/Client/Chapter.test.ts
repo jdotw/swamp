@@ -44,7 +44,6 @@ describe("useChapter hook", () => {
     await renderUseChapterHook({ ...defaultProps, loadOnMount: true });
     expect(useCRUD).toBeCalled();
     expect(useCRUD).toBeCalledWith({
-      ...defaultProps,
       loadOnMount: true,
     });
   });
@@ -53,8 +52,6 @@ describe("useChapter hook", () => {
       await renderUseChapterHook({ ...defaultProps, loadOnMount: false });
       expect(useCRUD).toBeCalled();
       expect(useCRUD).toBeCalledWith({
-        ...defaultProps,
-        path,
         loadOnMount: false,
       });
     });
@@ -69,6 +66,7 @@ describe("useChapter hook", () => {
     expect(hook.result.current).toHaveProperty("error");
 
     expect(hook.result.current).toHaveProperty("createItem");
+    expect(hook.result.current).toHaveProperty("retrieveItem");
     expect(hook.result.current).toHaveProperty("updateItem");
     expect(hook.result.current).toHaveProperty("deleteItem");
   });
