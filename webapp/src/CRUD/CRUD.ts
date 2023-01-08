@@ -12,8 +12,28 @@ export interface UseCRUDProps extends UseCRUDOptionalProps {
   path: string;
 }
 
-interface TypeWithID {
+export interface TypeWithID {
   id: string;
+}
+
+export interface UseCRUDAdoptionInterface<
+  ItemType extends TypeWithID,
+  NewItemType
+> {
+  items: ItemType[];
+  loading: boolean;
+  error: any;
+  reload: () => Promise<void>;
+  createItem: (item: NewItemType) => Promise<ItemType>;
+  retrieveItem: (id: string) => Promise<ItemType>;
+  updateItem: (id: string, item: NewItemType) => Promise<boolean>;
+  deleteItem: (id: string) => Promise<boolean>;
+}
+
+export interface UseCRUDInterface<ItemType extends TypeWithID, NewItemType>
+  extends UseCRUDAdoptionInterface<ItemType, NewItemType> {
+  urlForPath: (path: string) => string;
+  authHeaders: () => Promise<Record<string, string>>;
 }
 
 export function useCRUD<ItemType extends TypeWithID, NewItemType>({
@@ -21,7 +41,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   domain,
   path,
   loadOnMount = true,
-}: UseCRUDProps) {
+}: UseCRUDProps): UseCRUDInterface<ItemType, NewItemType> {
   const [items, setItems] = useState<ItemType[]>([]);
 
   const [loading, setLoading] = useState(loadOnMount);
