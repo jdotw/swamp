@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ChapterHome from "../Capability/Chapters/ChapterHome";
-import { useCRUD, UseCRUDProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 import { Chapter } from "./Chapter";
 import { Individual } from "./Individual";
 import { PracticeRoleType } from "./PracticeRoleTypes";
@@ -15,7 +15,7 @@ export type MutatePractice = {
   name: string;
 };
 
-export interface UsePracticeProps extends UseCRUDProps {}
+export interface UsePracticeProps extends UseCRUDOptionalProps {}
 
 export function usePractice(props?: UsePracticeProps) {
   const {

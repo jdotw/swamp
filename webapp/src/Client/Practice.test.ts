@@ -77,6 +77,17 @@ describe("usePractice hook", () => {
     expect(hook.result.current).toHaveProperty("deleteItem");
   });
 
+  describe("when created with a specific id", () => {
+    it("should call useCRUD with expected parameters", async () => {
+      const id = Math.floor(Math.random() * 1000).toString();
+      await renderUsePracticeHook({ ...defaultProps, id });
+      expect(useCRUD).toBeCalledWith({
+        ...defaultProps,
+        id,
+      });
+    });
+  });
+
   describe("reload function", () => {
     it("should call useCRUD's reload function", async () => {
       const hook = await renderUsePracticeHook();
