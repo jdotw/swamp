@@ -43,6 +43,10 @@ usePracticeMock.mockImplementation(() => ({
 }));
 
 describe("PracticeHome", () => {
+  it("should call usePractice with the practiceId", async () => {
+    renderPage();
+    expect(usePracticeMock).toHaveBeenCalledWith({ id: "2" });
+  });
   describe("when loading=true", () => {
     beforeEach(() => {
       usePracticeMock.mockImplementation(() => ({

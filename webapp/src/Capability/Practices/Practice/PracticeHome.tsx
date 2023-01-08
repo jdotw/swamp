@@ -30,7 +30,7 @@ interface PracticeHomeProps {}
 export function PracticeHome(props: PracticeHomeProps) {
   const { practiceId: id } = useParams();
   const { classes } = useStyles();
-  const { items, loading, createItem: createChapter } = usePractice();
+  const { items, loading, createItem: createChapter } = usePractice({ id });
   // const { items: roles, loading: loadingRoles } = usePracticeRole();
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
