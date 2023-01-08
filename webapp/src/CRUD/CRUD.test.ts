@@ -14,8 +14,8 @@ function mockFetchResponse(data: any, code: number = 200) {
   });
 }
 
-function mockFetchError(erroString: string) {
-  (fetch as Mock<any[], any>).mockRejectedValueOnce(new Error(erroString));
+function mockFetchError(errorString: string) {
+  (fetch as Mock<any[], any>).mockRejectedValueOnce(new Error(errorString));
 }
 
 type TestItemType = {
@@ -28,14 +28,12 @@ type MutateTestItemType = {
 };
 
 interface RenderUseCRUDHookProps extends UseCRUDProps {
-  initialLoadItems?: TestItemType[];
+  initialLoadItems?: TestItemType[] | TestItemType;
   initialLoadErrorString?: string;
   waitForLoading?: boolean;
 }
 
-const renderUseCRUDHook = async (
-  props: RenderUseCRUDHookProps = { path: "/" }
-) => {
+const renderUseCRUDHook = async (props: RenderUseCRUDHookProps = { path }) => {
   props = {
     loadOnMount: true,
     initialLoadItems: [],
@@ -81,14 +79,14 @@ describe("useCRUD", () => {
   });
 
   it("should have loading set to true on creation by default", async () => {
-    const hook = await renderUseCRUDHook({ path: "/", waitForLoading: false });
+    const hook = await renderUseCRUDHook({ path, waitForLoading: false });
     await act(async () => {
       expect(hook.result.current.loading).toBeTruthy();
     });
   });
 
   it("should perform an initial load on mount by default", async () => {
-    const hook = await renderUseCRUDHook({ path: "/", waitForLoading: false });
+    const hook = await renderUseCRUDHook({ path, waitForLoading: false });
     expect(hook.result.current.loading).toBe(true);
     await waitFor(() => {
       expect(hook.result.current.loading).toBeFalsy();
@@ -97,13 +95,46 @@ describe("useCRUD", () => {
 
   describe("when loadOnMount is false", () => {
     it("should have loading set to false on creation", async () => {
-      const hook = await renderUseCRUDHook({ path: "/", loadOnMount: false });
+      const hook = await renderUseCRUDHook({ path, loadOnMount: false });
       expect(hook.result.current.loading).toBeFalsy();
     });
 
     it("should not call fetch", async () => {
-      await renderUseCRUDHook({ loadOnMount: false, path: "/" });
+      await renderUseCRUDHook({ loadOnMount: false, path });
       expect(fetch).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("when an id is specified", () => {
+    const mockItem: TestItemType = {
+      id: "123",
+      name: "Test Item",
+    };
+    it("should call retrieveItem on mount", async () => {
+      const hook = await renderUseCRUDHook({
+        path,
+        id: "123",
+        initialLoadItems: mockItem,
+      });
+      await act(async () => {
+        expect(fetch).toHaveBeenCalledWith(
+          hook.result.current.urlForPath(`${path}/${mockItem.id}`),
+          expect.anything()
+        );
+      });
+    });
+    it("it should not call reload on mount", async () => {
+      const hook = await renderUseCRUDHook({
+        path,
+        id: "123",
+        initialLoadItems: mockItem,
+      });
+      await act(async () => {
+        expect(fetch).not.toHaveBeenCalledWith(
+          hook.result.current.urlForPath(path),
+          expect.anything()
+        );
+      });
     });
   });
 
@@ -131,17 +162,14 @@ describe("useCRUD", () => {
     describe("when an error occurs loading data", () => {
       const renderHookWithError = async () =>
         await renderUseCRUDHook({
-          path: "/",
+          path,
           waitForLoading: false,
           initialLoadErrorString: "Error loading data",
         });
       it("should set the error property", async () => {
         const hook = await renderHookWithError();
         expect(hook.result.current.loading).toBeTruthy();
-        await waitFor(() => {
-          expect(hook.result.current.loading).toBeFalsy();
-        });
-        await waitFor(() => {
+        await waitFor(async () => {
           expect(hook.result.current.error).toBeTruthy();
         });
       });
@@ -151,7 +179,6 @@ describe("useCRUD", () => {
         await waitFor(() => {
           expect(hook.result.current.loading).toBeFalsy();
         });
-        expect(hook.result.current.loading).toBeFalsy();
       });
     });
   });
@@ -200,17 +227,12 @@ describe("useCRUD", () => {
           name: "Existing Test Item",
         };
         const hook = await renderUseCRUDHook({
-          path: "/",
-          initialLoadItems: [
-            {
-              id: itemId,
-              name: "Existing Test Item",
-            },
-          ],
+          path,
+          initialLoadItems: [existingItem],
+          waitForLoading: true,
         });
-        await waitFor(() => {
-          expect(hook.result.current.items[0].name).toBe(existingItem.name);
-        });
+        expect(hook.result.current.items).toHaveLength(1);
+        expect(hook.result.current.items[0].name).toBe(existingItem.name);
         const newerName = "Newer Name from Backend";
         mockFetchResponse({
           id: itemId,
@@ -323,7 +345,7 @@ describe("useCRUD", () => {
       } as TestItemType;
       const renderHookForUpdate = async () =>
         await renderUseCRUDHook({
-          path: "/",
+          path,
           initialLoadItems: [existingItem],
           waitForLoading: true,
         });
@@ -376,7 +398,7 @@ describe("useCRUD", () => {
       } as TestItemType;
       const renderHookForDelete = async () =>
         await renderUseCRUDHook({
-          path: "/",
+          path,
           initialLoadItems: [existingItem],
           waitForLoading: true,
         });

@@ -3,6 +3,7 @@ import { e } from "vitest/dist/index-761e769b";
 import { useBackend } from "./Backend";
 
 export interface UseCRUDOptionalProps {
+  id?: string;
   domain?: string;
   loadOnMount?: boolean;
 }
@@ -16,6 +17,7 @@ interface TypeWithID {
 }
 
 export function useCRUD<ItemType extends TypeWithID, NewItemType>({
+  id: filterById,
   domain,
   path,
   loadOnMount = true,
@@ -23,7 +25,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   const [items, setItems] = useState<ItemType[]>([]);
 
   const [loading, setLoading] = useState(loadOnMount);
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<any>();
 
   const { authHeaders, urlForPath } = useBackend({
     domain,
@@ -33,7 +35,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   const reload = async () => {
     setLoading(true);
     try {
-      const result = await getAll();
+      const result = filterById
+        ? [await retrieveItem(filterById)]
+        : await getAll();
       if (result) {
         setItems(result);
       }
