@@ -33,7 +33,6 @@ vi.mock("../../../Client/Practice", () => {
     usePractice: vi.fn(),
   };
 });
-
 const mockUsePracticeReturn = {
   loading: false,
   items: [],
@@ -45,10 +44,9 @@ usePracticeMock.mockImplementation(() => ({
 
 vi.mock("../../../Client/PracticeRole", () => {
   return {
-    usePractice: vi.fn(),
+    usePracticeRole: vi.fn(),
   };
 });
-
 const mockPracticeRoles: PracticeRole[] = [
   {
     id: "1",
@@ -73,14 +71,13 @@ const mockPracticeRoles: PracticeRole[] = [
     start_date: "2020-01-01",
   },
 ];
-
 const mockUsePracticeRoleReturn = {
   loading: false,
   items: mockPracticeRoles,
 };
 const usePracticeRoleMock = usePracticeRole as Mock;
 usePracticeRoleMock.mockImplementation(() => ({
-  ...mockUsePracticeReturn,
+  ...mockUsePracticeRoleReturn,
 }));
 
 describe("PracticeHome", () => {
