@@ -54,7 +54,7 @@ export function AddChapterRoleTypeModal({
             <Button variant="outline" onClick={cancelClicked}>
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">Add</Button>
           </Group>
         </form>
       </Box>

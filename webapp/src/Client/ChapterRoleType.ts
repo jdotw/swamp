@@ -12,7 +12,7 @@ export type MutateChapterRoleType = {
 
 export interface UseChapterRoleTypeProps extends UseCRUDOptionalProps {}
 
-export function useChapterRoleType(props: UseChapterRoleTypeProps) {
+export function useChapterRoleType(props?: UseChapterRoleTypeProps) {
   const {
     items,
     loading,

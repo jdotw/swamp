@@ -3,10 +3,10 @@ import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading/Loading";
 import {
-  NewPracticeRoleType,
+  MutatePracticeRoleType,
   PracticeRoleType,
-  usePracticeRoleTypes,
-} from "../../Client/PracticeRoleTypes";
+  usePracticeRoleType,
+} from "../../Client/PracticeRoleType";
 import { AddPracticeRoleTypeModal } from "./AddPracticeRoleTypeModal";
 import {
   ChapterRoleType,
@@ -29,13 +29,13 @@ interface CapabilityRoleTypesHomeProps {}
 export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
   const { classes, theme } = useStyles();
   const {
-    roleTypes: practiceRoleTypes,
-    addPracticeRoleType,
+    items: practiceRoleTypes,
     loading: loadingPracticeRoleTypes,
-  } = usePracticeRoleTypes();
+    createItem: createPracticeRoleType,
+  } = usePracticeRoleType();
   const {
-    roleTypes: chapterRoleTypes,
-    addChapterRoleType,
+    items: chapterRoleTypes,
+    createItem: createChapterRoleType,
     loading: loadingChapterRoleTypes,
   } = useChapterRoleType();
   const [addPracticeRoleTypeModalOpen, setAddPracticeRoleTypeModalOpen] =
@@ -69,13 +69,15 @@ export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
     );
   });
 
-  const submitPracticeRoleType = async (newPractice: NewPracticeRoleType) => {
-    await addPracticeRoleType(newPractice);
+  const submitPracticeRoleType = async (
+    newPractice: MutatePracticeRoleType
+  ) => {
+    await createPracticeRoleType(newPractice);
     setAddPracticeRoleTypeModalOpen(false);
   };
 
   const submitChapterRoleType = async (newChapter: MutateChapterRoleType) => {
-    await addChapterRoleType(newChapter);
+    await createChapterRoleType(newChapter);
     setAddChapterRoleTypeModalOpen(false);
   };
 
@@ -84,7 +86,7 @@ export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
       <div>
         <Title order={3}>Practice Role Types</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid="practice-role-types-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -102,7 +104,7 @@ export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
       <div>
         <Title order={3}>Chapter Role Types</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid="chapter-role-types-table">
             <thead>
               <tr>
                 <th>Name</th>

@@ -1,12 +1,12 @@
 import { Button, Modal, Group } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewPractice } from "../../Client/Practice";
-import { NewPracticeRoleType } from "../../Client/PracticeRoleType";
+import { MutatePractice } from "../../Client/Practice";
+import { MutatePracticeRoleType } from "../../Client/PracticeRoleType";
 
 interface AddPracticeRoleTypeModalProps {
   opened: boolean;
-  onSubmit: (roleType: NewPracticeRoleType) => void;
+  onSubmit: (roleType: MutatePracticeRoleType) => void;
   onClose: () => void;
 }
 
@@ -30,7 +30,7 @@ export function AddPracticeRoleTypeModal({
   });
 
   const submitForm = (values: AddPracticeRoleTypeModalValues) => {
-    let newRoleType: NewPracticeRoleType = {
+    let newRoleType: MutatePracticeRoleType = {
       name: values.name,
     };
     onSubmit(newRoleType);
@@ -55,7 +55,7 @@ export function AddPracticeRoleTypeModal({
             <Button variant="outline" onClick={cancelClicked}>
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">Add</Button>
           </Group>
         </form>
       </Box>

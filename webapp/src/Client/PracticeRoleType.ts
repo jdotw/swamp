@@ -12,7 +12,7 @@ export type MutatePracticeRoleType = {
 
 export interface UsePracticeRoleTypeProps extends UseCRUDOptionalProps {}
 
-export function usePracticeRoleType(props: UsePracticeRoleTypeProps) {
+export function usePracticeRoleType(props?: UsePracticeRoleTypeProps) {
   const {
     items,
     loading,
