@@ -1,11 +1,11 @@
 import { Button, Modal, Group } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewChapterRoleType } from "../../Client/ChapterRoleTypes";
+import { MutateChapterRoleType } from "../../Client/ChapterRoleType";
 
 interface AddChapterRoleTypeModalProps {
   opened: boolean;
-  onSubmit: (roleType: NewChapterRoleType) => void;
+  onSubmit: (roleType: MutateChapterRoleType) => void;
   onClose: () => void;
 }
 
@@ -29,7 +29,7 @@ export function AddChapterRoleTypeModal({
   });
 
   const submitForm = (values: AddChapterRoleTypeModalValues) => {
-    let newRoleType: NewChapterRoleType = {
+    let newRoleType: MutateChapterRoleType = {
       name: values.name,
     };
     onSubmit(newRoleType);

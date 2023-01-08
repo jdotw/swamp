@@ -2,7 +2,7 @@ import { Button, Modal, Group, Select } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { MutateChapterRole } from "../../Client/ChapterRole";
-import { useChapterRoleTypes } from "../../Client/ChapterRoleTypes";
+import { useChapterRoleType } from "../../Client/ChapterRoleType";
 import { useIndividual } from "../../Client/Individual";
 import Loading from "../../Loading/Loading";
 
@@ -26,7 +26,7 @@ export function AddRoleModal({
   practiceId,
   chapterId,
 }: AddRoleModalProps) {
-  const { loading: loadingRoleTypes, roleTypes } = useChapterRoleTypes();
+  const { loading: loadingRoleTypes, roleTypes } = useChapterRoleType();
   const { loading: loadingPeople, items: individuals } = useIndividual();
 
   const form = useForm({

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
-import { ChapterRoleType } from "./ChapterRoleTypes";
+import { ChapterRoleType } from "./ChapterRoleType";
 import { Individual } from "./Individual";
 
 export type Chapter = {

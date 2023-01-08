@@ -10,9 +10,9 @@ import {
 import { AddPracticeRoleTypeModal } from "./AddPracticeRoleTypeModal";
 import {
   ChapterRoleType,
-  NewChapterRoleType,
-  useChapterRoleTypes,
-} from "../../Client/ChapterRoleTypes";
+  MutateChapterRoleType,
+  useChapterRoleType,
+} from "../../Client/ChapterRoleType";
 import { AddChapterRoleTypeModal } from "./AddChapterRoleTypeModal";
 
 const useStyles = createStyles((theme) => ({
@@ -37,7 +37,7 @@ export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
     roleTypes: chapterRoleTypes,
     addChapterRoleType,
     loading: loadingChapterRoleTypes,
-  } = useChapterRoleTypes();
+  } = useChapterRoleType();
   const [addPracticeRoleTypeModalOpen, setAddPracticeRoleTypeModalOpen] =
     useState(false);
   const [addChapterRoleTypeModalOpen, setAddChapterRoleTypeModalOpen] =
@@ -74,7 +74,7 @@ export function CapabilityRoleTypesHome(props: CapabilityRoleTypesHomeProps) {
     setAddPracticeRoleTypeModalOpen(false);
   };
 
-  const submitChapterRoleType = async (newChapter: NewChapterRoleType) => {
+  const submitChapterRoleType = async (newChapter: MutateChapterRoleType) => {
     await addChapterRoleType(newChapter);
     setAddChapterRoleTypeModalOpen(false);
   };
