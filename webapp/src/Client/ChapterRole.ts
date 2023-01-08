@@ -36,8 +36,6 @@ export interface UseChapterRoleProps extends UseCRUDOptionalProps {
 }
 
 export function useChapterRole(props: UseChapterRoleProps) {
-  const { id } = props;
-
   const {
     items,
     loading,
@@ -48,7 +46,7 @@ export function useChapterRole(props: UseChapterRoleProps) {
     updateItem,
     deleteItem,
   } = useCRUD<ChapterRole, MutateChapterRole>({
-    path: `/api/capability/practiceroles`,
+    path: `/api/capability/chapterroles`,
     ...props,
   });
 
