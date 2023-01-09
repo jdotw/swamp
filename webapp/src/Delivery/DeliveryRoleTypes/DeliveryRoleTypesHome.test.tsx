@@ -6,6 +6,8 @@ import {
   addTestPolyfills,
   expectTableToHave,
 } from "../../../test/UITestHelpers";
+import { useSquadRoleTypes } from "../../Client/SquadRoleTypes";
+import { useTribeRoleTypes } from "../../Client/TribeRoleTypes";
 import DeliveryRoleTypesHome from "./DeliveryRoleTypesHome";
 
 addTestPolyfills();
@@ -25,30 +27,30 @@ const renderPage = () =>
     </MemoryRouter>
   );
 
-vi.mock("../../Client/TribeRoleType", () => {
+vi.mock("../../Client/TribeRoleTypes", () => {
   return {
-    useTribeRoleType: vi.fn(),
+    useTribeRoleTypes: vi.fn(),
   };
 });
 const mockUseTribeRoleTypeReturn = {
   loading: false,
   items: [],
 };
-const useTribeRoleTypeMock = useTribeRoleType as Mock;
+const useTribeRoleTypeMock = useTribeRoleTypes as Mock;
 useTribeRoleTypeMock.mockImplementation(() => ({
   ...mockUseTribeRoleTypeReturn,
 }));
 
-vi.mock("../../Client/SquadRoleType", () => {
+vi.mock("../../Client/SquadRoleTypes", () => {
   return {
-    useSquadRoleType: vi.fn(),
+    useSquadRoleTypes: vi.fn(),
   };
 });
 const mockUseSquadRoleTypeReturn = {
   loading: false,
   items: [],
 };
-const useSquadRoleTypeMock = useSquadRoleType as Mock;
+const useSquadRoleTypeMock = useSquadRoleTypes as Mock;
 useSquadRoleTypeMock.mockImplementation(() => ({
   ...mockUseSquadRoleTypeReturn,
 }));
