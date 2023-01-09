@@ -1,5 +1,6 @@
 import { Text } from "@mantine/core";
-import { LoadingComponentTestID } from "../Components/Home";
+
+export const LoadingComponentTestID = "loading-component";
 
 function Loading() {
   return (
