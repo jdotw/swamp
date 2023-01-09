@@ -63,11 +63,7 @@ function MutateOrgUnitModal({
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      data-testid={MutateOrgUnitModalTestID}
-    >
+    <Modal opened={opened} onClose={onClose}>
       <Box
         sx={{ maxWidth: 300 }}
         mx="auto"
