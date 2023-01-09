@@ -23,7 +23,7 @@ export interface MutateOrgUnitModalProps {
 }
 
 function MutateOrgUnitModal({
-  mode,
+  mode = MutateOrgUnitModalMode.Create,
   org,
   opened,
   onSubmit,
@@ -44,16 +44,7 @@ function MutateOrgUnitModal({
 
   const submitForm = (values: MutateOrgUnitModalValues) => {
     // Make sure we update a copy, not the actual individual
-    let updatedOrgUnit: MutateOrg = {
-      ...individual,
-      external_id:
-        mode === MutateOrgUnitModalMode.Edit
-          ? individual!.external_id
-          : values.external_id,
-      first_name: values.first_name,
-      middle_names: values.middle_names,
-      last_name: values.last_name,
-    };
+    let updatedOrgUnit: MutateOrg = { ...org, name: values.name };
     onSubmit(updatedOrgUnit);
   };
 
@@ -83,7 +74,7 @@ function MutateOrgUnitModal({
             </Button>
             <Button type="submit">
               {mode === MutateOrgUnitModalMode.Create && "Add"}
-              {mode === MutateOrgUnitModalMode.Edit && "Save"}
+              {mode === MutateOrgUnitModalMode.Edit && "Update"}
             </Button>
           </Group>
         </form>
