@@ -28,5 +28,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<LineManager, LineManagerDto>();
     CreateMap<CreateLineManagerDto, LineManager>();
     CreateMap<UpdateLineManagerDto, LineManager>();
+
+    CreateMap<OrgUnit, OrgUnitDto>();
+    CreateMap<MutateOrgUnitDto, OrgUnit>();
   }
 }
