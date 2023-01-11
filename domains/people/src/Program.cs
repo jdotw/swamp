@@ -30,10 +30,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PeopleDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("PeopleDatabase"))
             .UseSnakeCaseNamingConvention());
-// builder.Services.AddScoped<IIndividualService, IndividualService>();
-// builder.Services.AddScoped<ILineManagerService, LineManagerService>();
 builder.Services.AddScoped<IIndividualRepository, IndividualRepository>();
 builder.Services.AddScoped<ILineManagerRepository, LineManagerRepository>();
+builder.Services.AddScoped<IOrgUnitRepository, OrgUnitRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
@@ -51,3 +50,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
