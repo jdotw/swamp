@@ -45,7 +45,9 @@ public class OrgUnitRepository : RepositoryBase<OrgUnit>, IOrgUnitRepository
       .FirstOrDefaultAsync();
     if (dbOrgUnit is not null)
     {
-      // dbOrgUnit.Identities = updatedOrgUnit.Identities;
+      dbOrgUnit.Name = updatedOrgUnit.Name;
+      dbOrgUnit.DisbandedDate = updatedOrgUnit.DisbandedDate;
+      dbOrgUnit.FormedDate = updatedOrgUnit.FormedDate;
       Update(dbOrgUnit);
       return await SaveAsync();
     }
