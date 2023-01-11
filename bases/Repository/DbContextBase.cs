@@ -20,11 +20,9 @@ namespace Base.Repository
         {
           case EntityState.Modified:
             entityWithTimestamps.UpdatedDate = DateTime.UtcNow;
-            Console.WriteLine($"Stamped for update: {e.Entry.Entity}");
             break;
           case EntityState.Added:
             entityWithTimestamps.CreatedDate = DateTime.UtcNow;
-            Console.WriteLine($"Stamped for insert: {e.Entry.Entity}");
             break;
         }
       }
