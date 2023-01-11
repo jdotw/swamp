@@ -9,6 +9,7 @@ public class PeopleDbContext : DbContextBase
   public DbSet<Individual> Individuals => Set<Individual>();
   public DbSet<Identity> Identities => Set<Identity>();
   public DbSet<LineManager> LineManagers => Set<LineManager>();
+  public DbSet<OrgUnit> OrgUnits => Set<OrgUnit>();
 
   public PeopleDbContext(DbContextOptions options) : base(options)
   {
