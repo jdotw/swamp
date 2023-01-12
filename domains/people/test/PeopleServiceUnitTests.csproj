@@ -20,10 +20,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\people_service.csproj" />
+    <ProjectReference Include="..\src\People.csproj" />
+    <ProjectReference Include="..\..\..\bases\bases.csproj" />
   </ItemGroup>
 
 </Project>
