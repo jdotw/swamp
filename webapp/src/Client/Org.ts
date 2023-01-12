@@ -26,7 +26,7 @@ export function useOrg(props?: UseOrgProps) {
     deleteItem,
   } = useCRUD<Org, MutateOrg>({
     ...props,
-    path: "/api/people/orgs",
+    path: "/api/people/orgunits",
   });
 
   return {
