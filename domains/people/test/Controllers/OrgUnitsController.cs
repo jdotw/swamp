@@ -9,34 +9,26 @@ using People.Controllers;
 using People.Entities;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Base.UnitTests;
 
 namespace people_service_tests;
 
-public class OrgUnitsControllerTests
+public class OrgUnitsControllerTests : ControllerUnitTestBase<OrgUnitsController, IOrgUnitRepository>
 {
-  const string jsonPath = "../../../Controllers/json/";
-
-  private readonly Mock<IOrgUnitRepository> _mockRepository;
-  private readonly Mock<IMapper> _mockMapper;
-  private readonly Mock<ILogger<OrgUnitsController>> _mockLogger;
+  private readonly OrgUnitsController _controller;
 
   private readonly OrgUnit _orgUnit;
   private readonly OrgUnitDto _orgUnitDto;
   private readonly MutateOrgUnitDto _mutateOrgUnitDto;
 
-  private readonly OrgUnitsController _controller;
-
-  public OrgUnitsControllerTests()
+  public OrgUnitsControllerTests() : base()
   {
+    _controller = new OrgUnitsController(_mockLogger.Object, _mockRepository.Object, _mockMapper.Object);
+
     _orgUnit = new OrgUnit() { Id = 1, Name = "Test" };
-
     _orgUnitDto = new OrgUnitDto() { Id = _orgUnit.Id, Name = _orgUnit.Name };
-
     _mutateOrgUnitDto = new MutateOrgUnitDto() { Name = "Updated Org Unit" };
 
-    _mockLogger = new Mock<ILogger<OrgUnitsController>>();
-
-    _mockMapper = new Mock<IMapper>();
     _mockMapper.Setup(x => x.Map<IEnumerable<OrgUnitDto>>(It.IsAny<List<OrgUnit>>()))
         .Returns(new List<OrgUnitDto> { _orgUnitDto });
     _mockMapper.Setup(x => x.Map<OrgUnitDto>(It.IsAny<OrgUnit>()))
@@ -44,11 +36,8 @@ public class OrgUnitsControllerTests
     _mockMapper.Setup(x => x.Map<OrgUnit>(It.IsAny<MutateOrgUnitDto>()))
         .Returns(_orgUnit);
 
-    _mockRepository = new Mock<IOrgUnitRepository>();
     _mockRepository.Setup(x => x.GetAllOrgUnitsAsync(It.IsAny<List<int>>()))
         .ReturnsAsync(new List<OrgUnit> { _orgUnit });
-
-    _controller = new OrgUnitsController(_mockLogger.Object, _mockRepository.Object, _mockMapper.Object);
   }
 
   [Fact]
