@@ -9,7 +9,7 @@ using People.Repository;
 
 #nullable disable
 
-namespace peopleservice.Migrations
+namespace People.Migrations
 {
   [DbContext(typeof(PeopleDbContext))]
   [Migration("20221222031347_InitialCreate")]
