@@ -25,8 +25,8 @@ import OrgShell from "./Org/OrgShell";
 import OrgHome from "./Org/OrgHome";
 import OrgUnitList from "./Org/Units/OrgUnitList";
 import OrgUnitHome from "./Org/Units/OrgUnitHome";
-import OrgRoleTypesList from "./Org/Roles/OrgRoleTypesList";
-import OrgRoleTypeHome from "./Org/Roles/OrgRoleTypeHome";
+import OrgRoleTypesList from "./Org/Roles/RoleTypesList";
+import RoleTypeHome from "./Org/Roles/RoleTypeHome";
 import IndividualList from "./People/IndividualList";
 import IndividualHome from "./People/Individuals/IndividualHome";
 
@@ -59,10 +59,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             {/* Roles Types */}
             <Route path="roletypes">
               <Route index element={<OrgRoleTypesList />} />
-              <Route
-                path="roletypes/:roleTypeId"
-                element={<OrgRoleTypeHome />}
-              />
+              <Route path="roletypes/:roleTypeId" element={<RoleTypeHome />} />
             </Route>
           </Route>
 
