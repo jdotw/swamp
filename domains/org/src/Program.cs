@@ -22,6 +22,7 @@ builder.Services.AddDbContext<OrgDbContext>(options =>
             .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

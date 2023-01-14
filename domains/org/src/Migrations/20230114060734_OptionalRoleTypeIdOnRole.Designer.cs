@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230114060734_OptionalRoleTypeIdOnRole")]
+    partial class OptionalRoleTypeIdOnRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,7 +283,7 @@ namespace Org.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("person_id");
 
-                    b.Property<int?>("RoleTypeId")
+                    b.Property<int>("RoleTypeId")
                         .HasColumnType("integer")
                         .HasColumnName("role_type_id");
 
@@ -550,6 +553,8 @@ namespace Org.Migrations
                     b.HasOne("Org.Entities.RoleType", "RoleType")
                         .WithMany("Roles")
                         .HasForeignKey("RoleTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_roles_role_types_role_type_id");
 
                     b.Navigation("Person");

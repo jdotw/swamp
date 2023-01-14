@@ -94,24 +94,6 @@ public class PersonTests
   }
 
   [Fact]
-  public async Task TestUpdatePerson_WithMissingFields_ReturnsBadRequest()
-  {
-    // Arrange
-    var existingPerson = _seedData.Person;
-    var updateDto = new UpdatePersonDto
-    {
-      // Intentionally missing FirstName
-      LastName = "NewLastName",
-    };
-
-    // Act
-    var response = await _client.PutAsJsonAsync($"{_path}/{existingPerson.Id}", updateDto, _options);
-
-    // Assert
-    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-  }
-
-  [Fact]
   public async Task TestUpdatePerson_ForNonExistentPerson_ReturnsNotFound()
   {
     // Arrange

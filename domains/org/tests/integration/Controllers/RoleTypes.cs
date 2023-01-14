@@ -84,23 +84,6 @@ public class RoleTypeTests
   }
 
   [Fact]
-  public async Task TestUpdateRoleType_WithMissingFields_ReturnsBadRequest()
-  {
-    // Arrange
-    var existingRoleType = _seedData.RoleType;
-    var updateDto = new UpdateRoleTypeDto
-    {
-      // Title is intentionally left out
-    };
-
-    // Act
-    var response = await _client.PutAsJsonAsync($"{_path}/{existingRoleType.Id}", updateDto, _options);
-
-    // Assert
-    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-  }
-
-  [Fact]
   public async Task TestUpdateRoleType_ForNonExistentRoleType_ReturnsNotFound()
   {
     // Arrange

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230114053549_RenamedPersonIDtoPersonId")]
+    partial class RenamedPersonIDtoPersonId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,10 +275,6 @@ namespace Org.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
-
                     b.Property<int>("PersonId")
                         .HasColumnType("integer")
                         .HasColumnName("person_id");
@@ -284,13 +283,13 @@ namespace Org.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("role_type_id");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.HasKey("Id")
                         .HasName("pk_roles");
@@ -502,7 +501,7 @@ namespace Org.Migrations
                         .HasConstraintName("fk_functions_practices_practice_id");
 
                     b.HasOne("Org.Entities.Role", "Role")
-                        .WithMany("Functions")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -583,11 +582,6 @@ namespace Org.Migrations
                 {
                     b.Navigation("Chapters");
 
-                    b.Navigation("Functions");
-                });
-
-            modelBuilder.Entity("Org.Entities.Role", b =>
-                {
                     b.Navigation("Functions");
                 });
 

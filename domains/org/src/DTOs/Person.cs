@@ -16,16 +16,16 @@ public class PersonDto
 
 public class CreatePersonDto
 {
-  public string ExternalId { get; set; } = null!;
+  public required string ExternalId { get; set; } = null!;
 
-  public string FirstName { get; set; } = null!;
+  public required string FirstName { get; set; } = null!;
   public string? MiddleNames { get; set; }
-  public string LastName { get; set; } = null!;
+  public required string LastName { get; set; } = null!;
 }
 
 public class UpdatePersonDto
 {
-  public string FirstName { get; set; } = null!;
+  public required string FirstName { get; set; } = null!;
   public string? MiddleNames { get; set; }
-  public string LastName { get; set; } = null!;
+  public required string LastName { get; set; } = null!;
 }
