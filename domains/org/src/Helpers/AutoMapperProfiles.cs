@@ -19,5 +19,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<Role, RoleDto>();
     CreateMap<CreateRoleDto, Role>();
     CreateMap<UpdateRoleDto, Role>();
+
+    CreateMap<FunctionType, FunctionTypeDto>();
+    CreateMap<CreateFunctionTypeDto, FunctionType>();
+    CreateMap<UpdateFunctionTypeDto, FunctionType>();
+
   }
 }
