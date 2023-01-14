@@ -25,7 +25,7 @@ public class CreatePersonDto
 
 public class UpdatePersonDto
 {
-  public string? FirstName { get; set; }
+  public string FirstName { get; set; } = null!;
   public string? MiddleNames { get; set; }
-  public string? LastName { get; set; }
+  public string LastName { get; set; } = null!;
 }

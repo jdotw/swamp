@@ -75,20 +75,60 @@ public class PersonTests
   }
 
   [Fact]
-  public async Task TestUpdatePerson()
+  public async Task TestUpdatePerson_OnSuccess_ReturnsNoContent()
   {
     // Arrange
     var existingPerson = _seedData.Person;
-
-    // Act
     var updateDto = new UpdatePersonDto
     {
+      FirstName = existingPerson.FirstName,
+      MiddleNames = existingPerson.MiddleNames,
       LastName = "NewLastName",
     };
+
+    // Act
     var response = await _client.PutAsJsonAsync($"{_path}/{existingPerson.Id}", updateDto, _options);
 
     // Assert
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+  }
+
+  [Fact]
+  public async Task TestUpdatePerson_WithMissingFields_ReturnsBadRequest()
+  {
+    // Arrange
+    var existingPerson = _seedData.Person;
+    var updateDto = new UpdatePersonDto
+    {
+      // Intentionally missing FirstName
+      LastName = "NewLastName",
+    };
+
+    // Act
+    var response = await _client.PutAsJsonAsync($"{_path}/{existingPerson.Id}", updateDto, _options);
+
+    // Assert
+    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+  [Fact]
+  public async Task TestUpdatePerson_ForNonExistentPerson_ReturnsNotFound()
+  {
+    // Arrange
+    var existingPerson = _seedData.Person;
+    var updateDto = new UpdatePersonDto
+    {
+      // Intentionally missing FirstName
+      FirstName = existingPerson.FirstName,
+      MiddleNames = existingPerson.MiddleNames,
+      LastName = "NewLastName",
+    };
+
+    // Act
+    var response = await _client.PutAsJsonAsync($"{_path}/4352345", updateDto, _options);
+
+    // Assert
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 
   [Fact]
