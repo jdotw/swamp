@@ -118,7 +118,6 @@ public class PersonTests
     var existingPerson = _seedData.Person;
     var updateDto = new UpdatePersonDto
     {
-      // Intentionally missing FirstName
       FirstName = existingPerson.FirstName,
       MiddleNames = existingPerson.MiddleNames,
       LastName = "NewLastName",

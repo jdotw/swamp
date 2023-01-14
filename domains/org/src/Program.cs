@@ -21,6 +21,7 @@ builder.Services.AddDbContext<OrgDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase"))
             .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

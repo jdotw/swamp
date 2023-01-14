@@ -11,5 +11,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<Person, PersonDto>();
     CreateMap<CreatePersonDto, Person>();
     CreateMap<UpdatePersonDto, Person>();
+
+    CreateMap<RoleType, RoleTypeDto>();
+    CreateMap<CreateRoleTypeDto, RoleType>();
+    CreateMap<UpdateRoleTypeDto, RoleType>();
+
   }
 }
