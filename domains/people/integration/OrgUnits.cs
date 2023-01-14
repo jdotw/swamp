@@ -1,9 +1,6 @@
 using System.Net;
-using System.Text.Json;
 using People.DTOs;
 using People.Entities;
-using JorgeSerrano.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using People.Repository;
 using Base.IntegrationTests;
