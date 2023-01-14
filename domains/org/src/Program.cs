@@ -18,7 +18,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrgDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("PeopleDatabase"))
+            options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase"))
             .UseSnakeCaseNamingConvention());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
