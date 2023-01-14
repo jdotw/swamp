@@ -8,8 +8,12 @@ namespace Base.Repository
   {
     public DbContextBase(DbContextOptions options) : base(options)
     {
-      ChangeTracker.Tracked += UpdateTimestamps;
-      ChangeTracker.StateChanged += UpdateTimestamps;
+      // When mocked, ChangeTracker is null
+      if (ChangeTracker is not null)
+      {
+        ChangeTracker.Tracked += UpdateTimestamps;
+        ChangeTracker.StateChanged += UpdateTimestamps;
+      }
     }
 
     private static void UpdateTimestamps(object? sender, EntityEntryEventArgs e)
