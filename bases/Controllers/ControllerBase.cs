@@ -9,17 +9,17 @@ public class ControllerBase<TEntity, TRepository> : Microsoft.AspNetCore.Mvc.Con
   where TEntity : class
   where TRepository : class
 {
-  protected readonly ILogger<ControllerBase> _logger;
-  protected readonly TRepository _repository;
-  protected readonly IMapper _mapper;
+  protected readonly ILogger<ControllerBase> Logger;
+  protected readonly TRepository Repository;
+  protected readonly IMapper Mapper;
 
   public ControllerBase(ILogger<ControllerBase> logger,
     TRepository repository,
     IMapper mapper)
   {
-    _logger = logger;
-    _repository = repository;
-    _mapper = mapper;
+    Logger = logger;
+    Repository = repository;
+    Mapper = mapper;
   }
 
 }
