@@ -1,6 +1,8 @@
 #!/bin/sh
 
 
+code ./domains/org
+sleep 0.2
 code ./domains/people
 sleep 0.2
 code ./domains/delivery
