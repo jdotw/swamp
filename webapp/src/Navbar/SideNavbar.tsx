@@ -43,15 +43,15 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = [
-  { link: "/people", label: "People", icon: IconUsers },
   {
     link: "/org",
     label: "Organisation",
     icon: IconUsers,
     links: [
       { label: "Home", link: "/org" },
-      { label: "Units", link: "/org/units" },
-      { label: "Roles", link: "/org/roletypes" },
+      { label: "People", link: "/org/people" },
+      { label: "Roles", link: "/org/roles" },
+      { label: "Teams", link: "/org/teams" },
     ],
   },
   {
@@ -61,7 +61,6 @@ const data = [
     links: [
       { label: "Home", link: "/capability" },
       { label: "Practices", link: "/capability/practices" },
-      { label: "Roles", link: "/capability/roletypes" },
     ],
   },
   {
@@ -71,7 +70,6 @@ const data = [
     links: [
       { label: "Home", link: "/delivery" },
       { label: "Tribes", link: "/delivery/tribes" },
-      { label: "Roles", link: "/delivery/roletypes" },
     ],
   },
 ];

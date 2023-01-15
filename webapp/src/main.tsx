@@ -29,6 +29,10 @@ import OrgRoleTypesList from "./Org/Roles/RoleTypesList";
 import RoleTypeHome from "./Org/Roles/RoleTypeHome";
 import IndividualList from "./People/IndividualList";
 import IndividualHome from "./People/Individuals/IndividualHome";
+import RolesList from "./Org/Roles/RolesList";
+import RoleHome from "./Org/Roles/RoleHome";
+import TeamsList from "./Org/Teams/TeamsList";
+import TeamHome from "./Org/Teams/TeamHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -38,28 +42,30 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
 
-          {/* People */}
-          <Route path="people" element={<PeopleShell />}>
-            <Route index element={<IndividualList />} />
-            <Route path=":individualId" element={<IndividualHome />} />
-          </Route>
-
           {/* Organisation */}
           <Route path="org" element={<OrgShell />}>
             <Route index element={<OrgHome />} />
 
-            {/* Practices */}
-            <Route path="units">
-              <Route index element={<OrgUnitList />} />
-              <Route path=":unitId">
-                <Route index element={<OrgUnitHome />} />
+            {/* People */}
+            <Route path="people">
+              <Route index element={<IndividualList />} />
+              <Route path=":individualId" element={<IndividualHome />} />
+            </Route>
+
+            {/* Roles */}
+            <Route path="roles">
+              <Route index element={<RolesList />} />
+              <Route path=":roleId">
+                <Route index element={<RoleHome />} />
               </Route>
             </Route>
 
-            {/* Roles Types */}
-            <Route path="roletypes">
-              <Route index element={<OrgRoleTypesList />} />
-              <Route path="roletypes/:roleTypeId" element={<RoleTypeHome />} />
+            {/* Teams */}
+            <Route path="teams">
+              <Route index element={<TeamsList />} />
+              <Route path=":teamId">
+                <Route index element={<TeamHome />} />
+              </Route>
             </Route>
           </Route>
 
