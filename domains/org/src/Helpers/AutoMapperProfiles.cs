@@ -51,5 +51,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreatePracticeDto, Practice>();
     CreateMap<UpdatePracticeDto, Practice>();
 
+    CreateMap<Chapter, ChapterDto>();
+    CreateMap<CreateChapterDto, Chapter>();
+    CreateMap<UpdateChapterDto, Chapter>();
   }
 }

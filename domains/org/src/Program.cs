@@ -31,6 +31,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITribeRepository, TribeRepository>();
 builder.Services.AddScoped<ISquadRepository, SquadRepository>();
 builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
+builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
