@@ -8,5 +8,5 @@ public class FunctionType : EntityBase
   public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? RetiredAtDate { get; set; }
 
-  public List<Function> Functions { get; set; } = new();
+  public virtual List<Function> Functions { get; set; } = new();
 }

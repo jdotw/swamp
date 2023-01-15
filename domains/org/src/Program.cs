@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using JorgeSerrano.Json;
 using Microsoft.EntityFrameworkCore;
 using Org.Repository;
@@ -10,6 +11,7 @@ builder.Services.AddControllers()
   .AddJsonOptions(
       options =>
         {
+          options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
           options.JsonSerializerOptions.PropertyNamingPolicy =
              new JsonSnakeCaseNamingPolicy();
         });
@@ -24,6 +26,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IFunctionTypeRepository, FunctionTypeRepository>();
+builder.Services.AddScoped<IFunctionRepository, FunctionRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

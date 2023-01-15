@@ -24,5 +24,9 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateFunctionTypeDto, FunctionType>();
     CreateMap<UpdateFunctionTypeDto, FunctionType>();
 
+    CreateMap<Function, FunctionDto>();
+    CreateMap<CreateFunctionDto, Function>();
+    CreateMap<UpdateFunctionDto, Function>();
+
   }
 }
