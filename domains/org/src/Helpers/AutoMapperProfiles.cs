@@ -43,6 +43,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTribeDto, Tribe>();
     CreateMap<UpdateTribeDto, Tribe>();
 
+    CreateMap<Squad, SquadDto>();
+    CreateMap<CreateSquadDto, Squad>();
+    CreateMap<UpdateSquadDto, Squad>();
+
     CreateMap<Practice, PracticeDto>();
     CreateMap<CreatePracticeDto, Practice>();
     CreateMap<UpdatePracticeDto, Practice>();

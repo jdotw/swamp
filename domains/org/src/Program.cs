@@ -29,6 +29,7 @@ builder.Services.AddScoped<IFunctionTypeRepository, FunctionTypeRepository>();
 builder.Services.AddScoped<IFunctionRepository, FunctionRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITribeRepository, TribeRepository>();
+builder.Services.AddScoped<ISquadRepository, SquadRepository>();
 builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -2,5 +2,6 @@ namespace Org.Entities;
 
 public class Squad : Unit
 {
-  public Tribe Tribe { get; set; } = null!;
+  public int TribeId { get; set; }
+  public virtual Tribe Tribe { get; set; } = null!;
 }
