@@ -23,10 +23,6 @@ import SquadRoleTypeHome from "./Delivery/DeliveryRoleTypes/SquadRoleType/SquadR
 import TribeRoleTypeHome from "./Delivery/DeliveryRoleTypes/TribeRoleType/TribeRoleTypeHome";
 import OrgShell from "./Org/OrgShell";
 import OrgHome from "./Org/OrgHome";
-import OrgUnitList from "./Org/Units/OrgUnitList";
-import OrgUnitHome from "./Org/Units/OrgUnitHome";
-import OrgRoleTypesList from "./Org/Roles/RoleTypesList";
-import RoleTypeHome from "./Org/Roles/RoleTypeHome";
 import IndividualList from "./People/IndividualList";
 import IndividualHome from "./People/Individuals/IndividualHome";
 import RolesList from "./Org/Roles/RolesList";
