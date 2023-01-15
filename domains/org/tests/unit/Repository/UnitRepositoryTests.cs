@@ -35,12 +35,14 @@ public class UnitRepositoryTests
     var update = new FakeUnit()
     {
       Id = 1,
-      Name = "Name",
-      Description = "Description",
+      Name = "New Name",
+      Description = "New Description",
       DisbandedDate = DateTimeOffset.Now,
       FormedDate = DateTimeOffset.UtcNow,
     };
     _repo.Object.UpdateUnitFields(update, existingUnit);
+    Assert.Equal(update.Name, existingUnit.Name);
+    Assert.Equal(update.Description, existingUnit.Description);
     Assert.Equal(update.DisbandedDate, existingUnit.DisbandedDate);
   }
 }

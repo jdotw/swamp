@@ -39,5 +39,9 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTeamDto, Team>();
     CreateMap<UpdateTeamDto, Team>();
 
+    CreateMap<Tribe, TribeDto>();
+    CreateMap<CreateTribeDto, Tribe>();
+    CreateMap<UpdateTribeDto, Tribe>();
+
   }
 }
