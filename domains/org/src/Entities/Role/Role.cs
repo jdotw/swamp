@@ -15,5 +15,8 @@ public class Role : EntityBase
   public int PersonId { get; set; }
   public Person Person { get; set; } = null!;
 
-  public List<Function> Functions { get; set; } = new();
+  public DateTimeOffset StartDate { get; set; }
+  public DateTimeOffset? EndDate { get; set; }
+
+  public virtual List<Function> Functions { get; set; } = new();
 }

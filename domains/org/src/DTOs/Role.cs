@@ -15,6 +15,9 @@ public class RoleDto
   public Boolean IsActive { get; set; }
   public string? Title { get; set; }
 
+  public DateTimeOffset StartDate { get; set; }
+  public DateTimeOffset? EndDate { get; set; }
+
   public List<Function> Functions { get; set; } = new();
 }
 
@@ -24,6 +27,8 @@ public class CreateRoleDto
   public int? RoleTypeId { get; set; }
   public Boolean IsActive { get; set; }
   public string? Title { get; set; }
+  public DateTimeOffset StartDate { get; set; }
+  public DateTimeOffset? EndDate { get; set; }
 }
 
 public class UpdateRoleDto
@@ -31,4 +36,5 @@ public class UpdateRoleDto
   public int? RoleTypeId { get; set; }
   public required Boolean IsActive { get; set; }
   public string? Title { get; set; }
+  public DateTimeOffset? EndDate { get; set; }
 }
