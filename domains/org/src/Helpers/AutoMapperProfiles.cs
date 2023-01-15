@@ -43,5 +43,9 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTribeDto, Tribe>();
     CreateMap<UpdateTribeDto, Tribe>();
 
+    CreateMap<Practice, PracticeDto>();
+    CreateMap<CreatePracticeDto, Practice>();
+    CreateMap<UpdatePracticeDto, Practice>();
+
   }
 }
