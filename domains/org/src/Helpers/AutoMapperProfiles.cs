@@ -28,5 +28,16 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateFunctionDto, Function>();
     CreateMap<UpdateFunctionDto, Function>();
 
+    CreateMap<Unit, UnitDto>()
+    .IncludeAllDerived();
+    CreateMap<CreateUnitDto, Unit>()
+    .IncludeAllDerived();
+    CreateMap<UpdateUnitDto, Unit>()
+    .IncludeAllDerived();
+
+    CreateMap<Team, TeamDto>();
+    CreateMap<CreateTeamDto, Team>();
+    CreateMap<UpdateTeamDto, Team>();
+
   }
 }

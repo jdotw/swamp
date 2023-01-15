@@ -27,6 +27,7 @@ builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IFunctionTypeRepository, FunctionTypeRepository>();
 builder.Services.AddScoped<IFunctionRepository, FunctionRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
