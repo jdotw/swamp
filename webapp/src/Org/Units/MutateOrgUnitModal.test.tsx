@@ -41,8 +41,7 @@ describe("MutateOrgUnitModal", () => {
       expect(screen.getByRole("heading", { name: /Add/i })).toBeInTheDocument();
     });
     it("should render an Add button", () => {
-      const { debug } = renderMutateOrgUnitModal();
-      debug();
+      renderMutateOrgUnitModal();
       expect(screen.getByRole("button", { name: /Add/i })).toBeInTheDocument();
     });
   });

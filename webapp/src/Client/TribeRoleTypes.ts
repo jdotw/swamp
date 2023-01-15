@@ -3,7 +3,7 @@ import { useCRUD } from "../CRUD/CRUD";
 import { NewTribe, Tribe } from "./Tribe";
 
 export type TribeRoleType = {
-  id: number;
+  id: string;
   name: string;
 };
 

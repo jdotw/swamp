@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCRUD } from "../CRUD/CRUD";
 
 export type SquadRoleType = {
-  id: number;
+  id: string;
   name: string;
 };
 

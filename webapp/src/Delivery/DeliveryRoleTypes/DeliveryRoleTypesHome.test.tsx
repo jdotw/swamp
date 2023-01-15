@@ -6,8 +6,8 @@ import {
   addTestPolyfills,
   expectTableToHave,
 } from "../../../test/UITestHelpers";
-import { useSquadRoleTypes } from "../../Client/SquadRoleTypes";
-import { useTribeRoleTypes } from "../../Client/TribeRoleTypes";
+import { SquadRoleType, useSquadRoleTypes } from "../../Client/SquadRoleTypes";
+import { TribeRoleType, useTribeRoleTypes } from "../../Client/TribeRoleTypes";
 import DeliveryRoleTypesHome from "./DeliveryRoleTypesHome";
 
 addTestPolyfills();
@@ -34,7 +34,8 @@ vi.mock("../../Client/TribeRoleTypes", () => {
 });
 const mockUseTribeRoleTypeReturn = {
   loading: false,
-  items: [],
+  roleTypes: [],
+  addTribeRoleType: vi.fn(),
 };
 const useTribeRoleTypeMock = useTribeRoleTypes as Mock;
 useTribeRoleTypeMock.mockImplementation(() => ({
@@ -48,7 +49,8 @@ vi.mock("../../Client/SquadRoleTypes", () => {
 });
 const mockUseSquadRoleTypeReturn = {
   loading: false,
-  items: [],
+  roleTypes: [],
+  addSquadRoleType: vi.fn(),
 };
 const useSquadRoleTypeMock = useSquadRoleTypes as Mock;
 useSquadRoleTypeMock.mockImplementation(() => ({
@@ -104,12 +106,12 @@ describe("DeliveryRoleTypesHome", () => {
     beforeEach(() => {
       useTribeRoleTypeMock.mockImplementation(() => ({
         ...mockUseTribeRoleTypeReturn,
-        items: mockTribeRoleTypes,
+        roleTypes: mockTribeRoleTypes,
         loading: false,
       }));
       useSquadRoleTypeMock.mockImplementation(() => ({
         ...mockUseSquadRoleTypeReturn,
-        items: mockSquadRoleTypes,
+        roleTypes: mockSquadRoleTypes,
         loading: false,
       }));
     });
@@ -141,7 +143,7 @@ describe("DeliveryRoleTypesHome", () => {
     beforeEach(() => {
       useTribeRoleTypeMock.mockImplementation(() => ({
         ...mockUseTribeRoleTypeReturn,
-        createItem: createItemMock,
+        addTribeRoleType: createItemMock,
       }));
       renderPage();
       const addButton = screen.getByRole("button", {
@@ -177,7 +179,7 @@ describe("DeliveryRoleTypesHome", () => {
     beforeEach(() => {
       useSquadRoleTypeMock.mockImplementation(() => ({
         ...mockUseSquadRoleTypeReturn,
-        createItem: createItemMock,
+        addSquadRoleType: createItemMock,
       }));
       renderPage();
       const addButton = screen.getByRole("button", {

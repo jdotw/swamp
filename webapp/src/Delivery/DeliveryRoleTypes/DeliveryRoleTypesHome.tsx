@@ -84,7 +84,7 @@ export function DeliveryRoleTypesHome(props: DeliveryRoleTypesHomeProps) {
       <div>
         <Title order={3}>Tribe Role Types</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid={"tribe-role-types-table"}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -102,7 +102,7 @@ export function DeliveryRoleTypesHome(props: DeliveryRoleTypesHomeProps) {
       <div>
         <Title order={3}>Squad Role Types</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid={"squad-role-types-table"}>
             <thead>
               <tr>
                 <th>Name</th>
