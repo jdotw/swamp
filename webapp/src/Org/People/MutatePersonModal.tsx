@@ -2,37 +2,37 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Individual, MutateIndividual } from "../Client/Individual";
+import { Person, MutatePerson } from "../../Client/Person";
 
-export enum MutateIndividualModalMode {
+export enum MutatePersonModalMode {
   Edit,
   Create,
 }
 
-interface MutateIndividualModalProps {
-  individual?: Individual;
+interface MutatePersonModalProps {
+  individual?: Person;
   opened: boolean;
-  onSubmit: (updatedIndividual: MutateIndividual) => void;
+  onSubmit: (updatedPerson: MutatePerson) => void;
   onClose: () => void;
-  mode?: MutateIndividualModalMode;
+  mode?: MutatePersonModalMode;
   title: string;
 }
 
-type MutateIndividualModalValues = {
+type MutatePersonModalValues = {
   first_name: string;
   middle_names?: string;
   last_name: string;
   external_id: string;
 };
 
-export function MutateIndividualModal({
+export function MutatePersonModal({
   individual,
   opened,
   onSubmit,
   onClose,
-  mode = MutateIndividualModalMode.Create,
+  mode = MutatePersonModalMode.Create,
   title,
-}: MutateIndividualModalProps) {
+}: MutatePersonModalProps) {
   const form = useForm({
     initialValues: {
       first_name: individual?.first_name ?? "",
@@ -43,7 +43,7 @@ export function MutateIndividualModal({
 
     validate: {
       external_id: (value) =>
-        mode === MutateIndividualModalMode.Create
+        mode === MutatePersonModalMode.Create
           ? /^(?!\s*$).+/.test(value)
             ? null
             : "External ID is required"
@@ -55,19 +55,19 @@ export function MutateIndividualModal({
     },
   });
 
-  const submitForm = (values: MutateIndividualModalValues) => {
+  const submitForm = (values: MutatePersonModalValues) => {
     // Make sure we update a copy, not the actual individual
-    let updatedIndividual: MutateIndividual = {
+    let updatedPerson: MutatePerson = {
       ...individual,
       external_id:
-        mode === MutateIndividualModalMode.Edit
+        mode === MutatePersonModalMode.Edit
           ? individual!.external_id
           : values.external_id,
       first_name: values.first_name,
       middle_names: values.middle_names,
       last_name: values.last_name,
     };
-    onSubmit(updatedIndividual);
+    onSubmit(updatedPerson);
   };
 
   const cancelClicked = () => {
@@ -79,7 +79,7 @@ export function MutateIndividualModal({
     <Modal opened={opened} onClose={onClose} title={title}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
-          {mode === MutateIndividualModalMode.Create && (
+          {mode === MutatePersonModalMode.Create && (
             <TextInput
               withAsterisk
               label="External ID"
@@ -109,8 +109,8 @@ export function MutateIndividualModal({
               Cancel
             </Button>
             <Button type="submit">
-              {mode === MutateIndividualModalMode.Create && "Add"}
-              {mode === MutateIndividualModalMode.Edit && "Save"}
+              {mode === MutatePersonModalMode.Create && "Add"}
+              {mode === MutatePersonModalMode.Edit && "Save"}
             </Button>
           </Group>
         </form>

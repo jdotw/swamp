@@ -1,9 +1,9 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Mock, vi } from "vitest";
-import { useIndividual } from "../Client/Individual";
-import { addTestPolyfills } from "../../test/UITestHelpers";
-import IndividualList from "./IndividualList";
+import { usePerson } from "../../Client/Person";
+import { addTestPolyfills } from "../../../test/UITestHelpers";
+import PersonList from "./PersonList";
 import userEvent from "@testing-library/user-event";
 
 addTestPolyfills();
@@ -11,30 +11,30 @@ addTestPolyfills();
 const renderPage = () =>
   render(
     <MemoryRouter>
-      <IndividualList />
+      <PersonList />
     </MemoryRouter>
   );
 
-vi.mock("../Client/Individual", () => {
+vi.mock("../../Client/Person", () => {
   return {
-    useIndividual: vi.fn(),
+    usePerson: vi.fn(),
   };
 });
 
-const mockUseIndividualReturn = {
+const mockUsePersonReturn = {
   loading: false,
   items: [],
 };
-const useIndividualMock = useIndividual as Mock;
-useIndividualMock.mockImplementation(() => ({
-  ...mockUseIndividualReturn,
+const usePersonMock = usePerson as Mock;
+usePersonMock.mockImplementation(() => ({
+  ...mockUsePersonReturn,
 }));
 
-describe("IndividualList", () => {
+describe("PersonList", () => {
   describe("when loading=true", () => {
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
         loading: true,
       }));
     });
@@ -45,14 +45,14 @@ describe("IndividualList", () => {
   });
   describe("when loading=false", () => {
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
         loading: false,
       }));
     });
-    it("renders an Onboard Individual Button", async () => {
+    it("renders an Onboard Person Button", async () => {
       renderPage();
-      expect(screen.queryByText("Onboard Individual")).toBeInTheDocument();
+      expect(screen.queryByText("Onboard Person")).toBeInTheDocument();
     });
     it("renders a table with the correct headers", async () => {
       renderPage();
@@ -67,7 +67,7 @@ describe("IndividualList", () => {
       ).toBeInTheDocument();
     });
     it("renders a table with the correct number of rows", async () => {
-      const mockIndividuals = [
+      const mockPersons = [
         {
           id: "1",
           first_name: "John",
@@ -81,13 +81,13 @@ describe("IndividualList", () => {
           external_id: "456",
         },
       ];
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
-        items: mockIndividuals,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
+        items: mockPersons,
       }));
       renderPage();
       expect(screen.queryAllByRole("row")).toHaveLength(3);
-      for (const individual of mockIndividuals) {
+      for (const individual of mockPersons) {
         expect(
           screen.queryByRole("cell", { name: individual.first_name })
         ).toBeInTheDocument();
@@ -102,19 +102,19 @@ describe("IndividualList", () => {
     });
   });
   describe("onAddSubmit function", () => {
-    it("should call the useIndividual create function", async () => {
+    it("should call the usePerson create function", async () => {
       const createMock = vi.fn();
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
         createItem: createMock,
       }));
       renderPage();
-      const addIndividualButton = screen.getByText(
-        "Onboard Individual"
+      const addPersonButton = screen.getByText(
+        "Onboard Person"
       ) as HTMLButtonElement;
-      if (addIndividualButton) {
+      if (addPersonButton) {
         act(() => {
-          addIndividualButton.click();
+          addPersonButton.click();
         });
         await waitFor(() => {
           expect(
@@ -140,7 +140,7 @@ describe("IndividualList", () => {
           externalIdInput &&
           submitButton
         ) {
-          const expectedIndividual = {
+          const expectedPerson = {
             first_name: "Jim",
             last_name: "More",
             middle_names: "",
@@ -149,16 +149,16 @@ describe("IndividualList", () => {
           await act(async () => {
             const user = userEvent.setup();
             await user.clear(firstNameInput);
-            await user.type(firstNameInput, expectedIndividual.first_name);
+            await user.type(firstNameInput, expectedPerson.first_name);
             await user.clear(lastNameInput);
-            await user.type(lastNameInput, expectedIndividual.last_name);
+            await user.type(lastNameInput, expectedPerson.last_name);
             await user.clear(externalIdInput);
-            await user.type(externalIdInput, expectedIndividual.external_id);
+            await user.type(externalIdInput, expectedPerson.external_id);
             submitButton.click();
           });
           await waitFor(async () => {
             expect(createMock).toHaveBeenCalledTimes(1);
-            expect(createMock).toHaveBeenCalledWith(expectedIndividual);
+            expect(createMock).toHaveBeenCalledWith(expectedPerson);
           });
         }
       }

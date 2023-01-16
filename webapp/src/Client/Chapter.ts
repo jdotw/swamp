@@ -1,14 +1,9 @@
-import { filterProps } from "@mantine/core";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
+import { MutateUnit, Unit } from "./UnitInterface";
 
-export type Chapter = {
-  id: string;
-  name: string;
-};
+export interface Chapter extends Unit {}
 
-export type MutateChapter = {
-  name: string;
-};
+export interface MutateChapter extends MutateUnit {}
 
 export interface UseChapterProps extends UseCRUDOptionalProps {
   practiceId: string;

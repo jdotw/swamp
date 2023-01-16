@@ -1,37 +1,37 @@
 import { Box, Button, Group, Modal, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React from "react";
-import { MutateOrg } from "../../Client/Org";
+import { MutateTeam } from "../../Client/Team";
 
-export const MutateOrgUnitModalTestID = "mutate-org-unit-modal";
+export const MutateTeamModalTestID = "mutate-team-modal";
 
-export enum MutateOrgUnitModalMode {
+export enum MutateTeamModalMode {
   Create = "Create",
   Edit = "Edit",
 }
 
-type MutateOrgUnitModalValues = {
+type MutateTeamModalValues = {
   name: string;
 };
 
-export interface MutateOrgUnitModalProps {
-  mode?: MutateOrgUnitModalMode;
-  org?: MutateOrg;
+export interface MutateTeamModalProps {
+  mode?: MutateTeamModalMode;
+  team?: MutateTeam;
   opened: boolean;
-  onSubmit: (updatedOrgUnit: MutateOrg) => void;
+  onSubmit: (updatedTeam: MutateTeam) => void;
   onClose: () => void;
 }
 
-function MutateOrgUnitModal({
-  mode = MutateOrgUnitModalMode.Create,
-  org,
+function MutateTeamModal({
+  mode = MutateTeamModalMode.Create,
+  team,
   opened,
   onSubmit,
   onClose,
-}: MutateOrgUnitModalProps) {
+}: MutateTeamModalProps) {
   const form = useForm({
     initialValues: {
-      name: org?.name ?? "",
+      name: team?.name ?? "",
     },
 
     validate: {
@@ -39,13 +39,12 @@ function MutateOrgUnitModal({
     },
   });
 
-  const title =
-    mode === MutateOrgUnitModalMode.Create ? "Add Org Unit" : "Edit Org Unit";
+  const title = mode === MutateTeamModalMode.Create ? "Add Team" : "Edit Team";
 
-  const submitForm = (values: MutateOrgUnitModalValues) => {
+  const submitForm = (values: MutateTeamModalValues) => {
     // Make sure we update a copy, not the actual individual
-    let updatedOrgUnit: MutateOrg = { ...org, name: values.name };
-    onSubmit(updatedOrgUnit);
+    let updatedTeam: MutateTeam = { ...team, name: values.name };
+    onSubmit(updatedTeam);
   };
 
   const cancelClicked = () => {
@@ -55,17 +54,13 @@ function MutateOrgUnitModal({
 
   return (
     <Modal opened={opened} onClose={onClose}>
-      <Box
-        sx={{ maxWidth: 300 }}
-        mx="auto"
-        data-testid={MutateOrgUnitModalTestID}
-      >
+      <Box sx={{ maxWidth: 300 }} mx="auto" data-testid={MutateTeamModalTestID}>
         <Title>{title}</Title>
         <form onSubmit={form.onSubmit(submitForm)}>
           <TextInput
             withAsterisk
             label="Name"
-            placeholder="org unit name"
+            placeholder="team name"
             {...form.getInputProps("name")}
           />
           <Group position="right" mt="md">
@@ -73,8 +68,8 @@ function MutateOrgUnitModal({
               Cancel
             </Button>
             <Button type="submit">
-              {mode === MutateOrgUnitModalMode.Create && "Add"}
-              {mode === MutateOrgUnitModalMode.Edit && "Update"}
+              {mode === MutateTeamModalMode.Create && "Add"}
+              {mode === MutateTeamModalMode.Edit && "Update"}
             </Button>
           </Group>
         </form>
@@ -83,4 +78,4 @@ function MutateOrgUnitModal({
   );
 }
 
-export default MutateOrgUnitModal;
+export default MutateTeamModal;

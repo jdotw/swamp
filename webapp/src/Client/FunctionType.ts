@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 
-export type ChapterRoleType = {
+export type FunctionType = {
   id: string;
   name: string;
+  active_from_date: string;
+  retired_at_date?: string;
 };
 
-export type MutateChapterRoleType = {
+export type MutateFunctionType = {
   name: string;
 };
 
-export interface UseChapterRoleTypeProps extends UseCRUDOptionalProps {}
+export interface UseFunctionTypeProps extends UseCRUDOptionalProps {}
 
-export function useChapterRoleType(props?: UseChapterRoleTypeProps) {
+export function useFunctionType(props?: UseFunctionTypeProps) {
   const {
     items,
     loading,
@@ -22,9 +24,9 @@ export function useChapterRoleType(props?: UseChapterRoleTypeProps) {
     retrieveItem,
     updateItem,
     deleteItem,
-  } = useCRUD<ChapterRoleType, MutateChapterRoleType>({
+  } = useCRUD<FunctionType, MutateFunctionType>({
+    path: "/api/org/functiontypes",
     ...props,
-    path: "/api/capability/chapterroletypes",
   });
 
   return {

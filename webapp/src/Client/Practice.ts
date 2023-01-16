@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
-import ChapterHome from "../Capability/Chapters/ChapterHome";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 import { Chapter } from "./Chapter";
-import { Individual } from "./Individual";
-import { PracticeRoleType } from "./PracticeRoleType";
+import { MutateUnit, Unit } from "./UnitInterface";
 
-export type Practice = {
-  id: string;
-  name: string;
-  chapters: Chapter[];
-};
+export interface Practice extends Unit {
+  chapters?: Chapter[];
+}
 
-export type MutatePractice = {
-  name: string;
-};
+export interface MutatePractice extends MutateUnit {}
 
 export interface UsePracticeProps extends UseCRUDOptionalProps {}
 
@@ -29,9 +22,8 @@ export function usePractice(props?: UsePracticeProps) {
     deleteItem,
   } = useCRUD<Practice, MutatePractice>({
     ...props,
-    path: `/api/capability/practices`,
+    path: `/api/org/practices`,
   });
-
   return {
     items,
     loading,

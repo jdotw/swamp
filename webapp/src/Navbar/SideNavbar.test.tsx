@@ -9,12 +9,11 @@ addTestPolyfills();
 
 describe("SideNavbar", () => {
   beforeEach(async () => {
-    const { debug } = render(
+    render(
       <MemoryRouter initialEntries={["/"]}>
         <SideNavbar hidden={false} onLinkClicked={() => {}} />
       </MemoryRouter>
     );
-    debug();
   });
   it("should render a nav element (navigation)", async () => {
     expect(screen.getByRole("navigation")).toBeInTheDocument();

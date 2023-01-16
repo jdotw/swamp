@@ -1,13 +1,9 @@
 import { useState } from "react";
-import {
-  Individual,
-  MutateIndividual,
-  useIndividual,
-} from "../Client/Individual";
+import { Person, MutatePerson, usePerson } from "../../Client/Person";
 import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
-import Loading from "../Loading/Loading";
-import { MutateIndividualModal } from "./MutateIndividualModal";
+import Loading from "../../Loading/Loading";
+import { MutatePersonModal } from "./MutatePersonModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -18,18 +14,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface IndividualListProps {}
+interface PersonListProps {}
 
-export function IndividualList(props: IndividualListProps) {
+export function PersonList(props: PersonListProps) {
   const { classes, theme } = useStyles();
-  const { items, loading, createItem } = useIndividual();
-  const [addIndividualModalOpen, setAddIndividualModalOpen] = useState(false);
+  const { items, loading, createItem } = usePerson();
+  const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
 
-  const rows = items.map((row: Individual) => {
+  const rows = items.map((row: Person) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
@@ -46,9 +42,9 @@ export function IndividualList(props: IndividualListProps) {
     );
   });
 
-  const onAddSubmit = async (newIndividual: MutateIndividual) => {
-    await createItem(newIndividual);
-    setAddIndividualModalOpen(false);
+  const onAddSubmit = async (newPerson: MutatePerson) => {
+    await createItem(newPerson);
+    setAddPersonModalOpen(false);
   };
 
   return (
@@ -67,21 +63,21 @@ export function IndividualList(props: IndividualListProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddIndividualModalOpen(true)}>
-            Onboard Individual
+          <Button onClick={() => setAddPersonModalOpen(true)}>
+            Onboard Person
           </Button>
         </div>
       </div>
-      <MutateIndividualModal
-        title={"Onboard Individual"}
-        opened={addIndividualModalOpen}
+      <MutatePersonModal
+        title={"Onboard Person"}
+        opened={addPersonModalOpen}
         onSubmit={(v) => {
           onAddSubmit(v);
         }}
-        onClose={() => setAddIndividualModalOpen(false)}
+        onClose={() => setAddPersonModalOpen(false)}
       />
     </>
   );
 }
 
-export default IndividualList;
+export default PersonList;

@@ -3,7 +3,7 @@ import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from "./Components/Home";
-import { PeopleShell } from "./People/PeopleShell";
+import { PeopleShell } from "./Org/People/PeopleShell";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
@@ -23,12 +23,12 @@ import SquadRoleTypeHome from "./Delivery/DeliveryRoleTypes/SquadRoleType/SquadR
 import TribeRoleTypeHome from "./Delivery/DeliveryRoleTypes/TribeRoleType/TribeRoleTypeHome";
 import OrgShell from "./Org/OrgShell";
 import OrgHome from "./Org/OrgHome";
-import IndividualList from "./People/IndividualList";
-import IndividualHome from "./People/Individuals/IndividualHome";
+import IndividualList from "./Org/People/PersonList";
+import IndividualHome from "./Org/People/Person/PersonHome";
 import RolesList from "./Org/Roles/RolesList";
 import RoleHome from "./Org/Roles/RoleHome";
-import TeamsList from "./Org/Teams/TeamsList";
-import TeamHome from "./Org/Teams/TeamHome";
+import TeamsList from "./Org/Teams/TeamList";
+import TeamHome from "./Org/Teams/Team/TeamHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>

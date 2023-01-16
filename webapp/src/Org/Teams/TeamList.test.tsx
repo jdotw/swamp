@@ -5,20 +5,18 @@ import {
   addTestPolyfills,
   expectTableToHave,
 } from "../../../test/UITestHelpers";
-import { useOrg } from "../../Client/Org";
+import { useOrg } from "../../Client/Team";
 import { LoadingComponentTestID } from "../../Loading/Loading";
-import MutateOrgUnitModal, {
-  MutateOrgUnitModalTestID,
-} from "./MutateOrgUnitModal";
-import OrgUnitList from "./OrgUnitList";
+import MutateTeamModal, { MutateTeamModalTestID } from "./MutateTeamModal";
+import TeamList from "./TeamList";
 
 addTestPolyfills();
 
-const renderOrgUnitList = () => {
-  const route = "/org/units";
+const renderTeamList = () => {
+  const route = "/org/teams";
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <OrgUnitList />
+      <TeamList />
     </MemoryRouter>
   );
 };
@@ -34,8 +32,8 @@ const mockUseOrgReturn = {
 };
 const useOrgMock = useOrg as Mock;
 
-describe("OrgUnitList", () => {
-  const mockOrgUnits = [
+describe("TeamList", () => {
+  const mockTeams = [
     { id: "1", name: "Org Unit 1" },
     { id: "2", name: "Org Unit 2" },
   ];
@@ -46,12 +44,12 @@ describe("OrgUnitList", () => {
   });
 
   it("should call useOrg", () => {
-    renderOrgUnitList();
+    renderTeamList();
     expect(useOrgMock).toHaveBeenCalled();
   });
 
   it("should render a title", async () => {
-    renderOrgUnitList();
+    renderTeamList();
     expect(screen.getByText("Organisation Units")).toBeInTheDocument();
   });
 
@@ -61,7 +59,7 @@ describe("OrgUnitList", () => {
         ...mockUseOrgReturn,
         loading: true,
       }));
-      renderOrgUnitList();
+      renderTeamList();
       expect(screen.getByTestId(LoadingComponentTestID)).toBeInTheDocument();
     });
   });
@@ -71,39 +69,37 @@ describe("OrgUnitList", () => {
       useOrgMock.mockImplementation(() => ({
         ...mockUseOrgReturn,
         loading: false,
-        items: mockOrgUnits,
+        items: mockTeams,
       }));
     });
-    it("should render a table of org units", async () => {
-      renderOrgUnitList();
+    it("should render a table of team", async () => {
+      renderTeamList();
       expect(screen.getByRole("table")).toBeInTheDocument();
     });
     it("should render the table with expected header, row count and cells", () => {
-      renderOrgUnitList();
+      renderTeamList();
       const table = screen.getByRole("table");
       expectTableToHave({
-        tableTestId: "org-units-table",
-        rowCount: mockOrgUnits.length,
+        tableTestId: "teams-table",
+        rowCount: mockTeams.length,
         headerLabels: ["Name"],
-        cellContents: mockOrgUnits
-          .map((orgUnit) => [orgUnit.name])
+        cellContents: mockTeams
+          .map((teamUnit) => [teamUnit.name])
           .reduce((a, v) => a.concat(v), []),
       });
     });
-    it("should render an Add Org Unit button", () => {
-      renderOrgUnitList();
-      expect(screen.getByTestId("add-org-unit-button")).toBeInTheDocument();
+    it("should render an Add Team button", () => {
+      renderTeamList();
+      expect(screen.getByTestId("add-team-button")).toBeInTheDocument();
     });
   });
-  describe("Add Org Unit button", () => {
-    it("should show Add Org Unit modal when clicked", async () => {
-      renderOrgUnitList();
-      const addOrgUnitButton = screen.getByTestId("add-org-unit-button");
-      fireEvent.click(addOrgUnitButton);
+  describe("Add Team button", () => {
+    it("should show Add Team modal when clicked", async () => {
+      renderTeamList();
+      const addTeamButton = screen.getByTestId("add-team-button");
+      fireEvent.click(addTeamButton);
       await waitFor(async () => {
-        expect(
-          screen.getByTestId(MutateOrgUnitModalTestID)
-        ).toBeInTheDocument();
+        expect(screen.getByTestId(MutateTeamModalTestID)).toBeInTheDocument();
       });
     });
   });

@@ -4,11 +4,10 @@ import { Mock, vi } from "vitest";
 import {
   addTestPolyfills,
   expectTableToHave,
-} from "../../../test/UITestHelpers";
-import IndividualHome from "./IndividualHome";
-import { useIndividual } from "../../Client/Individual";
+} from "../../../../test/UITestHelpers";
+import PersonHome from "./PersonHome";
+import { usePerson } from "../../../Client/Person";
 import { act } from "react-dom/test-utils";
-import { AspectRatio } from "@mantine/core";
 
 addTestPolyfills();
 
@@ -18,20 +17,19 @@ const renderPage = () =>
       <Routes>
         <Route path="/">
           <Route path="people">
-            <Route path=":individualId" element={<IndividualHome />} />
+            <Route path=":individualId" element={<PersonHome />} />
           </Route>
         </Route>
       </Routes>
     </MemoryRouter>
   );
 
-vi.mock("../../Client/Individual", () => {
+vi.mock("../../../Client/Person", () => {
   return {
-    useIndividual: vi.fn(),
+    usePerson: vi.fn(),
   };
 });
-
-const mockUseIndividualReturn = {
+const mockUsePersonReturn = {
   loading: false,
   items: [],
   practiceRoles: [],
@@ -39,16 +37,16 @@ const mockUseIndividualReturn = {
   tribeRoles: [],
   squadRoles: [],
 };
-const useIndividualMock = useIndividual as Mock;
-useIndividualMock.mockImplementation(() => ({
-  ...mockUseIndividualReturn,
+const usePersonMock = usePerson as Mock;
+usePersonMock.mockImplementation(() => ({
+  ...mockUsePersonReturn,
 }));
 
-describe("IndividualHome", () => {
+describe("PersonHome", () => {
   describe("when loading=true", () => {
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
         loading: true,
       }));
     });
@@ -59,41 +57,41 @@ describe("IndividualHome", () => {
   });
   describe("when the individual is not found", () => {
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
         items: [],
         loading: false,
       }));
     });
     it("renders the Not Found element when loading=false and an individual is not found", async () => {
       renderPage();
-      expect(screen.getByText("Individual not found")).toBeInTheDocument();
+      expect(screen.getByText("Person not found")).toBeInTheDocument();
     });
     it("does not render tables", async () => {
       renderPage();
-      expect(screen.getByText("Individual not found")).toBeInTheDocument();
+      expect(screen.getByText("Person not found")).toBeInTheDocument();
       expect(screen.queryAllByRole("table")).toHaveLength(0);
     });
   });
 
   describe("when loading=false and an individual is found", () => {
-    const mockIndividual = {
+    const mockPerson = {
       id: "1",
       first_name: "John",
       last_name: "Doe",
       external_id: "1234",
     };
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
-        items: [mockIndividual],
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
+        items: [mockPerson],
         loading: false,
       }));
     });
     it("renders a table with the expected headers, rows and cells", async () => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
-        items: [mockIndividual],
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
+        items: [mockPerson],
         practiceRoles: mockPracticeRoles,
         chapterRoles: mockChapterRoles,
         tribeRoles: mockTribeRoles,
@@ -123,7 +121,7 @@ describe("IndividualHome", () => {
     });
   });
   describe("Edit Modal", () => {
-    const mockIndividual = {
+    const mockPerson = {
       id: "1",
       first_name: "John",
       last_name: "Doe",
@@ -131,9 +129,9 @@ describe("IndividualHome", () => {
     };
     const updateItemMock = vi.fn();
     beforeEach(() => {
-      useIndividualMock.mockImplementation(() => ({
-        ...mockUseIndividualReturn,
-        items: [mockIndividual],
+      usePersonMock.mockImplementation(() => ({
+        ...mockUsePersonReturn,
+        items: [mockPerson],
         loading: false,
         updateItem: updateItemMock,
       }));
@@ -150,7 +148,7 @@ describe("IndividualHome", () => {
         ).toBeInTheDocument();
       });
       describe("when Save is clicked", () => {
-        it("calls the useIndividual's updateItem function", async () => {
+        it("calls the usePerson's updateItem function", async () => {
           const firstNameInput = screen.getByPlaceholderText("first name");
           const lastNameInput = screen.getByPlaceholderText("last name");
           const submitButton = screen.getByRole("button", { name: "Save" });

@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
 
-export type PracticeRoleType = {
+export interface RoleType {
   id: string;
-  name: string;
-};
+  title: string;
+  active_from_date: string;
+  retired_at_date?: string;
+}
 
-export type MutatePracticeRoleType = {
-  name: string;
-};
+export interface MutateRoleType {
+  title: string;
+}
 
-export interface UsePracticeRoleTypeProps extends UseCRUDOptionalProps {}
+export interface UseRoleTypeProps extends UseCRUDOptionalProps {}
 
-export function usePracticeRoleType(props?: UsePracticeRoleTypeProps) {
+export function useRoleType(props?: UseRoleTypeProps) {
   const {
     items,
     loading,
@@ -22,8 +24,8 @@ export function usePracticeRoleType(props?: UsePracticeRoleTypeProps) {
     retrieveItem,
     updateItem,
     deleteItem,
-  } = useCRUD<PracticeRoleType, MutatePracticeRoleType>({
-    path: "/api/capability/practiceroletypes",
+  } = useCRUD<RoleType, MutateRoleType>({
+    path: "/api/org/roletypes",
     ...props,
   });
 
