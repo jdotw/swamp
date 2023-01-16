@@ -41,7 +41,6 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
 
   public virtual void UpdateRoleFields(Role update, Role existing)
   {
-    existing.IsActive = update.IsActive;
     existing.RoleTypeId = update.RoleTypeId;
     existing.Title = update.Title;
   }

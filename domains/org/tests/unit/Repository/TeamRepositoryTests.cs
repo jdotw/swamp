@@ -25,7 +25,6 @@ public class TeamRepositoryTests
       Name = "Team Name",
       Description = "Description",
       DisbandedDate = null,
-      Purpose = "Team Purpose",
     };
     var update = new Team()
     {
@@ -33,10 +32,8 @@ public class TeamRepositoryTests
       Name = existingTeam.Name,
       Description = existingTeam.Description,
       DisbandedDate = existingTeam.DisbandedDate,
-      Purpose = "Updated Team Purpose",
     };
     _repo.Object.UpdateTeamFields(update, existingTeam);
-    Assert.Equal(update.Purpose, existingTeam.Purpose);
   }
 
   [Fact]
@@ -48,7 +45,6 @@ public class TeamRepositoryTests
       Name = "Team Name",
       Description = "Description",
       DisbandedDate = null,
-      Purpose = "Team Purpose",
     };
     _repo.Setup(x => x.FindById(It.IsAny<int>())).ReturnsAsync(existingTeam);
     _repo.Setup(x => x.Update(It.IsAny<Team>()));
@@ -58,7 +54,6 @@ public class TeamRepositoryTests
       Name = existingTeam.Name,
       Description = existingTeam.Description,
       DisbandedDate = existingTeam.DisbandedDate,
-      Purpose = "Updated Team Purpose",
     };
     var result = await _repo.Object.UpdateTeamAsync(update);
     _repo.Verify(x => x.UpdateTeamFields(update, existingTeam), Times.Once);

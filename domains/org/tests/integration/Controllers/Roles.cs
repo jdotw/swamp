@@ -118,7 +118,6 @@ public class RoleTests
     var updateDto = new UpdateRoleDto
     {
       RoleTypeId = existingRole.RoleTypeId,
-      IsActive = false,
     };
 
     // Act
@@ -136,7 +135,6 @@ public class RoleTests
     var updateDto = new UpdateRoleDto
     {
       RoleTypeId = existingRole.RoleTypeId,
-      IsActive = false,
     };
 
     // Act

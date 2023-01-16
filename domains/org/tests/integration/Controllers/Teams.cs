@@ -28,7 +28,6 @@ public class TeamTests
     var newTeam = new CreateTeamDto
     {
       Name = "Test Team",
-      Purpose = "Test Team Purpose"
     };
 
     // Act
@@ -37,7 +36,6 @@ public class TeamTests
 
     // Assert
     Assert.NotEqual(0, team!.Id);
-    Assert.Equal(newTeam.Purpose, team.Purpose);
   }
 
   [Fact]
@@ -64,7 +62,6 @@ public class TeamTests
 
     // Assert
     Assert.Equal(team!.Id, existingTeam.Id);
-    Assert.Equal(team.Purpose, existingTeam.Purpose);
   }
 
   [Fact]
@@ -75,7 +72,6 @@ public class TeamTests
     var updateDto = new UpdateTeamDto
     {
       Name = existingTeam.Name,
-      Purpose = "NewPurpose",
     };
 
     // Act
@@ -93,7 +89,6 @@ public class TeamTests
     var updateDto = new UpdateTeamDto
     {
       Name = existingTeam.Name,
-      Purpose = "NewPurpose",
     };
 
     // Act
@@ -129,7 +124,6 @@ public class TeamsSeedDataClass : ISeedDataClass<OrgDbContext>
     Team = db.Teams.Add(new Team
     {
       Name = "Team Name",
-      Purpose = "Team Purpose",
     }).Entity;
 
     db.SaveChanges(true);

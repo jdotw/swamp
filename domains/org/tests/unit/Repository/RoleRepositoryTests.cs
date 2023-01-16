@@ -21,19 +21,16 @@ public class RoleRepositoryTests
   {
     var existingRole = new Role()
     {
-      IsActive = true,
       RoleTypeId = 1,
       Title = "Existing Role",
       PersonId = 1,
     };
     var update = new Role()
     {
-      IsActive = false,
       RoleTypeId = 34,
       Title = "Updated Role Title",
     };
     _repo.Object.UpdateRoleFields(update, existingRole);
-    Assert.Equal(update.IsActive, existingRole.IsActive);
     Assert.Equal(update.RoleTypeId, existingRole.RoleTypeId);
     Assert.Equal(update.Title, existingRole.Title);
     Assert.Equal(existingRole.PersonId, existingRole.PersonId);
@@ -44,20 +41,17 @@ public class RoleRepositoryTests
   {
     var existingRole = new Role()
     {
-      IsActive = true,
       RoleTypeId = 1,
       Title = "Existing Role",
       PersonId = 1,
     };
     var update = new Role()
     {
-      IsActive = false,
       RoleTypeId = 34,
       Title = "Updated Role Title",
       PersonId = 14324, // NOT Updatable!
     };
     _repo.Object.UpdateRoleFields(update, existingRole);
-    Assert.Equal(update.IsActive, existingRole.IsActive);
     Assert.Equal(update.RoleTypeId, existingRole.RoleTypeId);
     Assert.Equal(update.Title, existingRole.Title);
     Assert.Equal(existingRole.PersonId, existingRole.PersonId);
@@ -68,7 +62,6 @@ public class RoleRepositoryTests
   {
     var existingRole = new Role()
     {
-      IsActive = true,
       RoleTypeId = 1,
       Title = "Existing Role",
       PersonId = 1,
@@ -77,7 +70,6 @@ public class RoleRepositoryTests
     _repo.Setup(x => x.Update(It.IsAny<Role>()));
     var update = new Role()
     {
-      IsActive = false,
       RoleTypeId = 34,
       Title = "Updated Role Title",
       PersonId = 14324, // NOT Updatable!

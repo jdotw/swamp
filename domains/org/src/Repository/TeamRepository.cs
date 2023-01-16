@@ -40,7 +40,6 @@ public class TeamRepository : UnitRepository<Team>, ITeamRepository
   public virtual void UpdateTeamFields(Team update, Team existing)
   {
     base.UpdateUnitFields(update, existing);
-    existing.Purpose = update.Purpose;
   }
 
   public async Task<int> UpdateTeamAsync(Team updatedTeam)
