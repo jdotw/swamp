@@ -46,6 +46,6 @@ public class CreateFunctionDto
 public class UpdateFunctionDto
 {
   public int? FunctionTypeId { get; set; }
-  public string? Title { get; set; }
+  public string? Name { get; set; }
   public DateTimeOffset? EndDate { get; set; }
 }
