@@ -4,8 +4,6 @@ namespace Org.Entities;
 
 public class Role : EntityBase
 {
-  public Boolean IsActive { get; set; }
-
   public int? RoleTypeId { get; set; }
   public RoleType? RoleType { get; set; }
 
