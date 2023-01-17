@@ -3,7 +3,6 @@ import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from "./Components/Home";
-import { PeopleShell } from "./Org/People/PeopleShell";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Capability/CapabilityShell";
 import TribeHome from "./Delivery/Tribes/Tribe/TribeHome";
@@ -15,12 +14,6 @@ import SquadHome from "./Delivery/Squads/SquadHome";
 import CapabilityHome from "./Capability/CapabilityHome";
 import PracticeHome from "./Capability/Practices/Practice/PracticeHome";
 import ChapterHome from "./Capability/Chapters/ChapterHome";
-import CapabilityRoleTypesHome from "./Capability/CapabilityRoleTypes/CapabilityRoleTypesHome";
-import PracticeRoleTypeHome from "./Capability/CapabilityRoleTypes/PracticeRoleType/PracticeRoleTypeHome";
-import ChapterRoleTypeHome from "./Capability/CapabilityRoleTypes/ChapterRoleType/ChapterRoleTypeHome";
-import DeliveryRoleTypesHome from "./Delivery/DeliveryRoleTypes/DeliveryRoleTypesHome";
-import SquadRoleTypeHome from "./Delivery/DeliveryRoleTypes/SquadRoleType/SquadRoleTypeHome";
-import TribeRoleTypeHome from "./Delivery/DeliveryRoleTypes/TribeRoleType/TribeRoleTypeHome";
 import OrgShell from "./Org/OrgShell";
 import OrgHome from "./Org/OrgHome";
 import IndividualList from "./Org/People/PersonList";
@@ -83,19 +76,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 </Route>
               </Route>
             </Route>
-
-            {/* Roles Types */}
-            <Route path="roletypes">
-              <Route index element={<CapabilityRoleTypesHome />} />
-              <Route
-                path="practiceroletypes/:roleTypeId"
-                element={<PracticeRoleTypeHome />}
-              />
-              <Route
-                path="chapterroletypes/:roleTypeId"
-                element={<ChapterRoleTypeHome />}
-              />
-            </Route>
           </Route>
 
           {/* Delivery */}
@@ -115,19 +95,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                   </Route>
                 </Route>
               </Route>
-            </Route>
-
-            {/* Roles Types */}
-            <Route path="roletypes">
-              <Route index element={<DeliveryRoleTypesHome />} />
-              <Route
-                path="triberoletypes/:roleTypeId"
-                element={<TribeRoleTypeHome />}
-              />
-              <Route
-                path="squadroletypes/:roleTypeId"
-                element={<SquadRoleTypeHome />}
-              />
             </Route>
           </Route>
         </Route>
