@@ -9,7 +9,7 @@ export interface UseCRUDOptionalProps {
 }
 
 export interface UseCRUDProps extends UseCRUDOptionalProps {
-  path: string;
+  path?: string; // If there's no path, the hook wont load anything
 }
 
 export interface TypeWithID {
@@ -32,7 +32,7 @@ export interface UseCRUDAdoptionInterface<
 
 export interface UseCRUDInterface<ItemType extends TypeWithID, NewItemType>
   extends UseCRUDAdoptionInterface<ItemType, NewItemType> {
-  urlForPath: (path: string) => string;
+  urlForPath: (path: string) => string | undefined;
   authHeaders: () => Promise<Record<string, string>>;
 }
 
@@ -50,9 +50,13 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   const { authHeaders, urlForPath } = useBackend({
     domain,
   });
+
   const url = urlForPath(path);
 
   const reload = async () => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     setLoading(true);
     try {
       const result = filterById
@@ -70,6 +74,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   const getAll = async (): Promise<ItemType[]> => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     const response = await fetch(url, {
       headers: {
         ...(await authHeaders()),
@@ -80,6 +87,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   const createItem = async (newItem: NewItemType) => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(newItem),
@@ -94,6 +104,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   const retrieveItem = async (id: string) => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     const itemUrl = `${url}/${id}`;
     const response = await fetch(itemUrl, {
       headers: {
@@ -111,6 +124,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   const updateItem = async (id: string, updatedItem: NewItemType) => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     const itemUrl = `${url}/${id}`;
     const response = await fetch(itemUrl, {
       method: "PUT",
@@ -128,6 +144,9 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   const deleteItem = async (id: string) => {
+    if (!url) {
+      throw new Error("No URL provided");
+    }
     const itemUrl = `${url}/${id}`;
     const response = await fetch(itemUrl, {
       method: "DELETE",
@@ -140,10 +159,10 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   useEffect(() => {
-    (async () => {
-      if (loadOnMount) await reload();
-    })();
-  }, []);
+    if (loadOnMount && url) {
+      (async () => await reload())();
+    }
+  }, [loadOnMount, url]);
 
   return {
     items,

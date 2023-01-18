@@ -9,7 +9,7 @@ import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";
 const path = `/api/org/functiontypes`;
 const defaultProps = { path };
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };

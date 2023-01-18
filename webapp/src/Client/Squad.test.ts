@@ -5,7 +5,7 @@ import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";
 const tribeId = Math.floor(Math.random() * 1000).toString();
 const defaultProps: UseSquadProps = { tribeId };
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };

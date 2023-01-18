@@ -138,6 +138,19 @@ describe("useCRUD", () => {
     });
   });
 
+  describe("when a path is not provided", () => {
+    it("should not call reload on mount", async () => {
+      const hook = await renderUseCRUDHook({
+        path: undefined,
+      });
+      await act(async () => {
+        expect(fetch).not.toHaveBeenCalledWith(
+          hook.result.current.urlForPath(path),
+          expect.anything()
+        );
+      });
+    });
+
   /*
    * Get All Items (reload)
    */

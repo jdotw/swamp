@@ -6,7 +6,7 @@ const practiceId = Math.floor(Math.random() * 1000).toString();
 const path = `/api/org/practices/${practiceId}/chapters`;
 const defaultProps = { practiceId, path } as UseChapterProps;
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };

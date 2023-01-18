@@ -19,7 +19,7 @@ export interface MutatePerson {
 
 export interface UsePersonProps extends UseCRUDOptionalProps {}
 
-export function usePerson(props: UsePersonProps) {
+export function usePerson(props?: UsePersonProps) {
   const {
     reload,
     items,

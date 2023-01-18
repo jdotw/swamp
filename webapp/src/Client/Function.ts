@@ -52,7 +52,7 @@ export function useFunction(props: UseFunctionProps) {
   const { roleId, unit } = props;
   let path = undefined;
   if (roleId) {
-    `/api/org/roles/${roleId}/functions`;
+    path = `/api/org/roles/${roleId}/functions`;
   } else if (unit) {
     switch (unit.type) {
       case "chapter":
@@ -84,7 +84,7 @@ export function useFunction(props: UseFunctionProps) {
     updateItem,
     deleteItem,
   } = useCRUD<Function, MutateFunction>({
-    path: path ?? "",
+    path: path,
     ...props,
   });
 

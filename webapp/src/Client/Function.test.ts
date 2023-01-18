@@ -14,7 +14,7 @@ const id = Math.floor(Math.random() * 1000).toString();
 const path = `/api/org/roles/${roleId}/functions`;
 const defaultProps = { roleId, path, id } as UseFunctionProps;
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };

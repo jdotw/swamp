@@ -19,9 +19,8 @@ export function useBackend({ domain = config.domain }: UseBackendProps) {
     };
   };
 
-  const urlForPath = (path: string) => {
-    return `http://${domain}${path}`;
-  };
+  const urlForPath = (path?: string) =>
+    path ? `http://${domain}${path}` : undefined;
 
   return {
     defaultDomain: config.domain,

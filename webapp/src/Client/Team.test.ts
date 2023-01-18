@@ -2,7 +2,7 @@ import { vi } from "vitest";
 import { MutateTeam, Team, useTeam, UseTeamProps } from "./Team";
 import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };

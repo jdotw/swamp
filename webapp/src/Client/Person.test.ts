@@ -2,7 +2,7 @@ import { vi } from "vitest";
 import { MutatePerson, Person, usePerson, UsePersonProps } from "./Person";
 import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";
 
-vi.mock("../CRUD/CRUD", () => {
+vi.mock("./CRUD/CRUD", () => {
   return {
     useCRUD: vi.fn(),
   };
