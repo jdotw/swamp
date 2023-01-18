@@ -3,8 +3,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { Outlet } from "react-router";
 
 import "./App.css";
-import { HeaderSimple } from "./Header/Header";
-import { SideNavbar } from "./Navbar/SideNavbar";
+import { HeaderSimple } from "./Components/Header/Header";
+import { SideNavbar } from "./Components/Navbar/SideNavbar";
 
 function App() {
   const [burgerOpened, { toggle: toggleBurgerOpened }] = useDisclosure(false);
