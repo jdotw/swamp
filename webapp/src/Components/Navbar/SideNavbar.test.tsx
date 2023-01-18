@@ -31,14 +31,6 @@ describe("SideNavbar", () => {
       const button = screen.getByRole("button", { name: "Organisation" });
       await userEvent.click(button);
     });
-    it("should render a Home link", async () => {
-      await waitFor(() => {
-        expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
-          "href",
-          "/org"
-        );
-      });
-    });
     it("should render a People link", async () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "People" })).toHaveAttribute(
@@ -76,14 +68,6 @@ describe("SideNavbar", () => {
         const button = screen.getByRole("button", { name: "Delivery" });
         await userEvent.click(button);
       });
-      it("should render a Home link", async () => {
-        await waitFor(() => {
-          expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
-            "href",
-            "/delivery"
-          );
-        });
-      });
       it("should render a Tribes link", async () => {
         await waitFor(() => {
           expect(screen.getByRole("link", { name: "Tribes" })).toHaveAttribute(
@@ -104,14 +88,6 @@ describe("SideNavbar", () => {
       beforeEach(async () => {
         const button = screen.getByRole("button", { name: "Capability" });
         await userEvent.click(button);
-      });
-      it("should render a Home link", async () => {
-        await waitFor(() => {
-          expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
-            "href",
-            "/capability"
-          );
-        });
       });
       it("should render a Practices link", async () => {
         await waitFor(() => {

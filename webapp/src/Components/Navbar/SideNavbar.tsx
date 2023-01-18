@@ -48,7 +48,6 @@ const data = [
     label: "Organisation",
     icon: IconUsers,
     links: [
-      { label: "Home", link: "/org" },
       { label: "People", link: "/org/people" },
       { label: "Roles", link: "/org/roles" },
       { label: "Teams", link: "/org/teams" },
@@ -58,19 +57,13 @@ const data = [
     link: "/capability",
     label: "Capability",
     icon: IconBulb,
-    links: [
-      { label: "Home", link: "/capability" },
-      { label: "Practices", link: "/capability/practices" },
-    ],
+    links: [{ label: "Practices", link: "/capability/practices" }],
   },
   {
     link: "/delivery",
     label: "Delivery",
     icon: IconClipboardList,
-    links: [
-      { label: "Home", link: "/delivery" },
-      { label: "Tribes", link: "/delivery/tribes" },
-    ],
+    links: [{ label: "Tribes", link: "/delivery/tribes" }],
   },
 ];
 
