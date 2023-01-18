@@ -2,14 +2,9 @@ import { useState } from "react";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
-import { AddRoleModal } from "./AddRoleModal";
 import { AddChapterModal } from "./AddChapterModal";
 import { usePractice } from "../../../Client/Practice";
-import {
-  MutatePracticeRole,
-  usePracticeRole,
-} from "../../../Client/PracticeRole";
-import { MutateChapter } from "../../../Client/ChapterRole";
+import { MutateChapter } from "../../../Client/Chapter";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -31,17 +26,12 @@ export function PracticeHome(props: PracticeHomeProps) {
   const { practiceId: id } = useParams();
   const { classes } = useStyles();
   const { items, loading, createItem: createChapter } = usePractice({ id });
-  const {
-    items: roles,
-    loading: loadingRoles,
-    createItem: createRole,
-  } = usePracticeRole({ practiceId: id ?? "" });
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 
   const practice = items.length > 0 ? items[0] : undefined;
 
-  if (loading || loadingRoles) {
+  if (loading) {
     return <Loading />;
   }
   if (!id || !practice) {
@@ -61,34 +51,34 @@ export function PracticeHome(props: PracticeHomeProps) {
       })
     : null;
 
-  const roleRows = roles
-    ? roles.map((row) => {
-        const id = row.id.toString();
-        return (
-          <tr key={id}>
-            <td>
-              <Link to={`${id}`}>{row.individual.first_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.individual.last_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.practice_role_type.name}</Link>
-            </td>
-          </tr>
-        );
-      })
-    : null;
+  // const roleRows = roles
+  //   ? roles.map((row) => {
+  //       const id = row.id.toString();
+  //       return (
+  //         <tr key={id}>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.first_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.last_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.practice_role_type.name}</Link>
+  //           </td>
+  //         </tr>
+  //       );
+  //     })
+  //   : null;
 
   const submit = async (newChapter: MutateChapter) => {
     await createChapter(newChapter);
     setAddChapterModalOpen(false);
   };
 
-  const submitRole = async (newRole: MutatePracticeRole) => {
-    await createRole(newRole);
-    setAddRoleModalOpen(false);
-  };
+  // const submitRole = async (newRole: MutatePracticeRole) => {
+  //   await createRole(newRole);
+  //   setAddRoleModalOpen(false);
+  // };
 
   return (
     <>
@@ -120,7 +110,7 @@ export function PracticeHome(props: PracticeHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            <tbody>{roleRows}</tbody>
+            {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
@@ -132,12 +122,12 @@ export function PracticeHome(props: PracticeHomeProps) {
         onClose={() => setAddChapterModalOpen(false)}
         onSubmit={submit}
       />
-      <AddRoleModal
+      {/* <AddRoleModal
         practiceId={id}
         opened={addRoleModalOpen}
         onClose={() => setAddRoleModalOpen(false)}
         onSubmit={submitRole}
-      />
+      /> */}
     </>
   );
 }

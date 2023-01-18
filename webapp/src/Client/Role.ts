@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ChapterHome from "../Capability/Chapters/ChapterHome";
-import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Chapter } from "./Chapter";
 import { Person } from "./Person";
 import { Practice } from "./Practice";

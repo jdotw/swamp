@@ -1,18 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Button,
-  Container,
-  Title,
-} from "@mantine/core";
-import { Link, Outlet } from "react-router-dom";
+import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import Loading from "../../Loading/Loading";
-import { Individual } from "../../Client/Individual";
-import { NewSquadRole, SquadRole, useSquad } from "../../Client/Squad";
-import { AddRoleModal } from "./AddRoleModal";
+import { useSquad } from "../../Client/Squad";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -28,7 +18,7 @@ interface SquadHomeProps {}
 function SquadHome(props: SquadHomeProps) {
   const { tribeId, squadId: id } = useParams();
   const { classes, theme } = useStyles();
-  const { squad, loading, roles, addRole } = useSquad({
+  const { items, loading } = useSquad({
     tribeId,
     id,
   });
@@ -38,31 +28,33 @@ function SquadHome(props: SquadHomeProps) {
     return <Loading />;
   }
 
+  const squad = items.length > 0 ? items[0] : undefined;
+
   if (!id || !tribeId || !squad) {
     return <div>Squad not found</div>;
   }
 
-  const rows = roles.map((row: SquadRole) => {
-    const id = row.id.toString();
-    return (
-      <tr key={id}>
-        <td>
-          <Link to={`${id}`}>{row.individual.first_name}</Link>
-        </td>
-        <td>
-          <Link to={`${id}`}>{row.individual.last_name}</Link>
-        </td>
-        <td>
-          <Link to={`${id}`}>{row.squad_role_type.name}</Link>
-        </td>
-      </tr>
-    );
-  });
+  // const rows = roles.map((row: SquadRole) => {
+  //   const id = row.id.toString();
+  //   return (
+  //     <tr key={id}>
+  //       <td>
+  //         <Link to={`${id}`}>{row.individual.first_name}</Link>
+  //       </td>
+  //       <td>
+  //         <Link to={`${id}`}>{row.individual.last_name}</Link>
+  //       </td>
+  //       <td>
+  //         <Link to={`${id}`}>{row.squad_role_type.name}</Link>
+  //       </td>
+  //     </tr>
+  //   );
+  // });
 
-  const submitAddRole = async (newRole: NewSquadRole) => {
-    await addRole(newRole);
-    setAddModalOpen(false);
-  };
+  // const submitAddRole = async (newRole: NewSquadRole) => {
+  //   await addRole(newRole);
+  //   setAddModalOpen(false);
+  // };
 
   return (
     <>
@@ -78,20 +70,20 @@ function SquadHome(props: SquadHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            <tbody>{rows}</tbody>
+            {/* <tbody>{rows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
         </div>
       </div>
-      <AddRoleModal
+      {/* <AddRoleModal
         tribeId={tribeId}
         squadId={id}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSubmit={submitAddRole}
-      />
+      /> */}
     </>
   );
 }

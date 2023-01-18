@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 
 export interface RoleType {
   id: string;

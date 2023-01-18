@@ -33,6 +33,7 @@ export function AddPracticeModal({
     // Make sure we update a copy, not the actual practice
     let practice: MutatePractice = {
       name: values.name,
+      formed_date: new Date().toUTCString(),
     };
     onSubmit(practice);
   };

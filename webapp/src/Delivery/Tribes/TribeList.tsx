@@ -10,9 +10,8 @@ import {
 } from "@mantine/core";
 import { Link, Outlet } from "react-router-dom";
 import Loading from "../../Loading/Loading";
-import { useTribes } from "../../Client/Tribes";
-import { NewTribe, Tribe } from "../../Client/Tribe";
 import { AddTribeModal } from "./AddTribeModal";
+import { MutateTribe, Tribe, useTribe } from "../../Client/Tribe";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -27,14 +26,14 @@ interface TribeListProps {}
 
 export function TribeList(props: TribeListProps) {
   const { classes, theme } = useStyles();
-  const { tribes, loading, add, addError, adding } = useTribes();
+  const { items, loading, createItem } = useTribe({});
   const [addTribeModalOpen, setAddTribeModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
 
-  const rows = tribes.map((row: Tribe) => {
+  const rows = items.map((row: Tribe) => {
     const id = row.id.toString();
     return (
       <tr key={id}>
@@ -45,8 +44,8 @@ export function TribeList(props: TribeListProps) {
     );
   });
 
-  const submit = async (newTribe: NewTribe) => {
-    await add(newTribe);
+  const submit = async (newTribe: MutateTribe) => {
+    await createItem(newTribe);
     setAddTribeModalOpen(false);
   };
 

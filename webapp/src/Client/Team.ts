@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCRUD, UseCRUDOptionalProps, UseCRUDProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps, UseCRUDProps } from "./CRUD/CRUD";
 import { MutateUnit, Unit } from "./UnitInterface";
 
 export interface Team extends Unit {}

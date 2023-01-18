@@ -1,17 +1,17 @@
 import { Button, ScrollArea, Table } from "@mantine/core";
 import { useState } from "react";
-import { MutateOrg, Org, useOrg } from "../../Client/Team";
+import { MutateTeam, Team, useTeam } from "../../Client/Team";
 import Loading from "../../Loading/Loading";
 import MutateTeamModal from "./MutateTeamModal";
 import { MutateTeamModalMode } from "./MutateTeamModal";
 
 function TeamList() {
-  const { loading, items, createItem, updateItem } = useOrg();
+  const { loading, items, createItem, updateItem } = useTeam();
   const [mutateTeamModalOpen, setMutateTeamModalOpen] = useState(false);
   const [mutateTeamModalMode, setMutateTeamModalMode] = useState(
     MutateTeamModalMode.Create
   );
-  const [teamBeingEdited, setOrgBeingEdited] = useState<Org>();
+  const [teamBeingEdited, setTeamBeingEdited] = useState<Team>();
   const teamRows = items.map((team) => (
     <tr key={team.id}>
       <td>{team.name}</td>
@@ -22,14 +22,14 @@ function TeamList() {
     return <Loading />;
   }
 
-  const onMutateOrgSubmit = async (mutatedOrg: MutateOrg) => {
+  const onMutateTeamSubmit = async (mutatedTeam: MutateTeam) => {
     if (mutateTeamModalMode === MutateTeamModalMode.Create) {
-      console.log("CREATE: ", mutatedOrg);
-      createItem(mutatedOrg);
+      console.log("CREATE: ", mutatedTeam);
+      createItem(mutatedTeam);
     } else if (mutateTeamModalMode === MutateTeamModalMode.Edit) {
-      console.log("EDIT: ", mutatedOrg);
+      console.log("EDIT: ", mutatedTeam);
       if (teamBeingEdited) {
-        updateItem(teamBeingEdited.id, mutatedOrg);
+        updateItem(teamBeingEdited.id, mutatedTeam);
       }
     }
     setMutateTeamModalOpen(false);
@@ -38,7 +38,7 @@ function TeamList() {
   return (
     <>
       <div>
-        <title>Organisation Units</title>
+        <title>Teamanisation Units</title>
         <ScrollArea>
           <Table verticalSpacing="xs" data-testid={"teams-table"}>
             <thead>
@@ -61,7 +61,7 @@ function TeamList() {
         opened={mutateTeamModalOpen}
         mode={mutateTeamModalMode}
         onClose={() => setMutateTeamModalOpen(false)}
-        onSubmit={onMutateOrgSubmit}
+        onSubmit={onMutateTeamSubmit}
       />
     </>
   );

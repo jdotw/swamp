@@ -1,4 +1,4 @@
-import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Role } from "./Role";
 
 export interface Person {

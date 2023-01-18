@@ -1,4 +1,7 @@
+import { Function } from "./Function";
+
 export interface Unit {
+  type: string; // discriminator
   id: string;
   name: string;
   description?: string;

@@ -13,7 +13,7 @@ import {
   UseCRUDAdoptionInterface,
   UseCRUDInterface,
   UseCRUDOptionalProps,
-} from "../CRUD/CRUD";
+} from "./CRUD/CRUD";
 import { Chapter, MutateChapter, useChapter } from "./Chapter";
 
 interface ExpectHookAdoptsUseCRUDCorrectlyProps<

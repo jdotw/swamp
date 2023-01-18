@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { vi } from "vitest";
-import { useCRUD } from "../CRUD/CRUD";
+import { useCRUD } from "./CRUD/CRUD";
 import {
   Function,
   MutateFunction,

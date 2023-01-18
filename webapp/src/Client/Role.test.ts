@@ -6,7 +6,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { beforeEach, Mock, vi } from "vitest";
-import { useCRUD } from "../CRUD/CRUD";
+import { useCRUD } from "./CRUD/CRUD";
 import { Chapter, MutateChapter, useChapter } from "./Chapter";
 import { Role, MutateRole, useRole, UseRoleProps } from "./Role";
 import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";

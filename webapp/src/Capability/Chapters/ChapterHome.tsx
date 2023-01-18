@@ -1,18 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Button,
-  Container,
-  Title,
-} from "@mantine/core";
-import { Link, Outlet } from "react-router-dom";
+import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
+import { Link } from "react-router-dom";
 import Loading from "../../Loading/Loading";
-import { Individual } from "../../Client/Individual";
-import { ChapterRole, NewChapterRole, useChapter } from "../../Client/Chapter";
-import { AddRoleModal } from "./AddRoleModal";
+import { Function, MutateFunction, useFunction } from "../../Client/Function";
+import { useChapter } from "../../Client/Chapter";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -28,13 +20,15 @@ interface ChapterHomeProps {}
 function ChapterHome(props: ChapterHomeProps) {
   const { practiceId, chapterId: id } = useParams();
   const { classes, theme } = useStyles();
-  const { chapter, roles, loadingRoles, addRole } = useChapter({
-    practiceId,
-    id,
+  const { items, reload, loading, error } = useChapter({
+    practiceId: practiceId ?? "",
+    id: id ?? "",
   });
+  const chapter = items.length > 0 ? items[0] : undefined;
+
   const [addModalOpen, setAddModalOpen] = useState(false);
 
-  if (loadingRoles) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -42,27 +36,27 @@ function ChapterHome(props: ChapterHomeProps) {
     return <div>Chapter not found</div>;
   }
 
-  const rows = roles.map((row: ChapterRole) => {
-    const id = row.id.toString();
-    return (
-      <tr key={id}>
-        <td>
-          <Link to={`${id}`}>{row.individual.first_name}</Link>
-        </td>
-        <td>
-          <Link to={`${id}`}>{row.individual.last_name}</Link>
-        </td>
-        <td>
-          <Link to={`${id}`}>{row.chapter_role_type.name}</Link>
-        </td>
-      </tr>
-    );
-  });
+  // const rows = functions.map((row: Function) => {
+  //   const id = row.id.toString();
+  //   return (
+  //     <tr key={id}>
+  //       <td>
+  //         <Link to={`${id}`}>{row.role.person.first_name}</Link>
+  //       </td>
+  //       <td>
+  //         <Link to={`${id}`}>{row.role.person.last_name}</Link>
+  //       </td>
+  //       <td>
+  //         <Link to={`${id}`}>{row.name || row.function_type.name}</Link>
+  //       </td>
+  //     </tr>
+  //   );
+  // });
 
-  const submitAddRole = async (newRole: NewChapterRole) => {
-    await addRole(newRole);
-    setAddModalOpen(false);
-  };
+  // const submitAddFunction = async (newFunction: MutateFunction) => {
+  //   await createFunctionItem(newFunction);
+  //   setAddModalOpen(false);
+  // };
 
   return (
     <>
@@ -78,19 +72,19 @@ function ChapterHome(props: ChapterHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            <tbody>{rows}</tbody>
+            {/* <tbody>{rows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
         </div>
       </div>
-      <AddRoleModal
+      <AddFunctionModal
         chapterId={id}
         practiceId={practiceId}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
-        onSubmit={submitAddRole}
+        onSubmit={submitAddFunction}
       />
     </>
   );

@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
-import { useTribe, NewSquad, NewTribeRole } from "../../../Client/Tribe";
+import { useTribe } from "../../../Client/Tribe";
 import { AddSquadModal } from "./AddSquadModal";
 import { AddRoleModal } from "./AddRoleModal";
 
@@ -33,7 +33,7 @@ interface TribeHomeProps {}
 export function TribeHome(props: TribeHomeProps) {
   const { tribeId: id } = useParams();
   const { classes } = useStyles();
-  const { tribe, roles, addRole, loading, addSquad } = useTribe({
+  const { items, loading } = useTribe({
     id: id,
   });
   const [addSquadModalOpen, setAddSquadModalOpen] = useState(false);
@@ -42,6 +42,8 @@ export function TribeHome(props: TribeHomeProps) {
   if (loading) {
     return <Loading />;
   }
+
+  const tribe = items.length > 0 ? items[0] : undefined;
   if (!id || !tribe) {
     return <div>Tribe not found</div>;
   }
@@ -59,34 +61,34 @@ export function TribeHome(props: TribeHomeProps) {
       })
     : null;
 
-  const roleRows = roles
-    ? roles.map((row) => {
-        const id = row.id.toString();
-        return (
-          <tr key={id}>
-            <td>
-              <Link to={`${id}`}>{row.individual.first_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.individual.last_name}</Link>
-            </td>
-            <td>
-              <Link to={`${id}`}>{row.tribe_role_type.name}</Link>
-            </td>
-          </tr>
-        );
-      })
-    : null;
+  // const roleRows = roles
+  //   ? roles.map((row) => {
+  //       const id = row.id.toString();
+  //       return (
+  //         <tr key={id}>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.first_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.individual.last_name}</Link>
+  //           </td>
+  //           <td>
+  //             <Link to={`${id}`}>{row.tribe_role_type.name}</Link>
+  //           </td>
+  //         </tr>
+  //       );
+  //     })
+  //   : null;
 
   const submit = async (newSquad: NewSquad) => {
     await addSquad(newSquad);
     setAddSquadModalOpen(false);
   };
 
-  const submitRole = async (newRole: NewTribeRole) => {
-    await addRole(newRole);
-    setAddRoleModalOpen(false);
-  };
+  // const submitRole = async (newRole: NewTribeRole) => {
+  //   await addRole(newRole);
+  //   setAddRoleModalOpen(false);
+  // };
 
   return (
     <>
@@ -116,7 +118,7 @@ export function TribeHome(props: TribeHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            <tbody>{roleRows}</tbody>
+            {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
@@ -128,12 +130,12 @@ export function TribeHome(props: TribeHomeProps) {
         onClose={() => setAddSquadModalOpen(false)}
         onSubmit={submit}
       />
-      <AddRoleModal
+      {/* <AddRoleModal
         tribeId={id}
         opened={addRoleModalOpen}
         onClose={() => setAddRoleModalOpen(false)}
         onSubmit={submitRole}
-      />
+      /> */}
     </>
   );
 }

@@ -1,7 +1,11 @@
-import { useCRUD, UseCRUDOptionalProps } from "../CRUD/CRUD";
+import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
+import { Tribe } from "./Tribe";
 import { MutateUnit, Unit } from "./UnitInterface";
 
-export interface Squad extends Unit {}
+export interface Squad extends Unit {
+  tribe_id: string;
+  tribe: Tribe;
+}
 
 export interface MutateSquad extends MutateUnit {}
 

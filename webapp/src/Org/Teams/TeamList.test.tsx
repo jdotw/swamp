@@ -5,7 +5,7 @@ import {
   addTestPolyfills,
   expectTableToHave,
 } from "../../../test/UITestHelpers";
-import { useOrg } from "../../Client/Team";
+import { useTeam } from "../../Client/Team";
 import { LoadingComponentTestID } from "../../Loading/Loading";
 import MutateTeamModal, { MutateTeamModalTestID } from "./MutateTeamModal";
 import TeamList from "./TeamList";
@@ -21,42 +21,42 @@ const renderTeamList = () => {
   );
 };
 
-vi.mock("../../Client/Org", () => {
+vi.mock("../../Client/Team", () => {
   return {
-    useOrg: vi.fn(),
+    useTeam: vi.fn(),
   };
 });
-const mockUseOrgReturn = {
+const mockUseTeamReturn = {
   loading: false,
   items: [],
 };
-const useOrgMock = useOrg as Mock;
+const useTeamMock = useTeam as Mock;
 
 describe("TeamList", () => {
   const mockTeams = [
-    { id: "1", name: "Org Unit 1" },
-    { id: "2", name: "Org Unit 2" },
+    { id: "1", name: "Team Unit 1" },
+    { id: "2", name: "Team Unit 2" },
   ];
   beforeEach(() => {
-    useOrgMock.mockImplementation(() => ({
-      ...mockUseOrgReturn,
+    useTeamMock.mockImplementation(() => ({
+      ...mockUseTeamReturn,
     }));
   });
 
-  it("should call useOrg", () => {
+  it("should call useTeam", () => {
     renderTeamList();
-    expect(useOrgMock).toHaveBeenCalled();
+    expect(useTeamMock).toHaveBeenCalled();
   });
 
   it("should render a title", async () => {
     renderTeamList();
-    expect(screen.getByText("Organisation Units")).toBeInTheDocument();
+    expect(screen.getByText("Teamanisation Units")).toBeInTheDocument();
   });
 
   describe("when loading", () => {
     it("should render the <Loading> component", async () => {
-      useOrgMock.mockImplementation(() => ({
-        ...mockUseOrgReturn,
+      useTeamMock.mockImplementation(() => ({
+        ...mockUseTeamReturn,
         loading: true,
       }));
       renderTeamList();
@@ -66,8 +66,8 @@ describe("TeamList", () => {
 
   describe("when data is loaded", () => {
     beforeEach(() => {
-      useOrgMock.mockImplementation(() => ({
-        ...mockUseOrgReturn,
+      useTeamMock.mockImplementation(() => ({
+        ...mockUseTeamReturn,
         loading: false,
         items: mockTeams,
       }));

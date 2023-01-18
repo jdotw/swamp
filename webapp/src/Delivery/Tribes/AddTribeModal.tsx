@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewTribe, Tribe } from "../../Client/Tribe";
+import { MutateTribe, Tribe } from "../../Client/Tribe";
 
 interface AddTribeFormProps {
   opened: boolean;
-  onSubmit: (tribe: NewTribe) => void;
+  onSubmit: (tribe: MutateTribe) => void;
   onClose: () => void;
 }
 
@@ -31,8 +31,9 @@ export function AddTribeModal({
 
   const submitForm = (values: AddTribeFormValues) => {
     // Make sure we update a copy, not the actual tribe
-    let tribe: NewTribe = {
+    let tribe: MutateTribe = {
       name: values.name,
+      formed_date: new Date().toUTCString(),
     };
     onSubmit(tribe);
   };

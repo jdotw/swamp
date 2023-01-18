@@ -1,30 +1,36 @@
 // import { Button, Modal, Group, Select } from "@mantine/core";
 // import { TextInput, Box } from "@mantine/core";
 // import { useForm } from "@mantine/form";
-// import { useIndividual } from "../../../Client/Individual";
-// import { MutatePracticeRole } from "../../../Client/PracticeRole";
-// import { usePracticeRoleType } from "../../../Client/PracticeRoleType";
-// import Loading from "../../../Loading/Loading";
+// import { MutateChapterRole } from "../../Client/ChapterRole";
+// import { useChapterRoleType } from "../../Client/ChapterRoleType";
+// import { MutateFunction } from "../../Client/Function";
+// import { useIndividual } from "../../Client/Individual";
+// import { Unit } from "../../Client/UnitInterface";
+// import Loading from "../../Loading/Loading";
 
-// interface AddRoleModalProps {
-//   practiceId: string;
+// interface AddFunctionModalProps {
+//   roleId?: string;
+//   unit?: Unit;
+
 //   opened: boolean;
-//   onSubmit: (role: MutatePracticeRole) => void;
+//   onSubmit: (role: MutateFunction) => void;
 //   onClose: () => void;
 // }
 
-// type AddPracticeFormValues = {
-//   individual_id: string;
-//   role_type_id: string;
+// type AddFunctionFormValues = {
+//   role_id: string;
+//   function_type_id: string;
+//   name?: string;
 // };
 
-// export function AddRoleModal({
+// export function AddFunctionModal({
 //   opened,
 //   onSubmit,
 //   onClose,
-//   practiceId,
+//   roleId,
+//   chapterId,
 // }: AddRoleModalProps) {
-//   const { loading: loadingRoleTypes, roleTypes } = usePracticeRoleType();
+//   const { loading: loadingRoleTypes, roleTypes } = useChapterRoleType();
 //   const { loading: loadingPeople, items: individuals } = useIndividual();
 
 //   const form = useForm({
@@ -53,12 +59,12 @@
 //     };
 //   });
 
-//   const submitForm = (values: AddPracticeFormValues) => {
-//     // Make sure we update a copy, not the actual practice
-//     let role: MutatePracticeRole = {
+//   const submitForm = (values: AddChapterFormValues) => {
+//     let role: MutateChapterRole = {
+//       chapter_id: chapterId,
 //       practice_id: practiceId,
 //       individual_id: values.individual_id,
-//       practice_role_type_id: values.role_type_id,
+//       chapter_role_type_id: values.role_type_id,
 //     };
 //     onSubmit(role);
 //   };
