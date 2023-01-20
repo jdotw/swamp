@@ -5,11 +5,11 @@ import { useForm } from "@mantine/form";
 import { Person } from "../../../../Client/Person";
 
 interface PersonCardProps {
-  individual: Person;
+  person: Person;
   onEditClicked: () => void;
 }
 
-export function PersonCard({ individual, onEditClicked }: PersonCardProps) {
+export function PersonCard({ person, onEditClicked }: PersonCardProps) {
   return (
     <Paper
       radius="md"
@@ -22,7 +22,7 @@ export function PersonCard({ individual, onEditClicked }: PersonCardProps) {
     >
       <Avatar src={"test"} size={120} radius={120} mx="auto" />
       <Text align="center" size="lg" weight={500} mt="md">
-        {individual.first_name} {individual.last_name}
+        {person.first_name} {person.last_name}
       </Text>
       <Text align="center" color="dimmed" size="sm">
         •

@@ -2,7 +2,6 @@ import { Grid, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { ChapterRole } from "../../../Client/ChapterRole";
 import {
   usePerson,
   Person as PersonType,
@@ -10,25 +9,30 @@ import {
 } from "../../../../Client/Person";
 import Loading from "../../../../Components/Loading/Loading";
 import { timeSinceDateString } from "../../../../Utils/TimeSinceDate";
-import { MutatePersonModal, MutatePersonModalMode } from "../MutatePersonModal";
+import { MutatePersonModal } from "../MutatePersonModal";
 import { PersonCard } from "./PersonCard";
 
 function PersonHome() {
-  const { individualId: id } = useParams();
+  const { personId: id } = useParams();
   const { items, loading, updateItem } = usePerson({
     id,
   });
-  const { items: roles } = useRole({ personId: id });
+
+  console.log("id: ", id);
+  console.log("items: ", items);
+
+  // const { items: roles } = useRole({ personId: id });
   const [editModalOpened, setEditModalOpened] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
+
   if (!id || items.length < 1) {
     return <div>Person not found</div>;
   }
 
-  const individual = items[0];
+  const person = items[0];
 
   // const roles: any = [];
   // const roleRows = () =>
@@ -71,7 +75,7 @@ function PersonHome() {
       <div>
         <Grid>
           <Grid.Col span={4}>
-            <PersonCard individual={individual} onEditClicked={onEditClicked} />
+            <PersonCard person={person} onEditClicked={onEditClicked} />
           </Grid.Col>
           <Grid.Col span={8}>Other Info here</Grid.Col>
         </Grid>
@@ -92,9 +96,9 @@ function PersonHome() {
       </div>
       <MutatePersonModal
         title={"Edit Person"}
-        mode={MutatePersonModalMode.Edit}
+        mode={"edit"}
         opened={editModalOpened}
-        individual={individual}
+        person={person}
         onSubmit={onEditSubmit}
         onClose={() => setEditModalOpened(false)}
       />

@@ -1,0 +1,104 @@
+import React, { useState } from "react";
+import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
+import { TextInput, Checkbox, Box } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { FormValidateInput, UseFormReturnType } from "@mantine/form/lib/types";
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { IconCornerRightUpDouble } from "@tabler/icons";
+
+export type MutateItemModalMode = "edit" | "create";
+
+export type MutateItemFormValues = Record<string, string>;
+
+export type MutateItemFormValidationRule = (value: string) => string | null;
+
+export interface MutateItemModalFormField {
+  id: string;
+  initialValue: string;
+  validation?: MutateItemFormValidationRule;
+  element?: ReactJSXElement;
+}
+
+export interface MutateItemModalProps {
+  fields: MutateItemModalFormField[];
+
+  opened: boolean;
+  onSubmit: (values: MutateItemFormValues) => void;
+  onClose: () => void;
+  mode?: MutateItemModalMode;
+  title: string;
+  children?: React.ReactNode[];
+}
+
+export function MutateItemModal({
+  fields,
+  mode = "create",
+  title,
+  opened,
+  onSubmit,
+  onClose,
+  children,
+}: MutateItemModalProps) {
+  const initialValues: MutateItemFormValues = Object.fromEntries(
+    fields.map((field) => [field.id, field.initialValue])
+  );
+
+  const validationRules: FormValidateInput<MutateItemFormValues> =
+    Object.fromEntries(
+      fields.reduce((result, value) => {
+        if (value.validation) {
+          result.push([value.id, value.validation]);
+        }
+        return result;
+      }, [] as [string, MutateItemFormValidationRule][])
+    );
+
+  const form = useForm({
+    validate: validationRules,
+    initialValues: initialValues,
+  });
+
+  const submitForm = (formValues: MutateItemFormValues) => {
+    onSubmit(formValues);
+  };
+
+  const cancelClicked = () => {
+    form.reset();
+    onClose();
+  };
+
+  children = fields.reduce((result, value) => {
+    if (value.element) {
+      result.push(
+        React.cloneElement(value.element, {
+          ...form.getInputProps(value.id),
+          key: value.id,
+        })
+      );
+    }
+    return result;
+  }, [] as ReactJSXElement[]);
+
+  return (
+    <Modal opened={opened} onClose={onClose} title={title}>
+      <Box sx={{ maxWidth: 300 }} mx="auto">
+        <form onSubmit={form.onSubmit(submitForm)}>
+          {children}
+          <Group position="right" mt="md">
+            <Button variant="outline" onClick={cancelClicked}>
+              Cancel
+            </Button>
+            <Button type="submit">
+              {mode === "create" && "Add"}
+              {mode === "edit" && "Save"}
+            </Button>
+          </Group>
+        </form>
+      </Box>
+    </Modal>
+  );
+}
+
+export function nonEmptyString(value: string, errorString: string) {
+  return /^(?!\s*$).+/.test(value) ? null : errorString;
+}

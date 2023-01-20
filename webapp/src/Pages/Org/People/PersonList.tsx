@@ -4,6 +4,7 @@ import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
+import { MutateItemModalMode } from "../../../Components/MutateItemModal/MutateItemModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -42,9 +43,11 @@ export function PersonList(props: PersonListProps) {
     );
   });
 
-  const onAddSubmit = async (newPerson: MutatePerson) => {
-    await createItem(newPerson);
-    setAddPersonModalOpen(false);
+  const onAddSubmit = (newPerson: MutatePerson) => {
+    (async () => {
+      await createItem(newPerson);
+      setAddPersonModalOpen(false);
+    })();
   };
 
   return (
@@ -71,9 +74,8 @@ export function PersonList(props: PersonListProps) {
       <MutatePersonModal
         title={"Onboard Person"}
         opened={addPersonModalOpen}
-        onSubmit={(v) => {
-          onAddSubmit(v);
-        }}
+        onSubmit={onAddSubmit}
+        mode="create"
         onClose={() => setAddPersonModalOpen(false)}
       />
     </>

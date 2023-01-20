@@ -13,18 +13,20 @@ addTestPolyfills();
 
 const renderPage = () =>
   render(
-    <MemoryRouter initialEntries={["/people/2"]}>
+    <MemoryRouter initialEntries={["/org/people/2"]}>
       <Routes>
         <Route path="/">
-          <Route path="people">
-            <Route path=":individualId" element={<PersonHome />} />
+          <Route path="org">
+            <Route path="people">
+              <Route path=":personId" element={<PersonHome />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
     </MemoryRouter>
   );
 
-vi.mock("../../../Client/Person", () => {
+vi.mock("../../../../Client/Person", () => {
   return {
     usePerson: vi.fn(),
   };
@@ -32,10 +34,6 @@ vi.mock("../../../Client/Person", () => {
 const mockUsePersonReturn = {
   loading: false,
   items: [],
-  practiceRoles: [],
-  chapterRoles: [],
-  tribeRoles: [],
-  squadRoles: [],
 };
 const usePersonMock = usePerson as Mock;
 usePersonMock.mockImplementation(() => ({
@@ -92,31 +90,12 @@ describe("PersonHome", () => {
       usePersonMock.mockImplementation(() => ({
         ...mockUsePersonReturn,
         items: [mockPerson],
-        practiceRoles: mockPracticeRoles,
-        chapterRoles: mockChapterRoles,
-        tribeRoles: mockTribeRoles,
-        squadRoles: mockSquadRoles,
       }));
       renderPage();
-      const contents = mockPracticeRoles.map((role) => [
-        "Practice",
-        role.practice.name,
-        role.practice_role_type.name,
-      ]);
       expectTableToHave({
-        rowCount:
-          mockPracticeRoles.length +
-          mockChapterRoles.length +
-          mockTribeRoles.length +
-          mockSquadRoles.length,
+        rowCount: 0,
         headerLabels: ["Type", "Group", "Title", "Tenure"],
-        cellContents: mockPracticeRoles
-          .map((role) => [
-            "Practice",
-            role.practice.name,
-            role.practice_role_type.name,
-          ])
-          .reduce((a, v) => a.concat(v), []),
+        cellContents: [],
       });
     });
   });
