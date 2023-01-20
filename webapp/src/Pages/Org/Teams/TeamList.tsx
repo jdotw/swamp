@@ -24,10 +24,8 @@ function TeamList() {
 
   const onMutateTeamSubmit = async (mutatedTeam: MutateTeam) => {
     if (mutateTeamModalMode === MutateTeamModalMode.Create) {
-      console.log("CREATE: ", mutatedTeam);
       createItem(mutatedTeam);
     } else if (mutateTeamModalMode === MutateTeamModalMode.Edit) {
-      console.log("EDIT: ", mutatedTeam);
       if (teamBeingEdited) {
         updateItem(teamBeingEdited.id, mutatedTeam);
       }

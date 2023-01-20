@@ -21,7 +21,7 @@ const renderTeamList = () => {
   );
 };
 
-vi.mock("../../Client/Team", () => {
+vi.mock("../../../Client/Team", () => {
   return {
     useTeam: vi.fn(),
   };

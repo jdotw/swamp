@@ -4,7 +4,7 @@ import { MutateUnit, Unit } from "./UnitInterface";
 
 export interface Chapter extends Unit {
   practice_id: string;
-  pratice: Practice;
+  practice?: Practice;
 }
 
 export interface MutateChapter extends MutateUnit {}

@@ -16,8 +16,8 @@ import PracticeHome from "./Pages/Capability/Practices/Practice/PracticeHome";
 import ChapterHome from "./Pages/Capability/Chapters/ChapterHome";
 import OrgShell from "./Pages/Org/OrgShell";
 import OrgHome from "./Pages/Org/OrgHome";
-import IndividualList from "./Pages/Org/People/PersonList";
-import IndividualHome from "./Pages/Org/People/Person/PersonHome";
+import PersonList from "./Pages/Org/People/PersonList";
+import PersonHome from "./Pages/Org/People/Person/PersonHome";
 import RolesList from "./Pages/Org/Roles/RolesList";
 import RoleHome from "./Pages/Org/Roles/RoleHome";
 import TeamsList from "./Pages/Org/Teams/TeamList";
@@ -37,8 +37,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 
             {/* People */}
             <Route path="people">
-              <Route index element={<IndividualList />} />
-              <Route path=":individualId" element={<IndividualHome />} />
+              <Route index element={<PersonList />} />
+              <Route path=":personId" element={<PersonHome />} />
             </Route>
 
             {/* Roles */}

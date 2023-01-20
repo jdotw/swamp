@@ -8,14 +8,14 @@ global.fetch = vi.fn();
 const path = "/just/for/tests";
 
 function mockFetchResponse(data: any, code: number = 200) {
-  (fetch as Mock<any[], any>).mockResolvedValueOnce({
+  (fetch as Mock<any[], any>).mockResolvedValue({
     json: () => new Promise((resolve) => resolve(data)),
     status: code,
   });
 }
 
 function mockFetchError(errorString: string) {
-  (fetch as Mock<any[], any>).mockRejectedValueOnce(new Error(errorString));
+  (fetch as Mock<any[], any>).mockRejectedValue(new Error(errorString));
 }
 
 type TestItemType = {
@@ -150,6 +150,7 @@ describe("useCRUD", () => {
         );
       });
     });
+  });
 
   /*
    * Get All Items (reload)

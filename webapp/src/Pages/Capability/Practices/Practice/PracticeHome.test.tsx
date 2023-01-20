@@ -9,7 +9,6 @@ import {
 import PracticeHome from "./PracticeHome";
 import { Practice, usePractice } from "../../../../Client/Practice";
 import { Chapter } from "../../../../Client/Chapter";
-import { PracticeRole, usePracticeRole } from "../../../Client/PracticeRole";
 
 addTestPolyfills();
 
@@ -28,7 +27,7 @@ const renderPage = () =>
     </MemoryRouter>
   );
 
-vi.mock("../../../Client/Practice", () => {
+vi.mock("../../../../Client/Practice", () => {
   return {
     usePractice: vi.fn(),
   };
@@ -40,44 +39,6 @@ const mockUsePracticeReturn = {
 const usePracticeMock = usePractice as Mock;
 usePracticeMock.mockImplementation(() => ({
   ...mockUsePracticeReturn,
-}));
-
-vi.mock("../../../Client/PracticeRole", () => {
-  return {
-    usePracticeRole: vi.fn(),
-  };
-});
-const mockPracticeRoles: PracticeRole[] = [
-  {
-    id: "1",
-    individual_id: "1",
-    individual: {
-      id: "1",
-      first_name: "Test",
-      last_name: "Person",
-      external_id: "3241HJHN",
-    },
-    practice_id: "1",
-    practice: {
-      id: "1",
-      name: "Test Practice",
-      chapters: [],
-    },
-    practice_role_type_id: "1a",
-    practice_role_type: {
-      id: "1a",
-      name: "Test Role",
-    },
-    start_date: "2020-01-01",
-  },
-];
-const mockUsePracticeRoleReturn = {
-  loading: false,
-  items: mockPracticeRoles,
-};
-const usePracticeRoleMock = usePracticeRole as Mock;
-usePracticeRoleMock.mockImplementation(() => ({
-  ...mockUsePracticeRoleReturn,
 }));
 
 describe("PracticeHome", () => {
@@ -120,16 +81,27 @@ describe("PracticeHome", () => {
       {
         id: "1",
         name: "Test Chapter",
+        practice_id: "1",
+        formed_date: new Date().toISOString(),
+        type: "chapter",
+        functions: [],
       },
       {
         id: "2",
         name: "Test Chapter 2",
+        practice_id: "1",
+        formed_date: new Date().toISOString(),
+        type: "chapter",
+        functions: [],
       },
     ];
     const mockPractice: Practice = {
+      type: "practice",
       id: "1",
       name: "Test Practice",
       chapters: mockChapters,
+      functions: [],
+      formed_date: new Date().toISOString(),
     };
     beforeEach(() => {
       usePracticeMock.mockImplementation(() => ({
@@ -155,27 +127,14 @@ describe("PracticeHome", () => {
           .reduce((a, v) => a.concat(v), []),
       });
     });
-    it("renders a table of practice roles with the expected headers, rows and cells", async () => {
-      renderPage();
-      expectTableToHave({
-        tableTestId: "practice-roles-table",
-        rowCount: mockPracticeRoles.length,
-        headerLabels: ["First Name", "Last Name", "Role"],
-        cellContents: mockPracticeRoles
-          .map((i) => [
-            i.individual.first_name,
-            i.individual.last_name,
-            i.practice_role_type.name,
-          ])
-          .reduce((a, v) => a.concat(v), []),
-      });
-    });
   });
   describe("Add Chapter Modal", () => {
     const mockPractice: Practice = {
       id: "1",
       name: "Test Practice",
-      chapters: [],
+      functions: [],
+      formed_date: new Date().toISOString(),
+      type: "practice",
     };
     const createItemMock = vi.fn();
     beforeEach(() => {

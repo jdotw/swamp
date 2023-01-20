@@ -28,7 +28,7 @@ function SquadHome(props: SquadHomeProps) {
     return <Loading />;
   }
 
-  const squad = items.length > 0 ? items[0] : undefined;
+  const squad = items && items.length > 0 ? items[0] : undefined;
 
   if (!id || !tribeId || !squad) {
     return <div>Squad not found</div>;

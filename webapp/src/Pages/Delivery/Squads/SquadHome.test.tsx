@@ -7,7 +7,7 @@ addTestPolyfills();
 describe("SquadHome", () => {
   const mockedUseSquad = vi.fn();
   beforeEach(() => {
-    vi.doMock("../../Client/Squad", () => ({
+    vi.doMock("../../../Client/Squad", () => ({
       useSquad: mockedUseSquad,
     }));
   });

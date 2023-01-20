@@ -7,7 +7,11 @@ import {
   expectTableToHave,
 } from "../../../../test/UITestHelpers";
 import PracticeList from "./PracticeList";
-import { Practice, usePractice } from "../../../Client/Practice";
+import {
+  MutatePractice,
+  Practice,
+  usePractice,
+} from "../../../Client/Practice";
 
 addTestPolyfills();
 
@@ -18,7 +22,7 @@ const renderPage = () =>
     </MemoryRouter>
   );
 
-vi.mock("../../Client/Practice", () => {
+vi.mock("../../../Client/Practice", () => {
   return {
     usePractice: vi.fn(),
   };
@@ -110,8 +114,9 @@ describe("PracticeList", () => {
           name: "Add",
         });
         if (nameInput && submitButton) {
-          const expectedPractice = {
+          const expectedPractice: MutatePractice = {
             name: "Updated Practice",
+            formed_date: expect.anything(),
           };
           await act(async () => {
             const user = userEvent.setup();
