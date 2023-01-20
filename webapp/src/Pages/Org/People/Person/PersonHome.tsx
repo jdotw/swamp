@@ -18,9 +18,6 @@ function PersonHome() {
     id,
   });
 
-  console.log("id: ", id);
-  console.log("items: ", items);
-
   // const { items: roles } = useRole({ personId: id });
   const [editModalOpened, setEditModalOpened] = useState(false);
 
