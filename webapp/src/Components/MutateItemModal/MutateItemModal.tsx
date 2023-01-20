@@ -67,17 +67,17 @@ export function MutateItemModal({
     onClose();
   };
 
-  children = fields.reduce((result, value) => {
-    if (value.element) {
-      result.push(
-        React.cloneElement(value.element, {
-          ...form.getInputProps(value.id),
-          key: value.id,
-        })
-      );
-    }
-    return result;
-  }, [] as ReactJSXElement[]);
+  if (children) {
+    children = React.Children.map(children, (child) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          ...form.getInputProps(child.key as string),
+        });
+      } else {
+        return child;
+      }
+    }) as React.ReactNode[];
+  }
 
   return (
     <Modal opened={opened} onClose={onClose} title={title}>

@@ -33,37 +33,20 @@ export function MutatePersonModal({
       id: "first_name",
       initialValue: person?.first_name ?? "",
       validation: (value) => nonEmptyString(value, "First name is required"),
-      element: (
-        <TextInput withAsterisk label="First Name" placeholder="first name" />
-      ),
     },
     {
       id: "external_id",
       initialValue: person?.external_id ?? "",
       validation: (value) => nonEmptyString(value, "External ID is required"),
-      element:
-        mode === "create" ? (
-          <TextInput
-            withAsterisk
-            label="External ID"
-            placeholder="external ID"
-          />
-        ) : undefined,
     },
     {
       id: "middle_names",
       initialValue: person?.middle_names ?? "",
-      element: (
-        <TextInput label="Middle Names" placeholder="middle names (optional)" />
-      ),
     },
     {
       id: "last_name",
       initialValue: person?.last_name ?? "",
       validation: (value) => nonEmptyString(value, "Last name is required"),
-      element: (
-        <TextInput withAsterisk label="Last Name" placeholder="last name" />
-      ),
     },
   ];
 
@@ -87,6 +70,32 @@ export function MutatePersonModal({
       onSubmit={onSubmitFormValues}
       onClose={onClose}
       title={title}
-    ></MutateItemModal>
+    >
+      {mode === "create" && (
+        <TextInput
+          key="external_id"
+          withAsterisk
+          label="External ID"
+          placeholder="external ID"
+        />
+      )}
+      <TextInput
+        key="first_name"
+        withAsterisk
+        label="First Name"
+        placeholder="first name"
+      />
+      <TextInput
+        key="middle_names"
+        label="Middle Names"
+        placeholder="middle names (optional)"
+      />
+      <TextInput
+        key="last_name"
+        withAsterisk
+        label="Last Name"
+        placeholder="last name"
+      />
+    </MutateItemModal>
   );
 }
