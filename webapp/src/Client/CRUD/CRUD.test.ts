@@ -220,6 +220,7 @@ describe("useCRUD", () => {
     describe("when an item is NOT in the list", () => {
       it("should add the item to the items list", async () => {
         const hook = await renderUseCRUDHook();
+        const existingItemsArray = hook.result.current.items;
         expect(hook.result.current.items).toHaveLength(0);
         mockFetchResponse({
           id: "3424",
@@ -229,6 +230,7 @@ describe("useCRUD", () => {
           await hook.result.current.retrieveItem("3424");
         });
         expect(fetch).toHaveBeenCalled();
+        expect(hook.result.current.items).not.toBe(existingItemsArray);
         expect(hook.result.current.items).toHaveLength(1);
       });
     });
@@ -252,10 +254,12 @@ describe("useCRUD", () => {
           id: itemId,
           name: newerName,
         });
+        const existingItemsArray = hook.result.current.items;
         await act(async () => {
           await hook.result.current.retrieveItem(itemId);
         });
         expect(fetch).toHaveBeenCalled();
+        expect(hook.result.current.items).not.toBe(existingItemsArray); // ensures setItems was called
         expect(hook.result.current.items).toHaveLength(1);
         expect(hook.result.current.items[0].name).toBe(newerName);
       });
@@ -305,6 +309,7 @@ describe("useCRUD", () => {
       });
       it("should add the created item to the list of item", async () => {
         const hook = await renderUseCRUDHook();
+        const existingItemsArray = hook.result.current.items;
         expect(hook.result.current.items).toHaveLength(0);
         await act(async () => {
           mockFetchResponse(createdItem);
@@ -312,6 +317,7 @@ describe("useCRUD", () => {
             name: "Test Item",
           } as MutateTestItemType);
         });
+        expect(hook.result.current.items).not.toBe(existingItemsArray);
         expect(hook.result.current.items).toHaveLength(1);
         expect(hook.result.current.items[0]).toEqual(createdItem);
       });
@@ -373,10 +379,12 @@ describe("useCRUD", () => {
       });
       it("should update the item in the item list", async () => {
         const hook = await renderHookForUpdate();
+        const existingItems = hook.result.current.items;
         mockFetchResponse({}, 204);
         await act(
           async () => await hook.result.current.updateItem(itemId, itemMutation)
         );
+        expect(hook.result.current.items).not.toBe(existingItems); // ensures setItems was called
         expect(hook.result.current.items).toHaveLength(1);
         expect(hook.result.current.items[0].name).toBe(itemMutation.name);
       });
@@ -424,6 +432,7 @@ describe("useCRUD", () => {
       });
       it("should remove the item from the item list", async () => {
         const hook = await renderHookForDelete();
+        const existingItemsArray = hook.result.current.items;
         expect(hook.result.current.items[0].id).toBe(itemId);
         expect(hook.result.current.items).toHaveLength(1);
         mockFetchResponse({}, 204);
@@ -431,6 +440,7 @@ describe("useCRUD", () => {
           async () => await hook.result.current.deleteItem(itemId)
         );
         expect(result).toBeTruthy();
+        expect(hook.result.current.items).not.toBe(existingItemsArray);
         expect(hook.result.current.items).toHaveLength(0);
       });
     });

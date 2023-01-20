@@ -114,12 +114,15 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
       },
     });
     const item = (await response.json()) as ItemType;
-    let index = items.findIndex((item) => item.id === id);
+    let updatedItems = [...items];
+    let index = updatedItems.findIndex((item) => item.id === id);
     if (index >= 0) {
-      items[index] = { ...items[index], ...item };
+      updatedItems[index] = { ...updatedItems[index], ...item };
     } else {
-      setItems([...items, item]);
+      updatedItems.push(item);
     }
+    setItems(updatedItems);
+
     return item;
   };
 
@@ -136,9 +139,11 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
         ...(await authHeaders()),
       },
     });
-    let index = items.findIndex((item) => item.id === id);
+    let updatedItems = [...items];
+    let index = updatedItems.findIndex((item) => item.id === id);
     if (index >= 0) {
-      items[index] = { ...items[index], ...updatedItem };
+      updatedItems[index] = { ...items[index], ...updatedItem };
+      setItems(updatedItems);
     }
     return response.status === 204;
   };
