@@ -4,7 +4,7 @@ import { MutateUnit, Unit } from "./UnitInterface";
 
 export interface Squad extends Unit {
   tribe_id: number;
-  tribe: Tribe;
+  tribe?: Tribe;
 }
 
 export interface MutateSquad extends MutateUnit {}

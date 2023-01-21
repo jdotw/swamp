@@ -11,8 +11,8 @@ import {
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../../Components/Loading/Loading";
 import { useTribe } from "../../../../Client/Tribe";
-import { AddSquadModal } from "./AddSquadModal";
-import { MutateSquad } from "../../../../Client/Squad";
+import { MutateSquadModal } from "./MutateSquadModal";
+import { MutateSquad, useSquad } from "../../../../Client/Squad";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -36,10 +36,14 @@ export function TribeHome(props: TribeHomeProps) {
   const { items, loading } = useTribe({
     id: id,
   });
-  const [addSquadModalOpen, setAddSquadModalOpen] = useState(false);
-  const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
+  const {
+    items: squadItems,
+    loading: loadingSquadItems,
+    createItem: createSquadItem,
+  } = useSquad({ tribeId: id });
+  const [addSquadModalOpen, setMutateSquadModalOpen] = useState(false);
 
-  if (loading) {
+  if (loading || loadingSquadItems) {
     return <Loading />;
   }
 
@@ -48,47 +52,21 @@ export function TribeHome(props: TribeHomeProps) {
     return <div>Tribe not found</div>;
   }
 
-  const squadRows = tribe.squads
-    ? tribe.squads.map((row) => {
-        const id = row.id.toString();
-        return (
-          <tr key={id}>
-            <td>
-              <Link to={`squads/${id}`}>{row.name}</Link>
-            </td>
-          </tr>
-        );
-      })
-    : null;
+  const squadRows = squadItems.map((row) => {
+    const id = row.id.toString();
+    return (
+      <tr key={id}>
+        <td>
+          <Link to={`squads/${id}`}>{row.name}</Link>
+        </td>
+      </tr>
+    );
+  });
 
-  // const roleRows = roles
-  //   ? roles.map((row) => {
-  //       const id = row.id.toString();
-  //       return (
-  //         <tr key={id}>
-  //           <td>
-  //             <Link to={`${id}`}>{row.individual.first_name}</Link>
-  //           </td>
-  //           <td>
-  //             <Link to={`${id}`}>{row.individual.last_name}</Link>
-  //           </td>
-  //           <td>
-  //             <Link to={`${id}`}>{row.tribe_role_type.name}</Link>
-  //           </td>
-  //         </tr>
-  //       );
-  //     })
-  //   : null;
-
-  const submit = async (newSquad: MutateSquad) => {
-    // await addSquad(newSquad);
-    setAddSquadModalOpen(false);
+  const submitNewSquad = async (newSquad: MutateSquad) => {
+    await createSquadItem(newSquad);
+    setMutateSquadModalOpen(false);
   };
-
-  // const submitRole = async (newRole: NewTribeRole) => {
-  //   await addRole(newRole);
-  //   setAddRoleModalOpen(false);
-  // };
 
   return (
     <>
@@ -96,7 +74,7 @@ export function TribeHome(props: TribeHomeProps) {
         <Title order={3}>Tribe: {tribe.name}</Title>
         <Title order={4}>Squads</Title>
         <ScrollArea>
-          <Table verticalSpacing="xs">
+          <Table verticalSpacing="xs" data-testid="squads-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -106,7 +84,9 @@ export function TribeHome(props: TribeHomeProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddSquadModalOpen(true)}>Add Squad</Button>
+          <Button onClick={() => setMutateSquadModalOpen(true)}>
+            Add Squad
+          </Button>
         </div>
         <Title order={4}>Tribe Roles</Title>
         <ScrollArea>
@@ -121,21 +101,12 @@ export function TribeHome(props: TribeHomeProps) {
             {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
-        <div className={classes.buttonBar}>
-          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
-        </div>
       </div>
-      <AddSquadModal
+      <MutateSquadModal
         opened={addSquadModalOpen}
-        onClose={() => setAddSquadModalOpen(false)}
-        onSubmit={submit}
+        onClose={() => setMutateSquadModalOpen(false)}
+        onSubmit={submitNewSquad}
       />
-      {/* <AddRoleModal
-        tribeId={id}
-        opened={addRoleModalOpen}
-        onClose={() => setAddRoleModalOpen(false)}
-        onSubmit={submitRole}
-      /> */}
     </>
   );
 }
