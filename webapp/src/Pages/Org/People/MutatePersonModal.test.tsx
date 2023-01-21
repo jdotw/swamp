@@ -1,16 +1,7 @@
-import { TextInput } from "@mantine/core";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { addTestPolyfills } from "../../../../test/UITestHelpers";
-import { MutatePerson, Person } from "../../../Client/Person";
-import {
-  MutateItemFormValues,
-  MutateItemModal,
-  MutateItemModalFormField,
-  MutateItemModalMode,
-  nonEmptyString,
-} from "../../../Components/MutateItemModal/MutateItemModal";
 import { MutatePersonModal, MutatePersonModalProps } from "./MutatePersonModal";
 
 addTestPolyfills();
