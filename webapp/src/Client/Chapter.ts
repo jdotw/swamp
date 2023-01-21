@@ -26,7 +26,7 @@ export function useChapter(props: UseChapterProps) {
     deleteItem,
   } = useCRUD<Chapter, MutateChapter>({
     ...props,
-    path: `/api/capability/practices/${practiceId}/chapters`,
+    path: `/api/org/practices/${practiceId}/chapters`,
   });
 
   return {

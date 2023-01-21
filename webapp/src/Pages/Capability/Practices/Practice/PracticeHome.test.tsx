@@ -8,7 +8,8 @@ import {
 } from "../../../../../test/UITestHelpers";
 import PracticeHome from "./PracticeHome";
 import { Practice, usePractice } from "../../../../Client/Practice";
-import { Chapter } from "../../../../Client/Chapter";
+import { Chapter, useChapter } from "../../../../Client/Chapter";
+import userEvent from "@testing-library/user-event";
 
 addTestPolyfills();
 
@@ -39,6 +40,20 @@ const mockUsePracticeReturn = {
 const usePracticeMock = usePractice as Mock;
 usePracticeMock.mockImplementation(() => ({
   ...mockUsePracticeReturn,
+}));
+
+vi.mock("../../../../Client/Chapter", () => {
+  return {
+    useChapter: vi.fn(),
+  };
+});
+const mockUseChapterReturn = {
+  loading: false,
+  items: [],
+};
+const useChapterMock = useChapter as Mock;
+useChapterMock.mockImplementation(() => ({
+  ...mockUseChapterReturn,
 }));
 
 describe("PracticeHome", () => {
@@ -109,11 +124,18 @@ describe("PracticeHome", () => {
         items: [mockPractice],
         loading: false,
       }));
+      useChapterMock.mockImplementation(() => ({
+        ...mockUseChapterReturn,
+        items: mockChapters,
+        loading: false,
+      }));
     });
     it("renders a heading with the practice name", async () => {
       renderPage();
       expect(
-        screen.getByRole("heading", { name: /Test Practice/i })
+        screen.getByRole("heading", {
+          name: new RegExp(mockPractice.name, "i"),
+        })
       ).toBeInTheDocument();
     });
     it("renders a table of chapters with the expected headers, rows and cells", async () => {
@@ -138,9 +160,9 @@ describe("PracticeHome", () => {
     };
     const createItemMock = vi.fn();
     beforeEach(() => {
-      usePracticeMock.mockImplementation(() => ({
-        ...mockUsePracticeReturn,
-        items: [mockPractice],
+      useChapterMock.mockImplementation(() => ({
+        ...mockUseChapterReturn,
+        items: [],
         loading: false,
         createItem: createItemMock,
       }));
@@ -154,12 +176,18 @@ describe("PracticeHome", () => {
         expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
       });
       describe("when the form is filled out and Add is clicked", () => {
-        it("calls the usePractice's updateItem function", async () => {
-          const nameInput = screen.getByPlaceholderText("chapter name");
+        it("calls the usePractice's createItem function", async () => {
+          const expectedChapter = {
+            name: "New Chapter",
+            formed_date: expect.anything(),
+          };
           const submitButton = screen.getByRole("button", { name: "Add" });
-          fireEvent.change(nameInput, { target: { value: "New Chapter" } });
-          fireEvent.click(submitButton);
+          const nameInput = screen.getByPlaceholderText("chapter name");
+          const user = userEvent.setup();
+          await user.type(nameInput, expectedChapter.name);
+          await user.click(submitButton);
           expect(createItemMock).toHaveBeenCalledTimes(1);
+          expect(createItemMock).toHaveBeenCalledWith(expectedChapter);
           waitFor(() => expect(submitButton).not.toBeInTheDocument());
         });
       });

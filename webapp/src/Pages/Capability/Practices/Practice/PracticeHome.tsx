@@ -2,9 +2,9 @@ import { useState } from "react";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../../../Components/Loading/Loading";
-import { AddChapterModal } from "./AddChapterModal";
+import { MutateChapterModal } from "./MutateChapterModal";
 import { usePractice } from "../../../../Client/Practice";
-import { MutateChapter } from "../../../../Client/Chapter";
+import { MutateChapter, useChapter } from "../../../../Client/Chapter";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -25,64 +25,38 @@ interface PracticeHomeProps {}
 export function PracticeHome(props: PracticeHomeProps) {
   const id = +useParams().practiceId!;
   const { classes } = useStyles();
+  const { items, loading } = usePractice({ id: +id! });
   const {
-    items,
-    loading,
-    createItem: createChapter,
-  } = usePractice({ id: +id! });
-  const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
-  const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
+    items: chapterItems,
+    loading: loadingChapterItems,
+    createItem: createChapterItem,
+  } = useChapter({ practiceId: +id! });
+  const [addChapterModalOpen, setMutateChapterModalOpen] = useState(false);
 
   const practice = items.length > 0 ? items[0] : undefined;
 
-  if (loading) {
+  if (loading || loadingChapterItems) {
     return <Loading />;
   }
   if (!id || !practice) {
     return <div>Practice not found</div>;
   }
 
-  const chapterRows = practice.chapters
-    ? practice.chapters.map((row) => {
-        const id = row.id.toString();
-        return (
-          <tr key={id}>
-            <td>
-              <Link to={`chapters/${id}`}>{row.name}</Link>
-            </td>
-          </tr>
-        );
-      })
-    : null;
+  const chapterRows = chapterItems.map((row) => {
+    const id = row.id.toString();
+    return (
+      <tr key={id}>
+        <td>
+          <Link to={`chapters/${id}`}>{row.name}</Link>
+        </td>
+      </tr>
+    );
+  });
 
-  // const roleRows = roles
-  //   ? roles.map((row) => {
-  //       const id = row.id.toString();
-  //       return (
-  //         <tr key={id}>
-  //           <td>
-  //             <Link to={`${id}`}>{row.individual.first_name}</Link>
-  //           </td>
-  //           <td>
-  //             <Link to={`${id}`}>{row.individual.last_name}</Link>
-  //           </td>
-  //           <td>
-  //             <Link to={`${id}`}>{row.practice_role_type.name}</Link>
-  //           </td>
-  //         </tr>
-  //       );
-  //     })
-  //   : null;
-
-  const submit = async (newChapter: MutateChapter) => {
-    await createChapter(newChapter);
-    setAddChapterModalOpen(false);
+  const submitNewChapter = async (newChapter: MutateChapter) => {
+    await createChapterItem(newChapter);
+    setMutateChapterModalOpen(false);
   };
-
-  // const submitRole = async (newRole: MutatePracticeRole) => {
-  //   await createRole(newRole);
-  //   setAddRoleModalOpen(false);
-  // };
 
   return (
     <>
@@ -100,38 +74,16 @@ export function PracticeHome(props: PracticeHomeProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddChapterModalOpen(true)}>
+          <Button onClick={() => setMutateChapterModalOpen(true)}>
             Add Chapter
           </Button>
         </div>
-        <Title order={4}>Practice Roles</Title>
-        <ScrollArea>
-          <Table verticalSpacing="xs" data-testid="practice-roles-table">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            {/* <tbody>{roleRows}</tbody> */}
-          </Table>
-        </ScrollArea>
-        <div className={classes.buttonBar}>
-          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
-        </div>
       </div>
-      <AddChapterModal
+      <MutateChapterModal
         opened={addChapterModalOpen}
-        onClose={() => setAddChapterModalOpen(false)}
-        onSubmit={submit}
+        onClose={() => setMutateChapterModalOpen(false)}
+        onSubmit={submitNewChapter}
       />
-      {/* <AddRoleModal
-        practiceId={id}
-        opened={addRoleModalOpen}
-        onClose={() => setAddRoleModalOpen(false)}
-        onSubmit={submitRole}
-      /> */}
     </>
   );
 }
