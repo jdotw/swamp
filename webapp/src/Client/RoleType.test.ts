@@ -19,7 +19,7 @@ expectHookAdoptsUseCRUDCorrectly<RoleType, MutateRoleType>({
   hookFactory: (props) => useRoleType({ ...defaultProps, ...props }),
   itemFactory: (props) => {
     const roleType: RoleType = {
-      id: "1",
+      id: 1,
       title: "Role Title",
       active_from_date: Date.now().toString(),
       ...props,

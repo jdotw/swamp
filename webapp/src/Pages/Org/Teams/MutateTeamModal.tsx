@@ -43,7 +43,7 @@ function MutateTeamModal({
 
   const submitForm = (values: MutateTeamModalValues) => {
     // Make sure we update a copy, not the actual individual
-    let updatedTeam: MutateTeam = { ...team, name: values.name };
+    let updatedTeam: MutateTeam = { ...team!, name: values.name! };
     onSubmit(updatedTeam);
   };
 

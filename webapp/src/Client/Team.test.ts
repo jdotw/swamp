@@ -14,7 +14,7 @@ describe("useTeam Hook", () => {
       hookFactory: (props) => useTeam({ ...props }),
       itemFactory: (props) =>
         ({
-          id: Math.floor(Math.random() * 1000).toString(),
+          id: Math.floor(Math.random() * 1000),
           name: "Test Team",
           ...props,
         } as Team),

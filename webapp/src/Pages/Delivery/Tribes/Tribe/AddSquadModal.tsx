@@ -1,11 +1,11 @@
 import { Button, Modal, Group } from "@mantine/core";
 import { TextInput, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewSquad } from "../../../../Client/Tribe";
+import { MutateSquad } from "../../../../Client/Squad";
 
 interface AddSquadModalProps {
   opened: boolean;
-  onSubmit: (squad: NewSquad) => void;
+  onSubmit: (squad: MutateSquad) => void;
   onClose: () => void;
 }
 
@@ -29,8 +29,9 @@ export function AddSquadModal({
   });
 
   const submitForm = (values: AddSquadModalValues) => {
-    let squad: NewSquad = {
+    let squad: MutateSquad = {
       name: values.name,
+      formed_date: new Date().toISOString(),
     };
     onSubmit(squad);
   };

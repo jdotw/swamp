@@ -12,7 +12,7 @@ expectHookAdoptsUseCRUDCorrectly<Tribe, MutateTribe>({
   hookFactory: (props) => useTribe({ ...props }),
   itemFactory: (props) =>
     ({
-      id: "1",
+      id: 1,
       name: "name",
       description: "description",
       formed_date: "2021-01-01",

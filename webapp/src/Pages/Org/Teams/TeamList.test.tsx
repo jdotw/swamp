@@ -34,8 +34,8 @@ const useTeamMock = useTeam as Mock;
 
 describe("TeamList", () => {
   const mockTeams = [
-    { id: "1", name: "Team Unit 1" },
-    { id: "2", name: "Team Unit 2" },
+    { id: 1, name: "Team Unit 1" },
+    { id: 2, name: "Team Unit 2" },
   ];
   beforeEach(() => {
     useTeamMock.mockImplementation(() => ({

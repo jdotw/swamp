@@ -3,7 +3,7 @@ import { e } from "vitest/dist/index-761e769b";
 import { useBackend } from "./Backend";
 
 export interface UseCRUDOptionalProps {
-  id?: string;
+  id?: number;
   domain?: string;
   loadOnMount?: boolean;
 }
@@ -13,7 +13,7 @@ export interface UseCRUDProps extends UseCRUDOptionalProps {
 }
 
 export interface TypeWithID {
-  id: string;
+  id: number;
 }
 
 export interface UseCRUDAdoptionInterface<
@@ -25,9 +25,9 @@ export interface UseCRUDAdoptionInterface<
   error: any;
   reload: () => Promise<void>;
   createItem: (item: NewItemType) => Promise<ItemType>;
-  retrieveItem: (id: string) => Promise<ItemType>;
-  updateItem: (id: string, item: NewItemType) => Promise<boolean>;
-  deleteItem: (id: string) => Promise<boolean>;
+  retrieveItem: (id: number) => Promise<ItemType>;
+  updateItem: (id: number, item: NewItemType) => Promise<boolean>;
+  deleteItem: (id: number) => Promise<boolean>;
 }
 
 export interface UseCRUDInterface<ItemType extends TypeWithID, NewItemType>
@@ -103,7 +103,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
     return createdItem;
   };
 
-  const retrieveItem = async (id: string) => {
+  const retrieveItem = async (id: number) => {
     if (!url) {
       throw new Error("No URL provided");
     }
@@ -126,7 +126,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
     return item;
   };
 
-  const updateItem = async (id: string, updatedItem: NewItemType) => {
+  const updateItem = async (id: number, updatedItem: NewItemType) => {
     if (!url) {
       throw new Error("No URL provided");
     }
@@ -148,7 +148,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
     return response.status === 204;
   };
 
-  const deleteItem = async (id: string) => {
+  const deleteItem = async (id: number) => {
     if (!url) {
       throw new Error("No URL provided");
     }

@@ -14,7 +14,7 @@ expectHookAdoptsUseCRUDCorrectly<Person, MutatePerson>({
   hookFactory: (props) => usePerson({ ...defaultProps, ...props }),
   itemFactory: (props) =>
     ({
-      id: "1",
+      id: 1,
       external_id: "213",
       first_name: "first name",
       middle_names: "mid",

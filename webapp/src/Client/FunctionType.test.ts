@@ -19,7 +19,7 @@ expectHookAdoptsUseCRUDCorrectly<FunctionType, MutateFunctionType>({
   hookFactory: (props) => useFunctionType({ ...defaultProps, ...props }),
   itemFactory: (props) => {
     const functionType: FunctionType = {
-      id: "1",
+      id: 1,
       name: "Function Type Name",
       active_from_date: Date.now().toString(),
       ...props,

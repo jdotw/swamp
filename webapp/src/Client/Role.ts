@@ -7,12 +7,12 @@ import { Practice } from "./Practice";
 import { RoleType } from "./RoleType";
 
 export interface Role {
-  id: string;
+  id: number;
 
-  person_id: string;
+  person_id: number;
   person: Person;
 
-  role_type_id: string;
+  role_type_id: number;
   role_type: RoleType;
 
   title: string;
@@ -24,14 +24,14 @@ export interface Role {
 }
 
 export interface MutateRole {
-  role_type_id: string;
+  role_type_id: number;
   title: string;
   end_date?: string;
 }
 
 export interface UseRoleProps extends UseCRUDOptionalProps {
-  personId: string;
-  id?: string;
+  personId: number;
+  id?: number;
 }
 
 export function useRole(props: UseRoleProps) {

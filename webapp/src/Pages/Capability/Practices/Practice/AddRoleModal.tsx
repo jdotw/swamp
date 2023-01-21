@@ -7,15 +7,15 @@
 // import Loading from "../../../Loading/Loading";
 
 // interface AddRoleModalProps {
-//   practiceId: string;
+//   practiceId: number;
 //   opened: boolean;
 //   onSubmit: (role: MutatePracticeRole) => void;
 //   onClose: () => void;
 // }
 
 // type AddPracticeFormValues = {
-//   individual_id: string;
-//   role_type_id: string;
+//   individual_id: number;
+//   role_type_id: number;
 // };
 
 // export function AddRoleModal({

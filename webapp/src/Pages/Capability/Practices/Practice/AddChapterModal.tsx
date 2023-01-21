@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NewChapter } from "../../../../Client/Practice";
+import { MutateChapter } from "../../../../Client/Chapter";
 
 interface AddChapterModalProps {
   opened: boolean;
-  onSubmit: (chapter: NewChapter) => void;
+  onSubmit: (chapter: MutateChapter) => void;
   onClose: () => void;
 }
 
@@ -31,8 +31,9 @@ export function AddChapterModal({
 
   const submitForm = (values: AddChapterModalValues) => {
     // Make sure we update a copy, not the actual chapter
-    let chapter: NewChapter = {
+    let chapter: MutateChapter = {
       name: values.name,
+      formed_date: new Date().toISOString(),
     };
     onSubmit(chapter);
   };

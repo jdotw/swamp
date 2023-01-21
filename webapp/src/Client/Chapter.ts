@@ -3,14 +3,14 @@ import { Practice } from "./Practice";
 import { MutateUnit, Unit } from "./UnitInterface";
 
 export interface Chapter extends Unit {
-  practice_id: string;
+  practice_id: number;
   practice?: Practice;
 }
 
 export interface MutateChapter extends MutateUnit {}
 
 export interface UseChapterProps extends UseCRUDOptionalProps {
-  practiceId: string;
+  practiceId: number;
 }
 
 export function useChapter(props: UseChapterProps) {

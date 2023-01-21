@@ -22,11 +22,12 @@ const useStyles = createStyles((theme) => ({
 interface ChapterHomeProps {}
 
 function ChapterHome(props: ChapterHomeProps) {
-  const { practiceId, chapterId: id } = useParams();
+  const id = +useParams().chapterId!;
+  const practiceId = +useParams().practiceId!;
   const { classes, theme } = useStyles();
   const { items, reload, loading, error } = useChapter({
-    practiceId: practiceId ?? "",
-    id: id ?? "",
+    practiceId: +practiceId!,
+    id: +id!,
   });
   const chapter = items.length > 0 ? items[0] : undefined;
 
@@ -83,13 +84,13 @@ function ChapterHome(props: ChapterHomeProps) {
           <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
         </div>
       </div>
-      <AddFunctionModal
+      {/* <AddFunctionModal
         chapterId={id}
         practiceId={practiceId}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSubmit={submitAddFunction}
-      />
+      /> */}
     </>
   );
 }

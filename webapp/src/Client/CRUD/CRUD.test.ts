@@ -19,7 +19,7 @@ function mockFetchError(errorString: string) {
 }
 
 type TestItemType = {
-  id: string;
+  id: number;
   name: string;
 };
 
@@ -107,13 +107,13 @@ describe("useCRUD", () => {
 
   describe("when an id is specified", () => {
     const mockItem: TestItemType = {
-      id: "123",
+      id: Math.floor(Math.random() * 1000),
       name: "Test Item",
     };
     it("should call retrieveItem on mount", async () => {
       const hook = await renderUseCRUDHook({
         path,
-        id: "123",
+        id: mockItem.id,
         initialLoadItems: mockItem,
       });
       await act(async () => {
@@ -126,7 +126,7 @@ describe("useCRUD", () => {
     it("it should not call reload on mount", async () => {
       const hook = await renderUseCRUDHook({
         path,
-        id: "123",
+        id: mockItem.id,
         initialLoadItems: mockItem,
       });
       await act(async () => {
@@ -204,7 +204,7 @@ describe("useCRUD", () => {
   describe("retrieveItem function", () => {
     it("should call fetch with the correct path and headers", async () => {
       const hook = await renderUseCRUDHook({ path, loadOnMount: false });
-      const itemId = Math.floor(Math.random() * 10000).toString();
+      const itemId = Math.floor(Math.random() * 10000);
       mockFetchResponse({ id: itemId, name: "test" });
       await act(() => hook.result.current.retrieveItem(itemId));
       expect(fetch).toHaveBeenCalledWith(
@@ -222,12 +222,13 @@ describe("useCRUD", () => {
         const hook = await renderUseCRUDHook();
         const existingItemsArray = hook.result.current.items;
         expect(hook.result.current.items).toHaveLength(0);
+        const itemId = Math.floor(Math.random() * 10000);
         mockFetchResponse({
-          id: "3424",
+          id: itemId,
           name: "Single Test Item",
         });
         await act(async () => {
-          await hook.result.current.retrieveItem("3424");
+          await hook.result.current.retrieveItem(itemId);
         });
         expect(fetch).toHaveBeenCalled();
         expect(hook.result.current.items).not.toBe(existingItemsArray);
@@ -237,7 +238,7 @@ describe("useCRUD", () => {
 
     describe("when an item is already in the list", () => {
       it("should update the existing item", async () => {
-        const itemId = Math.floor(Math.random() * 10000).toString();
+        const itemId = Math.floor(Math.random() * 10000);
         const existingItem = {
           id: itemId,
           name: "Existing Test Item",
@@ -273,7 +274,7 @@ describe("useCRUD", () => {
   describe("createItem function", () => {
     it("should call fetch with the correct path and headers", async () => {
       const hook = await renderUseCRUDHook({ path, loadOnMount: false });
-      const itemId = Math.floor(Math.random() * 10000).toString();
+      const itemId = Math.floor(Math.random() * 10000);
       const itemToCreate = {
         id: itemId,
         name: "item to be created",
@@ -299,7 +300,7 @@ describe("useCRUD", () => {
       } as MutateTestItemType;
       const createdItem = {
         ...newItem,
-        id: "5456563",
+        id: Math.floor(Math.random() * 10000),
       };
       it("should call fetch", async () => {
         const hook = await renderUseCRUDHook();
@@ -331,7 +332,7 @@ describe("useCRUD", () => {
   describe("updateItem function", () => {
     it("should call fetch with the correct path and headers", async () => {
       const hook = await renderUseCRUDHook({ path, loadOnMount: false });
-      const itemId = Math.floor(Math.random() * 10000).toString();
+      const itemId = Math.floor(Math.random() * 10000);
       const itemToUpdate = {
         name: "item to be updated",
       };
@@ -351,7 +352,7 @@ describe("useCRUD", () => {
     });
 
     describe("when updating an item", () => {
-      const itemId = Math.floor(Math.random() * 100).toString();
+      const itemId = Math.floor(Math.random() * 100);
       const existingItem = {
         id: itemId,
         name: "Test Item",
@@ -398,7 +399,7 @@ describe("useCRUD", () => {
   describe("deleteItem function", () => {
     it("should call fetch with the correct path and headers", async () => {
       const hook = await renderUseCRUDHook({ path, loadOnMount: false });
-      const itemId = Math.floor(Math.random() * 10000).toString();
+      const itemId = Math.floor(Math.random() * 10000);
       mockFetchResponse({}, 204);
       await act(() => hook.result.current.deleteItem(itemId));
       expect(fetch).toHaveBeenCalledWith(
@@ -413,7 +414,7 @@ describe("useCRUD", () => {
     });
 
     describe("when deleting an item", () => {
-      const itemId = Math.floor(Math.random() * 100).toString();
+      const itemId = Math.floor(Math.random() * 100);
       const existingItem = {
         id: itemId,
         name: "Test Item",

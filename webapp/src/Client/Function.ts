@@ -10,41 +10,41 @@ import { Team } from "./Team";
 import { Unit } from "./UnitInterface";
 
 export interface Function {
-  id: string;
+  id: number;
 
-  function_type_id: string;
+  function_type_id: number;
   function_type: FunctionType;
 
   name: string;
 
-  practice_id: string;
+  practice_id: number;
   practice: Practice;
-  chapter_id: string;
+  chapter_id: number;
   chapter: Chapter;
-  tribe_id: string;
+  tribe_id: number;
   tribe: Tribe;
-  squad_id: string;
+  squad_id: number;
   squad: Squad;
-  team_id: string;
+  team_id: number;
   team: Team;
 
   start_date: string;
   end_date: string;
 
-  role_id: string;
+  role_id: number;
   role: Role;
 }
 
 export interface MutateFunction {
-  practice_id: string;
-  person_id: string;
-  function_type_id: string;
+  practice_id: number;
+  person_id: number;
+  function_type_id: number;
 }
 
 export interface UseFunctionProps extends UseCRUDOptionalProps {
   // roleId and unit are mutually exclusive
   // however one of the two must be specified
-  roleId?: string;
+  roleId?: number;
   unit?: Unit;
 }
 

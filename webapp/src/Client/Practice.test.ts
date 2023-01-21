@@ -19,7 +19,7 @@ expectHookAdoptsUseCRUDCorrectly<Practice, MutatePractice>({
   hookFactory: (props) => usePractice({ ...defaultProps, ...props }),
   itemFactory: (props) =>
     ({
-      id: "1",
+      id: 1,
       name: "name",
       description: "description",
       formed_date: "2021-01-01",

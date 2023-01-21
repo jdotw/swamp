@@ -65,14 +65,20 @@ describe("PracticeList", () => {
   it("renders a table with the correct row count, headers and cells", async () => {
     const mockPractices: Practice[] = [
       {
-        id: "1",
+        id: 1,
         name: "This Practice",
         chapters: [],
+        type: "practice",
+        formed_date: new Date().toISOString(),
+        functions: [],
       },
       {
-        id: "2",
+        id: 2,
         name: "That Practice",
         chapters: [],
+        type: "practice",
+        formed_date: new Date().toISOString(),
+        functions: [],
       },
     ];
     usePracticeMock.mockImplementation(() => ({

@@ -2,7 +2,7 @@ import { Function } from "./Function";
 
 export interface Unit {
   type: string; // discriminator
-  id: string;
+  id: number;
   name: string;
   description?: string;
   functions: Function[];

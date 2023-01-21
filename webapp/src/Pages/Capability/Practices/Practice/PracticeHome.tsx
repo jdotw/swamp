@@ -23,9 +23,13 @@ const useStyles = createStyles((theme) => ({
 interface PracticeHomeProps {}
 
 export function PracticeHome(props: PracticeHomeProps) {
-  const { practiceId: id } = useParams();
+  const id = +useParams().practiceId!;
   const { classes } = useStyles();
-  const { items, loading, createItem: createChapter } = usePractice({ id });
+  const {
+    items,
+    loading,
+    createItem: createChapter,
+  } = usePractice({ id: +id! });
   const [addChapterModalOpen, setAddChapterModalOpen] = useState(false);
   const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 

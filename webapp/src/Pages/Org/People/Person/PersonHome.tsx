@@ -13,7 +13,7 @@ import { MutatePersonModal } from "../MutatePersonModal";
 import { PersonCard } from "./PersonCard";
 
 function PersonHome() {
-  const { personId: id } = useParams();
+  const id = +useParams().personId!;
   const { items, loading, updateItem } = usePerson({
     id,
   });

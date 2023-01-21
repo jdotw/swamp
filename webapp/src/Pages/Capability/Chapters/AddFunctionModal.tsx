@@ -9,7 +9,7 @@
 // import Loading from "../../Loading/Loading";
 
 // interface AddFunctionModalProps {
-//   roleId?: string;
+//   roleId?: number;
 //   unit?: Unit;
 
 //   opened: boolean;
@@ -18,8 +18,8 @@
 // }
 
 // type AddFunctionFormValues = {
-//   role_id: string;
-//   function_type_id: string;
+//   role_id: number;
+//   function_type_id: number;
 //   name?: string;
 // };
 

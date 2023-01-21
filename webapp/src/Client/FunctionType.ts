@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 
 export type FunctionType = {
-  id: string;
+  id: number;
   name: string;
   active_from_date: string;
   retired_at_date?: string;

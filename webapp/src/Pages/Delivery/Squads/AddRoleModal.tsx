@@ -7,16 +7,16 @@
 // import { useIndividual } from "../../Client/Individual";
 
 // interface AddRoleModalProps {
-//   tribeId: string;
-//   squadId: string;
+//   tribeId: number;
+//   squadId: number;
 //   opened: boolean;
 //   onSubmit: (role: NewSquadRole) => void;
 //   onClose: () => void;
 // }
 
 // type AddSquadFormValues = {
-//   individual_id: string;
-//   role_type_id: string;
+//   individual_id: number;
+//   role_type_id: number;
 // };
 
 // export function AddRoleModal({

@@ -44,7 +44,7 @@ usePracticeMock.mockImplementation(() => ({
 describe("PracticeHome", () => {
   it("should call usePractice with the practiceId", async () => {
     renderPage();
-    expect(usePracticeMock).toHaveBeenCalledWith({ id: "2" });
+    expect(usePracticeMock).toHaveBeenCalledWith({ id: 2 });
   });
   describe("when loading=true", () => {
     beforeEach(() => {
@@ -79,17 +79,17 @@ describe("PracticeHome", () => {
   describe("when loading=false and a Practice is found", () => {
     const mockChapters: Chapter[] = [
       {
-        id: "1",
+        id: 1,
         name: "Test Chapter",
-        practice_id: "1",
+        practice_id: 1,
         formed_date: new Date().toISOString(),
         type: "chapter",
         functions: [],
       },
       {
-        id: "2",
+        id: 2,
         name: "Test Chapter 2",
-        practice_id: "1",
+        practice_id: 1,
         formed_date: new Date().toISOString(),
         type: "chapter",
         functions: [],
@@ -97,7 +97,7 @@ describe("PracticeHome", () => {
     ];
     const mockPractice: Practice = {
       type: "practice",
-      id: "1",
+      id: 1,
       name: "Test Practice",
       chapters: mockChapters,
       functions: [],
@@ -130,7 +130,7 @@ describe("PracticeHome", () => {
   });
   describe("Add Chapter Modal", () => {
     const mockPractice: Practice = {
-      id: "1",
+      id: 1,
       name: "Test Practice",
       functions: [],
       formed_date: new Date().toISOString(),

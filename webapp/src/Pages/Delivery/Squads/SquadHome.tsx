@@ -16,7 +16,8 @@ const useStyles = createStyles((theme) => ({
 interface SquadHomeProps {}
 
 function SquadHome(props: SquadHomeProps) {
-  const { tribeId, squadId: id } = useParams();
+  const tribeId = +useParams().tribeId!;
+  const id = +useParams().squadId!;
   const { classes, theme } = useStyles();
   const { items, loading } = useSquad({
     tribeId,

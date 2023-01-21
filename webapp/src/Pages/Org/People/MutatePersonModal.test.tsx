@@ -69,13 +69,13 @@ describe("PersonList", () => {
     it("renders a table with the correct number of rows", async () => {
       const mockPersons = [
         {
-          id: "1",
+          id: 1,
           first_name: "John",
           last_name: "Doe",
           external_id: "123",
         },
         {
-          id: "2",
+          id: 2,
           first_name: "Jane",
           last_name: "Smith",
           external_id: "456",

@@ -13,7 +13,7 @@ export type MutateItemFormValues = Record<string, string>;
 export type MutateItemFormValidationRule = (value: string) => string | null;
 
 export interface MutateItemModalFormField {
-  id: string;
+  key: string;
   initialValue: string;
   validation?: MutateItemFormValidationRule;
   element?: ReactJSXElement;
@@ -40,14 +40,14 @@ export function MutateItemModal({
   children,
 }: MutateItemModalProps) {
   const initialValues: MutateItemFormValues = Object.fromEntries(
-    fields.map((field) => [field.id, field.initialValue])
+    fields.map((field) => [field.key, field.initialValue])
   );
 
   const validationRules: FormValidateInput<MutateItemFormValues> =
     Object.fromEntries(
       fields.reduce((result, value) => {
         if (value.validation) {
-          result.push([value.id, value.validation]);
+          result.push([value.key, value.validation]);
         }
         return result;
       }, [] as [string, MutateItemFormValidationRule][])

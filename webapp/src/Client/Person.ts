@@ -2,7 +2,7 @@ import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Role } from "./Role";
 
 export interface Person {
-  id: string;
+  id: number;
   external_id: string;
   first_name: string;
   middle_names?: string;

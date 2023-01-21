@@ -12,7 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import Loading from "../../../../Components/Loading/Loading";
 import { useTribe } from "../../../../Client/Tribe";
 import { AddSquadModal } from "./AddSquadModal";
-import { AddRoleModal } from "./AddRoleModal";
+import { MutateSquad } from "../../../../Client/Squad";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 interface TribeHomeProps {}
 
 export function TribeHome(props: TribeHomeProps) {
-  const { tribeId: id } = useParams();
+  const id = +useParams().tribeId!;
   const { classes } = useStyles();
   const { items, loading } = useTribe({
     id: id,
@@ -80,8 +80,8 @@ export function TribeHome(props: TribeHomeProps) {
   //     })
   //   : null;
 
-  const submit = async (newSquad: NewSquad) => {
-    await addSquad(newSquad);
+  const submit = async (newSquad: MutateSquad) => {
+    // await addSquad(newSquad);
     setAddSquadModalOpen(false);
   };
 

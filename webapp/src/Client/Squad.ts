@@ -3,14 +3,14 @@ import { Tribe } from "./Tribe";
 import { MutateUnit, Unit } from "./UnitInterface";
 
 export interface Squad extends Unit {
-  tribe_id: string;
+  tribe_id: number;
   tribe: Tribe;
 }
 
 export interface MutateSquad extends MutateUnit {}
 
 export interface UseSquadProps extends UseCRUDOptionalProps {
-  tribeId?: string;
+  tribeId?: number;
 }
 
 export function useSquad(props: UseSquadProps) {

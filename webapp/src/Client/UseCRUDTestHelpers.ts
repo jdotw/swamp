@@ -151,7 +151,7 @@ export function expectHookAdoptsUseCRUDCorrectly<
 
     describe("deleteItem function", () => {
       it("should call useCRUD's deleteItem function", async () => {
-        const itemId = Math.floor(Math.random() * 1000).toString();
+        const itemId = Math.floor(Math.random() * 1000);
         const hook = await renderHookUnderTest();
         const expectedResult = true;
         mockDeleteItem.mockResolvedValueOnce(expectedResult);

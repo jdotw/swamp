@@ -74,7 +74,7 @@ describe("PersonHome", () => {
 
   describe("when loading=false and an individual is found", () => {
     const mockPerson = {
-      id: "1",
+      id: 1,
       first_name: "John",
       last_name: "Doe",
       external_id: "1234",
@@ -101,7 +101,7 @@ describe("PersonHome", () => {
   });
   describe("Edit Modal", () => {
     const mockPerson = {
-      id: "1",
+      id: 1,
       first_name: "John",
       last_name: "Doe",
       external_id: "1234",
@@ -146,26 +146,26 @@ describe("PersonHome", () => {
 
 const mockPracticeRoles = [
   {
-    id: "1",
+    id: 1,
     practice: {
-      id: "3",
+      id: 3,
       name: "Practice 1",
     },
-    individual_id: "12",
+    individual_id: 12,
     practice_role_type: {
-      id: "123432",
+      id: 123432,
       name: "Role 1",
     },
   },
   {
-    id: "2",
+    id: 2,
     practice: {
-      id: "4",
+      id: 4,
       name: "Practice 2",
     },
-    individual_id: "44",
+    individual_id: 44,
     practice_role_type: {
-      id: "123431",
+      id: 123431,
       name: "Role 2",
     },
     start_date: "2020-01-01",
@@ -174,27 +174,27 @@ const mockPracticeRoles = [
 ];
 const mockChapterRoles = [
   {
-    id: "1",
+    id: 1,
     chapter: {
-      id: "3",
+      id: 3,
       name: "Chapter 1",
     },
-    individual_id: "12",
+    individual_id: 12,
     chapter_role_type: {
-      id: "123432",
+      id: 123432,
       name: "Role 1",
     },
     start_date: "2020-01-01",
   },
   {
-    id: "2",
+    id: 2,
     chapter: {
-      id: "453",
+      id: 453,
       name: "Chapter 16",
     },
-    individual_id: "1634",
+    individual_id: 1634,
     chapter_role_type: {
-      id: "12342",
+      id: 12342,
       name: "Role 12",
     },
     start_date: "2020-01-01",
@@ -203,28 +203,28 @@ const mockChapterRoles = [
 ];
 const mockTribeRoles = [
   {
-    id: "1",
+    id: 1,
     tribe: {
-      id: "3",
+      id: 3,
       name: "Tribe 1",
     },
-    individual_id: "12",
+    individual_id: 12,
     tribe_role_type: {
-      id: "123432",
+      id: 123432,
       name: "Role 1",
     },
     start_date: "2020-01-01",
     end_date: "2020-02-01",
   },
   {
-    id: "3",
+    id: 3,
     tribe: {
-      id: "645",
+      id: 645,
       name: "Tribe DFSA",
     },
-    individual_id: "12",
+    individual_id: 12,
     tribe_role_type: {
-      id: "12656",
+      id: 12656,
       name: "Role 123",
     },
     start_date: "2020-01-01",
@@ -232,28 +232,28 @@ const mockTribeRoles = [
 ];
 const mockSquadRoles = [
   {
-    id: "1",
+    id: 1,
     squad: {
-      id: "3",
+      id: 3,
       name: "Squad 1",
     },
-    individual_id: "12",
+    individual_id: 12,
     squad_role_type: {
-      id: "123432",
+      id: 123432,
       name: "Role 1",
     },
     start_date: "2020-01-01",
     end_date: "2020-02-01",
   },
   {
-    id: "1432",
+    id: 1432,
     squad: {
-      id: "322",
+      id: 322,
       name: "Squad 71",
     },
-    individual_id: "523412",
+    individual_id: 523412,
     squad_role_type: {
-      id: "32",
+      id: 32,
       name: "Role 1333",
     },
     start_date: "2020-01-01",
