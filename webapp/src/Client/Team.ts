@@ -19,8 +19,8 @@ export function useTeam(props?: UseTeamProps) {
     updateItem,
     deleteItem,
   } = useCRUD<Team, MutateTeam>({
-    ...props,
     path: "/api/org/teams",
+    ...props,
   });
 
   return {

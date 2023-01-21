@@ -42,17 +42,14 @@ export interface MutateFunction {
 }
 
 export interface UseFunctionProps extends UseCRUDOptionalProps {
-  // roleId and unit are mutually exclusive
-  // however one of the two must be specified
-  roleId?: number;
   unit?: Unit;
 }
 
 export function useFunction(props: UseFunctionProps) {
-  const { roleId, unit } = props;
+  const { id, unit } = props;
   let path = undefined;
-  if (roleId) {
-    path = `/api/org/roles/${roleId}/functions`;
+  if (id) {
+    path = `/api/org/roles/${id}/functions`;
   } else if (unit) {
     switch (unit.type) {
       case "chapter":

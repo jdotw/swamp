@@ -35,28 +35,6 @@ function SquadHome(props: SquadHomeProps) {
     return <div>Squad not found</div>;
   }
 
-  // const rows = roles.map((row: SquadRole) => {
-  //   const id = row.id.toString();
-  //   return (
-  //     <tr key={id}>
-  //       <td>
-  //         <Link to={`${id}`}>{row.individual.first_name}</Link>
-  //       </td>
-  //       <td>
-  //         <Link to={`${id}`}>{row.individual.last_name}</Link>
-  //       </td>
-  //       <td>
-  //         <Link to={`${id}`}>{row.squad_role_type.name}</Link>
-  //       </td>
-  //     </tr>
-  //   );
-  // });
-
-  // const submitAddRole = async (newRole: NewSquadRole) => {
-  //   await addRole(newRole);
-  //   setAddModalOpen(false);
-  // };
-
   return (
     <>
       <div>
@@ -71,20 +49,12 @@ function SquadHome(props: SquadHomeProps) {
                 <th>Role</th>
               </tr>
             </thead>
-            {/* <tbody>{rows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
         </div>
       </div>
-      {/* <AddRoleModal
-        tribeId={tribeId}
-        squadId={id}
-        opened={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSubmit={submitAddRole}
-      /> */}
     </>
   );
 }

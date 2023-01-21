@@ -32,7 +32,7 @@ describe("SquadHome", () => {
       members: [],
     }));
     const { default: SquadHome } = await import("./SquadHome");
-    render(<SquadHome />);
+    await render(<SquadHome />);
     expect(mockedUseSquad).toHaveBeenCalledTimes(1);
     expect(screen.queryByText("Loading")).not.toBeInTheDocument();
   });
