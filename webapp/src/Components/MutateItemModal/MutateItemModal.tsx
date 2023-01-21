@@ -27,7 +27,7 @@ export interface MutateItemModalProps {
   onClose: () => void;
   mode?: MutateItemModalMode;
   title: string;
-  children?: React.ReactNode[];
+  children?: React.ReactNode[] | React.ReactNode;
 }
 
 export function MutateItemModal({

@@ -106,9 +106,7 @@ describe("PracticeList", () => {
         "Add Practice"
       ) as HTMLButtonElement;
       if (addPracticeButton) {
-        act(() => {
-          addPracticeButton.click();
-        });
+        await userEvent.click(addPracticeButton);
         await waitFor(() => {
           expect(
             screen.queryByText("Name", { selector: "label" })
@@ -124,12 +122,10 @@ describe("PracticeList", () => {
             name: "Updated Practice",
             formed_date: expect.anything(),
           };
-          await act(async () => {
-            const user = userEvent.setup();
-            await user.clear(nameInput);
-            await user.type(nameInput, expectedPractice.name);
-            submitButton.click();
-          });
+          const user = userEvent.setup();
+          await user.clear(nameInput);
+          await user.type(nameInput, expectedPractice.name);
+          await user.click(submitButton);
           await waitFor(async () => {
             expect(createMock).toHaveBeenCalledTimes(1);
             expect(createMock).toHaveBeenCalledWith(expectedPractice);

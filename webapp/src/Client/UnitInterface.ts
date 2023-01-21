@@ -5,7 +5,7 @@ export interface Unit {
   id: number;
   name: string;
   description?: string;
-  functions: Function[];
+  functions?: Function[];
   formed_date: string;
   disbanded_date?: string;
 }

@@ -11,7 +11,7 @@ import {
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
-interface MutatePersonModalProps {
+export interface MutatePersonModalProps {
   person?: Person;
   opened: boolean;
   onSubmit: (updatedPerson: MutatePerson) => void;
@@ -50,7 +50,7 @@ export function MutatePersonModal({
     },
   ];
 
-  const onSubmitFormValues = (values: MutateItemFormValues) => {
+  const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual person
     let updatedPerson: MutatePerson = {
       ...person,
@@ -67,7 +67,7 @@ export function MutatePersonModal({
       mode={mode}
       fields={fields}
       opened={opened}
-      onSubmit={onSubmitFormValues}
+      onSubmit={submitFormValues}
       onClose={onClose}
       title={title}
     >

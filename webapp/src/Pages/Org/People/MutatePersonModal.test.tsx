@@ -1,163 +1,66 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { Mock, vi } from "vitest";
-import { usePerson } from "../../../Client/Person";
-import { addTestPolyfills } from "../../../../test/UITestHelpers";
-import PersonList from "./PersonList";
+import { TextInput } from "@mantine/core";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
+import { addTestPolyfills } from "../../../../test/UITestHelpers";
+import { MutatePerson, Person } from "../../../Client/Person";
+import {
+  MutateItemFormValues,
+  MutateItemModal,
+  MutateItemModalFormField,
+  MutateItemModalMode,
+  nonEmptyString,
+} from "../../../Components/MutateItemModal/MutateItemModal";
+import { MutatePersonModal, MutatePersonModalProps } from "./MutatePersonModal";
 
 addTestPolyfills();
 
-const renderPage = () =>
-  render(
-    <MemoryRouter>
-      <PersonList />
-    </MemoryRouter>
-  );
+const mockOnSubmit = vi.fn();
+const mockOnClose = vi.fn();
 
-vi.mock("../../../Client/Person", () => {
-  return {
-    usePerson: vi.fn(),
-  };
-});
-
-const mockUsePersonReturn = {
-  loading: false,
-  items: [],
+const defaultProps: MutatePersonModalProps = {
+  title: "Unit Tests",
+  opened: true,
+  mode: "create",
+  onSubmit: mockOnSubmit,
+  onClose: mockOnClose,
 };
-const usePersonMock = usePerson as Mock;
-usePersonMock.mockImplementation(() => ({
-  ...mockUsePersonReturn,
-}));
 
-describe("PersonList", () => {
-  describe("when loading=true", () => {
-    beforeEach(() => {
-      usePersonMock.mockImplementation(() => ({
-        ...mockUsePersonReturn,
-        loading: true,
-      }));
-    });
-    it("renders the Loading element when loading=true", async () => {
-      renderPage();
-      expect(screen.queryByText("Loading")).toBeInTheDocument();
-    });
+const renderModal = () => {
+  render(<MutatePersonModal {...defaultProps} />);
+};
+
+describe("MutatePersonModal", () => {
+  it("should render the expected input fields", async () => {
+    renderModal();
+    expect(
+      await screen.getByText("First Name", { selector: "label" })
+    ).toBeInTheDocument();
+    expect(await screen.getByPlaceholderText("first name")).toBeInTheDocument();
   });
-  describe("when loading=false", () => {
-    beforeEach(() => {
-      usePersonMock.mockImplementation(() => ({
-        ...mockUsePersonReturn,
-        loading: false,
-      }));
-    });
-    it("renders an Onboard Person Button", async () => {
-      renderPage();
-      expect(screen.queryByText("Onboard Person")).toBeInTheDocument();
-    });
-    it("renders a table with the correct headers", async () => {
-      renderPage();
+  it("should validate input fields", async () => {
+    renderModal();
+    const submitButton = await screen.getByText("Add");
+    const firstNameInput = await screen.getByPlaceholderText("first name");
+    const lastNameInput = await screen.getByPlaceholderText("last name");
+    const middleNamesInput = await screen.getByPlaceholderText(/middle names/i);
+    const externalIdInput = await screen.getByPlaceholderText("external ID");
+    await userEvent.clear(firstNameInput);
+    await userEvent.clear(lastNameInput);
+    await userEvent.clear(middleNamesInput);
+    await userEvent.clear(externalIdInput);
+    await userEvent.click(submitButton);
+    await waitFor(async () => {
       expect(
-        screen.queryByRole("columnheader", { name: "First Name" })
+        await screen.findByText("First name is required")
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("columnheader", { name: "Last Name" })
+        await screen.findByText("Last name is required")
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("columnheader", { name: "External ID" })
+        await screen.findByText("External ID is required")
       ).toBeInTheDocument();
     });
-    it("renders a table with the correct number of rows", async () => {
-      const mockPersons = [
-        {
-          id: 1,
-          first_name: "John",
-          last_name: "Doe",
-          external_id: "123",
-        },
-        {
-          id: 2,
-          first_name: "Jane",
-          last_name: "Smith",
-          external_id: "456",
-        },
-      ];
-      usePersonMock.mockImplementation(() => ({
-        ...mockUsePersonReturn,
-        items: mockPersons,
-      }));
-      renderPage();
-      expect(screen.queryAllByRole("row")).toHaveLength(3);
-      for (const individual of mockPersons) {
-        expect(
-          screen.queryByRole("cell", { name: individual.first_name })
-        ).toBeInTheDocument();
-        expect(
-          screen.queryByRole("cell", { name: individual.last_name })
-        ).toBeInTheDocument();
-        expect(
-          screen.queryByRole("cell", { name: individual.external_id })
-        ).toBeInTheDocument();
-      }
-      expect(screen.queryByRole("cell", { name: "John" })).toBeInTheDocument();
-    });
-  });
-  describe("onAddSubmit function", () => {
-    it("should call the usePerson createItem function", async () => {
-      const createMock = vi.fn();
-      usePersonMock.mockImplementation(() => ({
-        ...mockUsePersonReturn,
-        createItem: createMock,
-      }));
-      renderPage();
-      const addPersonButton = screen.getByText(
-        "Onboard Person"
-      ) as HTMLButtonElement;
-      if (addPersonButton) {
-        await userEvent.click(addPersonButton);
-        await waitFor(() => {
-          expect(
-            screen.queryByText("First Name", { selector: "label" })
-          ).toBeInTheDocument();
-          expect(
-            screen.queryByText("Last Name", { selector: "label" })
-          ).toBeInTheDocument();
-          expect(
-            screen.queryByText("External ID", { selector: "label" })
-          ).toBeInTheDocument();
-        });
-        const firstNameInput =
-          screen.getByPlaceholderText<HTMLInputElement>("first name");
-        const lastNameInput =
-          screen.getByPlaceholderText<HTMLInputElement>("last name");
-        const externalIdInput =
-          screen.getByPlaceholderText<HTMLInputElement>("external ID");
-        const submitButton = screen.getByRole("button", { name: "Add" });
-        if (
-          firstNameInput &&
-          lastNameInput &&
-          externalIdInput &&
-          submitButton
-        ) {
-          const expectedPerson = {
-            first_name: "Jim",
-            last_name: "More",
-            middle_names: "",
-            external_id: "JXJ2222444",
-          };
-          const user = userEvent.setup();
-          await user.clear(firstNameInput);
-          await user.type(firstNameInput, expectedPerson.first_name);
-          await user.clear(lastNameInput);
-          await user.type(lastNameInput, expectedPerson.last_name);
-          await user.clear(externalIdInput);
-          await user.type(externalIdInput, expectedPerson.external_id);
-          await user.click(submitButton);
-          await waitFor(async () => {
-            expect(createMock).toHaveBeenCalledTimes(1);
-            expect(createMock).toHaveBeenCalledWith(expectedPerson);
-          });
-        }
-      }
-    });
+    expect(mockOnSubmit).not.toBeCalled();
   });
 });

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
-import { AddPracticeModal } from "./AddPracticeModal";
 import {
   MutatePractice,
   Practice,
   usePractice,
 } from "../../../Client/Practice";
+import { MutatePracticeModal } from "./MutatePracticeModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -21,9 +21,9 @@ const useStyles = createStyles((theme) => ({
 interface PracticeListProps {}
 
 export function PracticeList(props: PracticeListProps) {
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
   const { items, loading, createItem } = usePractice();
-  const [addPracticeModalOpen, setAddPracticeModalOpen] = useState(false);
+  const [addPracticeModalOpen, setMutatePracticeModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
@@ -40,9 +40,9 @@ export function PracticeList(props: PracticeListProps) {
     );
   });
 
-  const submit = async (newPractice: MutatePractice) => {
+  const submitNewPractice = async (newPractice: MutatePractice) => {
     await createItem(newPractice);
-    setAddPracticeModalOpen(false);
+    setMutatePracticeModalOpen(false);
   };
 
   return (
@@ -60,15 +60,17 @@ export function PracticeList(props: PracticeListProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddPracticeModalOpen(true)}>
+          <Button onClick={() => setMutatePracticeModalOpen(true)}>
             Add Practice
           </Button>
         </div>
       </div>
-      <AddPracticeModal
+      <MutatePracticeModal
+        title="Add Practice"
+        mode="create"
         opened={addPracticeModalOpen}
-        onClose={() => setAddPracticeModalOpen(false)}
-        onSubmit={submit}
+        onClose={() => setMutatePracticeModalOpen(false)}
+        onSubmit={submitNewPractice}
       />
     </>
   );
