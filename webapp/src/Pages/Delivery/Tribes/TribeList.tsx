@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { Link, Outlet } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
-import { AddTribeModal } from "./AddTribeModal";
+import { MutateTribeModal } from "./MutateTribeModal";
 import { MutateTribe, Tribe, useTribe } from "../../../Client/Tribe";
 
 const useStyles = createStyles((theme) => ({
@@ -44,7 +44,7 @@ export function TribeList(props: TribeListProps) {
     );
   });
 
-  const submit = async (newTribe: MutateTribe) => {
+  const submitNewTribe = async (newTribe: MutateTribe) => {
     await createItem(newTribe);
     setAddTribeModalOpen(false);
   };
@@ -67,10 +67,11 @@ export function TribeList(props: TribeListProps) {
           <Button onClick={() => setAddTribeModalOpen(true)}>Add Tribe</Button>
         </div>
       </div>
-      <AddTribeModal
+      <MutateTribeModal
         opened={addTribeModalOpen}
         onClose={() => setAddTribeModalOpen(false)}
-        onSubmit={submit}
+        onSubmit={submitNewTribe}
+        mode="create"
       />
     </>
   );
