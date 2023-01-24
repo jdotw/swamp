@@ -74,19 +74,74 @@ function PersonHome() {
           <Grid.Col span={4}>
             <PersonCard person={person} onEditClicked={onEditClicked} />
           </Grid.Col>
-          <Grid.Col span={8}>Other Info here</Grid.Col>
+          <Grid.Col span={8}>
+            <Title order={3}>Current Role</Title>
+            <ul>
+              <li>Title: Software Engineer</li>
+              <li>Level: Senior</li>
+            </ul>
+            <Title order={5}>Functions</Title>
+            <ul>
+              <li>Member: Checkout Squad</li>
+              <li>Manager: Front-End Engineering Chapter</li>
+            </ul>
+          </Grid.Col>
         </Grid>
-        <Title order={3}>Roles</Title>
+        <hr />
+        <Title order={3}>History</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
               <tr>
-                <th>Type</th>
-                <th>Group</th>
                 <th>Title</th>
-                <th>Tenure</th>
+                <th>Level</th>
+                <th>Start Date</th>
+                <th>Time in Role</th>
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <td>Software Engineer</td>
+                <td>Senior</td>
+                <td>2022-01-01</td>
+                <td>1 year</td>
+              </tr>
+              <tr>
+                <td>Software Engineer</td>
+                <td>Associate</td>
+                <td>2021-01-01</td>
+                <td>1 year</td>
+              </tr>
+            </tbody>
+            {/* <tbody>{roleRows()}</tbody> */}
+          </Table>
+        </ScrollArea>
+        <hr />
+        <Title order={3}>Assignments</Title>
+        <ScrollArea>
+          <Table verticalSpacing="xs">
+            <thead>
+              <tr>
+                <th>Unit</th>
+                <th>Function</th>
+                <th>Start Date</th>
+                <th>Time in Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Squad</td>
+                <td>Checkout</td>
+                <td>2022-06-01</td>
+                <td>6 months</td>
+              </tr>
+              <tr>
+                <td>Squad</td>
+                <td>Fulfillment</td>
+                <td>2021-01-01</td>
+                <td>18 months</td>
+              </tr>
+            </tbody>
             {/* <tbody>{roleRows()}</tbody> */}
           </Table>
         </ScrollArea>
