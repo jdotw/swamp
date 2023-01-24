@@ -13,6 +13,7 @@ import Loading from "../../../../Components/Loading/Loading";
 import { useTribe } from "../../../../Client/Tribe";
 import { MutateSquadModal } from "./MutateSquadModal";
 import { MutateSquad, useSquad } from "../../../../Client/Squad";
+import { AddTribeRoleModal } from "./AddTribeRoleModal";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -42,6 +43,7 @@ export function TribeHome(props: TribeHomeProps) {
     createItem: createSquadItem,
   } = useSquad({ tribeId: id });
   const [addSquadModalOpen, setMutateSquadModalOpen] = useState(false);
+  const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
 
   if (loading || loadingSquadItems) {
     return <Loading />;
@@ -72,6 +74,7 @@ export function TribeHome(props: TribeHomeProps) {
     <>
       <div>
         <Title order={3}>Tribe: {tribe.name}</Title>
+        <hr />
         <Title order={4}>Squads</Title>
         <ScrollArea>
           <Table verticalSpacing="xs" data-testid="squads-table">
@@ -88,24 +91,40 @@ export function TribeHome(props: TribeHomeProps) {
             Add Squad
           </Button>
         </div>
+        <hr />
         <Title order={4}>Tribe Roles</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
+                <th>Title</th>
+                <th>Person</th>
+                <th>Function</th>
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <td>Chief Engineer</td>
+                <td>John Doe</td>
+                <td>Manager</td>
+              </tr>
+            </tbody>
             {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
+        <div className={classes.buttonBar}>
+          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
+        </div>
       </div>
       <MutateSquadModal
         opened={addSquadModalOpen}
         onClose={() => setMutateSquadModalOpen(false)}
         onSubmit={submitNewSquad}
+      />
+      <AddTribeRoleModal
+        opened={addRoleModalOpen}
+        onClose={() => setAddRoleModalOpen(false)}
+        onSubmit={() => setAddRoleModalOpen(false)}
       />
     </>
   );
