@@ -50,6 +50,8 @@ const data = [
     links: [
       { label: "People", link: "/org/people" },
       { label: "Roles", link: "/org/roles" },
+      { label: "Levels", link: "/org/levels" },
+      { label: "Duties", link: "/org/duties" },
       { label: "Teams", link: "/org/teams" },
     ],
   },
