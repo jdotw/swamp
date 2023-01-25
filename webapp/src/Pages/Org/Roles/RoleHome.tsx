@@ -1,111 +1,97 @@
+import { Grid, Text, Timeline, Title } from "@mantine/core";
 import {
-  Checkbox,
-  createStyles,
-  Flex,
-  Select,
-  Table,
-  Title,
-} from "@mantine/core";
+  IconGitBranch,
+  IconGitCommit,
+  IconGitPullRequest,
+  IconMessageDots,
+} from "@tabler/icons";
 import React from "react";
-
-const useStyles = createStyles((theme) => ({
-  checkboxTitleBox: {
-    display: "flex",
-    flexDirection: "row",
-    flex: 1,
-    paddingTop: 10,
-    borderBottom: "1px solid #00000040",
-  },
-  checkboxInTitle: {
-    marginRight: 10,
-    display: "flex",
-    alignItems: "center",
-  },
-  titleWithCheckbox: {},
-}));
-
-const allowedFunctions = () => (
-  <Select
-    key="role_type"
-    placeholder="select duty type"
-    defaultValue={"1"}
-    data={[
-      { value: "1", label: "None" },
-      { value: "2", label: "Member" },
-      { value: "3", label: "Manager" },
-    ]}
-  />
-);
+import { Person } from "../../../Client/Person";
+import { PersonCard } from "../People/Person/PersonCard";
 
 function RoleHome() {
-  const { classes, theme } = useStyles();
-
+  const person: Person = {
+    id: 1,
+    first_name: "James",
+    last_name: "Bond",
+  };
   return (
     <div>
-      <Title order={3}>Role Type: Software Engineer</Title>
-      <hr />
+      <Title order={3}>Role: Senior Software Engineer</Title>
+      <br />
+      <Grid>
+        <Grid.Col span={4}>
+          <PersonCard person={person} />
+        </Grid.Col>
+        <Grid.Col span={8}>
+          <Title order={5}>Assignments</Title>
+          <ul>
+            <li>Member of Checkout Squad</li>
+            <li>Manager of Front-End Engineering Chapter</li>
+          </ul>
+        </Grid.Col>
+      </Grid>
+      <br />
+      <Timeline active={1} bulletSize={24} lineWidth={2}>
+        <Timeline.Item bullet={<IconGitBranch size={12} />} title="Promotion">
+          <Text color="dimmed" size="sm">
+            Senior Engineer
+          </Text>
+          <Text size="xs" mt={4}>
+            1 year ago
+          </Text>
+        </Timeline.Item>
 
-      {/* <Title order={4}>Default Functions</Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Member</td>
-            <td>Squad</td>
-          </tr>
-          <tr>
-            <td>Member</td>
-            <td>Chapter</td>
-          </tr>
-        </tbody>
-      </Table>
-      <hr />
-      <Title order={4}>Levels</Title>
-      <div className={classes.checkboxTitleBox}>
-        <Checkbox className={classes.checkboxInTitle} />
-        <Title className={classes.titleWithCheckbox} order={4}>
-          Senior
-        </Title>
-      </div>
-      <Table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Manager</td>
-            <td>Chapter</td>
-          </tr>
-        </tbody>
-      </Table>
-      <Title order={4}>
-        <div className={classes.checkboxTitleBox}>
-          <Checkbox className={classes.checkboxInTitle} />
-          Principal
-        </div>
-      </Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Manager</td>
-            <td>Squad</td>
-          </tr>
-        </tbody>
-      </Table> */}
+        <Timeline.Item
+          bullet={<IconGitCommit size={12} />}
+          title="Hired"
+          lineVariant="dashed"
+        >
+          <Text color="dimmed" size="sm">
+            James Bond hired into role
+          </Text>
+          <Text size="xs" mt={4}>
+            2 years ago
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item
+          title="Role Vacant"
+          bullet={<IconGitPullRequest size={12} />}
+        >
+          <Text color="dimmed" size="sm">
+            Megan Hunter resigned
+          </Text>
+          <Text size="xs" mt={4}>
+            2years, 6 months ago
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item
+          title="Hired"
+          lineVariant="dashed"
+          bullet={<IconMessageDots size={12} />}
+        >
+          <Text color="dimmed" size="sm">
+            <Text variant="link" component="span" inherit>
+              Megan Hunter
+            </Text>{" "}
+            hired into the role
+          </Text>
+          <Text size="xs" mt={4}>
+            5 years ago
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item title="Opened" bullet={<IconMessageDots size={12} />}>
+          <Text color="dimmed" size="sm">
+            Role was opened
+          </Text>
+          <Text size="xs" mt={4}>
+            6 years ago
+          </Text>
+        </Timeline.Item>
+      </Timeline>
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import { Button, ScrollArea, Table } from "@mantine/core";
+import { Button, ScrollArea, Table, Title } from "@mantine/core";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { MutateTeam, Team, useTeam } from "../../../Client/Team";
 import Loading from "../../../Components/Loading/Loading";
 import MutateTeamModal from "./MutateTeamModal";
@@ -14,7 +15,9 @@ function TeamList() {
   const [teamBeingEdited, setTeamBeingEdited] = useState<Team>();
   const teamRows = items.map((team) => (
     <tr key={team.id}>
-      <td>{team.name}</td>
+      <td>
+        <Link to={team.id.toString()}>{team.name}</Link>
+      </td>
     </tr>
   ));
 
@@ -36,13 +39,12 @@ function TeamList() {
   return (
     <>
       <div>
-        <title>Teamanisation Units</title>
+        <Title>Teams</Title>
         <ScrollArea>
           <Table verticalSpacing="xs" data-testid={"teams-table"}>
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Parent</th>
               </tr>
             </thead>
             <tbody>{teamRows}</tbody>

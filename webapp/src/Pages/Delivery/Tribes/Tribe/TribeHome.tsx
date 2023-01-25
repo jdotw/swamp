@@ -74,7 +74,7 @@ export function TribeHome(props: TribeHomeProps) {
     <>
       <div>
         <Title order={3}>Tribe: {tribe.name}</Title>
-        <hr />
+        <br />
         <Title order={4}>Squads</Title>
         <ScrollArea>
           <Table verticalSpacing="xs" data-testid="squads-table">
@@ -91,7 +91,7 @@ export function TribeHome(props: TribeHomeProps) {
             Add Squad
           </Button>
         </div>
-        <hr />
+        <br />
         <Title order={4}>Tribe Roles</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
@@ -99,17 +99,26 @@ export function TribeHome(props: TribeHomeProps) {
               <tr>
                 <th>Title</th>
                 <th>Person</th>
-                <th>Function</th>
               </tr>
             </thead>
             <tbody>
               <tr>
+                <td>
+                  <Link to={"/org/roles/3"}>Head of Product</Link>
+                </td>
+                <td>
+                  <Link to={"/org/people/3"}>John Thurman</Link>
+                </td>
+              </tr>
+              <tr className={classes.vacantRole}>
                 <td>Chief Engineer</td>
-                <td>John Doe</td>
-                <td>Manager</td>
+                <td>vacant</td>
+              </tr>
+              <tr>
+                <td>Tribe Leader</td>
+                <td>Samuel Goleman</td>
               </tr>
             </tbody>
-            {/* <tbody>{roleRows}</tbody> */}
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>

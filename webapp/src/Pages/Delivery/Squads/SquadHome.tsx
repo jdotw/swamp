@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import Loading from "../../../Components/Loading/Loading";
 import { useSquad } from "../../../Client/Squad";
@@ -43,52 +43,54 @@ function SquadHome(props: SquadHomeProps) {
     <>
       <div>
         <Title order={3}>Squad: {squad.name}</Title>
-        <hr />
-        <Title order={4}>Composition</Title>
+        <br />
+        <Title order={4}>Roles</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Person</th>
-                <th></th>
+                <th>Capability Unit</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Senior Software Engineer</td>
+                <td>
+                  <Link to={"/org/roles/3"}>Senior Software Engineer</Link>
+                </td>
                 <td>John Thurman</td>
-                <td></td>
+                <td>Front-End Engineering</td>
               </tr>
               <tr className={classes.vacantRole}>
                 <td>Software Engineer</td>
                 <td>vacant</td>
-                <td></td>
+                <td>Front-End Engineering</td>
               </tr>
               <tr>
                 <td>Software Engineer</td>
                 <td>Samuel Goleman</td>
-                <td></td>
+                <td>Back-End Engineering</td>
               </tr>
               <tr>
                 <td>Quality Engineer</td>
                 <td>Harish Thakkar</td>
-                <td></td>
+                <td>Quality Engineering</td>
               </tr>
               <tr>
                 <td>Engineering Manager</td>
                 <td>Wen Yoew</td>
-                <td></td>
+                <td>Back-End Engineering</td>
               </tr>
               <tr>
                 <td>UI Designer</td>
                 <td>Emily Blanchet</td>
-                <td></td>
+                <td>Product Design</td>
               </tr>
               <tr className={classes.vacantRole}>
                 <td>Infrastructure Engineer</td>
                 <td>vacant</td>
-                <td></td>
+                <td>Cloud</td>
               </tr>
             </tbody>
           </Table>

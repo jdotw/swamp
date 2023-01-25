@@ -24,8 +24,10 @@ import TeamsList from "./Pages/Org/Teams/TeamList";
 import TeamHome from "./Pages/Org/Teams/Team/TeamHome";
 import LevelList from "./Pages/Org/Levels/LevelList";
 import LevelHome from "./Pages/Org/Levels/LevelHome";
-import DutiesHome from "./Pages/Org/Duties/DutiesHome";
-import DutiesList from "./Pages/Org/Duties/DutiesList";
+import RoleTypeList from "./Pages/Org/RoleTypes/RoleTypeList";
+import RoleTypeHome from "./Pages/Org/RoleTypes/RoleTypeHome";
+import FunctionList from "./Pages/Org/Functions/FunctionList";
+import FunctionHome from "./Pages/Org/Functions/FunctionHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -45,6 +47,14 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <Route path=":personId" element={<PersonHome />} />
             </Route>
 
+            {/* Role Types */}
+            <Route path="roletypes">
+              <Route index element={<RoleTypeList />} />
+              <Route path=":roleTypeId">
+                <Route index element={<RoleTypeHome />} />
+              </Route>
+            </Route>
+
             {/* Roles */}
             <Route path="roles">
               <Route index element={<RolesList />} />
@@ -61,11 +71,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               </Route>
             </Route>
 
-            {/* Duties */}
-            <Route path="duties">
-              <Route index element={<DutiesList />} />
-              <Route path=":dutyId">
-                <Route index element={<DutiesHome />} />
+            {/* Functions */}
+            <Route path="functions">
+              <Route index element={<FunctionList />} />
+              <Route path=":functionId">
+                <Route index element={<FunctionHome />} />
               </Route>
             </Route>
 

@@ -17,6 +17,9 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     marginTop: 20,
   },
+  vacantRole: {
+    backgroundColor: "#ff000040",
+  },
 }));
 
 interface ChapterHomeProps {}
@@ -67,30 +70,53 @@ function ChapterHome(props: ChapterHomeProps) {
     <>
       <div>
         <Title order={3}>Chapter: {chapter.name}</Title>
-        <Title order={4}>Members</Title>
+
+        <br />
+        <Title order={4}>Roles</Title>
         <ScrollArea>
           <Table verticalSpacing="xs">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
+                <th>Title</th>
+                <th>Person</th>
+                <th>Delivery Unit</th>
               </tr>
             </thead>
-            {/* <tbody>{rows}</tbody> */}
+            <tbody>
+              <tr>
+                <td>
+                  <Link to={"/org/roles/3"}>Senior Software Engineer</Link>
+                </td>
+                <td>John Thurman</td>
+                <td>Deck of Cards Squad</td>
+              </tr>
+              <tr className={classes.vacantRole}>
+                <td>Software Engineer</td>
+                <td>vacant</td>
+                <td>Pomprocks Squad</td>
+              </tr>
+              <tr>
+                <td>Software Engineer</td>
+                <td>Samuel Goleman</td>
+                <td>Mythical Hair Band Squad</td>
+              </tr>
+              <tr>
+                <td>Software Engineer</td>
+                <td>Harish Thakkar</td>
+                <td>Obscure For The Sake of It Squad</td>
+              </tr>
+              <tr className={classes.vacantRole}>
+                <td>Software Engineer</td>
+                <td>vacant</td>
+                <td>Campbells Soup Squad</td>
+              </tr>
+            </tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddModalOpen(true)}>Add Person</Button>
+          <Button onClick={() => setAddModalOpen(true)}>Add Role</Button>
         </div>
       </div>
-      {/* <AddFunctionModal
-        chapterId={id}
-        practiceId={practiceId}
-        opened={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSubmit={submitAddFunction}
-      /> */}
     </>
   );
 }

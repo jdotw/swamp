@@ -78,6 +78,31 @@ export function PracticeHome(props: PracticeHomeProps) {
             Add Chapter
           </Button>
         </div>
+        <br />
+        <Title order={4}>Practice Roles</Title>
+        <ScrollArea>
+          <Table verticalSpacing="xs">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Person</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <Link to={"/org/roles/3"}>Practice Lead</Link>
+                </td>
+                <td>
+                  <Link to={"/org/people/3"}>Marco Salizar</Link>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </ScrollArea>
+        <div className={classes.buttonBar}>
+          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
+        </div>
       </div>
       <MutateChapterModal
         opened={addChapterModalOpen}

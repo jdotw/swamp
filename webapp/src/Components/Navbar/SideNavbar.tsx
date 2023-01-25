@@ -49,9 +49,10 @@ const data = [
     icon: IconUsers,
     links: [
       { label: "People", link: "/org/people" },
+      { label: "Role Types", link: "/org/roletypes" },
       { label: "Roles", link: "/org/roles" },
       { label: "Levels", link: "/org/levels" },
-      { label: "Duties", link: "/org/duties" },
+      { label: "Functions", link: "/org/functions" },
       { label: "Teams", link: "/org/teams" },
     ],
   },
