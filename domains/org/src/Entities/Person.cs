@@ -10,5 +10,5 @@ public class Person : EntityBase
   public string? MiddleNames { get; set; }
   public string LastName { get; set; } = null!;
 
-  public List<Role> Roles { get; set; } = new();
+  public List<RoleAssignment> RoleAssignments { get; set; } = new();
 }
