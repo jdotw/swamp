@@ -1,37 +1,29 @@
-using Org.Entities;
-
 namespace Org.DTOs;
 
 public class RoleDto
 {
   public int Id { get; set; }
 
-  public int PersonId { get; set; }
-  public Person? Person { get; set; }
+  public int RoleTypeId { get; set; }
+  public RoleTypeDto RoleType { get; set; } = null!;
 
-  public int? RoleTypeId { get; set; }
-  public RoleType? RoleType { get; set; }
+  public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
+  public List<UnitAssignmentDto> UnitAssignments { get; set; } = new();
+  public List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
 
-  public string? Title { get; set; }
-
-  public DateTimeOffset StartDate { get; set; }
-  public DateTimeOffset? EndDate { get; set; }
-
-  public List<Function> Functions { get; set; } = new();
+  public DateTimeOffset OpenFromDate { get; set; }
+  public DateTimeOffset? ClosedAtDate { get; set; }
 }
 
 public class CreateRoleDto
 {
-  public required int PersonId { get; set; }
-  public int? RoleTypeId { get; set; }
-  public string? Title { get; set; }
-  public DateTimeOffset StartDate { get; set; }
-  public DateTimeOffset? EndDate { get; set; }
+  public int RoleTypeId { get; set; }
+  public int LevelId { get; set; }
+  public int? UnitId { get; set; }
+  public int? FunctionId { get; set; }
 }
 
 public class UpdateRoleDto
 {
-  public int? RoleTypeId { get; set; }
-  public string? Title { get; set; }
-  public DateTimeOffset? EndDate { get; set; }
+  public DateTimeOffset? ClosedAtDate { get; set; }
 }

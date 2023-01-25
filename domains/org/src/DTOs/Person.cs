@@ -1,5 +1,3 @@
-using Org.Entities;
-
 namespace Org.DTOs;
 
 public class PersonDto
@@ -11,7 +9,7 @@ public class PersonDto
   public string? MiddleNames { get; set; }
   public string LastName { get; set; } = null!;
 
-  public List<Role>? Roles { get; set; }
+  public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
 }
 
 public class CreatePersonDto

@@ -6,6 +6,7 @@ public class FunctionTypeDto
   public string Name { get; set; } = null!;
   public DateTimeOffset ActiveFromDate { get; set; }
   public DateTimeOffset? RetiredAtDate { get; set; }
+  public List<UnitAssignmentDto> UnitAssignments { get; set; } = new();
 }
 
 public class CreateFunctionTypeDto

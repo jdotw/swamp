@@ -1,10 +1,8 @@
-using Org.Entities;
-
 namespace Org.DTOs;
 
 public class SquadDto : UnitDto
 {
-  public Tribe Tribe { get; set; } = null!;
+  public TribeDto Tribe { get; set; } = null!;
 }
 
 public class CreateSquadDto : CreateUnitDto

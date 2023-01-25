@@ -1,10 +1,8 @@
-using Org.Entities;
-
 namespace Org.DTOs;
 
 public class ChapterDto : UnitDto
 {
-  public Practice Practice { get; set; } = null!;
+  public PracticeDto Practice { get; set; } = null!;
 }
 
 public class CreateChapterDto : CreateUnitDto
