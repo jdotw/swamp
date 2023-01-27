@@ -39,6 +39,13 @@ describe("SideNavbar", () => {
         );
       });
     });
+    it("should render a Role Types link", async () => {
+      await waitFor(() => {
+        expect(
+          screen.getByRole("link", { name: "Role Types" })
+        ).toHaveAttribute("href", "/org/roletypes");
+      });
+    });
     it("should render a Roles link", async () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "Roles" })).toHaveAttribute(
@@ -47,7 +54,23 @@ describe("SideNavbar", () => {
         );
       });
     });
-    it("should render a Roleslink", async () => {
+    it("should render a Levels link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Levels" })).toHaveAttribute(
+          "href",
+          "/org/levels"
+        );
+      });
+    });
+    it("should render a Functions link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Functions" })).toHaveAttribute(
+          "href",
+          "/org/functions"
+        );
+      });
+    });
+    it("should render a Teams link ", async () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "Teams" })).toHaveAttribute(
           "href",
