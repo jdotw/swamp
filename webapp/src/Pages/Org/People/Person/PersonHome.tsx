@@ -16,6 +16,7 @@ import {
   Person as PersonType,
   MutatePerson,
 } from "../../../../Client/Person";
+import { useRoleAssignment } from "../../../../Client/RoleAssignment";
 import Loading from "../../../../Components/Loading/Loading";
 import { timeSinceDateString } from "../../../../Utils/TimeSinceDate";
 import { MutatePersonModal } from "../MutatePersonModal";
@@ -26,11 +27,12 @@ function PersonHome() {
   const { items, loading, updateItem } = usePerson({
     id,
   });
+  const { items: roleAssignments, loading: loadingRoleAssignments } =
+    useRoleAssignment({ personId: id });
 
-  // const { items: roles } = useRole({ personId: id });
   const [editModalOpened, setEditModalOpened] = useState(false);
 
-  if (loading) {
+  if (loading || loadingRoleAssignments) {
     return <Loading />;
   }
 
@@ -48,6 +50,8 @@ function PersonHome() {
   const onEditClicked = () => {
     setEditModalOpened(true);
   };
+
+  console.log("roleAssignments: ", roleAssignments);
 
   const roleHistoryContent = [
     {

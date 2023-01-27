@@ -7,7 +7,6 @@ export interface Person {
   first_name: string;
   middle_names?: string;
   last_name: string;
-  roles?: Role[];
 }
 
 export interface MutatePerson {

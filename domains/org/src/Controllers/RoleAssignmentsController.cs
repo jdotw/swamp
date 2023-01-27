@@ -8,7 +8,7 @@ using AutoMapper;
 namespace Org.Controllers;
 
 [ApiController]
-[Route("/roleassignments")]
+[Route("/persons/{personId}/role_assignments")]
 public class RoleAssignmentsController : ControllerBase<RoleAssignment, IRoleAssignmentRepository>
 {
   public RoleAssignmentsController(ILogger<RoleAssignmentsController> logger, IRoleAssignmentRepository repository, IMapper mapper)
@@ -16,16 +16,16 @@ public class RoleAssignmentsController : ControllerBase<RoleAssignment, IRoleAss
   {
   }
 
-  // GET: /roleassignments
+  // GET: /persons/1/role_assignments
   [HttpGet()]
-  public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
+  public async Task<IActionResult> GetAll(int personId)
   {
-    var assignments = await Repository.GetAllAsync(ids);
+    var assignments = await Repository.GetAllAsync(personId);
     var assignmentsDto = Mapper.Map<IEnumerable<RoleAssignmentDto>>(assignments);
     return Ok(assignmentsDto);
   }
 
-  // GET: /roleassignments/5
+  // GET: /persons/1/role_assignments/5
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
@@ -35,16 +35,17 @@ public class RoleAssignmentsController : ControllerBase<RoleAssignment, IRoleAss
     return Ok(assignmentDto);
   }
 
-  // POST: /roleassignments
+  // POST: /persons/1/role_assignments
   [HttpPost]
-  public async Task<IActionResult> Create(CreateRoleAssignmentDto assignmentDto)
+  public async Task<IActionResult> Create(int personId, CreateRoleAssignmentDto assignmentDto)
   {
     var assignment = Mapper.Map<RoleAssignment>(assignmentDto);
+    assignment.PersonId = personId;
     await Repository.AddAsync(assignment);
-    return CreatedAtAction(nameof(Get), new { id = assignment.Id }, Mapper.Map<RoleAssignmentDto>(assignment));
+    return CreatedAtAction(nameof(Get), new { id = assignment.Id, personId = assignment.PersonId }, Mapper.Map<RoleAssignmentDto>(assignment));
   }
 
-  // PUT: /roleassignments/5
+  // PUT: /persons/1/role_assignments/5
   [HttpPut("{id}")]
   public async Task<IActionResult> Update(int id, UpdateRoleAssignmentDto assignmentDto)
   {
@@ -54,7 +55,7 @@ public class RoleAssignmentsController : ControllerBase<RoleAssignment, IRoleAss
     return (updated > 0) ? NoContent() : NotFound();
   }
 
-  // DELETE: /roleassignments/5
+  // DELETE: /persons/1/role_assignments/5
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {

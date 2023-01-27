@@ -14,11 +14,11 @@ namespace Org.IntegrationTests;
 public class RoleAssignmentTests
     : TestsBase<RoleAssignmentsSeedDataClass, OrgDbContext, Program>, IClassFixture<OrgWebApplicationFactory<Program>>
 {
-  private readonly string _path = "/roleassignments";
-
   public RoleAssignmentTests(OrgWebApplicationFactory<Program> factory) : base(factory)
   {
   }
+
+  private string _path => $"/persons/{_seedData.Person.Id}/role_assignments";
 
   [Fact]
   public async Task TestCreateRoleAssignment()
@@ -42,7 +42,7 @@ public class RoleAssignmentTests
   }
 
   [Fact]
-  public async Task TestGetAllRoleAssignments()
+  public async Task TestGetAllRoleAssignments_ForSpecificPerson()
   {
     // Arrange
     var existingRoleAssignment = _seedData.RoleAssignment;
@@ -51,7 +51,8 @@ public class RoleAssignmentTests
     var assignments = await _client.GetFromJsonAsync<List<RoleAssignment>>($"{_path}", _options);
 
     // Assert
-    Assert.Contains(assignments!, t => t.Id == existingRoleAssignment.Id);
+    assignments.Should().ContainSingle(t => t.Id == existingRoleAssignment.Id);
+    assignments.Should().NotContain(t => t.Id == _seedData.OtherPersonsRoleAssignment.Id);
   }
 
   [Fact]
@@ -124,6 +125,9 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
   public Role Role = null!;
   public Person Person = null!;
   public RoleAssignment RoleAssignment = null!;
+  public Role OtherPersonsRole = null!;
+  public Person OtherPerson = null!;
+  public RoleAssignment OtherPersonsRoleAssignment = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -171,5 +175,34 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
       RoleId = Role.Id,
     }).Entity;
     db.SaveChanges(true);
+
+    OtherPersonsRole = db.Roles.Add(new Role
+    {
+      LevelAssignments = new List<LevelAssignment>
+      {
+        new LevelAssignment
+        {
+          LevelId = Level.Id,
+        }
+      },
+      RoleTypeId = RoleType.Id,
+    }).Entity;
+    db.SaveChanges(true);
+
+    OtherPerson = db.Persons.Add(new Person
+    {
+      ExternalId = "57564",
+      FirstName = "Other",
+      LastName = "Person",
+    }).Entity;
+    db.SaveChanges(true);
+
+    OtherPersonsRoleAssignment = db.RoleAssignments.Add(new RoleAssignment
+    {
+      PersonId = OtherPerson.Id,
+      RoleId = OtherPersonsRole.Id,
+    }).Entity;
+    db.SaveChanges(true);
+
   }
 }
