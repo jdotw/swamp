@@ -44,12 +44,17 @@ public class RoleTypeTests
   {
     // Arrange
     var existingRoleType = _seedData.RoleType;
+    var existingChildRoleType = _seedData.ChildRoleType;
 
     // Act
     var roletypes = await _client.GetFromJsonAsync<List<RoleType>>($"{_path}", _options);
+    var childRoleType = roletypes!.First(t => t.Id == existingChildRoleType.Id);
 
     // Assert
     Assert.Contains(roletypes!, t => t.Id == existingRoleType.Id);
+    Assert.Contains(roletypes!, t => t.Id == existingChildRoleType.Id);
+    childRoleType.Parent!.Id.Should().Be(existingRoleType.Id);
+    childRoleType.Parent!.Title.Should().Be(existingRoleType.Title);
   }
 
   [Fact]
@@ -101,7 +106,7 @@ public class RoleTypeTests
   }
 
   [Fact]
-  public async Task TestDeleteRoleType()
+  public async Task TestDeleteRoleType_ParentWithChildren()
   {
     // Arrange
     var roletype = _seedData.RoleType;
@@ -117,6 +122,7 @@ public class RoleTypeTests
 public class RoleTypesSeedDataClass : ISeedDataClass<OrgDbContext>
 {
   public RoleType RoleType = null!;
+  public RoleType ChildRoleType = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -127,7 +133,16 @@ public class RoleTypesSeedDataClass : ISeedDataClass<OrgDbContext>
     {
       Title = "Test RoleType"
     }).Entity;
-
     db.SaveChanges(true);
+
+    Console.WriteLine("RoleType.Id: " + RoleType.Id);
+    ChildRoleType = db.RoleTypes.Add(new RoleType
+    {
+      Title = "Test Child RoleType",
+      ParentId = RoleType.Id
+    }).Entity;
+    db.SaveChanges(true);
+
+
   }
 }

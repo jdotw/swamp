@@ -38,6 +38,9 @@ describe("MutateRoleTypeModal", () => {
     expect(
       await screen.getByText("Title", { selector: "label" })
     ).toBeInTheDocument();
+    expect(
+      await screen.getByText("Parent", { selector: "label" })
+    ).toBeInTheDocument();
   });
   it("should validate input fields", async () => {
     renderModal();

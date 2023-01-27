@@ -1,7 +1,11 @@
 import { Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MutateRoleType, useRoleType } from "../../../Client/RoleType";
+import {
+  MutateRoleType,
+  RoleType,
+  useRoleType,
+} from "../../../Client/RoleType";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateRoleTypeModal } from "./MutateRoleTypeModal";
 
@@ -26,15 +30,28 @@ function RolesList() {
     setAddModalOpen(false);
   };
 
-  const roleTypeElements = items.map((roleType) => (
+  console.log("ITEMS: ", items);
+
+  const roleTypeRow = (roleType: RoleType, level: number) => (
     <tr key={roleType.id.toString()}>
       <td>
-        <Link to={roleType.id.toString()}>{roleType.title}</Link>
+        <Link style={{ marginLeft: level * 20 }} to={roleType.id.toString()}>
+          {roleType.title}
+        </Link>
       </td>
       <td>TODO</td>
       <td>TODO</td>
     </tr>
-  ));
+  );
+
+  const roleTypeElements = (parent?: RoleType, level = 0) =>
+    items.reduce((acc, roleType) => {
+      if (roleType.parent_id == parent?.id) {
+        acc.push(roleTypeRow(roleType, level));
+        acc.push(...roleTypeElements(roleType, level + 1));
+      }
+      return acc;
+    }, [] as JSX.Element[]);
 
   return (
     <>
@@ -49,7 +66,7 @@ function RolesList() {
                 <th>Total</th>
               </tr>
             </thead>
-            <tbody>{roleTypeElements}</tbody>
+            <tbody>{roleTypeElements()}</tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
@@ -57,6 +74,7 @@ function RolesList() {
         </div>
       </div>
       <MutateRoleTypeModal
+        roleTypes={items}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSubmit={submitNewRoleType}

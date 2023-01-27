@@ -37,6 +37,11 @@ public class OrgDbContext : DbContextBase
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    modelBuilder.Entity<RoleType>()
+      .HasMany(rt => rt.Children)
+      .WithOne(rt => rt.Parent)
+      .HasForeignKey(rt => rt.ParentId)
+      .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<Unit>()
         .HasDiscriminator(u => u.UnitType)
