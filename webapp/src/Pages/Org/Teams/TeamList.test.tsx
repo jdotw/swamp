@@ -50,7 +50,7 @@ describe("TeamList", () => {
 
   it("should render a title", async () => {
     renderTeamList();
-    expect(screen.getByText("Teamanisation Units")).toBeInTheDocument();
+    expect(screen.getByText("Teams")).toBeInTheDocument();
   });
 
   describe("when loading", () => {
