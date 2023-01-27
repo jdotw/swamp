@@ -29,6 +29,7 @@ expectHookAdoptsUseCRUDCorrectly<FunctionType, MutateFunctionType>({
   mutateItemFactory: (props) => {
     const mutateFunctionType: MutateFunctionType = {
       name: "Updated Function Type Name",
+      retired_at_date: Date.now().toString(),
       ...props,
     };
     return mutateFunctionType;

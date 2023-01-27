@@ -6,10 +6,12 @@ export type FunctionType = {
   name: string;
   active_from_date: string;
   retired_at_date?: string;
+  // unit_assignments: UnitAssignments[];
 };
 
 export type MutateFunctionType = {
   name: string;
+  retired_at_date?: string;
 };
 
 export interface UseFunctionTypeProps extends UseCRUDOptionalProps {}
