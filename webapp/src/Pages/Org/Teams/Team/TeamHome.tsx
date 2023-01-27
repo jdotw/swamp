@@ -24,7 +24,7 @@ function TeamHome() {
   return (
     <>
       <div>
-        <Title order={3}>Team: Executive Team</Title>
+        <Title order={3}>Team: Executive Team [FAKE]</Title>
         <br />
         <Title order={4}>Roles</Title>
         <ScrollArea>
