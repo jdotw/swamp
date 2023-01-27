@@ -6,10 +6,15 @@ export interface RoleType {
   title: string;
   active_from_date: string;
   retired_at_date?: string;
+  parent_id?: number;
+  parent?: RoleType;
+  children?: RoleType[];
 }
 
 export interface MutateRoleType {
   title: string;
+  retired_at_date?: string;
+  parent_id?: number;
 }
 
 export interface UseRoleTypeProps extends UseCRUDOptionalProps {}

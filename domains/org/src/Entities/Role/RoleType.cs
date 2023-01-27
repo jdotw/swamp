@@ -8,9 +8,9 @@ public class RoleType : EntityBase
   public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? RetiredAtDate { get; set; }
 
-  public int? ParentRoleTypeId { get; set; }
-  public RoleType? ParentRoleType { get; set; }
-  public List<RoleType> ChildRoleTypes { get; set; } = new();
+  public int? ParentId { get; set; }
+  public RoleType? Parent { get; set; }
+  public List<RoleType> Children { get; set; } = new();
 
   public List<Role> Roles { get; set; } = new();
 }
