@@ -39,6 +39,8 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
 
   public virtual void UpdateFields(Level update, Level existing)
   {
+    existing.Index = update.Index;
+    existing.ExternalId = update.ExternalId;
     existing.ManagerTitle = update.ManagerTitle;
     existing.IndividualContributorTitle = update.IndividualContributorTitle;
     existing.RetiredAtDate = update.RetiredAtDate;

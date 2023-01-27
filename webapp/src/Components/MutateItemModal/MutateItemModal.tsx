@@ -60,6 +60,7 @@ export function MutateItemModal({
 
   const submitForm = (formValues: MutateItemFormValues) => {
     onSubmit(formValues);
+    form.reset();
   };
 
   const cancelClicked = () => {

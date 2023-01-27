@@ -4,6 +4,8 @@ namespace Org.Entities;
 
 public class Level : EntityBase
 {
+  public int Index { get; set; }
+  public string? ExternalId { get; set; } = null!;
   public string IndividualContributorTitle { get; set; } = null!;
   public string ManagerTitle { get; set; } = null!;
 
