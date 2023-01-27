@@ -28,7 +28,9 @@ function LevelList() {
 
   const levelElements = items.map((level) => (
     <tr key={level.id.toString()}>
-      <td>{level.index}</td>
+      <td>
+        <Link to={level.id.toString()}>{level.index}</Link>
+      </td>
       <td>
         <Link to={level.id.toString()}>
           {level.individual_contributor_title}
