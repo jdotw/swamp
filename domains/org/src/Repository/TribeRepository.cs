@@ -11,7 +11,7 @@ public class TribeRepository : UnitRepository<Tribe>, ITribeRepository
   {
   }
 
-  public async Task<IEnumerable<Tribe>> GetAllTribesAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<Tribe>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
@@ -19,42 +19,42 @@ public class TribeRepository : UnitRepository<Tribe>, ITribeRepository
         .ToListAsync();
   }
 
-  public async Task<Tribe?> GetTribeByIdAsync(int id)
+  public async Task<Tribe?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Tribe?> GetTribeWithDetailsAsync(int id)
+  public async Task<Tribe?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.Functions)
+      .Include(p => p.Squads)
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddTribeAsync(Tribe Tribe)
+  public override async Task<int> AddAsync(Tribe Tribe)
   {
-    await AddAsync(Tribe);
+    await base.AddAsync(Tribe);
     return await SaveAsync();
   }
 
-  public virtual void UpdateTribeFields(Tribe update, Tribe existing)
+  public virtual void UpdateFields(Tribe update, Tribe existing)
   {
-    base.UpdateUnitFields(update, existing);
+    base.UpdateFields(update, existing);
   }
 
-  public async Task<int> UpdateTribeAsync(Tribe updatedTribe)
+  public async Task<int> UpdateAsync(Tribe updatedTribe)
   {
     var dbTribe = await FindById(updatedTribe.Id);
     if (dbTribe is not null)
     {
-      UpdateTribeFields(updatedTribe, dbTribe);
+      UpdateFields(updatedTribe, dbTribe);
       Update(dbTribe);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteTribeAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

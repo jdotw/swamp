@@ -33,7 +33,7 @@ public class SquadRepositoryTests
       Description = existingSquad.Description,
       DisbandedDate = existingSquad.DisbandedDate,
     };
-    _repo.Object.UpdateSquadFields(update, existingSquad);
+    _repo.Object.UpdateFields(update, existingSquad);
   }
 
   [Fact]
@@ -55,8 +55,8 @@ public class SquadRepositoryTests
       Description = existingSquad.Description,
       DisbandedDate = existingSquad.DisbandedDate,
     };
-    var result = await _repo.Object.UpdateSquadAsync(update);
-    _repo.Verify(x => x.UpdateSquadFields(update, existingSquad), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingSquad), Times.Once);
     _repo.Verify(x => x.Update(existingSquad), Times.Once);
   }
 }

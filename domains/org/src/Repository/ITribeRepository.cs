@@ -4,10 +4,10 @@ namespace Org.Repository;
 
 public interface ITribeRepository
 {
-  Task<IEnumerable<Tribe>> GetAllTribesAsync(List<int>? filterIds);
-  Task<Tribe?> GetTribeByIdAsync(int id);
-  Task<Tribe?> GetTribeWithDetailsAsync(int id);
-  Task<int> AddTribeAsync(Tribe tribe);
-  Task<int> UpdateTribeAsync(Tribe tribe);
-  Task<int> DeleteTribeAsync(int id);
+  Task<IEnumerable<Tribe>> GetAllAsync(List<int>? filterIds);
+  Task<Tribe?> GetByIdAsync(int id);
+  Task<Tribe?> GetWithDetailsAsync(int id);
+  Task<int> AddAsync(Tribe tribe);
+  Task<int> UpdateAsync(Tribe tribe);
+  Task<int> DeleteAsync(int id);
 }

@@ -20,7 +20,7 @@ public class FunctionTypesController : ControllerBase<FunctionType, IFunctionTyp
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var functionTypes = await Repository.GetAllFunctionTypesAsync(ids);
+    var functionTypes = await Repository.GetAllAsync(ids);
     var functionTypesDto = Mapper.Map<IEnumerable<FunctionTypeDto>>(functionTypes);
     return Ok(functionTypesDto);
   }
@@ -29,7 +29,7 @@ public class FunctionTypesController : ControllerBase<FunctionType, IFunctionTyp
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var functionType = await Repository.GetFunctionTypeWithDetailsAsync(id);
+    var functionType = await Repository.GetWithDetailsAsync(id);
     if (functionType is null) return NotFound();
     var functionTypeDto = Mapper.Map<FunctionTypeDto>(functionType);
     return Ok(functionTypeDto);
@@ -40,7 +40,7 @@ public class FunctionTypesController : ControllerBase<FunctionType, IFunctionTyp
   public async Task<IActionResult> Create(CreateFunctionTypeDto functionTypeDto)
   {
     var functionType = Mapper.Map<FunctionType>(functionTypeDto);
-    await Repository.AddFunctionTypeAsync(functionType);
+    await Repository.AddAsync(functionType);
     return CreatedAtAction(nameof(Get), new { id = functionType.Id }, Mapper.Map<FunctionTypeDto>(functionType));
   }
 
@@ -50,7 +50,7 @@ public class FunctionTypesController : ControllerBase<FunctionType, IFunctionTyp
   {
     var functionType = Mapper.Map<FunctionType>(functionTypeDto);
     functionType.Id = id;
-    var updated = await Repository.UpdateFunctionTypeAsync(functionType);
+    var updated = await Repository.UpdateAsync(functionType);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class FunctionTypesController : ControllerBase<FunctionType, IFunctionTyp
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteFunctionTypeAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

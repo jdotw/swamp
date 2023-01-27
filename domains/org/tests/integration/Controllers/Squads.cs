@@ -63,7 +63,6 @@ public class SquadTests
     var existingSquad = _seedData.Squad;
 
     // Act
-    Console.WriteLine("Path: " + Path(tribeId, existingSquad.Id));
     var squad = await _client.GetFromJsonAsync<SquadDto>(Path(tribeId, existingSquad.Id), _options);
 
     // Assert

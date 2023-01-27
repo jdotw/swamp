@@ -11,7 +11,7 @@ public class RoleTypeRepository : RepositoryBase<RoleType>, IRoleTypeRepository
   {
   }
 
-  public async Task<IEnumerable<RoleType>> GetAllRoleTypesAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<RoleType>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
@@ -19,42 +19,42 @@ public class RoleTypeRepository : RepositoryBase<RoleType>, IRoleTypeRepository
         .ToListAsync();
   }
 
-  public async Task<RoleType?> GetRoleTypeByIdAsync(int id)
+  public async Task<RoleType?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<RoleType?> GetRoleTypeWithDetailsAsync(int id)
+  public async Task<RoleType?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.Roles)
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddRoleTypeAsync(RoleType RoleType)
+  public override async Task<int> AddAsync(RoleType RoleType)
   {
-    await AddAsync(RoleType);
+    await base.AddAsync(RoleType);
     return await SaveAsync();
   }
 
-  public virtual void UpdateRoleTypeFields(RoleType update, RoleType existing)
+  public virtual void UpdateFields(RoleType update, RoleType existing)
   {
     existing.Title = update.Title;
   }
 
-  public async Task<int> UpdateRoleTypeAsync(RoleType updatedRoleType)
+  public async Task<int> UpdateAsync(RoleType updatedRoleType)
   {
     var dbRoleType = await FindById(updatedRoleType.Id);
     if (dbRoleType is not null)
     {
-      UpdateRoleTypeFields(updatedRoleType, dbRoleType);
+      UpdateFields(updatedRoleType, dbRoleType);
       Update(dbRoleType);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteRoleTypeAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

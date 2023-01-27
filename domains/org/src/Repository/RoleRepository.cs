@@ -11,53 +11,57 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
   {
   }
 
-  public async Task<IEnumerable<Role>> GetAllRolesAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<Role>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
-        .Where(s => filterIds == null || filterIds.Contains(s.Id))
-        .OrderBy(s => s.Id)
-        .ToListAsync();
+      .Where(s => filterIds == null || filterIds.Contains(s.Id))
+      .Include(p => p.RoleAssignments)
+      .Include(p => p.UnitAssignments)
+      .Include(p => p.LevelAssignments)
+      .AsSplitQuery()
+      .OrderBy(s => s.Id)
+      .ToListAsync();
   }
 
-  public async Task<Role?> GetRoleByIdAsync(int id)
+  public async Task<Role?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Role?> GetRoleWithDetailsAsync(int id)
+  public async Task<Role?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      // .Include(p => p.Person)
-      // .Include(p => p.RoleType)
-      // .Include(p => p.Functions)
+      .Include(p => p.RoleAssignments)
+      .Include(p => p.UnitAssignments)
+      .Include(p => p.LevelAssignments)
+      .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddRoleAsync(Role Role)
+  public override async Task<int> AddAsync(Role Role)
   {
-    await AddAsync(Role);
+    await base.AddAsync(Role);
     return await SaveAsync();
   }
 
-  public virtual void UpdateRoleFields(Role update, Role existing)
+  public virtual void UpdateFields(Role update, Role existing)
   {
-    existing.RoleTypeId = update.RoleTypeId;
-    existing.Title = update.Title;
+    existing.ClosedAtDate = update.ClosedAtDate;
   }
 
-  public async Task<int> UpdateRoleAsync(Role updatedRole)
+  public async Task<int> UpdateAsync(Role updatedRole)
   {
     var dbRole = await FindById(updatedRole.Id);
     if (dbRole is not null)
     {
-      UpdateRoleFields(updatedRole, dbRole);
+      UpdateFields(updatedRole, dbRole);
       Update(dbRole);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteRoleAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

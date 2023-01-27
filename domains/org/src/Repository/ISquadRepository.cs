@@ -4,10 +4,10 @@ namespace Org.Repository;
 
 public interface ISquadRepository
 {
-  Task<IEnumerable<Squad>> GetAllSquadsAsync(int tribeId, List<int>? filterIds);
-  Task<Squad?> GetSquadByIdAsync(int id);
-  Task<Squad?> GetSquadWithDetailsAsync(int id);
-  Task<int> AddSquadAsync(Squad squad);
-  Task<int> UpdateSquadAsync(Squad squad);
-  Task<int> DeleteSquadAsync(int id);
+  Task<IEnumerable<Squad>> GetAllAsync(int tribeId, List<int>? filterIds);
+  Task<Squad?> GetByIdAsync(int id);
+  Task<Squad?> GetWithDetailsAsync(int id);
+  Task<int> AddAsync(Squad squad);
+  Task<int> UpdateAsync(Squad squad);
+  Task<int> DeleteAsync(int id);
 }

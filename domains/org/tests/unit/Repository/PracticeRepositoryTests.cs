@@ -33,7 +33,7 @@ public class PracticeRepositoryTests
       Description = existingPractice.Description,
       DisbandedDate = existingPractice.DisbandedDate,
     };
-    _repo.Object.UpdatePracticeFields(update, existingPractice);
+    _repo.Object.UpdateFields(update, existingPractice);
   }
 
   [Fact]
@@ -55,8 +55,8 @@ public class PracticeRepositoryTests
       Description = existingPractice.Description,
       DisbandedDate = existingPractice.DisbandedDate,
     };
-    var result = await _repo.Object.UpdatePracticeAsync(update);
-    _repo.Verify(x => x.UpdatePracticeFields(update, existingPractice), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingPractice), Times.Once);
     _repo.Verify(x => x.Update(existingPractice), Times.Once);
   }
 }

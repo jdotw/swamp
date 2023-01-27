@@ -20,7 +20,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var teams = await Repository.GetAllTeamsAsync(ids);
+    var teams = await Repository.GetAllAsync(ids);
     var teamsDto = Mapper.Map<IEnumerable<TeamDto>>(teams);
     return Ok(teamsDto);
   }
@@ -29,7 +29,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var team = await Repository.GetTeamWithDetailsAsync(id);
+    var team = await Repository.GetWithDetailsAsync(id);
     if (team is null) return NotFound();
     var teamDto = Mapper.Map<TeamDto>(team);
     return Ok(teamDto);
@@ -40,7 +40,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   public async Task<IActionResult> Create(CreateTeamDto teamDto)
   {
     var team = Mapper.Map<Team>(teamDto);
-    await Repository.AddTeamAsync(team);
+    await Repository.AddAsync(team);
     return CreatedAtAction(nameof(Get), new { id = team.Id }, Mapper.Map<TeamDto>(team));
   }
 
@@ -50,7 +50,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   {
     var team = Mapper.Map<Team>(teamDto);
     team.Id = id;
-    var updated = await Repository.UpdateTeamAsync(team);
+    var updated = await Repository.UpdateAsync(team);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteTeamAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

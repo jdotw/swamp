@@ -33,7 +33,7 @@ public class TribeRepositoryTests
       Description = existingTribe.Description,
       DisbandedDate = existingTribe.DisbandedDate,
     };
-    _repo.Object.UpdateTribeFields(update, existingTribe);
+    _repo.Object.UpdateFields(update, existingTribe);
   }
 
   [Fact]
@@ -55,8 +55,8 @@ public class TribeRepositoryTests
       Description = existingTribe.Description,
       DisbandedDate = existingTribe.DisbandedDate,
     };
-    var result = await _repo.Object.UpdateTribeAsync(update);
-    _repo.Verify(x => x.UpdateTribeFields(update, existingTribe), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingTribe), Times.Once);
     _repo.Verify(x => x.Update(existingTribe), Times.Once);
   }
 }

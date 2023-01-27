@@ -20,7 +20,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var roleTypes = await Repository.GetAllRoleTypesAsync(ids);
+    var roleTypes = await Repository.GetAllAsync(ids);
     var roleTypesDto = Mapper.Map<IEnumerable<RoleTypeDto>>(roleTypes);
     return Ok(roleTypesDto);
   }
@@ -29,7 +29,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var roleType = await Repository.GetRoleTypeWithDetailsAsync(id);
+    var roleType = await Repository.GetWithDetailsAsync(id);
     if (roleType is null) return NotFound();
     var roleTypeDto = Mapper.Map<RoleTypeDto>(roleType);
     return Ok(roleTypeDto);
@@ -40,7 +40,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   public async Task<IActionResult> Create(CreateRoleTypeDto roleTypeDto)
   {
     var roleType = Mapper.Map<RoleType>(roleTypeDto);
-    await Repository.AddRoleTypeAsync(roleType);
+    await Repository.AddAsync(roleType);
     return CreatedAtAction(nameof(Get), new { id = roleType.Id }, Mapper.Map<RoleTypeDto>(roleType));
   }
 
@@ -50,7 +50,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   {
     var roleType = Mapper.Map<RoleType>(roleTypeDto);
     roleType.Id = id;
-    var updated = await Repository.UpdateRoleTypeAsync(roleType);
+    var updated = await Repository.UpdateAsync(roleType);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteRoleTypeAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

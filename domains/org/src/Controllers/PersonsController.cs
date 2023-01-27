@@ -20,7 +20,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var persons = await Repository.GetAllPersonsAsync(ids);
+    var persons = await Repository.GetAllAsync(ids);
     var personsDto = Mapper.Map<IEnumerable<PersonDto>>(persons);
     return Ok(personsDto);
   }
@@ -29,7 +29,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var person = await Repository.GetPersonWithDetailsAsync(id);
+    var person = await Repository.GetWithDetailsAsync(id);
     if (person is null) return NotFound();
     var personDto = Mapper.Map<PersonDto>(person);
     return Ok(personDto);
@@ -40,7 +40,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   public async Task<IActionResult> Create(CreatePersonDto personDto)
   {
     var person = Mapper.Map<Person>(personDto);
-    await Repository.AddPersonAsync(person);
+    await Repository.AddAsync(person);
     return CreatedAtAction(nameof(Get), new { id = person.Id }, Mapper.Map<PersonDto>(person));
   }
 
@@ -50,7 +50,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   {
     var person = Mapper.Map<Person>(personDto);
     person.Id = id;
-    var updated = await Repository.UpdatePersonAsync(person);
+    var updated = await Repository.UpdateAsync(person);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeletePersonAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

@@ -32,7 +32,7 @@ public class PersonRepositoryTests
       LastName = "Name",
       MiddleNames = "Also Middle"
     };
-    _repo.Object.UpdatePersonFields(update, existingPerson);
+    _repo.Object.UpdateFields(update, existingPerson);
     Assert.Equal(update.FirstName, existingPerson.FirstName);
     Assert.Equal(update.MiddleNames, existingPerson.MiddleNames);
     Assert.Equal(update.LastName, existingPerson.LastName);
@@ -56,8 +56,8 @@ public class PersonRepositoryTests
       LastName = "Name",
       MiddleNames = "Also Middle"
     };
-    var result = await _repo.Object.UpdatePersonAsync(update);
-    _repo.Verify(x => x.UpdatePersonFields(update, existingPerson), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingPerson), Times.Once);
     _repo.Verify(x => x.Update(existingPerson), Times.Once);
   }
 }

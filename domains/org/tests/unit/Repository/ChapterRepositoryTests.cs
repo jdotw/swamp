@@ -33,7 +33,7 @@ public class ChapterRepositoryTests
       Description = existingChapter.Description,
       DisbandedDate = existingChapter.DisbandedDate,
     };
-    _repo.Object.UpdateChapterFields(update, existingChapter);
+    _repo.Object.UpdateFields(update, existingChapter);
   }
 
   [Fact]
@@ -55,8 +55,8 @@ public class ChapterRepositoryTests
       Description = existingChapter.Description,
       DisbandedDate = existingChapter.DisbandedDate,
     };
-    var result = await _repo.Object.UpdateChapterAsync(update);
-    _repo.Verify(x => x.UpdateChapterFields(update, existingChapter), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingChapter), Times.Once);
     _repo.Verify(x => x.Update(existingChapter), Times.Once);
   }
 }

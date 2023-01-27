@@ -40,7 +40,7 @@ public class UnitRepositoryTests
       DisbandedDate = DateTimeOffset.Now,
       FormedDate = DateTimeOffset.UtcNow,
     };
-    _repo.Object.UpdateUnitFields(update, existingUnit);
+    _repo.Object.UpdateFields(update, existingUnit);
     Assert.Equal(update.Name, existingUnit.Name);
     Assert.Equal(update.Description, existingUnit.Description);
     Assert.Equal(update.DisbandedDate, existingUnit.DisbandedDate);

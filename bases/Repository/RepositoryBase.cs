@@ -41,7 +41,7 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEnti
     _context.Set<TEntity>().Update(obj);
   }
 
-  public void Delete(object id)
+  public virtual void Delete(object id)
   {
     var entity = _context.Set<TEntity>().Find(id);
     if (entity is not null)

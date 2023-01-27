@@ -9,4 +9,5 @@ public abstract class Unit : EntityBase
   public List<UnitAssignment> UnitAssignments { get; set; } = new();
   public DateTimeOffset FormedDate { get; set; }
   public DateTimeOffset? DisbandedDate { get; set; }
+  public string UnitType { get; set; } = null!;
 }

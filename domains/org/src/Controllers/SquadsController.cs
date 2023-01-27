@@ -20,7 +20,7 @@ public class SquadsController : ControllerBase<Squad, ISquadRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll(int tribeId, [FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var squads = await Repository.GetAllSquadsAsync(tribeId, ids);
+    var squads = await Repository.GetAllAsync(tribeId, ids);
     var squadsDto = Mapper.Map<IEnumerable<SquadDto>>(squads);
     return Ok(squadsDto);
   }
@@ -29,7 +29,7 @@ public class SquadsController : ControllerBase<Squad, ISquadRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var squad = await Repository.GetSquadWithDetailsAsync(id);
+    var squad = await Repository.GetWithDetailsAsync(id);
     if (squad is null) return NotFound();
     var squadDto = Mapper.Map<SquadDto>(squad);
     return Ok(squadDto);
@@ -41,7 +41,7 @@ public class SquadsController : ControllerBase<Squad, ISquadRepository>
   {
     var squad = Mapper.Map<Squad>(squadDto);
     squad.TribeId = tribeId;
-    await Repository.AddSquadAsync(squad);
+    await Repository.AddAsync(squad);
     return CreatedAtAction(nameof(Get), new { tribeId = tribeId, id = squad.Id }, Mapper.Map<SquadDto>(squad));
   }
 
@@ -52,7 +52,7 @@ public class SquadsController : ControllerBase<Squad, ISquadRepository>
     var squad = Mapper.Map<Squad>(squadDto);
     squad.TribeId = tribeId;
     squad.Id = id;
-    var updated = await Repository.UpdateSquadAsync(squad);
+    var updated = await Repository.UpdateAsync(squad);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -60,7 +60,7 @@ public class SquadsController : ControllerBase<Squad, ISquadRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteSquadAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

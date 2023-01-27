@@ -20,7 +20,7 @@ public class PracticesController : ControllerBase<Practice, IPracticeRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var practices = await Repository.GetAllPracticesAsync(ids);
+    var practices = await Repository.GetAllAsync(ids);
     var practicesDto = Mapper.Map<IEnumerable<PracticeDto>>(practices);
     return Ok(practicesDto);
   }
@@ -29,7 +29,7 @@ public class PracticesController : ControllerBase<Practice, IPracticeRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var practice = await Repository.GetPracticeWithDetailsAsync(id);
+    var practice = await Repository.GetWithDetailsAsync(id);
     if (practice is null) return NotFound();
     var practiceDto = Mapper.Map<PracticeDto>(practice);
     return Ok(practiceDto);
@@ -40,7 +40,7 @@ public class PracticesController : ControllerBase<Practice, IPracticeRepository>
   public async Task<IActionResult> Create(CreatePracticeDto practiceDto)
   {
     var practice = Mapper.Map<Practice>(practiceDto);
-    await Repository.AddPracticeAsync(practice);
+    await Repository.AddAsync(practice);
     return CreatedAtAction(nameof(Get), new { id = practice.Id }, Mapper.Map<PracticeDto>(practice));
   }
 
@@ -50,7 +50,7 @@ public class PracticesController : ControllerBase<Practice, IPracticeRepository>
   {
     var practice = Mapper.Map<Practice>(practiceDto);
     practice.Id = id;
-    var updated = await Repository.UpdatePracticeAsync(practice);
+    var updated = await Repository.UpdateAsync(practice);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class PracticesController : ControllerBase<Practice, IPracticeRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeletePracticeAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

@@ -4,10 +4,10 @@ namespace Org.Repository;
 
 public interface IRoleRepository
 {
-  Task<IEnumerable<Role>> GetAllRolesAsync(List<int>? filterIds);
-  Task<Role?> GetRoleByIdAsync(int id);
-  Task<Role?> GetRoleWithDetailsAsync(int id);
-  Task<int> AddRoleAsync(Role role);
-  Task<int> UpdateRoleAsync(Role role);
-  Task<int> DeleteRoleAsync(int id);
+  Task<IEnumerable<Role>> GetAllAsync(List<int>? filterIds);
+  Task<Role?> GetByIdAsync(int id);
+  Task<Role?> GetWithDetailsAsync(int id);
+  Task<int> AddAsync(Role role);
+  Task<int> UpdateAsync(Role role);
+  Task<int> DeleteAsync(int id);
 }

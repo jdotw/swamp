@@ -11,7 +11,7 @@ public class ChapterRepository : UnitRepository<Chapter>, IChapterRepository
   {
   }
 
-  public async Task<IEnumerable<Chapter>> GetAllChaptersAsync(int practiceId, List<int>? filterIds = null)
+  public async Task<IEnumerable<Chapter>> GetAllAsync(int practiceId, List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => s.PracticeId == practiceId)
@@ -20,42 +20,42 @@ public class ChapterRepository : UnitRepository<Chapter>, IChapterRepository
         .ToListAsync();
   }
 
-  public async Task<Chapter?> GetChapterByIdAsync(int id)
+  public async Task<Chapter?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Chapter?> GetChapterWithDetailsAsync(int id)
+  public async Task<Chapter?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.Functions)
+      .Include(p => p.UnitAssignments)
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddChapterAsync(Chapter Chapter)
+  public override async Task<int> AddAsync(Chapter Chapter)
   {
-    await AddAsync(Chapter);
+    await base.AddAsync(Chapter);
     return await SaveAsync();
   }
 
-  public virtual void UpdateChapterFields(Chapter update, Chapter existing)
+  public virtual void UpdateFields(Chapter update, Chapter existing)
   {
-    base.UpdateUnitFields(update, existing);
+    base.UpdateFields(update, existing);
   }
 
-  public async Task<int> UpdateChapterAsync(Chapter updatedChapter)
+  public async Task<int> UpdateAsync(Chapter updatedChapter)
   {
     var dbChapter = await FindById(updatedChapter.Id);
     if (dbChapter is not null)
     {
-      UpdateChapterFields(updatedChapter, dbChapter);
+      UpdateFields(updatedChapter, dbChapter);
       Update(dbChapter);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteChapterAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

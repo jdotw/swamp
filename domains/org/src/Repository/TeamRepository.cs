@@ -11,7 +11,7 @@ public class TeamRepository : UnitRepository<Team>, ITeamRepository
   {
   }
 
-  public async Task<IEnumerable<Team>> GetAllTeamsAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<Team>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
@@ -19,42 +19,42 @@ public class TeamRepository : UnitRepository<Team>, ITeamRepository
         .ToListAsync();
   }
 
-  public async Task<Team?> GetTeamByIdAsync(int id)
+  public async Task<Team?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Team?> GetTeamWithDetailsAsync(int id)
+  public async Task<Team?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.Functions)
+      .Include(p => p.UnitAssignments)
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddTeamAsync(Team Team)
+  public override async Task<int> AddAsync(Team Team)
   {
-    await AddAsync(Team);
+    await base.AddAsync(Team);
     return await SaveAsync();
   }
 
-  public virtual void UpdateTeamFields(Team update, Team existing)
+  public virtual void UpdateFields(Team update, Team existing)
   {
-    base.UpdateUnitFields(update, existing);
+    base.UpdateFields(update, existing);
   }
 
-  public async Task<int> UpdateTeamAsync(Team updatedTeam)
+  public async Task<int> UpdateAsync(Team updatedTeam)
   {
     var dbTeam = await FindById(updatedTeam.Id);
     if (dbTeam is not null)
     {
-      UpdateTeamFields(updatedTeam, dbTeam);
+      UpdateFields(updatedTeam, dbTeam);
       Update(dbTeam);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteTeamAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

@@ -63,7 +63,6 @@ public class ChapterTests
     var existingChapter = _seedData.Chapter;
 
     // Act
-    Console.WriteLine("Path: " + Path(practiceId, existingChapter.Id));
     var chapter = await _client.GetFromJsonAsync<ChapterDto>(Path(practiceId, existingChapter.Id), _options);
 
     // Assert

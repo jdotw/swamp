@@ -21,14 +21,14 @@ public class RoleTests
   }
 
   [Fact]
-  public async Task TestCreateRole_WithRoleType()
+  public async Task TestCreateRole()
   {
     // Arrange
     var testStart = DateTime.UtcNow;
     var newRole = new CreateRoleDto
     {
-      PersonId = 1,
-      RoleTypeId = 1,
+      RoleTypeId = _seedData.RoleType.Id,
+      LevelId = _seedData.Level.Id,
     };
 
     // Act
@@ -37,87 +37,49 @@ public class RoleTests
 
     // Assert
     Assert.NotEqual(0, role!.Id);
-    Assert.Equal(newRole.PersonId, role.PersonId);
     Assert.Equal(newRole.RoleTypeId, role.RoleTypeId);
+    Assert.NotEmpty(role.LevelAssignments);
+    Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
+    Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
   }
-
-  [Fact]
-  public async Task TestCreateRole_WithOutRoleType()
-  {
-    // Arrange
-    var testStart = DateTime.UtcNow;
-    var newRole = new CreateRoleDto
-    {
-      PersonId = 1,
-      Title = "Super Spesh Snowflake"
-    };
-
-    // Act
-    var role = await _client.PostAsJsonAsync(_path, newRole, _options)
-      .ContinueWith<RoleDto?>(t => t.Result.Content.ReadFromJsonAsync<RoleDto>(_options).Result);
-
-    // Assert
-    Assert.NotEqual(0, role!.Id);
-    Assert.Equal(newRole.PersonId, role.PersonId);
-    Assert.Equal(newRole.Title, role.Title);
-  }
-
 
   [Fact]
   public async Task TestGetAllRoles()
   {
     // Arrange
-    var existingRoleWithRoleType = _seedData.RoleWithRoleType;
-    var existingRoleWithoutRoleType = _seedData.RoleWithoutRoleType;
+    var existingRole = _seedData.Role;
 
     // Act
     var roles = await _client.GetFromJsonAsync<List<Role>>($"{_path}", _options);
 
     // Assert
-    Assert.Contains(roles!, t => t.Id == existingRoleWithRoleType.Id);
-    Assert.Contains(roles!, t => t.Id == existingRoleWithoutRoleType.Id);
+    Assert.Contains(roles!, t => t.Id == existingRole.Id);
+    Assert.NotEmpty(roles![0].LevelAssignments);
   }
 
   [Fact]
-  public async Task TestGetRole_WithRoleType()
+  public async Task TestGetRole()
   {
     // Arrange
-    var existingRole = _seedData.RoleWithRoleType;
+    var existingRole = _seedData.Role;
 
     // Act
     var role = await _client.GetFromJsonAsync<RoleDto>($"{_path}/{existingRole.Id}", _options);
 
     // Assert
     Assert.Equal(role!.Id, existingRole.Id);
-    Assert.Equal(role.PersonId, existingRole.PersonId);
     Assert.Equal(role.RoleTypeId, existingRole.RoleTypeId);
+    Assert.NotEmpty(role.LevelAssignments);
   }
-
-  [Fact]
-  public async Task TestGetRole_WithoutRoleType()
-  {
-    // Arrange
-    var existingRole = _seedData.RoleWithoutRoleType;
-
-    // Act
-    var role = await _client.GetFromJsonAsync<RoleDto>($"{_path}/{existingRole.Id}", _options);
-
-    // Assert
-    Assert.Equal(role!.Id, existingRole.Id);
-    Assert.Equal(role.PersonId, existingRole.PersonId);
-    Assert.Null(role.RoleType);
-    Assert.Equal(role.Title, existingRole.Title);
-  }
-
 
   [Fact]
   public async Task TestUpdateRole_OnSuccess_ReturnsNoContent()
   {
     // Arrange
-    var existingRole = _seedData.RoleWithRoleType;
+    var existingRole = _seedData.Role;
     var updateDto = new UpdateRoleDto
     {
-      RoleTypeId = existingRole.RoleTypeId,
+      ClosedAtDate = DateTime.UtcNow,
     };
 
     // Act
@@ -131,14 +93,14 @@ public class RoleTests
   public async Task TestUpdateRole_ForNonExistentRole_ReturnsNotFound()
   {
     // Arrange
-    var existingRole = _seedData.RoleWithRoleType;
+    var nonexistentId = 4352345;
     var updateDto = new UpdateRoleDto
     {
-      RoleTypeId = existingRole.RoleTypeId,
+      ClosedAtDate = DateTime.UtcNow,
     };
 
     // Act
-    var response = await _client.PutAsJsonAsync($"{_path}/4352345", updateDto, _options);
+    var response = await _client.PutAsJsonAsync($"{_path}/{nonexistentId}", updateDto, _options);
 
     // Assert
     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -148,7 +110,7 @@ public class RoleTests
   public async Task TestDeleteRole()
   {
     // Arrange
-    var role = _seedData.RoleWithRoleType;
+    var role = _seedData.Role;
 
     // Act
     var response = await _client.DeleteAsync($"{_path}/{role.Id}");
@@ -160,10 +122,9 @@ public class RoleTests
 
 public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
 {
-  public Person Person = null!;
+  public Level Level = null!;
   public RoleType RoleType = null!;
-  public Role RoleWithRoleType = null!;
-  public Role RoleWithoutRoleType = null!;
+  public Role Role = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -171,32 +132,29 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     // start of all tests in the RoleTests class.
     // The DB is not re-initialized between tests.
 
-    Person = db.Persons.Add(new Person
-    {
-      ExternalId = "SDNK132132131",
-      FirstName = "Seed",
-      MiddleNames = "Lucky",
-      LastName = "Person",
-    }).Entity;
-    db.SaveChanges(true);
-
     RoleType = db.RoleTypes.Add(new RoleType
     {
       Title = "Seed Role Type",
     }).Entity;
     db.SaveChanges(true);
 
-    RoleWithRoleType = db.Roles.Add(new Role
+    Level = db.Levels.Add(new Level
     {
-      PersonId = Person.Id,
-      RoleTypeId = RoleType.Id,
+      IndividualContributorTitle = "Individual Contributor",
+      ManagerTitle = "Manager",
     }).Entity;
     db.SaveChanges(true);
 
-    RoleWithoutRoleType = db.Roles.Add(new Role
+    Role = db.Roles.Add(new Role
     {
-      PersonId = Person.Id,
-      Title = "Custom Role Title"
+      RoleTypeId = RoleType.Id,
+      LevelAssignments = new List<LevelAssignment>
+      {
+        new LevelAssignment
+        {
+          LevelId = Level.Id,
+        }
+      }
     }).Entity;
     db.SaveChanges(true);
   }

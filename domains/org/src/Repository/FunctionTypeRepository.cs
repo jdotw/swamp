@@ -11,7 +11,7 @@ public class FunctionTypeRepository : RepositoryBase<FunctionType>, IFunctionTyp
   {
   }
 
-  public async Task<IEnumerable<FunctionType>> GetAllFunctionTypesAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<FunctionType>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
@@ -19,42 +19,42 @@ public class FunctionTypeRepository : RepositoryBase<FunctionType>, IFunctionTyp
         .ToListAsync();
   }
 
-  public async Task<FunctionType?> GetFunctionTypeByIdAsync(int id)
+  public async Task<FunctionType?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<FunctionType?> GetFunctionTypeWithDetailsAsync(int id)
+  public async Task<FunctionType?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.Functions)
+           .Include(p => p.UnitAssignments)
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddFunctionTypeAsync(FunctionType FunctionType)
+  public override async Task<int> AddAsync(FunctionType FunctionType)
   {
-    await AddAsync(FunctionType);
+    await base.AddAsync(FunctionType);
     return await SaveAsync();
   }
 
-  public virtual void UpdateFunctionTypeFields(FunctionType update, FunctionType existing)
+  public virtual void UpdateFields(FunctionType update, FunctionType existing)
   {
     existing.Name = update.Name;
   }
 
-  public async Task<int> UpdateFunctionTypeAsync(FunctionType updatedFunctionType)
+  public async Task<int> UpdateAsync(FunctionType updatedFunctionType)
   {
     var dbFunctionType = await FindById(updatedFunctionType.Id);
     if (dbFunctionType is not null)
     {
-      UpdateFunctionTypeFields(updatedFunctionType, dbFunctionType);
+      UpdateFields(updatedFunctionType, dbFunctionType);
       Update(dbFunctionType);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeleteFunctionTypeAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

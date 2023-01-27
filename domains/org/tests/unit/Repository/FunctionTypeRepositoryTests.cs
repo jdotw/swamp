@@ -28,7 +28,7 @@ public class FunctionTypeRepositoryTests
     {
       Name = "Updated Name"
     };
-    _repo.Object.UpdateFunctionTypeFields(update, existingFunctionType);
+    _repo.Object.UpdateFields(update, existingFunctionType);
     Assert.Equal(update.Name, existingFunctionType.Name);
   }
 
@@ -46,8 +46,8 @@ public class FunctionTypeRepositoryTests
     {
       Name = "Updated Name"
     };
-    var result = await _repo.Object.UpdateFunctionTypeAsync(update);
-    _repo.Verify(x => x.UpdateFunctionTypeFields(update, existingFunctionType), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingFunctionType), Times.Once);
     _repo.Verify(x => x.Update(existingFunctionType), Times.Once);
   }
 }

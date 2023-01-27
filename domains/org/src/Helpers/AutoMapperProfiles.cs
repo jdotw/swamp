@@ -8,32 +8,45 @@ public class AutoMapperProfiles : Profile
 {
   public AutoMapperProfiles()
   {
-    CreateMap<Person, PersonDto>();
-    CreateMap<CreatePersonDto, Person>();
-    CreateMap<UpdatePersonDto, Person>();
-
-    CreateMap<RoleType, RoleTypeDto>();
-    CreateMap<CreateRoleTypeDto, RoleType>();
-    CreateMap<UpdateRoleTypeDto, RoleType>();
-
-    CreateMap<Role, RoleDto>();
-    CreateMap<CreateRoleDto, Role>();
-    CreateMap<UpdateRoleDto, Role>();
+    CreateMap<Chapter, ChapterDto>();
+    CreateMap<CreateChapterDto, Chapter>();
+    CreateMap<UpdateChapterDto, Chapter>();
 
     CreateMap<FunctionType, FunctionTypeDto>();
     CreateMap<CreateFunctionTypeDto, FunctionType>();
     CreateMap<UpdateFunctionTypeDto, FunctionType>();
 
-    CreateMap<Function, FunctionDto>();
-    CreateMap<CreateFunctionDto, Function>();
-    CreateMap<UpdateFunctionDto, Function>();
+    CreateMap<Level, LevelDto>();
+    CreateMap<CreateLevelDto, Level>();
+    CreateMap<UpdateLevelDto, Level>();
 
-    CreateMap<Unit, UnitDto>()
-    .IncludeAllDerived();
-    CreateMap<CreateUnitDto, Unit>()
-    .IncludeAllDerived();
-    CreateMap<UpdateUnitDto, Unit>()
-    .IncludeAllDerived();
+    CreateMap<LevelAssignment, LevelAssignmentDto>();
+    CreateMap<CreateLevelAssignmentDto, LevelAssignment>();
+    CreateMap<UpdateLevelAssignmentDto, LevelAssignment>();
+
+    CreateMap<Person, PersonDto>();
+    CreateMap<CreatePersonDto, Person>();
+    CreateMap<UpdatePersonDto, Person>();
+
+    CreateMap<Practice, PracticeDto>();
+    CreateMap<CreatePracticeDto, Practice>();
+    CreateMap<UpdatePracticeDto, Practice>();
+
+    CreateMap<Role, RoleDto>();
+    CreateMap<CreateRoleDto, Role>();
+    CreateMap<UpdateRoleDto, Role>();
+
+    CreateMap<RoleAssignment, RoleAssignmentDto>();
+    CreateMap<CreateRoleAssignmentDto, RoleAssignment>();
+    CreateMap<UpdateRoleAssignmentDto, RoleAssignment>();
+
+    CreateMap<RoleType, RoleTypeDto>();
+    CreateMap<CreateRoleTypeDto, RoleType>();
+    CreateMap<UpdateRoleTypeDto, RoleType>();
+
+    CreateMap<Squad, SquadDto>();
+    CreateMap<CreateSquadDto, Squad>();
+    CreateMap<UpdateSquadDto, Squad>();
 
     CreateMap<Team, TeamDto>();
     CreateMap<CreateTeamDto, Team>();
@@ -43,16 +56,15 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTribeDto, Tribe>();
     CreateMap<UpdateTribeDto, Tribe>();
 
-    CreateMap<Squad, SquadDto>();
-    CreateMap<CreateSquadDto, Squad>();
-    CreateMap<UpdateSquadDto, Squad>();
+    CreateMap<Unit, UnitDto>()
+    .IncludeAllDerived();
+    CreateMap<CreateUnitDto, Unit>()
+    .IncludeAllDerived();
+    CreateMap<UpdateUnitDto, Unit>()
+    .IncludeAllDerived();
 
-    CreateMap<Practice, PracticeDto>();
-    CreateMap<CreatePracticeDto, Practice>();
-    CreateMap<UpdatePracticeDto, Practice>();
-
-    CreateMap<Chapter, ChapterDto>();
-    CreateMap<CreateChapterDto, Chapter>();
-    CreateMap<UpdateChapterDto, Chapter>();
+    CreateMap<UnitAssignment, UnitAssignmentDto>();
+    CreateMap<CreateUnitAssignmentDto, UnitAssignment>();
+    CreateMap<UpdateUnitAssignmentDto, UnitAssignment>();
   }
 }

@@ -11,7 +11,7 @@ public class PracticeRepository : UnitRepository<Practice>, IPracticeRepository
   {
   }
 
-  public async Task<IEnumerable<Practice>> GetAllPracticesAsync(List<int>? filterIds = null)
+  public async Task<IEnumerable<Practice>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
@@ -19,42 +19,44 @@ public class PracticeRepository : UnitRepository<Practice>, IPracticeRepository
         .ToListAsync();
   }
 
-  public async Task<Practice?> GetPracticeByIdAsync(int id)
+  public async Task<Practice?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
-  public async Task<Practice?> GetPracticeWithDetailsAsync(int id)
+  public async Task<Practice?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.Functions)
+      .Include(p => p.Chapters)
+      .Include(p => p.UnitAssignments)
+      .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
 
-  public async Task<int> AddPracticeAsync(Practice Practice)
+  public override async Task<int> AddAsync(Practice Practice)
   {
-    await AddAsync(Practice);
+    await base.AddAsync(Practice);
     return await SaveAsync();
   }
 
-  public virtual void UpdatePracticeFields(Practice update, Practice existing)
+  public virtual void UpdateFields(Practice update, Practice existing)
   {
-    base.UpdateUnitFields(update, existing);
+    base.UpdateFields(update, existing);
   }
 
-  public async Task<int> UpdatePracticeAsync(Practice updatedPractice)
+  public async Task<int> UpdateAsync(Practice updatedPractice)
   {
     var dbPractice = await FindById(updatedPractice.Id);
     if (dbPractice is not null)
     {
-      UpdatePracticeFields(updatedPractice, dbPractice);
+      UpdateFields(updatedPractice, dbPractice);
       Update(dbPractice);
       return await SaveAsync();
     }
     else { return 0; }
   }
 
-  public async Task<int> DeletePracticeAsync(int id)
+  public async Task<int> DeleteAsync(int id)
   {
     Delete(id);
     return await SaveAsync();

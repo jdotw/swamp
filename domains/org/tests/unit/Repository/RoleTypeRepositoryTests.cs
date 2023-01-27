@@ -28,7 +28,7 @@ public class RoleTypeRepositoryTests
     {
       Title = "Updated Title"
     };
-    _repo.Object.UpdateRoleTypeFields(update, existingRoleType);
+    _repo.Object.UpdateFields(update, existingRoleType);
     Assert.Equal(update.Title, existingRoleType.Title);
   }
 
@@ -46,8 +46,8 @@ public class RoleTypeRepositoryTests
     {
       Title = "Updated Title"
     };
-    var result = await _repo.Object.UpdateRoleTypeAsync(update);
-    _repo.Verify(x => x.UpdateRoleTypeFields(update, existingRoleType), Times.Once);
+    var result = await _repo.Object.UpdateAsync(update);
+    _repo.Verify(x => x.UpdateFields(update, existingRoleType), Times.Once);
     _repo.Verify(x => x.Update(existingRoleType), Times.Once);
   }
 }

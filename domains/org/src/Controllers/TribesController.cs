@@ -20,7 +20,7 @@ public class TribesController : ControllerBase<Tribe, ITribeRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var tribes = await Repository.GetAllTribesAsync(ids);
+    var tribes = await Repository.GetAllAsync(ids);
     var tribesDto = Mapper.Map<IEnumerable<TribeDto>>(tribes);
     return Ok(tribesDto);
   }
@@ -29,7 +29,7 @@ public class TribesController : ControllerBase<Tribe, ITribeRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var tribe = await Repository.GetTribeWithDetailsAsync(id);
+    var tribe = await Repository.GetWithDetailsAsync(id);
     if (tribe is null) return NotFound();
     var tribeDto = Mapper.Map<TribeDto>(tribe);
     return Ok(tribeDto);
@@ -40,7 +40,7 @@ public class TribesController : ControllerBase<Tribe, ITribeRepository>
   public async Task<IActionResult> Create(CreateTribeDto tribeDto)
   {
     var tribe = Mapper.Map<Tribe>(tribeDto);
-    await Repository.AddTribeAsync(tribe);
+    await Repository.AddAsync(tribe);
     return CreatedAtAction(nameof(Get), new { id = tribe.Id }, Mapper.Map<TribeDto>(tribe));
   }
 
@@ -50,7 +50,7 @@ public class TribesController : ControllerBase<Tribe, ITribeRepository>
   {
     var tribe = Mapper.Map<Tribe>(tribeDto);
     tribe.Id = id;
-    var updated = await Repository.UpdateTribeAsync(tribe);
+    var updated = await Repository.UpdateAsync(tribe);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +58,7 @@ public class TribesController : ControllerBase<Tribe, ITribeRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteTribeAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }

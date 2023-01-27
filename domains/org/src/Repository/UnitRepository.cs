@@ -13,7 +13,7 @@ public abstract class UnitRepository<TUnit> : RepositoryBase<TUnit>
 
   }
 
-  public virtual void UpdateUnitFields(Unit update, Unit existing)
+  public virtual void UpdateFields(Unit update, Unit existing)
   {
     existing.Name = update.Name;
     existing.Description = update.Description;

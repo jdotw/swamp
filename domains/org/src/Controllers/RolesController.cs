@@ -20,7 +20,7 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var roles = await Repository.GetAllRolesAsync(ids);
+    var roles = await Repository.GetAllAsync(ids);
     var rolesDto = Mapper.Map<IEnumerable<RoleDto>>(roles);
     return Ok(rolesDto);
   }
@@ -29,7 +29,7 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
-    var role = await Repository.GetRoleWithDetailsAsync(id);
+    var role = await Repository.GetWithDetailsAsync(id);
     if (role is null) return NotFound();
     var roleDto = Mapper.Map<RoleDto>(role);
     return Ok(roleDto);
@@ -40,8 +40,11 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   public async Task<IActionResult> Create(CreateRoleDto roleDto)
   {
     var role = Mapper.Map<Role>(roleDto);
-    await Repository.AddRoleAsync(role);
-    return CreatedAtAction(nameof(Get), new { id = role.Id }, Mapper.Map<RoleDto>(role));
+    role.LevelAssignments.Add(new LevelAssignment { LevelId = roleDto.LevelId });
+    await Repository.AddAsync(role);
+
+    var addedRole = await Repository.GetWithDetailsAsync(role.Id);
+    return CreatedAtAction(nameof(Get), new { id = role.Id }, Mapper.Map<RoleDto>(addedRole));
   }
 
   // PUT: /roles/5
@@ -50,7 +53,7 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   {
     var role = Mapper.Map<Role>(roleDto);
     role.Id = id;
-    var updated = await Repository.UpdateRoleAsync(role);
+    var updated = await Repository.UpdateAsync(role);
     return (updated > 0) ? NoContent() : NotFound();
   }
 
@@ -58,7 +61,7 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
-    var deleted = await Repository.DeleteRoleAsync(id);
+    var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
 }
