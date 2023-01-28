@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import Loading from "../../../Components/Loading/Loading";
 import { useSquad } from "../../../Client/Squad";
-import { AddSquadRoleModal } from "./AddSquadRoleModal";
+import { MutateRoleModal } from "./MutateRoleModal";
+import { useRole } from "../../../Client/Role";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -22,6 +23,7 @@ interface SquadHomeProps {}
 function SquadHome(props: SquadHomeProps) {
   const tribeId = +useParams().tribeId!;
   const id = +useParams().squadId!;
+  const { items: roles, createItem: createRole } = useRole({});
   const { classes, theme } = useStyles();
   const { items, loading } = useSquad({
     tribeId,
@@ -38,6 +40,11 @@ function SquadHome(props: SquadHomeProps) {
   if (!id || !tribeId || !squad) {
     return <div>Squad not found</div>;
   }
+
+  const submitNewRole = async (newRole: any) => {
+    await createRole(newRole);
+    setAddModalOpen(false);
+  };
 
   return (
     <>
@@ -99,11 +106,10 @@ function SquadHome(props: SquadHomeProps) {
           <Button onClick={() => setAddModalOpen(true)}>Add Role</Button>
         </div>
       </div>
-      <AddSquadRoleModal
-        title="Add Role"
+      <MutateRoleModal
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
-        onSubmit={() => setAddModalOpen(false)}
+        onSubmit={submitNewRole}
       />
     </>
   );

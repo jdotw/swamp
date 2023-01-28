@@ -5,37 +5,34 @@ import { Chapter } from "./Chapter";
 import { Person } from "./Person";
 import { Practice } from "./Practice";
 import { RoleType } from "./RoleType";
+import { FunctionType } from "./FunctionType";
 
 export interface Role {
   id: number;
 
-  person_id: number;
-  person: Person;
-
   role_type_id: number;
-  role_type: RoleType;
+  role_type?: RoleType;
 
-  title: string;
+  function_type_id: number;
+  function_type?: FunctionType;
+
+  level_assignments?: any[];
 
   start_date: string;
   end_date?: string;
-
-  functions: Function[];
 }
 
 export interface MutateRole {
   role_type_id: number;
-  title: string;
+  function_type_id: number;
+  level_id: number;
+  start_date?: string;
   end_date?: string;
 }
 
-export interface UseRoleProps extends UseCRUDOptionalProps {
-  personId: number;
-  id?: number;
-}
+export interface UseRoleProps extends UseCRUDOptionalProps {}
 
 export function useRole(props: UseRoleProps) {
-  const { personId } = props;
   const {
     items,
     loading,
@@ -46,7 +43,7 @@ export function useRole(props: UseRoleProps) {
     updateItem,
     deleteItem,
   } = useCRUD<Role, MutateRole>({
-    path: `/api/org/persons/${personId}/roles`,
+    path: `/api/org/roles`,
     ...props,
   });
 
