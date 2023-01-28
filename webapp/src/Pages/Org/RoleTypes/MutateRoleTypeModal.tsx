@@ -51,7 +51,6 @@ export function MutateRoleTypeModal({
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual roleType
-    console.log("values: ", values);
     let roleType: MutateRoleType = {
       title: values.title,
       parent_id: parseInt(values.parent_id) ?? undefined,

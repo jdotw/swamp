@@ -30,8 +30,6 @@ function RolesList() {
     setAddModalOpen(false);
   };
 
-  console.log("ITEMS: ", items);
-
   const roleTypeRow = (roleType: RoleType, level: number) => (
     <tr key={roleType.id.toString()}>
       <td>

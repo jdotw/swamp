@@ -51,8 +51,6 @@ function PersonHome() {
     setEditModalOpened(true);
   };
 
-  console.log("roleAssignments: ", roleAssignments);
-
   const roleHistoryContent = [
     {
       id: 1,
