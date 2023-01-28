@@ -157,6 +157,18 @@ describe("useCRUD", () => {
    */
 
   describe("reload function", () => {
+    describe("when a path is not provided", async () => {
+      const hook = await renderUseCRUDHook({
+        path: undefined,
+        loadOnMount: false,
+      });
+      it("should throw an error", async () => {
+        expect(() => hook.result.current.reload()).rejects.toThrowError(
+          "No URL provided"
+        );
+      });
+    });
+
     it("should call fetch with the correct path and headers", async () => {
       const hook = await renderUseCRUDHook({ path, loadOnMount: false });
       mockFetchResponse([]);
