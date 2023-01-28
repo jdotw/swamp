@@ -26,8 +26,8 @@ import LevelList from "./Pages/Org/Levels/LevelList";
 import LevelHome from "./Pages/Org/Levels/LevelHome";
 import RoleTypeList from "./Pages/Org/RoleTypes/RoleTypeList";
 import RoleTypeHome from "./Pages/Org/RoleTypes/RoleTypeHome";
-import FunctionList from "./Pages/Org/Functions/FunctionList";
-import FunctionHome from "./Pages/Org/Functions/FunctionHome";
+import FunctionList from "./Pages/Org/Functions/FunctionTypeList";
+import FunctionHome from "./Pages/Org/Functions/FunctionTypeHome";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
