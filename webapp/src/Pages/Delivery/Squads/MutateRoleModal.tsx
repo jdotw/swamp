@@ -2,7 +2,7 @@ import { Select, TextInput } from "@mantine/core";
 import { useFunctionType } from "../../../Client/FunctionType";
 import { useLevel } from "../../../Client/Level";
 import { Practice } from "../../../Client/Practice";
-import { MutateRole } from "../../../Client/Role";
+import { MutateRole, Role } from "../../../Client/Role";
 import { useRoleType } from "../../../Client/RoleType";
 import {
   MutateItemFormValues,
@@ -13,6 +13,8 @@ import {
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
 export interface MutateRoleModalProps {
+  unit_id: number;
+  unit_type: "squad" | "practice" | "team" | "tribe" | "chapter";
   role?: Role;
   opened: boolean;
   onSubmit: (updatedPractice: any) => void;
@@ -26,6 +28,8 @@ export function MutateRoleModal({
   onSubmit,
   onClose,
   mode,
+  unit_id,
+  unit_type,
 }: MutateRoleModalProps) {
   const { items: levels, loading: loadingLevels } = useLevel();
   const { items: role_types, loading: loadingRoleTypes } = useRoleType();
@@ -39,17 +43,20 @@ export function MutateRoleModal({
   const fields: MutateItemModalFormField[] = [
     {
       key: "role_type",
-      initialValue: role?.role_type_id ?? "",
+      initialValue: "",
+      // initialValue: role?.role_type_id ?? "",
       validation: (value) => nonEmptyString(value, "Type is required"),
     },
     {
       key: "level",
-      initialValue: role?.level_assignments[0].id ?? "",
+      initialValue: "",
+      // initialValue: role?.level_assignments?[0].id ?? "",
       validation: (value) => nonEmptyString(value, "Level is required"),
     },
     {
       key: "function_type",
-      initialValue: role?.function_type_id ?? "",
+      initialValue: "",
+      // initialValue: role?.function_type_id ?? "",
       validation: (value) => nonEmptyString(value, "Function is required"),
     },
   ];
@@ -59,6 +66,8 @@ export function MutateRoleModal({
       role_type_id: parseInt(values.role_type),
       level_id: parseInt(values.level),
       function_type_id: parseInt(values.function_type),
+      unit_id,
+      unit_type,
     };
     onSubmit(updatedRole);
   };
@@ -85,7 +94,7 @@ export function MutateRoleModal({
       />
       <Select
         key="role_type"
-        label="Role Type"
+        label="Type"
         placeholder="select role type"
         data={role_types.map((role_type) => {
           return {

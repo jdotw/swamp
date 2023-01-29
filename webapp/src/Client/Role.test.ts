@@ -47,12 +47,3 @@ expectHookAdoptsUseCRUDCorrectly<Role, MutateRole>({
       ...props,
     } as MutateRole),
 });
-
-describe("useRole", () => {
-  it("should use the personId prop in the path provided to useCRUD", () => {
-    const personId = 1;
-    const { result } = renderHook(() => useRole({ personId }));
-    const path = `/api/org/persons/${personId}/roles`;
-    expect(useCRUD).toHaveBeenCalledWith({ path, personId: personId });
-  });
-});

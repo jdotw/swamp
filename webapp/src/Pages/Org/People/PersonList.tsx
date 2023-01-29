@@ -26,6 +26,8 @@ export function PersonList(props: PersonListProps) {
     return <Loading />;
   }
 
+  console.log("ITEMS: ", items);
+
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
     return (

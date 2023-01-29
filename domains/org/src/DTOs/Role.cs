@@ -13,14 +13,18 @@ public class RoleDto
 
   public DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
+
+  public UnitAssignmentDto? DeliveryUnitAssignment { get; set; } = null!;
+  public UnitAssignmentDto? CapabilityUnitAssignment { get; set; } = null!;
 }
 
 public class CreateRoleDto
 {
-  public int RoleTypeId { get; set; }
-  public int LevelId { get; set; }
-  public int? UnitId { get; set; }
-  public int? FunctionId { get; set; }
+  public required int RoleTypeId { get; set; }
+  public required int LevelId { get; set; }
+  public required string UnitType { get; set; } = null!;
+  public required int UnitId { get; set; }
+  public required int FunctionTypeId { get; set; }
 }
 
 public class UpdateRoleDto

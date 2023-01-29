@@ -2,8 +2,10 @@ using Base.Entities;
 
 namespace Org.Entities;
 
-public abstract class UnitAssignment : EntityBase
+public class UnitAssignment : EntityBase
 {
+  public string AssignmentType { get; set; } = null!;
+
   public int RoleId { get; set; }
   public Role Role { get; set; } = null!;
   public int FunctionTypeId { get; set; }

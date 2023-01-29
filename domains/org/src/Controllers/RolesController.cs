@@ -22,6 +22,22 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   {
     var roles = await Repository.GetAllAsync(ids);
     var rolesDto = Mapper.Map<IEnumerable<RoleDto>>(roles);
+    for (int i = 0; i < rolesDto.Count(); i++)
+    {
+      var role = rolesDto.ElementAt(i);
+      role.CapabilityUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
+                                                            && (u.AssignmentType == "practice"
+                                                            || u.AssignmentType == "chapter"))
+                                                          .OrderBy(u => u.StartDate)
+                                                          .FirstOrDefault();
+      role.DeliveryUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
+                                                          && (u.AssignmentType == "squad"
+                                                          || u.AssignmentType == "tribe"
+                                                          || u.AssignmentType == "team"))
+                                                        .OrderBy(u => u.StartDate)
+                                                        .FirstOrDefault();
+    }
+
     return Ok(rolesDto);
   }
 
@@ -41,6 +57,18 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   {
     var role = Mapper.Map<Role>(roleDto);
     role.LevelAssignments.Add(new LevelAssignment { LevelId = roleDto.LevelId });
+    switch (roleDto.UnitType)
+    {
+      case "squad":
+        role.UnitAssignments.Add(new SquadAssignment
+        {
+          SquadId = roleDto.UnitId,
+          FunctionTypeId = roleDto.FunctionTypeId
+        });
+        break;
+      default:
+        break;
+    }
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);

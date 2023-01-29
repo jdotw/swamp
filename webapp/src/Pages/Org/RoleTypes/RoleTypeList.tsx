@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-function RolesList() {
+function RoleTypeList() {
   const { classes } = useStyles();
   const { items, loading, createItem } = useRoleType();
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -82,4 +82,4 @@ function RolesList() {
   );
 }
 
-export default RolesList;
+export default RoleTypeList;

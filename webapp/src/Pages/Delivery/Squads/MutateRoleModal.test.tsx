@@ -15,10 +15,33 @@ import { MutateRoleModal, MutateRoleModalProps } from "./MutateRoleModal";
 
 addTestPolyfills();
 
+vi.mock("../../../Client/RoleType", () => ({
+  useRoleType: () => ({
+    items: [],
+    loading: false,
+  }),
+}));
+
+vi.mock("../../../Client/FunctionType", () => ({
+  useFunctionType: () => ({
+    items: [],
+    loading: false,
+  }),
+}));
+
+vi.mock("../../../Client/Level", () => ({
+  useLevel: () => ({
+    items: [],
+    loading: false,
+  }),
+}));
+
 const mockOnSubmit = vi.fn();
 const mockOnClose = vi.fn();
 
 const defaultProps: MutateRoleModalProps = {
+  unit_id: 1,
+  unit_type: "team",
   opened: true,
   mode: "create",
   onSubmit: mockOnSubmit,

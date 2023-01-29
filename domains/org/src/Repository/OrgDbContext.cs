@@ -50,5 +50,13 @@ public class OrgDbContext : DbContextBase
         .HasValue<Tribe>("tribe")
         .HasValue<Squad>("squad")
         .HasValue<Team>("team");
+
+    modelBuilder.Entity<UnitAssignment>()
+      .HasDiscriminator(ua => ua.AssignmentType)
+      .HasValue<PracticeAssignment>("practice")
+      .HasValue<ChapterAssignment>("chapter")
+      .HasValue<TribeAssignment>("tribe")
+      .HasValue<SquadAssignment>("squad")
+      .HasValue<TeamAssignment>("team");
   }
 }

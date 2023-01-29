@@ -17,6 +17,7 @@ export interface Role {
   function_type?: FunctionType;
 
   level_assignments?: any[];
+  unit_assignments?: any[];
 
   start_date: string;
   end_date?: string;
@@ -26,13 +27,15 @@ export interface MutateRole {
   role_type_id: number;
   function_type_id: number;
   level_id: number;
+  unit_id: number;
+  unit_type: "squad" | "chapter" | "practice" | "tribe" | "team";
   start_date?: string;
   end_date?: string;
 }
 
 export interface UseRoleProps extends UseCRUDOptionalProps {}
 
-export function useRole(props: UseRoleProps) {
+export function useRole(props: UseRoleProps = {}) {
   const {
     items,
     loading,

@@ -29,6 +29,9 @@ public class RoleTests
     {
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
+      UnitType = "team",
+      UnitId = _seedData.Team.Id,
+      FunctionTypeId = _seedData.FunctionType.Id
     };
 
     // Act
@@ -50,11 +53,20 @@ public class RoleTests
     var existingRole = _seedData.Role;
 
     // Act
-    var roles = await _client.GetFromJsonAsync<List<Role>>($"{_path}", _options);
+    var roles = await _client.GetFromJsonAsync<List<RoleDto>>($"{_path}", _options);
 
     // Assert
     Assert.Contains(roles!, t => t.Id == existingRole.Id);
-    Assert.NotEmpty(roles![0].LevelAssignments);
+    Assert.Contains(roles!, t => t.RoleType!.Id == existingRole.RoleTypeId);
+    var expectedRole = roles!.First(t => t.Id == existingRole.Id);
+    Assert.NotEmpty(expectedRole.LevelAssignments);
+    //    Assert.NotEmpty(expectedRole.UnitAssignments);
+    Assert.NotNull(expectedRole.CapabilityUnitAssignment);
+    Assert.NotNull(expectedRole.DeliveryUnitAssignment);
+    var delivery = expectedRole.CapabilityUnitAssignment;
+    Console.WriteLine($"delivery: {delivery}");
+    // (expectedRole.CapabilityUnitAssignment as ChapterAssignmentDto)!.ChapterId.Should().Be(_seedData.Chapter.Id);
+    (expectedRole.DeliveryUnitAssignment as TeamAssignmentDto)!.TeamId.Should().Be(_seedData.Team.Id);
   }
 
   [Fact]
@@ -125,6 +137,10 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
   public Level Level = null!;
   public RoleType RoleType = null!;
   public Role Role = null!;
+  public Team Team = null!;
+  public Practice Practice = null!;
+  public Chapter Chapter = null!;
+  public FunctionType FunctionType = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -138,10 +154,35 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
+    FunctionType = db.FunctionTypes.Add(new FunctionType
+    {
+      Name = "Seed Function Type",
+    }).Entity;
+    db.SaveChanges(true);
+
     Level = db.Levels.Add(new Level
     {
       IndividualContributorTitle = "Individual Contributor",
       ManagerTitle = "Manager",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Team = db.Teams.Add(new Team
+    {
+      Name = "Seed Team",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Practice = db.Practices.Add(new Practice
+    {
+      Name = "Seed Practice",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Chapter = db.Chapters.Add(new Chapter
+    {
+      Name = "Seed Chapter",
+      PracticeId = Practice.Id,
     }).Entity;
     db.SaveChanges(true);
 
@@ -153,6 +194,19 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
         new LevelAssignment
         {
           LevelId = Level.Id,
+        }
+      },
+      UnitAssignments = new List<UnitAssignment>
+      {
+        new TeamAssignment
+        {
+          TeamId = Team.Id,
+          FunctionTypeId = FunctionType.Id,
+        },
+        new ChapterAssignment
+        {
+          ChapterId = Chapter.Id,
+          FunctionTypeId = FunctionType.Id,
         }
       }
     }).Entity;

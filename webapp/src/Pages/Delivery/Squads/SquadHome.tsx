@@ -107,6 +107,8 @@ function SquadHome(props: SquadHomeProps) {
         </div>
       </div>
       <MutateRoleModal
+        unit_id={id}
+        unit_type={"squad"}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSubmit={submitNewRole}
