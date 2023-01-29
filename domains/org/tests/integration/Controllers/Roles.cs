@@ -64,7 +64,6 @@ public class RoleTests
     Assert.NotNull(expectedRole.CapabilityUnitAssignment);
     Assert.NotNull(expectedRole.DeliveryUnitAssignment);
     var delivery = expectedRole.CapabilityUnitAssignment;
-    Console.WriteLine($"delivery: {delivery}");
     expectedRole.CapabilityUnitAssignment.Chapter.Id.Should().Be(_seedData.Chapter.Id);
     expectedRole.DeliveryUnitAssignment.Team.Id.Should().Be(_seedData.Team.Id);
   }

@@ -135,14 +135,11 @@ public class RoleTypesSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
-    Console.WriteLine("RoleType.Id: " + RoleType.Id);
     ChildRoleType = db.RoleTypes.Add(new RoleType
     {
       Title = "Test Child RoleType",
       ParentId = RoleType.Id
     }).Entity;
     db.SaveChanges(true);
-
-
   }
 }
