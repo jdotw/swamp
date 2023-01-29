@@ -23,11 +23,6 @@ public class OrgDbContext : DbContextBase
   public DbSet<Tribe> Tribes => Set<Tribe>();
 
   public DbSet<UnitAssignment> UnitAssignments => Set<UnitAssignment>();
-  public DbSet<PracticeAssignment> PracticeAssignments => Set<PracticeAssignment>();
-  public DbSet<TribeAssignment> TribeAssignments => Set<TribeAssignment>();
-  public DbSet<SquadAssignment> SquadAssignments => Set<SquadAssignment>();
-  public DbSet<TeamAssignment> TeamAssignments => Set<TeamAssignment>();
-  public DbSet<ChapterAssignment> ChapterAssignments => Set<ChapterAssignment>();
 
   public DbSet<Person> Persons => Set<Person>();
 
@@ -50,13 +45,5 @@ public class OrgDbContext : DbContextBase
         .HasValue<Tribe>("tribe")
         .HasValue<Squad>("squad")
         .HasValue<Team>("team");
-
-    modelBuilder.Entity<UnitAssignment>()
-      .HasDiscriminator(ua => ua.AssignmentType)
-      .HasValue<PracticeAssignment>("practice")
-      .HasValue<ChapterAssignment>("chapter")
-      .HasValue<TribeAssignment>("tribe")
-      .HasValue<SquadAssignment>("squad")
-      .HasValue<TeamAssignment>("team");
   }
 }

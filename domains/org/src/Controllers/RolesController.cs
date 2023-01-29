@@ -26,14 +26,14 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     {
       var role = rolesDto.ElementAt(i);
       role.CapabilityUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
-                                                            && (u.AssignmentType == "practice"
-                                                            || u.AssignmentType == "chapter"))
+                                                            && (u.Practice is not null
+                                                            || u.Chapter is not null))
                                                           .OrderBy(u => u.StartDate)
                                                           .FirstOrDefault();
       role.DeliveryUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
-                                                          && (u.AssignmentType == "squad"
-                                                          || u.AssignmentType == "tribe"
-                                                          || u.AssignmentType == "team"))
+                                                          && (u.Squad is not null
+                                                          || u.Tribe is not null
+                                                          || u.Team is not null))
                                                         .OrderBy(u => u.StartDate)
                                                         .FirstOrDefault();
     }
@@ -57,18 +57,31 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   {
     var role = Mapper.Map<Role>(roleDto);
     role.LevelAssignments.Add(new LevelAssignment { LevelId = roleDto.LevelId });
+    var unitAssignment = new UnitAssignment
+    {
+      FunctionTypeId = roleDto.FunctionTypeId
+    };
     switch (roleDto.UnitType)
     {
+      case "practice":
+        unitAssignment.PracticeId = roleDto.UnitId;
+        break;
+      case "chapter":
+        unitAssignment.ChapterId = roleDto.UnitId;
+        break;
+      case "tribe":
+        unitAssignment.TribeId = roleDto.UnitId;
+        break;
       case "squad":
-        role.UnitAssignments.Add(new SquadAssignment
-        {
-          SquadId = roleDto.UnitId,
-          FunctionTypeId = roleDto.FunctionTypeId
-        });
+        unitAssignment.SquadId = roleDto.UnitId;
+        break;
+      case "team":
+        unitAssignment.TeamId = roleDto.UnitId;
         break;
       default:
-        break;
+        return BadRequest();
     }
+    role.UnitAssignments.Add(unitAssignment);
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);

@@ -66,10 +66,5 @@ public class AutoMapperProfiles : Profile
     CreateMap<UnitAssignment, UnitAssignmentDto>();
     CreateMap<CreateUnitAssignmentDto, UnitAssignment>();
     CreateMap<UpdateUnitAssignmentDto, UnitAssignment>();
-    CreateMap<PracticeAssignment, PracticeAssignmentDto>().IncludeBase<UnitAssignment, UnitAssignmentDto>();
-    CreateMap<ChapterAssignment, ChapterAssignmentDto>().IncludeBase<UnitAssignment, UnitAssignmentDto>();
-    CreateMap<TribeAssignment, TribeAssignmentDto>().IncludeBase<UnitAssignment, UnitAssignmentDto>();
-    CreateMap<SquadAssignment, SquadAssignmentDto>().IncludeBase<UnitAssignment, UnitAssignmentDto>();
-    CreateMap<TeamAssignment, TeamAssignmentDto>().IncludeBase<UnitAssignment, UnitAssignmentDto>();
   }
 }

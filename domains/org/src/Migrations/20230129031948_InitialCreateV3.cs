@@ -35,6 +35,8 @@ namespace Org.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    index = table.Column<int>(type: "integer", nullable: false),
+                    externalid = table.Column<string>(name: "external_id", type: "text", nullable: true),
                     individualcontributortitle = table.Column<string>(name: "individual_contributor_title", type: "text", nullable: false),
                     managertitle = table.Column<string>(name: "manager_title", type: "text", nullable: false),
                     activefromdate = table.Column<DateTimeOffset>(name: "active_from_date", type: "timestamp with time zone", nullable: false),
@@ -74,7 +76,7 @@ namespace Org.Migrations
                     title = table.Column<string>(type: "text", nullable: false),
                     activefromdate = table.Column<DateTimeOffset>(name: "active_from_date", type: "timestamp with time zone", nullable: false),
                     retiredatdate = table.Column<DateTimeOffset>(name: "retired_at_date", type: "timestamp with time zone", nullable: true),
-                    parentroletypeid = table.Column<int>(name: "parent_role_type_id", type: "integer", nullable: true),
+                    parentid = table.Column<int>(name: "parent_id", type: "integer", nullable: true),
                     createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
                     updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
                 },
@@ -82,14 +84,15 @@ namespace Org.Migrations
                 {
                     table.PrimaryKey("pk_role_types", x => x.id);
                     table.ForeignKey(
-                        name: "fk_role_types_role_types_parent_role_type_id",
-                        column: x => x.parentroletypeid,
+                        name: "fk_role_types_role_types_parent_id",
+                        column: x => x.parentid,
                         principalTable: "role_types",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "units",
+                name: "Units",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -110,13 +113,13 @@ namespace Org.Migrations
                     table.ForeignKey(
                         name: "fk_units_units_practice_id",
                         column: x => x.practiceid,
-                        principalTable: "units",
+                        principalTable: "Units",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_units_units_tribe_id",
                         column: x => x.tribeid,
-                        principalTable: "units",
+                        principalTable: "Units",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -211,15 +214,13 @@ namespace Org.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     roleid = table.Column<int>(name: "role_id", type: "integer", nullable: false),
                     functiontypeid = table.Column<int>(name: "function_type_id", type: "integer", nullable: false),
-                    startdate = table.Column<DateTimeOffset>(name: "start_date", type: "timestamp with time zone", nullable: false),
-                    enddate = table.Column<DateTimeOffset>(name: "end_date", type: "timestamp with time zone", nullable: true),
-                    discriminator = table.Column<string>(type: "text", nullable: false),
-                    unitid = table.Column<int>(name: "unit_id", type: "integer", nullable: true),
-                    chapterid = table.Column<int>(name: "chapter_id", type: "integer", nullable: true),
                     practiceid = table.Column<int>(name: "practice_id", type: "integer", nullable: true),
+                    chapterid = table.Column<int>(name: "chapter_id", type: "integer", nullable: true),
                     squadid = table.Column<int>(name: "squad_id", type: "integer", nullable: true),
                     teamid = table.Column<int>(name: "team_id", type: "integer", nullable: true),
                     tribeid = table.Column<int>(name: "tribe_id", type: "integer", nullable: true),
+                    startdate = table.Column<DateTimeOffset>(name: "start_date", type: "timestamp with time zone", nullable: false),
+                    enddate = table.Column<DateTimeOffset>(name: "end_date", type: "timestamp with time zone", nullable: true),
                     createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
                     updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
                 },
@@ -241,37 +242,27 @@ namespace Org.Migrations
                     table.ForeignKey(
                         name: "fk_unit_assignments_units_chapter_id",
                         column: x => x.chapterid,
-                        principalTable: "units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Units",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_unit_assignments_units_practice_id",
                         column: x => x.practiceid,
-                        principalTable: "units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Units",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_unit_assignments_units_squad_id",
                         column: x => x.squadid,
-                        principalTable: "units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Units",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_unit_assignments_units_team_id",
                         column: x => x.teamid,
-                        principalTable: "units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Units",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_unit_assignments_units_tribe_id",
                         column: x => x.tribeid,
-                        principalTable: "units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_unit_id",
-                        column: x => x.unitid,
-                        principalTable: "units",
+                        principalTable: "Units",
                         principalColumn: "id");
                 });
 
@@ -296,9 +287,9 @@ namespace Org.Migrations
                 column: "role_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_role_types_parent_role_type_id",
+                name: "ix_role_types_parent_id",
                 table: "role_types",
-                column: "parent_role_type_id");
+                column: "parent_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_roles_role_type_id",
@@ -341,18 +332,13 @@ namespace Org.Migrations
                 column: "tribe_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_unit_id",
-                table: "unit_assignments",
-                column: "unit_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_units_practice_id",
-                table: "units",
+                table: "Units",
                 column: "practice_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_units_tribe_id",
-                table: "units",
+                table: "Units",
                 column: "tribe_id");
         }
 
@@ -381,7 +367,7 @@ namespace Org.Migrations
                 name: "roles");
 
             migrationBuilder.DropTable(
-                name: "units");
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "role_types");

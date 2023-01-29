@@ -65,8 +65,8 @@ public class RoleTests
     Assert.NotNull(expectedRole.DeliveryUnitAssignment);
     var delivery = expectedRole.CapabilityUnitAssignment;
     Console.WriteLine($"delivery: {delivery}");
-    // (expectedRole.CapabilityUnitAssignment as ChapterAssignmentDto)!.ChapterId.Should().Be(_seedData.Chapter.Id);
-    (expectedRole.DeliveryUnitAssignment as TeamAssignmentDto)!.TeamId.Should().Be(_seedData.Team.Id);
+    expectedRole.CapabilityUnitAssignment.Chapter.Id.Should().Be(_seedData.Chapter.Id);
+    expectedRole.DeliveryUnitAssignment.Team.Id.Should().Be(_seedData.Team.Id);
   }
 
   [Fact]
@@ -198,12 +198,12 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
       },
       UnitAssignments = new List<UnitAssignment>
       {
-        new TeamAssignment
+        new UnitAssignment
         {
           TeamId = Team.Id,
           FunctionTypeId = FunctionType.Id,
         },
-        new ChapterAssignment
+        new UnitAssignment
         {
           ChapterId = Chapter.Id,
           FunctionTypeId = FunctionType.Id,

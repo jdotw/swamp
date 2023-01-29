@@ -362,7 +362,7 @@ namespace Org.Migrations
                     b.HasKey("Id")
                         .HasName("pk_units");
 
-                    b.ToTable("units", (string)null);
+                    b.ToTable("Units");
 
                     b.HasDiscriminator<string>("UnitType").HasValue("Unit");
 
@@ -378,10 +378,9 @@ namespace Org.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AssignmentType")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("assignment_type");
+                    b.Property<int?>("ChapterId")
+                        .HasColumnType("integer")
+                        .HasColumnName("chapter_id");
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
@@ -395,17 +394,29 @@ namespace Org.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("function_type_id");
 
+                    b.Property<int?>("PracticeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("practice_id");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("integer")
                         .HasColumnName("role_id");
+
+                    b.Property<int?>("SquadId")
+                        .HasColumnType("integer")
+                        .HasColumnName("squad_id");
 
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
 
-                    b.Property<int?>("UnitId")
+                    b.Property<int?>("TeamId")
                         .HasColumnType("integer")
-                        .HasColumnName("unit_id");
+                        .HasColumnName("team_id");
+
+                    b.Property<int?>("TribeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tribe_id");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
@@ -414,20 +425,28 @@ namespace Org.Migrations
                     b.HasKey("Id")
                         .HasName("pk_unit_assignments");
 
+                    b.HasIndex("ChapterId")
+                        .HasDatabaseName("ix_unit_assignments_chapter_id");
+
                     b.HasIndex("FunctionTypeId")
                         .HasDatabaseName("ix_unit_assignments_function_type_id");
+
+                    b.HasIndex("PracticeId")
+                        .HasDatabaseName("ix_unit_assignments_practice_id");
 
                     b.HasIndex("RoleId")
                         .HasDatabaseName("ix_unit_assignments_role_id");
 
-                    b.HasIndex("UnitId")
-                        .HasDatabaseName("ix_unit_assignments_unit_id");
+                    b.HasIndex("SquadId")
+                        .HasDatabaseName("ix_unit_assignments_squad_id");
+
+                    b.HasIndex("TeamId")
+                        .HasDatabaseName("ix_unit_assignments_team_id");
+
+                    b.HasIndex("TribeId")
+                        .HasDatabaseName("ix_unit_assignments_tribe_id");
 
                     b.ToTable("unit_assignments", (string)null);
-
-                    b.HasDiscriminator<string>("AssignmentType").HasValue("UnitAssignment");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Org.Entities.Chapter", b =>
@@ -475,76 +494,6 @@ namespace Org.Migrations
             modelBuilder.Entity("Org.Entities.Tribe", b =>
                 {
                     b.HasBaseType("Org.Entities.Unit");
-
-                    b.HasDiscriminator().HasValue("tribe");
-                });
-
-            modelBuilder.Entity("Org.Entities.ChapterAssignment", b =>
-                {
-                    b.HasBaseType("Org.Entities.UnitAssignment");
-
-                    b.Property<int>("ChapterId")
-                        .HasColumnType("integer")
-                        .HasColumnName("chapter_id");
-
-                    b.HasIndex("ChapterId")
-                        .HasDatabaseName("ix_unit_assignments_chapter_id");
-
-                    b.HasDiscriminator().HasValue("chapter");
-                });
-
-            modelBuilder.Entity("Org.Entities.PracticeAssignment", b =>
-                {
-                    b.HasBaseType("Org.Entities.UnitAssignment");
-
-                    b.Property<int>("PracticeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("practice_id");
-
-                    b.HasIndex("PracticeId")
-                        .HasDatabaseName("ix_unit_assignments_practice_id");
-
-                    b.HasDiscriminator().HasValue("practice");
-                });
-
-            modelBuilder.Entity("Org.Entities.SquadAssignment", b =>
-                {
-                    b.HasBaseType("Org.Entities.UnitAssignment");
-
-                    b.Property<int>("SquadId")
-                        .HasColumnType("integer")
-                        .HasColumnName("squad_id");
-
-                    b.HasIndex("SquadId")
-                        .HasDatabaseName("ix_unit_assignments_squad_id");
-
-                    b.HasDiscriminator().HasValue("squad");
-                });
-
-            modelBuilder.Entity("Org.Entities.TeamAssignment", b =>
-                {
-                    b.HasBaseType("Org.Entities.UnitAssignment");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_id");
-
-                    b.HasIndex("TeamId")
-                        .HasDatabaseName("ix_unit_assignments_team_id");
-
-                    b.HasDiscriminator().HasValue("team");
-                });
-
-            modelBuilder.Entity("Org.Entities.TribeAssignment", b =>
-                {
-                    b.HasBaseType("Org.Entities.UnitAssignment");
-
-                    b.Property<int>("TribeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tribe_id");
-
-                    b.HasIndex("TribeId")
-                        .HasDatabaseName("ix_unit_assignments_tribe_id");
 
                     b.HasDiscriminator().HasValue("tribe");
                 });
@@ -614,12 +563,22 @@ namespace Org.Migrations
 
             modelBuilder.Entity("Org.Entities.UnitAssignment", b =>
                 {
+                    b.HasOne("Org.Entities.Chapter", "Chapter")
+                        .WithMany("UnitAssignments")
+                        .HasForeignKey("ChapterId")
+                        .HasConstraintName("fk_unit_assignments_units_chapter_id");
+
                     b.HasOne("Org.Entities.FunctionType", "FunctionType")
                         .WithMany("UnitAssignments")
                         .HasForeignKey("FunctionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_unit_assignments_function_types_function_type_id");
+
+                    b.HasOne("Org.Entities.Practice", "Practice")
+                        .WithMany("UnitAssignments")
+                        .HasForeignKey("PracticeId")
+                        .HasConstraintName("fk_unit_assignments_units_practice_id");
 
                     b.HasOne("Org.Entities.Role", "Role")
                         .WithMany("UnitAssignments")
@@ -628,14 +587,34 @@ namespace Org.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_unit_assignments_roles_role_id");
 
-                    b.HasOne("Org.Entities.Unit", null)
+                    b.HasOne("Org.Entities.Squad", "Squad")
                         .WithMany("UnitAssignments")
-                        .HasForeignKey("UnitId")
-                        .HasConstraintName("fk_unit_assignments_units_unit_id");
+                        .HasForeignKey("SquadId")
+                        .HasConstraintName("fk_unit_assignments_units_squad_id");
+
+                    b.HasOne("Org.Entities.Team", "Team")
+                        .WithMany("UnitAssignments")
+                        .HasForeignKey("TeamId")
+                        .HasConstraintName("fk_unit_assignments_units_team_id");
+
+                    b.HasOne("Org.Entities.Tribe", "Tribe")
+                        .WithMany("UnitAssignments")
+                        .HasForeignKey("TribeId")
+                        .HasConstraintName("fk_unit_assignments_units_tribe_id");
+
+                    b.Navigation("Chapter");
 
                     b.Navigation("FunctionType");
 
+                    b.Navigation("Practice");
+
                     b.Navigation("Role");
+
+                    b.Navigation("Squad");
+
+                    b.Navigation("Team");
+
+                    b.Navigation("Tribe");
                 });
 
             modelBuilder.Entity("Org.Entities.Chapter", b =>
@@ -658,66 +637,6 @@ namespace Org.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_units_units_tribe_id");
-
-                    b.Navigation("Tribe");
-                });
-
-            modelBuilder.Entity("Org.Entities.ChapterAssignment", b =>
-                {
-                    b.HasOne("Org.Entities.Chapter", "Chapter")
-                        .WithMany()
-                        .HasForeignKey("ChapterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_chapter_id");
-
-                    b.Navigation("Chapter");
-                });
-
-            modelBuilder.Entity("Org.Entities.PracticeAssignment", b =>
-                {
-                    b.HasOne("Org.Entities.Practice", "Practice")
-                        .WithMany()
-                        .HasForeignKey("PracticeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_practice_id");
-
-                    b.Navigation("Practice");
-                });
-
-            modelBuilder.Entity("Org.Entities.SquadAssignment", b =>
-                {
-                    b.HasOne("Org.Entities.Squad", "Squad")
-                        .WithMany()
-                        .HasForeignKey("SquadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_squad_id");
-
-                    b.Navigation("Squad");
-                });
-
-            modelBuilder.Entity("Org.Entities.TeamAssignment", b =>
-                {
-                    b.HasOne("Org.Entities.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_team_id");
-
-                    b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("Org.Entities.TribeAssignment", b =>
-                {
-                    b.HasOne("Org.Entities.Tribe", "Tribe")
-                        .WithMany()
-                        .HasForeignKey("TribeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_tribe_id");
 
                     b.Navigation("Tribe");
                 });
@@ -753,7 +672,7 @@ namespace Org.Migrations
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("Org.Entities.Unit", b =>
+            modelBuilder.Entity("Org.Entities.Chapter", b =>
                 {
                     b.Navigation("UnitAssignments");
                 });
@@ -761,11 +680,25 @@ namespace Org.Migrations
             modelBuilder.Entity("Org.Entities.Practice", b =>
                 {
                     b.Navigation("Chapters");
+
+                    b.Navigation("UnitAssignments");
+                });
+
+            modelBuilder.Entity("Org.Entities.Squad", b =>
+                {
+                    b.Navigation("UnitAssignments");
+                });
+
+            modelBuilder.Entity("Org.Entities.Team", b =>
+                {
+                    b.Navigation("UnitAssignments");
                 });
 
             modelBuilder.Entity("Org.Entities.Tribe", b =>
                 {
                     b.Navigation("Squads");
+
+                    b.Navigation("UnitAssignments");
                 });
 #pragma warning restore 612, 618
         }
