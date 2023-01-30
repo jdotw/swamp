@@ -32,12 +32,80 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreatePracticeDto, Practice>();
     CreateMap<UpdatePracticeDto, Practice>();
 
-    CreateMap<Role, RoleDto>();
+    CreateMap<Role, RoleCollectionDto>()
+      .ForMember(dest => dest.ActiveLevelAssignment,
+        opt => opt.MapFrom(src => src.LevelAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.ActiveRoleAssignment,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.DeliveryUnitAssignment,
+        opt => opt.MapFrom(src => src.UnitAssignments
+          .Where(u => u.EndDate == null
+            && (u.Squad != null)
+            || u.Tribe != null
+            || u.Team != null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.CapabilityUnitAssignment,
+        opt => opt.MapFrom(src => src.UnitAssignments
+          .Where(u => u.EndDate == null
+            && (u.Practice != null
+            || u.Chapter != null))
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()));
+
+    CreateMap<RoleType, RoleCollectionRoleTypeDto>();
+    CreateMap<LevelAssignment, RoleCollectionActiveLevelAssignmentDto>();
+    CreateMap<Level, RoleCollectionLevelDto>();
+    CreateMap<UnitAssignment, RoleCollectionActiveUnitAssignmentDto>();
+    CreateMap<FunctionType, RoleCollectionFunctionTypeDto>();
+    CreateMap<RoleAssignment, RoleCollectionActiveRoleAssignmentDto>();
+    CreateMap<Person, RoleCollectionPersonDto>();
+
+    CreateMap<Role, RoleDto>()
+      .ForMember(dest => dest.IsVacant,
+        opt => opt.MapFrom(src => src.RoleAssignments.Where(r => r.EndDate == null).Count() == 0))
+      .ForMember(dest => dest.ActiveRoleAssignment,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.AssignedPerson,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .First().Person))
+      .ForMember(dest => dest.AssignedLevel,
+        opt => opt.MapFrom(src => src.LevelAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .First().Level))
+      .ForMember(dest => dest.DeliveryUnitAssignment,
+        opt => opt.MapFrom(src => src.UnitAssignments
+          .Where(u => u.EndDate == null
+            && (u.Squad != null)
+            || u.Tribe != null
+            || u.Team != null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.CapabilityUnitAssignment,
+        opt => opt.MapFrom(src => src.UnitAssignments
+          .Where(u => u.EndDate == null
+            && (u.Practice != null
+            || u.Chapter != null))
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()));
     CreateMap<CreateRoleDto, Role>();
     CreateMap<UpdateRoleDto, Role>();
 
     CreateMap<RoleAssignment, RoleAssignmentDto>();
-    CreateMap<CreateRoleAssignmentDto, RoleAssignment>();
+    CreateMap<CreateRoleAssignmentWithPersonIdDto, RoleAssignment>();
+    CreateMap<CreateRoleAssignmentWithRoleIdDto, RoleAssignment>();
     CreateMap<UpdateRoleAssignmentDto, RoleAssignment>();
 
     CreateMap<RoleType, RoleTypeDto>();

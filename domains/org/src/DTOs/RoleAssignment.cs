@@ -11,13 +11,20 @@ public class RoleAssignmentDto
   public DateTimeOffset? EndDate { get; set; }
 }
 
-public class CreateRoleAssignmentDto
+public class CreateRoleAssignmentWithPersonIdDto
 {
   public required int PersonId { get; set; }
+  public DateTimeOffset StartDate { get; set; } = DateTimeOffset.UtcNow;
+  public DateTimeOffset? EndDate { get; set; }
+}
+
+public class CreateRoleAssignmentWithRoleIdDto
+{
   public required int RoleId { get; set; }
   public DateTimeOffset StartDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? EndDate { get; set; }
 }
+
 
 public class UpdateRoleAssignmentDto
 {

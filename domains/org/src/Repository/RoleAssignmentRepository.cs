@@ -33,6 +33,17 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .ToListAsync();
   }
 
+  public async Task<IEnumerable<RoleAssignment>> GetAllByRoleIdAsync(int roleId)
+  {
+    return await FindAllAsync()
+      .Where(s => s.RoleId == roleId)
+      .OrderBy(s => s.Id)
+      .Include(p => p.Person)
+      .Include(p => p.Role)
+      .AsSplitQuery()
+      .ToListAsync();
+  }
+
   public async Task<RoleAssignment?> GetByIdAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();

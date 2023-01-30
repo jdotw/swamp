@@ -25,9 +25,9 @@ public class RoleAssignmentTests
   {
     // Arrange
     var testStart = DateTime.UtcNow;
-    var newRoleAssignment = new CreateRoleAssignmentDto
+    var existingPerson = _seedData.Person;
+    var newRoleAssignment = new CreateRoleAssignmentWithRoleIdDto
     {
-      PersonId = _seedData.Person.Id,
       RoleId = _seedData.Role.Id,
     };
 
@@ -38,7 +38,7 @@ public class RoleAssignmentTests
     // Assert
     Assert.NotEqual(0, assignment!.Id);
     Assert.Equal(newRoleAssignment.RoleId, assignment.RoleId);
-    Assert.Equal(newRoleAssignment.PersonId, assignment.PersonId);
+    Assert.Equal(existingPerson.Id, assignment.PersonId);
   }
 
   [Fact]

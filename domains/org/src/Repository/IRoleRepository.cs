@@ -5,6 +5,7 @@ namespace Org.Repository;
 public interface IRoleRepository
 {
   Task<IEnumerable<Role>> GetAllAsync(List<int>? filterIds);
+  Task<IEnumerable<Role>> GetAllAsync(int squadId);
   Task<Role?> GetByIdAsync(int id);
   Task<Role?> GetWithDetailsAsync(int id);
   Task<int> AddAsync(Role role);

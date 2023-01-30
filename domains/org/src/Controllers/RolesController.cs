@@ -21,23 +21,7 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var roles = await Repository.GetAllAsync(ids);
-    var rolesDto = Mapper.Map<IEnumerable<RoleDto>>(roles);
-    for (int i = 0; i < rolesDto.Count(); i++)
-    {
-      var role = rolesDto.ElementAt(i);
-      role.CapabilityUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
-                                                            && (u.Practice is not null
-                                                            || u.Chapter is not null))
-                                                          .OrderBy(u => u.StartDate)
-                                                          .FirstOrDefault();
-      role.DeliveryUnitAssignment = role.UnitAssignments.Where(u => u.EndDate == null
-                                                          && (u.Squad is not null
-                                                          || u.Tribe is not null
-                                                          || u.Team is not null))
-                                                        .OrderBy(u => u.StartDate)
-                                                        .FirstOrDefault();
-    }
-
+    var rolesDto = Mapper.Map<IEnumerable<RoleCollectionDto>>(roles);
     return Ok(rolesDto);
   }
 
@@ -85,7 +69,8 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);
-    return CreatedAtAction(nameof(Get), new { id = role.Id }, Mapper.Map<RoleDto>(addedRole));
+    var addedRoleDto = Mapper.Map<RoleDto>(addedRole);
+    return CreatedAtAction(nameof(Get), new { id = role.Id }, addedRoleDto);
   }
 
   // PUT: /roles/5
@@ -104,6 +89,25 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   {
     var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
+  }
+}
+
+[ApiController]
+[Route("/tribes/{tribeId}/squads/{squadId}/roles")]
+public class SquadRolesController : ControllerBase<Role, IRoleRepository>
+{
+  public SquadRolesController(ILogger<RolesController> logger, IRoleRepository repository, IMapper mapper)
+    : base(logger, repository, mapper)
+  {
+  }
+
+  // GET: /roles
+  [HttpGet()]
+  public async Task<IActionResult> GetAll(int squadId)
+  {
+    var roles = await Repository.GetAllAsync(squadId: squadId);
+    var rolesDto = Mapper.Map<IEnumerable<RoleDto>>(roles);
+    return Ok(rolesDto);
   }
 }
 

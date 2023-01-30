@@ -23,6 +23,11 @@ public class UnitAssignmentDto
   public virtual TeamDto Team { get; set; } = null!;
   public DateTimeOffset StartDate { get; set; }
   public DateTimeOffset? EndDate { get; set; }
+
+  // Convenience
+  public int UnitId { get; set; }
+  public string? UnitType { get; set; }
+  public string? UnitName { get; set; }
 }
 
 public class CreateUnitAssignmentDto
