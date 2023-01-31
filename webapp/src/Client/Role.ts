@@ -6,6 +6,22 @@ import { Person } from "./Person";
 import { Practice } from "./Practice";
 import { RoleType } from "./RoleType";
 import { FunctionType } from "./FunctionType";
+import { Level } from "./Level";
+
+export interface UnitAssignment {
+  id: number;
+  unit_id: number;
+  unit_type: "squad" | "chapter" | "practice" | "tribe" | "team";
+  unit_name: string;
+}
+
+export interface LevelAssignment {
+  id: number;
+}
+
+export interface RoleAssignment {
+  id: number;
+}
 
 export interface Role {
   id: number;
@@ -16,11 +32,20 @@ export interface Role {
   function_type_id: number;
   function_type?: FunctionType;
 
-  level_assignments?: any[];
-  unit_assignments?: any[];
+  level_assignments?: LevelAssignment[];
+  unit_assignments?: UnitAssignment[];
+  role_assignments?: RoleAssignment[];
 
   start_date: string;
   end_date?: string;
+
+  delivery_unit_assignment: UnitAssignment;
+  capability_unit_assignment: UnitAssignment;
+
+  assigned_person: Person;
+  assigned_level: Level;
+
+  is_vacant: boolean;
 }
 
 export interface MutateRole {
@@ -33,9 +58,20 @@ export interface MutateRole {
   end_date?: string;
 }
 
-export interface UseRoleProps extends UseCRUDOptionalProps {}
+export interface UseRoleProps extends UseCRUDOptionalProps {
+  tribeId?: number;
+  squadId?: number;
+}
 
 export function useRole(props: UseRoleProps = {}) {
+  let path;
+  if (props.squadId) {
+    path = `/api/org/tribes/${props.tribeId}/squads/${props.squadId}/roles`;
+  } else if (props.tribeId) {
+    path = `/api/org/tribes/${props.tribeId}/roles`;
+  } else {
+    path = `/api/org/roles`;
+  }
   const {
     items,
     loading,
@@ -46,7 +82,7 @@ export function useRole(props: UseRoleProps = {}) {
     updateItem,
     deleteItem,
   } = useCRUD<Role, MutateRole>({
-    path: `/api/org/roles`,
+    path,
     ...props,
   });
 
