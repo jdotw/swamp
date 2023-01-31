@@ -16,6 +16,7 @@ const useStyles = createStyles((theme) => ({
   vacantRole: {
     backgroundColor: "#ff000040",
   },
+  filledRole: {},
 }));
 
 interface SquadHomeProps {}
@@ -23,7 +24,10 @@ interface SquadHomeProps {}
 function SquadHome(props: SquadHomeProps) {
   const tribeId = +useParams().tribeId!;
   const id = +useParams().squadId!;
-  const { items: roles, createItem: createRole } = useRole({});
+  const { items: roles, createItem: createRole } = useRole({
+    tribeId,
+    squadId: id,
+  });
   const { classes, theme } = useStyles();
   const { items, loading } = useSquad({
     tribeId,
@@ -46,6 +50,30 @@ function SquadHome(props: SquadHomeProps) {
     setAddModalOpen(false);
   };
 
+  const roleElements = roles.map((role) => (
+    <tr
+      key={role.id.toString()}
+      className={role.is_vacant ? classes.vacantRole : classes.filledRole}
+    >
+      <td>
+        <Link to={`/org/roles/${role.role_type_id}`}>
+          {role.role_type!.title}
+        </Link>
+      </td>
+      <td>
+        {role.role_assignments!.length > 0 ? (
+          <Link to={`/org/persons/${role.role_assignments![0].person!.id}`}>
+            {role.role_assignments![0].person!.first_name}{" "}
+            {role.role_assignments![0].person!.last_name}
+          </Link>
+        ) : (
+          "vacant"
+        )}
+      </td>
+      <td>TODO</td>
+    </tr>
+  ));
+
   return (
     <>
       <div>
@@ -61,45 +89,7 @@ function SquadHome(props: SquadHomeProps) {
                 <th>Capability Unit</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <Link to={"/org/roles/3"}>Senior Software Engineer</Link>
-                </td>
-                <td>John Thurman</td>
-                <td>Front-End Engineering</td>
-              </tr>
-              <tr className={classes.vacantRole}>
-                <td>Software Engineer</td>
-                <td>vacant</td>
-                <td>Front-End Engineering</td>
-              </tr>
-              <tr>
-                <td>Software Engineer</td>
-                <td>Samuel Goleman</td>
-                <td>Back-End Engineering</td>
-              </tr>
-              <tr>
-                <td>Quality Engineer</td>
-                <td>Harish Thakkar</td>
-                <td>Quality Engineering</td>
-              </tr>
-              <tr>
-                <td>Engineering Manager</td>
-                <td>Wen Yoew</td>
-                <td>Back-End Engineering</td>
-              </tr>
-              <tr>
-                <td>UI Designer</td>
-                <td>Emily Blanchet</td>
-                <td>Product Design</td>
-              </tr>
-              <tr className={classes.vacantRole}>
-                <td>Infrastructure Engineer</td>
-                <td>vacant</td>
-                <td>Cloud</td>
-              </tr>
-            </tbody>
+            <tbody>{roleElements}</tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
