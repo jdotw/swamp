@@ -13,14 +13,26 @@ export interface RoleAssignment {
 }
 
 export interface MutateRoleAssignment {
+  role_id: number;
+  person_id: number;
   end_date?: string;
 }
 
 export interface UseRoleAssignmentProps extends UseCRUDOptionalProps {
-  personId: number;
+  personId?: number;
+  roleId?: number;
 }
 
 export function useRoleAssignment(props?: UseRoleAssignmentProps) {
+  let path;
+  if (props?.personId) {
+    path = `/api/org/persons/${props?.personId}/role_assignments`;
+  } else if (props?.roleId) {
+    path = `/api/org/roles/${props?.roleId}/role_assignments`;
+  } else {
+    path = `/api/org/role_assignments`;
+  }
+
   const {
     reload,
     items,
@@ -31,7 +43,7 @@ export function useRoleAssignment(props?: UseRoleAssignmentProps) {
     updateItem,
     deleteItem,
   } = useCRUD<RoleAssignment, MutateRoleAssignment>({
-    path: `/api/org/persons/${props?.personId}/role_assignments`,
+    path,
     ...props,
   });
   return {
