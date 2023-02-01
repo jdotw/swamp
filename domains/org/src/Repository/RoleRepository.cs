@@ -9,11 +9,11 @@ static public class RoleRepositoryExtensions
 {
   static public IIncludableQueryable<Role, IEnumerable<RoleAssignment>> IncludeActiveRoleAssignment(this IQueryable<Role> query)
   {
-    return query.Include(p => p.RoleAssignments.Where(p => p.EndDate == null).OrderBy(p => p.StartDate).Take(1));
+    return query.Include(p => p.RoleAssignments.Where(p => p.EndDate == null).OrderBy(p => p.Id).Take(1));
   }
   static public IIncludableQueryable<Role, IEnumerable<UnitAssignment>> IncludeActiveUnitAssignment(this IQueryable<Role> query)
   {
-    return query.Include(p => p.UnitAssignments.Where(p => p.EndDate == null).OrderBy(p => p.StartDate));
+    return query.Include(p => p.UnitAssignments.Where(p => p.EndDate == null).OrderBy(p => p.Id));
   }
 }
 
@@ -35,17 +35,9 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .IncludeActiveUnitAssignment()
         .ThenInclude(p => p.FunctionType)
       .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Practice)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Chapter)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Tribe)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Squad)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Team)
+        .ThenInclude(p => p.Unit)
       .AsSplitQuery()
-      .OrderBy(s => s.OpenFromDate);
+      .OrderBy(s => s.Id);
   }
 
   public async Task<IEnumerable<Role>> GetAllAsync(List<int>? filterIds = null)
@@ -55,10 +47,10 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .ToListAsync();
   }
 
-  public async Task<IEnumerable<Role>> GetAllAsync(int squadId)
+  public async Task<IEnumerable<Role>> GetAllAsync(int unitId)
   {
     return await GetAll()
-    .Where(s => s.UnitAssignments.Any(u => u.SquadId == squadId))
+    .Where(s => s.UnitAssignments.Any(u => u.UnitId == unitId))
     .ToListAsync();
   }
 
@@ -78,15 +70,7 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .Include(p => p.UnitAssignments)
       .ThenInclude(p => p.FunctionType)
       .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Practice)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Chapter)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Tribe)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Squad)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Team)
+      .ThenInclude(p => p.Unit)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }

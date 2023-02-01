@@ -14,8 +14,15 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
   public async Task<IEnumerable<Person>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
-        .Where(s => filterIds == null || filterIds.Contains(s.Id))
-        .OrderBy(s => s.Id)
+        .Where(p => filterIds == null || filterIds.Contains(p.Id))
+        .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
+        .ThenInclude(r => r.Role)
+        .ThenInclude(r => r.LevelAssignments)
+        .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
+        .ThenInclude(r => r.Role)
+        .ThenInclude(r => r.UnitAssignments)
+        .ThenInclude(u => u.Unit)
+        .OrderBy(p => p.Id)
         .ToListAsync();
   }
 

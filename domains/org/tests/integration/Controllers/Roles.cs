@@ -29,7 +29,6 @@ public class RoleTests
     {
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
-      UnitType = "team",
       UnitId = _seedData.Team.Id,
       FunctionTypeId = _seedData.FunctionType.Id
     };
@@ -241,12 +240,12 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
       {
         new UnitAssignment
         {
-          TeamId = Team.Id,
+          UnitId = Team.Id,
           FunctionTypeId = FunctionType.Id,
         },
         new UnitAssignment
         {
-          ChapterId = Chapter.Id,
+          UnitId = Chapter.Id,
           FunctionTypeId = FunctionType.Id,
         }
       }
@@ -267,12 +266,12 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
       {
         new UnitAssignment
         {
-          SquadId = Squad.Id,
+          UnitId = Squad.Id,
           FunctionTypeId = FunctionType.Id,
         },
         new UnitAssignment
         {
-          ChapterId = Chapter.Id,
+          UnitId = Chapter.Id,
           FunctionTypeId = FunctionType.Id,
         }
       }

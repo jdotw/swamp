@@ -1,5 +1,18 @@
 namespace Org.DTOs;
 
+public class PersonCollectionDto
+{
+  public int Id { get; set; }
+  public string ExternalId { get; set; } = null!;
+
+  public string FirstName { get; set; } = null!;
+  public string? MiddleNames { get; set; }
+  public string LastName { get; set; } = null!;
+
+  public List<RoleAssignmentCollectionDto> ActiveRoleAssignments { get; set; } = new();
+}
+
+
 public class PersonDto
 {
   public int Id { get; set; }

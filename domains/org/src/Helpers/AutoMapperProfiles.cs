@@ -25,6 +25,11 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateLevelAssignmentDto, LevelAssignment>();
 
     CreateMap<Person, PersonDto>();
+    CreateMap<Person, PersonCollectionDto>().ForMember(dest => dest.ActiveRoleAssignments,
+      opt => opt.MapFrom(src => src.RoleAssignments
+        .Where(r => r.EndDate == null)
+        .OrderBy(u => u.StartDate)
+        .ToList()));
     CreateMap<CreatePersonDto, Person>();
     CreateMap<UpdatePersonDto, Person>();
 
@@ -46,16 +51,16 @@ public class AutoMapperProfiles : Profile
       .ForMember(dest => dest.DeliveryUnitAssignment,
         opt => opt.MapFrom(src => src.UnitAssignments
           .Where(u => u.EndDate == null
-            && (u.Squad != null)
-            || u.Tribe != null
-            || u.Team != null)
+            && (u.Unit is Squad)
+            || u.Unit is Tribe
+            || u.Unit is Team)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))
       .ForMember(dest => dest.CapabilityUnitAssignment,
         opt => opt.MapFrom(src => src.UnitAssignments
           .Where(u => u.EndDate == null
-            && (u.Practice != null
-            || u.Chapter != null))
+            && (u.Unit is Practice
+            || u.Unit is Chapter))
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));
 
@@ -65,6 +70,7 @@ public class AutoMapperProfiles : Profile
     CreateMap<UnitAssignment, RoleCollectionActiveUnitAssignmentDto>();
     CreateMap<FunctionType, RoleCollectionFunctionTypeDto>();
     CreateMap<RoleAssignment, RoleCollectionActiveRoleAssignmentDto>();
+    CreateMap<RoleAssignment, RoleAssignmentCollectionDto>();
     CreateMap<Person, RoleCollectionPersonDto>();
 
     CreateMap<Role, RoleDto>()
@@ -79,7 +85,7 @@ public class AutoMapperProfiles : Profile
         opt => opt.MapFrom(src => src.RoleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
-          .First().Person))
+          .FirstOrDefault()!.Person))
       .ForMember(dest => dest.AssignedLevel,
         opt => opt.MapFrom(src => src.LevelAssignments
           .Where(r => r.EndDate == null)
@@ -88,16 +94,16 @@ public class AutoMapperProfiles : Profile
       .ForMember(dest => dest.DeliveryUnitAssignment,
         opt => opt.MapFrom(src => src.UnitAssignments
           .Where(u => u.EndDate == null
-            && (u.Squad != null)
-            || u.Tribe != null
-            || u.Team != null)
+            && (u.Unit is Squad)
+            || u.Unit is Tribe
+            || u.Unit is Team)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))
       .ForMember(dest => dest.CapabilityUnitAssignment,
         opt => opt.MapFrom(src => src.UnitAssignments
           .Where(u => u.EndDate == null
-            && (u.Practice != null
-            || u.Chapter != null))
+            && (u.Unit is Practice
+            || u.Unit is Chapter))
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));
     CreateMap<CreateRoleDto, Role>();

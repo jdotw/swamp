@@ -18,6 +18,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .OrderBy(s => s.Id)
       .Include(p => p.Person)
       .Include(p => p.Role)
+      .ThenInclude(r => r.LevelAssignments)
       .AsSplitQuery()
       .ToListAsync();
   }
@@ -29,6 +30,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .OrderBy(s => s.Id)
       .Include(p => p.Person)
       .Include(p => p.Role)
+      .ThenInclude(r => r.LevelAssignments)
       .AsSplitQuery()
       .ToListAsync();
   }

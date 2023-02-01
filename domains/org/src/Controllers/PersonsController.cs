@@ -21,7 +21,7 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var persons = await Repository.GetAllAsync(ids);
-    var personsDto = Mapper.Map<IEnumerable<PersonDto>>(persons);
+    var personsDto = Mapper.Map<IEnumerable<PersonCollectionDto>>(persons);
     return Ok(personsDto);
   }
 

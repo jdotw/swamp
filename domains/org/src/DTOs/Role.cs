@@ -98,7 +98,6 @@ public class CreateRoleDto
 {
   public required int RoleTypeId { get; set; }
   public required int LevelId { get; set; }
-  public required string UnitType { get; set; } = null!;
   public required int UnitId { get; set; }
   public required int FunctionTypeId { get; set; }
 }

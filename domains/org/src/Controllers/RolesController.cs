@@ -43,28 +43,9 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     role.LevelAssignments.Add(new LevelAssignment { LevelId = roleDto.LevelId });
     var unitAssignment = new UnitAssignment
     {
-      FunctionTypeId = roleDto.FunctionTypeId
+      FunctionTypeId = roleDto.FunctionTypeId,
+      UnitId = roleDto.UnitId,
     };
-    switch (roleDto.UnitType)
-    {
-      case "practice":
-        unitAssignment.PracticeId = roleDto.UnitId;
-        break;
-      case "chapter":
-        unitAssignment.ChapterId = roleDto.UnitId;
-        break;
-      case "tribe":
-        unitAssignment.TribeId = roleDto.UnitId;
-        break;
-      case "squad":
-        unitAssignment.SquadId = roleDto.UnitId;
-        break;
-      case "team":
-        unitAssignment.TeamId = roleDto.UnitId;
-        break;
-      default:
-        return BadRequest();
-    }
     role.UnitAssignments.Add(unitAssignment);
     await Repository.AddAsync(role);
 
