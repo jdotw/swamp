@@ -1,58 +1,77 @@
 using System.Data.Common;
 using Base.Repository;
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+using DotNet.Testcontainers.Containers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace Base.IntegrationTests;
 
 public class WebApplicationFactoryBase<TProgram, TDbContext>
-    : WebApplicationFactory<TProgram>
+    : WebApplicationFactory<TProgram>, IAsyncLifetime
       where TProgram : class
       where TDbContext : DbContextBase
 {
-  protected DbConnection dbConnection;
+  private readonly TestcontainerDatabase _container;
 
   public WebApplicationFactoryBase()
   {
-    dbConnection = new SqliteConnection("Data Source=:memory:");
-    dbConnection.Open();
+    _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+        .WithDatabase(new PostgreSqlTestcontainerConfiguration
+        {
+          Database = "test_db",
+          Username = "postgres",
+          Password = "postgres",
+        })
+        .WithImage("postgres:11")
+        .WithCleanUp(true)
+        .Build();
   }
 
-  protected override void Dispose(bool disposing)
-  {
-    base.Dispose(disposing);
-    dbConnection.Close();
-  }
 
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
     builder.ConfigureServices(services =>
     {
-      var dbContextDescriptor = services.SingleOrDefault(
-              d => d.ServiceType ==
-                  typeof(DbContextOptions<TDbContext>));
-      services.Remove(dbContextDescriptor!);
+      // Remove AppDbContext
+      services.RemoveDbContext<TDbContext>();
 
-      var dbConnectionDescriptor = services.SingleOrDefault(
-              d => d.ServiceType ==
-                  typeof(DbConnection));
-      services.Remove(dbConnectionDescriptor!);
+      // Add DB context pointing to test container
+      services.AddDbContext<TDbContext>(options => { options.UseNpgsql(_container.ConnectionString); });
 
-      // Create open SqliteConnection so EF won't automatically close it.
-      services.AddDbContext<TDbContext>((container, options) =>
-      {
-        // A new DbContext is created per-test, but note
-        // that is uses the shared dbConnection that persists
-        // across all tests in a given Test Class. 
-        options.UseSqlite(dbConnection);
-        options.UseSnakeCaseNamingConvention();
-      });
+      // Ensure schema gets created
+      services.EnsureDbCreated<TDbContext>();
     });
 
     builder.UseEnvironment("Development");
   }
 
+  public async Task InitializeAsync() => await _container.StartAsync();
+
+  public new async Task DisposeAsync() => await _container.DisposeAsync();
+
+}
+
+public static class ServiceCollectionExtensions
+{
+  public static void RemoveDbContext<T>(this IServiceCollection services) where T : DbContext
+  {
+    var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<T>));
+    if (descriptor != null) services.Remove(descriptor);
+  }
+
+  public static void EnsureDbCreated<T>(this IServiceCollection services) where T : DbContext
+  {
+    var serviceProvider = services.BuildServiceProvider();
+
+    using var scope = serviceProvider.CreateScope();
+    var scopedServices = scope.ServiceProvider;
+    var context = scopedServices.GetRequiredService<T>();
+    context.Database.EnsureCreated();
+  }
 }
