@@ -6,7 +6,6 @@ export interface RoleType {
   title: string;
   active_from_date: string;
   retired_at_date?: string;
-  parent_id?: number;
   parent?: RoleType;
   children?: RoleType[];
 }

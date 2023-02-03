@@ -7,16 +7,19 @@ import { Practice } from "./Practice";
 import { RoleType } from "./RoleType";
 import { FunctionType } from "./FunctionType";
 import { Level } from "./Level";
+import { Unit } from "./UnitInterface";
 
 export interface UnitAssignment {
   id: number;
   unit_id: number;
   unit_type: "squad" | "chapter" | "practice" | "tribe" | "team";
   unit_name: string;
+  unit: Unit;
 }
 
 export interface LevelAssignment {
   id: number;
+  level: Level;
 }
 
 export interface RoleAssignment {
@@ -44,6 +47,8 @@ export interface Role {
 
   assigned_person: Person;
   assigned_level: Level;
+
+  active_level_assignment: LevelAssignment;
 
   is_vacant: boolean;
 }

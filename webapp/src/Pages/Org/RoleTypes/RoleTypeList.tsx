@@ -44,7 +44,7 @@ function RoleTypeList() {
 
   const roleTypeElements = (parent?: RoleType, level = 0) =>
     items.reduce((acc, roleType) => {
-      if (roleType.parent_id == parent?.id) {
+      if (roleType.parent?.id == parent?.id) {
         acc.push(roleTypeRow(roleType, level));
         acc.push(...roleTypeElements(roleType, level + 1));
       }

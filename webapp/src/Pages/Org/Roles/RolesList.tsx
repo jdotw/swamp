@@ -34,9 +34,12 @@ function RolesList() {
         <Link to={role.id.toString()}>{role.role_type!.title}</Link>
       </td>
       <td>
+        <Link to={role.id.toString()}>{role.active_level_assignment.name}</Link>
+      </td>
+      <td>
         {role.delivery_unit_assignment ? (
           <Link to={role.id.toString()}>
-            {role.delivery_unit_assignment.unit_name}
+            {role.delivery_unit_assignment.unit.name}
           </Link>
         ) : (
           "Not Assigned"
@@ -45,7 +48,7 @@ function RolesList() {
       <td>
         {role.capability_unit_assignment ? (
           <Link to={role.id.toString()}>
-            {role.capability_unit_assignment.unit_name}
+            {role.capability_unit_assignment.unit.name}
           </Link>
         ) : (
           "Not Assigned"
@@ -72,7 +75,8 @@ function RolesList() {
       <Table>
         <thead>
           <tr>
-            <th>Role Type</th>
+            <th>Type</th>
+            <th>Level</th>
             <th>Delivery Unit</th>
             <th>Capability</th>
             <th>Person</th>
