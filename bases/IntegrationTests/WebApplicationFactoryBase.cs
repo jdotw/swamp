@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -42,7 +43,11 @@ public class WebApplicationFactoryBase<TProgram, TDbContext>
       services.RemoveDbContext<TDbContext>();
 
       // Add DB context pointing to test container
-      services.AddDbContext<TDbContext>(options => { options.UseNpgsql(_container.ConnectionString); });
+      services.AddDbContext<TDbContext>(options =>
+      {
+        options.UseNpgsql(_container.ConnectionString);
+        options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+      });
 
       // Ensure schema gets created
       services.EnsureDbCreated<TDbContext>();
