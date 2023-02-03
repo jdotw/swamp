@@ -27,7 +27,8 @@ public class FunctionTypeRepository : RepositoryBase<FunctionType>, IFunctionTyp
   public async Task<FunctionType?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-           .Include(p => p.UnitAssignments)
+      .Include(p => p.UnitAssignments)
+      .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
 

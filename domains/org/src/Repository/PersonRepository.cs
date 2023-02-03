@@ -22,6 +22,7 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
         .ThenInclude(r => r.Role)
         .ThenInclude(r => r.UnitAssignments)
         .ThenInclude(u => u.Unit)
+        .AsSplitQuery()
         .OrderBy(p => p.Id)
         .ToListAsync();
   }
