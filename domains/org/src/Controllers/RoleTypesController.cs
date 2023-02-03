@@ -21,7 +21,7 @@ public class RoleTypesController : ControllerBase<RoleType, IRoleTypeRepository>
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var roleTypes = await Repository.GetAllAsync(ids);
-    var roleTypesDto = Mapper.Map<IEnumerable<RoleTypeDto>>(roleTypes);
+    var roleTypesDto = Mapper.Map<IEnumerable<RoleTypeCollectionDto>>(roleTypes);
     return Ok(roleTypesDto);
   }
 

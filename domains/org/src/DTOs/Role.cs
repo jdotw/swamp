@@ -2,14 +2,14 @@ namespace Org.DTOs;
 
 public class RoleCollectionDto
 {
-  public int Id { get; set; }
+  public required int Id { get; set; }
 
-  public DateTimeOffset OpenFromDate { get; set; }
+  public required DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
 
-  public RoleCollectionRoleTypeDto RoleType { get; set; } = null!;
+  public required RoleCollectionRoleTypeDto RoleType { get; set; } = null!;
 
-  public RoleCollectionActiveLevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
+  public required RoleCollectionActiveLevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
   public RoleCollectionActiveRoleAssignmentDto? ActiveRoleAssignment { get; set; } = null!;
   public RoleCollectionActiveUnitAssignmentDto? DeliveryUnitAssignment { get; set; } = null!;
   public RoleCollectionActiveUnitAssignmentDto? CapabilityUnitAssignment { get; set; } = null!;
@@ -49,9 +49,7 @@ public class RoleCollectionActiveUnitAssignmentDto
   public int Id { get; set; }
   public virtual RoleCollectionFunctionTypeDto FunctionType { get; set; } = null!;
   public DateTimeOffset StartDate { get; set; }
-  public int UnitId { get; set; }
-  public string? UnitType { get; set; }
-  public string? UnitName { get; set; }
+  public UnitDto Unit { get; set; } = null!;
 }
 
 public class RoleCollectionFunctionTypeDto
@@ -72,17 +70,16 @@ public class RoleCollectionPersonDto
 
 public class RoleDto
 {
-  public int Id { get; set; }
+  public required int Id { get; set; }
 
-  public int RoleTypeId { get; set; }
-  public RoleTypeDto RoleType { get; set; } = null!;
+  public required RoleTypeDto RoleType { get; set; } = null!;
 
   public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
   public RoleAssignmentDto ActiveRoleAssignment { get; set; } = null!;
   public List<UnitAssignmentDto> UnitAssignments { get; set; } = new();
-  public List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
+  public required List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
 
-  public DateTimeOffset OpenFromDate { get; set; }
+  public required DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
 
   public UnitAssignmentDto? DeliveryUnitAssignment { get; set; } = null!;
@@ -99,6 +96,13 @@ public class CreateRoleDto
   public required int RoleTypeId { get; set; }
   public required int LevelId { get; set; }
   public required int UnitId { get; set; }
+  public required int FunctionTypeId { get; set; }
+}
+
+public class CreateUnitRoleDto
+{
+  public required int RoleTypeId { get; set; }
+  public required int LevelId { get; set; }
   public required int FunctionTypeId { get; set; }
 }
 

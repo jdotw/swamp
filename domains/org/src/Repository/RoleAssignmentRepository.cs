@@ -42,13 +42,18 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .OrderBy(s => s.Id)
       .Include(p => p.Person)
       .Include(p => p.Role)
+      .ThenInclude(r => r.LevelAssignments)
       .AsSplitQuery()
       .ToListAsync();
   }
 
   public async Task<RoleAssignment?> GetByIdAsync(int id)
   {
-    return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
+    return await FindByConditionAsync(i => i.Id.Equals(id))
+      .Include(p => p.Person)
+      .Include(p => p.Role)
+      .ThenInclude(r => r.LevelAssignments)
+      .FirstOrDefaultAsync();
   }
 
   public async Task<RoleAssignment?> GetWithDetailsAsync(int id)
@@ -56,6 +61,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.Person)
       .Include(p => p.Role)
+      .ThenInclude(r => r.LevelAssignments)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }

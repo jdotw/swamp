@@ -39,11 +39,41 @@ public class RoleTests
 
     // Assert
     Assert.NotEqual(0, role!.Id);
-    Assert.Equal(newRole.RoleTypeId, role.RoleTypeId);
+    Assert.Equal(newRole.RoleTypeId, role.RoleType.Id);
     Assert.NotEmpty(role.LevelAssignments);
     Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
     Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
   }
+
+  private async Task TestCreateRoleForUnitAtPath(string path)
+  {
+    // Arrange
+    var testStart = DateTime.UtcNow;
+    var existingUnit = _seedData.Team;
+    var newRole = new CreateUnitRoleDto
+    {
+      RoleTypeId = _seedData.RoleType.Id,
+      LevelId = _seedData.Level.Id,
+      FunctionTypeId = _seedData.FunctionType.Id
+    };
+
+    // Act
+    var roleRespose = await _client.PostAsJsonAsync(path, newRole, _options);
+    var role = roleRespose.Content.ReadFromJsonAsync<RoleDto>(_options).Result;
+
+    // Assert
+    Assert.NotEqual(0, role!.Id);
+    Assert.Equal(newRole.RoleTypeId, role.RoleType.Id);
+    Assert.NotEmpty(role.LevelAssignments);
+    Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
+    Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
+  }
+
+  [Fact]
+  public Task TestCreateRole_ForTeam() => TestCreateRoleForUnitAtPath($"/teams/{_seedData.Team.Id}/roles");
+
+  [Fact]
+  public Task TestCreateRole_ForSquad() => TestCreateRoleForUnitAtPath($"/tribes/{_seedData.Squad.TribeId}/squads/{_seedData.Squad.Id}/roles");
 
   [Fact]
   public async Task TestGetAllRoles()
@@ -52,19 +82,17 @@ public class RoleTests
     var existingRole = _seedData.Role;
 
     // Act
-    var roles = await _client.GetFromJsonAsync<List<RoleDto>>($"{_path}", _options);
+    var roles = await _client.GetFromJsonAsync<List<RoleCollectionDto>>($"{_path}", _options);
 
     // Assert
     Assert.Contains(roles!, t => t.Id == existingRole.Id);
     Assert.Contains(roles!, t => t.RoleType!.Id == existingRole.RoleTypeId);
     var expectedRole = roles!.First(t => t.Id == existingRole.Id);
-    Assert.NotEmpty(expectedRole.LevelAssignments);
-    Assert.NotEmpty(expectedRole.UnitAssignments);
     Assert.NotNull(expectedRole.CapabilityUnitAssignment);
     Assert.NotNull(expectedRole.DeliveryUnitAssignment);
     var delivery = expectedRole.CapabilityUnitAssignment;
-    expectedRole.CapabilityUnitAssignment.Chapter.Id.Should().Be(_seedData.Chapter.Id);
-    expectedRole.DeliveryUnitAssignment.Team.Id.Should().Be(_seedData.Team.Id);
+    expectedRole.CapabilityUnitAssignment.Unit.Id.Should().Be(_seedData.Chapter.Id);
+    expectedRole.DeliveryUnitAssignment.Unit.Id.Should().Be(_seedData.Team.Id);
   }
 
   [Fact]
@@ -76,20 +104,19 @@ public class RoleTests
 
     // Act
     var path = $"/tribes/{existingSquad.TribeId}/squads/{existingSquad.Id}/roles";
-    Console.WriteLine($"path: {path}");
-    var roles = await _client.GetFromJsonAsync<List<RoleDto>>(path, _options);
+    var roles = await _client.GetFromJsonAsync<List<RoleCollectionDto>>(path, _options);
 
     // Assert
     Assert.Contains(roles!, t => t.Id == existingSquadRole.Id);
     Assert.Contains(roles!, t => t.RoleType!.Id == existingSquadRole.RoleTypeId);
     var expectedRole = roles!.First(t => t.Id == existingSquadRole.Id);
-    Assert.NotEmpty(expectedRole.LevelAssignments);
-    Assert.NotEmpty(expectedRole.UnitAssignments);
+    Assert.NotNull(expectedRole.ActiveLevelAssignment);
+    Assert.Null(expectedRole.ActiveRoleAssignment);
     Assert.NotNull(expectedRole.CapabilityUnitAssignment);
     Assert.NotNull(expectedRole.DeliveryUnitAssignment);
     var delivery = expectedRole.CapabilityUnitAssignment;
-    expectedRole.CapabilityUnitAssignment.Chapter.Id.Should().Be(_seedData.Chapter.Id);
-    expectedRole.DeliveryUnitAssignment.Squad.Id.Should().Be(_seedData.Squad.Id);
+    expectedRole.CapabilityUnitAssignment.Unit.Id.Should().Be(_seedData.Chapter.Id);
+    expectedRole.DeliveryUnitAssignment.Unit.Id.Should().Be(_seedData.Squad.Id);
   }
 
 
@@ -104,7 +131,7 @@ public class RoleTests
 
     // Assert
     Assert.Equal(role!.Id, existingRole.Id);
-    Assert.Equal(role.RoleTypeId, existingRole.RoleTypeId);
+    Assert.Equal(role.RoleType.Id, existingRole.RoleType!.Id);
     Assert.NotEmpty(role.LevelAssignments);
   }
 

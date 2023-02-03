@@ -72,6 +72,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<RoleAssignment, RoleCollectionActiveRoleAssignmentDto>();
     CreateMap<RoleAssignment, RoleAssignmentCollectionDto>();
     CreateMap<Person, RoleCollectionPersonDto>();
+    CreateMap<RoleType, RoleTypeCollectionDto>();
+    CreateMap<RoleType, RoleTypeParentDto>();
 
     CreateMap<Role, RoleDto>()
       .ForMember(dest => dest.IsVacant,
@@ -107,6 +109,7 @@ public class AutoMapperProfiles : Profile
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));
     CreateMap<CreateRoleDto, Role>();
+    CreateMap<CreateUnitRoleDto, Role>();
     CreateMap<UpdateRoleDto, Role>();
 
     CreateMap<RoleAssignment, RoleAssignmentDto>();

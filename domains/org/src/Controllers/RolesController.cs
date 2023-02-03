@@ -40,13 +40,15 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   public async Task<IActionResult> Create(CreateRoleDto roleDto)
   {
     var role = Mapper.Map<Role>(roleDto);
-    role.LevelAssignments.Add(new LevelAssignment { LevelId = roleDto.LevelId });
-    var unitAssignment = new UnitAssignment
+    role.LevelAssignments.Add(new LevelAssignment
+    {
+      LevelId = roleDto.LevelId
+    });
+    role.UnitAssignments.Add(new UnitAssignment
     {
       FunctionTypeId = roleDto.FunctionTypeId,
       UnitId = roleDto.UnitId,
-    };
-    role.UnitAssignments.Add(unitAssignment);
+    });
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);
@@ -74,7 +76,11 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
 }
 
 [ApiController]
-[Route("/tribes/{tribeId}/squads/{squadId}/roles")]
+[Route("/tribes/{parentId}/squads/{unitId}/roles")]
+[Route("/practices/{parentId}/chapters/{unitId}/roles")]
+[Route("/tribes/{unitId}/roles")]
+[Route("/practices/{unitId}/roles")]
+[Route("/teams/{unitId}/roles")]
 public class SquadRolesController : ControllerBase<Role, IRoleRepository>
 {
   public SquadRolesController(ILogger<RolesController> logger, IRoleRepository repository, IMapper mapper)
@@ -82,13 +88,46 @@ public class SquadRolesController : ControllerBase<Role, IRoleRepository>
   {
   }
 
-  // GET: /roles
+  // GET: [/parent/1]/unit/5/roles
   [HttpGet()]
-  public async Task<IActionResult> GetAll(int squadId)
+  public async Task<IActionResult> GetAll(int unitId)
   {
-    var roles = await Repository.GetAllAsync(squadId: squadId);
-    var rolesDto = Mapper.Map<IEnumerable<RoleDto>>(roles);
+    var roles = await Repository.GetAllAsync(unitId: unitId);
+    var rolesDto = Mapper.Map<IEnumerable<RoleCollectionDto>>(roles);
     return Ok(rolesDto);
   }
+
+  // GET: [/parent/1]/unit/5/roles/4
+  [HttpGet("{id}")]
+  public async Task<IActionResult> Get(int roleId)
+  {
+    var role = await Repository.GetByIdAsync(roleId);
+    var roleDto = Mapper.Map<IEnumerable<RoleDto>>(role);
+    return Ok(roleDto);
+  }
+
+  // POST: [/parent/1]/unit/5/roles
+  [HttpPost]
+  public async Task<IActionResult> Create(int parentId, int unitId, CreateUnitRoleDto roleDto)
+  {
+    var role = Mapper.Map<Role>(roleDto);
+    role.LevelAssignments.Add(new LevelAssignment
+    {
+      LevelId = roleDto.LevelId
+    });
+    role.UnitAssignments.Add(new UnitAssignment
+    {
+      FunctionTypeId = roleDto.FunctionTypeId,
+      UnitId = unitId,
+    });
+    await Repository.AddAsync(role);
+
+    var addedRole = await Repository.GetWithDetailsAsync(role.Id);
+    var addedRoleDto = Mapper.Map<RoleDto>(addedRole);
+    return CreatedAtAction(nameof(Get),
+      new { parentId = parentId, unitId = unitId, id = role.Id },
+      addedRoleDto);
+  }
+
 }
 
