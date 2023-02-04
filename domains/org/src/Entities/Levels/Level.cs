@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Entities;
 
 namespace Org.Entities;
@@ -13,4 +14,8 @@ public class Level : EntityBase
   public DateTimeOffset RetiredAtDate { get; set; }
 
   public List<LevelAssignment> LevelAssignments { get; set; } = new();
+
+  public string Title(FunctionType functionType) => functionType.IsIndividualContributor
+    ? IndividualContributorTitle
+      : ManagerTitle;
 }

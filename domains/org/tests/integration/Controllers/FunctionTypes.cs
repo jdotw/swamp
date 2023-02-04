@@ -20,14 +20,14 @@ public class FunctionTypeTests
   {
   }
 
-  [Fact]
-  public async Task TestCreateFunctionType()
+  private async Task TestCreateFunctionType(string name, bool isIndividualContributor)
   {
     // Arrange
     var testStart = DateTime.UtcNow;
     var newFunctionType = new CreateFunctionTypeDto
     {
-      Name = "Test FunctionType Name",
+      Name = name,
+      IsIndividualContributor = isIndividualContributor,
     };
 
     // Act
@@ -37,7 +37,14 @@ public class FunctionTypeTests
     // Assert
     Assert.NotEqual(0, functiontype!.Id);
     Assert.Equal(newFunctionType.Name, functiontype.Name);
+    Assert.Equal(newFunctionType.IsIndividualContributor, functiontype.IsIndividualContributor);
   }
+
+  [Fact]
+  public Task TestCreateFunctionType_IC() => TestCreateFunctionType("IC", true);
+
+  [Fact]
+  public Task TestCreateFunctionType_Manager() => TestCreateFunctionType("Manager", false);
 
   [Fact]
   public async Task TestGetAllFunctionTypes()
