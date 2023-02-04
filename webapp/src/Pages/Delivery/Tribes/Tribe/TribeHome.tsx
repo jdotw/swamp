@@ -27,6 +27,9 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     marginTop: 20,
   },
+  vacantRole: {
+    backgroundColor: "#ff000040",
+  },
 }));
 
 interface TribeHomeProps {}
