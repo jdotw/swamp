@@ -61,10 +61,10 @@ function SquadHome(props: SquadHomeProps) {
         </Link>
       </td>
       <td>
-        {role.role_assignments!.length > 0 ? (
-          <Link to={`/org/persons/${role.role_assignments![0].person!.id}`}>
-            {role.role_assignments![0].person!.first_name}{" "}
-            {role.role_assignments![0].person!.last_name}
+        {role.active_role_assignment ? (
+          <Link to={`/org/persons/${role.active_role_assignment.person!.id}`}>
+            {role.active_role_assignment.person!.first_name}{" "}
+            {role.active_role_assignment.person!.last_name}
           </Link>
         ) : (
           "vacant"

@@ -1,5 +1,7 @@
 import { Select, TextInput } from "@mantine/core";
-import { useFunctionType } from "../../../Client/FunctionType";
+import { useState } from "react";
+import { formatPostcssSourceMap } from "vite";
+import { FunctionType, useFunctionType } from "../../../Client/FunctionType";
 import { useLevel } from "../../../Client/Level";
 import { Practice } from "../../../Client/Practice";
 import { MutateRole, Role } from "../../../Client/Role";
@@ -35,6 +37,8 @@ export function MutateRoleModal({
   const { items: role_types, loading: loadingRoleTypes } = useRoleType();
   const { items: function_types, loading: loadingFunctionTypes } =
     useFunctionType();
+  const [selectedFunctionType, setSelectedFunctionType] =
+    useState<FunctionType>();
 
   if (loadingLevels || loadingRoleTypes || loadingFunctionTypes) {
     return <div>Loading...</div>;
@@ -61,6 +65,14 @@ export function MutateRoleModal({
     },
   ];
 
+  const formValuesChanged = (values: MutateItemFormValues) => {
+    console.log("formValuesChanged: ", values);
+    let function_type = function_types.find(
+      (function_type) => function_type.id === parseInt(values.function_type)
+    );
+    setSelectedFunctionType(function_type);
+  };
+
   const submitFormValues = (values: MutateItemFormValues) => {
     let updatedRole: MutateRole = {
       role_type_id: parseInt(values.role_type),
@@ -77,6 +89,7 @@ export function MutateRoleModal({
       mode={mode}
       fields={fields}
       opened={opened}
+      onChange={formValuesChanged}
       onSubmit={submitFormValues}
       onClose={onClose}
       title={mode === "edit" ? "Edit Role" : "Add Role"}
@@ -91,6 +104,12 @@ export function MutateRoleModal({
             label: function_type.name,
           };
         })}
+        onSelect={(value) => {
+          console.log(value);
+        }}
+        onChange={(value) => {
+          console.log(value);
+        }}
       />
       <Select
         key="role_type"
@@ -107,12 +126,18 @@ export function MutateRoleModal({
         key="level"
         label="Level"
         placeholder="select role type"
-        data={levels.map((level) => {
-          return {
-            value: level.id.toString(),
-            label: level.individual_contributor_title ?? level.manager_title, // TODO: Fix
-          };
-        })}
+        data={levels.reduce((acc, level) => {
+          const title = selectedFunctionType?.is_individual_contributor
+            ? level.individual_contributor_title
+            : level.manager_title;
+          if (title) {
+            acc.push({
+              value: level.id.toString(),
+              label: title,
+            });
+          }
+          return acc;
+        }, [] as { value: string; label: string }[])}
       />
     </MutateItemModal>
   );

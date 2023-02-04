@@ -1,14 +1,13 @@
 import { Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useRole } from "../../../Client/Role";
+import { Role, useRole } from "../../../Client/Role";
 import {
   MutateRoleType,
   RoleType,
   useRoleType,
 } from "../../../Client/RoleType";
 import Loading from "../../../Components/Loading/Loading";
-import { MutateRoleTypeModal } from "./MutateRoleTypeModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -28,13 +27,28 @@ function RolesList() {
 
   if (loading) return <Loading />;
 
+  const roleTitle = (role: Role) => {
+    if (
+      (role.delivery_unit_assignment &&
+        !role.delivery_unit_assignment.function_type
+          .is_individual_contributor) ||
+      (role.capability_unit_assignment &&
+        !role.capability_unit_assignment.function_type
+          .is_individual_contributor)
+    ) {
+      return role.active_level_assignment.level.manager_title;
+    } else {
+      return role.active_level_assignment.level.individual_contributor_title;
+    }
+  };
+
   const roleElements = items.map((role) => (
     <tr key={role.id.toString()}>
       <td>
         <Link to={role.id.toString()}>{role.role_type!.title}</Link>
       </td>
       <td>
-        <Link to={role.id.toString()}>{role.active_level_assignment.name}</Link>
+        <Link to={role.id.toString()}>{roleTitle(role)}</Link>
       </td>
       <td>
         {role.delivery_unit_assignment ? (

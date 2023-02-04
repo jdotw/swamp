@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -23,6 +23,7 @@ export interface MutateItemModalProps {
   fields: MutateItemModalFormField[];
 
   opened: boolean;
+  onChange?: (values: MutateItemFormValues) => void;
   onSubmit: (values: MutateItemFormValues) => void;
   onClose: () => void;
   mode?: MutateItemModalMode;
@@ -35,6 +36,7 @@ export function MutateItemModal({
   mode = "create",
   title,
   opened,
+  onChange,
   onSubmit,
   onClose,
   children,
@@ -68,6 +70,12 @@ export function MutateItemModal({
     onClose();
   };
 
+  useEffect(() => {
+    if (onChange) {
+      onChange(form.values);
+    }
+  }, [form.values]);
+
   if (children) {
     children = React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {
@@ -83,7 +91,10 @@ export function MutateItemModal({
   return (
     <Modal opened={opened} onClose={onClose} title={title}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
-        <form onSubmit={form.onSubmit(submitForm)}>
+        <form
+          onSubmit={form.onSubmit(submitForm)}
+          onChange={() => console.log("FORM CHANGES: ", form)}
+        >
           {children}
           <Group position="right" mt="md">
             <Button variant="outline" onClick={cancelClicked}>

@@ -8,6 +8,7 @@ import { RoleType } from "./RoleType";
 import { FunctionType } from "./FunctionType";
 import { Level } from "./Level";
 import { Unit } from "./UnitInterface";
+import { RoleAssignment } from "./RoleAssignment";
 
 export interface UnitAssignment {
   id: number;
@@ -15,15 +16,12 @@ export interface UnitAssignment {
   unit_type: "squad" | "chapter" | "practice" | "tribe" | "team";
   unit_name: string;
   unit: Unit;
+  function_type: FunctionType;
 }
 
 export interface LevelAssignment {
   id: number;
   level: Level;
-}
-
-export interface RoleAssignment {
-  id: number;
 }
 
 export interface Role {
@@ -32,9 +30,6 @@ export interface Role {
   role_type_id: number;
   role_type?: RoleType;
 
-  function_type_id: number;
-  function_type?: FunctionType;
-
   level_assignments?: LevelAssignment[];
   unit_assignments?: UnitAssignment[];
   role_assignments?: RoleAssignment[];
@@ -42,15 +37,11 @@ export interface Role {
   start_date: string;
   end_date?: string;
 
+  active_level_assignment: LevelAssignment;
+  active_role_assignment: RoleAssignment;
+
   delivery_unit_assignment: UnitAssignment;
   capability_unit_assignment: UnitAssignment;
-
-  assigned_person: Person;
-  assigned_level: Level;
-
-  active_level_assignment: LevelAssignment;
-
-  is_vacant: boolean;
 }
 
 export interface MutateRole {

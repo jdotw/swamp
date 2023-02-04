@@ -4,6 +4,7 @@ import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 export type FunctionType = {
   id: number;
   name: string;
+  is_individual_contributor: boolean;
   active_from_date: string;
   retired_at_date?: string;
   // unit_assignments: UnitAssignments[];
@@ -12,6 +13,7 @@ export type FunctionType = {
 export type MutateFunctionType = {
   name: string;
   retired_at_date?: string;
+  is_individual_contributor: boolean;
 };
 
 export interface UseFunctionTypeProps extends UseCRUDOptionalProps {}

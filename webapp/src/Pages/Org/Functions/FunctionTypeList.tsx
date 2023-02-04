@@ -35,6 +35,13 @@ function FunctionList() {
         <Link to={functionType.id.toString()}>{functionType.name}</Link>
       </td>
       <td>
+        <Link to={functionType.id.toString()}>
+          {functionType.is_individual_contributor
+            ? "Individual Contributor"
+            : "Manager"}
+        </Link>
+      </td>
+      <td>
         <Link to={functionType.id.toString()}>TODO</Link>
       </td>
       <td>
@@ -52,6 +59,7 @@ function FunctionList() {
             <thead>
               <tr>
                 <th>Function</th>
+                <th>Type</th>
                 <th>Roles</th>
                 <th>Percentage</th>
               </tr>
