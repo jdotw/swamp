@@ -22,7 +22,6 @@ expectHookAdoptsUseCRUDCorrectly<Chapter, MutateChapter>({
       description: "description",
       formed_date: "2021-01-01",
       disbanded_date: "2021-01-01",
-      functions: [],
       type: "chapter",
       practice_id: 2,
     };
