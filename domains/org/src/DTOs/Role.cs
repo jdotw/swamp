@@ -11,8 +11,8 @@ public class RoleCollectionDto
 
   public required RoleCollectionActiveLevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
   public RoleCollectionActiveRoleAssignmentDto? ActiveRoleAssignment { get; set; } = null!;
-  public RoleCollectionActiveUnitAssignmentDto? DeliveryUnitAssignment { get; set; } = null!;
-  public RoleCollectionActiveUnitAssignmentDto? CapabilityUnitAssignment { get; set; } = null!;
+  public UnitAssignmentCollectionDto? DeliveryUnitAssignment { get; set; } = null!;
+  public UnitAssignmentCollectionDto? CapabilityUnitAssignment { get; set; } = null!;
 }
 
 public class RoleCollectionActiveRoleAssignmentDto
@@ -44,19 +44,6 @@ public class RoleCollectionLevelDto
   public string ManagerTitle { get; set; } = null!;
 }
 
-public class RoleCollectionActiveUnitAssignmentDto
-{
-  public int Id { get; set; }
-  public virtual RoleCollectionFunctionTypeDto FunctionType { get; set; } = null!;
-  public DateTimeOffset StartDate { get; set; }
-  public UnitDto Unit { get; set; } = null!;
-}
-
-public class RoleCollectionFunctionTypeDto
-{
-  public int Id { get; set; }
-  public string Name { get; set; } = null!;
-}
 
 public class RoleCollectionPersonDto
 {

@@ -13,6 +13,7 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateChapterDto, Chapter>();
 
     CreateMap<FunctionType, FunctionTypeDto>();
+    CreateMap<FunctionType, FunctionTypeCollectionDto>();
     CreateMap<CreateFunctionTypeDto, FunctionType>();
     CreateMap<UpdateFunctionTypeDto, FunctionType>();
 
@@ -67,8 +68,6 @@ public class AutoMapperProfiles : Profile
     CreateMap<RoleType, RoleCollectionRoleTypeDto>();
     CreateMap<LevelAssignment, RoleCollectionActiveLevelAssignmentDto>();
     CreateMap<Level, RoleCollectionLevelDto>();
-    CreateMap<UnitAssignment, RoleCollectionActiveUnitAssignmentDto>();
-    CreateMap<FunctionType, RoleCollectionFunctionTypeDto>();
     CreateMap<RoleAssignment, RoleCollectionActiveRoleAssignmentDto>();
     CreateMap<RoleAssignment, RoleAssignmentCollectionDto>();
     CreateMap<Person, RoleCollectionPersonDto>();
@@ -141,6 +140,7 @@ public class AutoMapperProfiles : Profile
     .IncludeAllDerived();
 
     CreateMap<UnitAssignment, UnitAssignmentDto>();
+    CreateMap<UnitAssignment, UnitAssignmentCollectionDto>();
     CreateMap<CreateUnitAssignmentDto, UnitAssignment>();
     CreateMap<UpdateUnitAssignmentDto, UnitAssignment>();
   }
