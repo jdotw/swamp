@@ -101,7 +101,7 @@ export function PracticeHome(props: PracticeHomeProps) {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
+          {/* <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button> */}
         </div>
       </div>
       <MutateChapterModal

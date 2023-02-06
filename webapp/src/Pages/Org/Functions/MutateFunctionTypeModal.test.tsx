@@ -39,6 +39,7 @@ describe("MutateFunctionTypeModal", () => {
         id: 1,
         name: "name",
         active_from_date: "2021-01-01",
+        is_individual_contributor: false,
       };
       renderModal({ ...defaultProps, mode: "edit", functionType });
       expect(await screen.findByText("Edit Function")).toBeInTheDocument();

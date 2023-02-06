@@ -66,7 +66,6 @@ export function MutateRoleModal({
   ];
 
   const formValuesChanged = (values: MutateItemFormValues) => {
-    console.log("formValuesChanged: ", values);
     let function_type = function_types.find(
       (function_type) => function_type.id === parseInt(values.function_type)
     );
@@ -104,12 +103,6 @@ export function MutateRoleModal({
             label: function_type.name,
           };
         })}
-        onSelect={(value) => {
-          console.log(value);
-        }}
-        onChange={(value) => {
-          console.log(value);
-        }}
       />
       <Select
         key="role_type"

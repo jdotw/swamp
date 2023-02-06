@@ -58,7 +58,17 @@ describe("MutateRoleModal", () => {
       const role: Role = {
         id: 1,
         role_type_id: 1,
-        function_type_id: 1,
+        active_level_assignment: {
+          id: 1,
+          level: {
+            id: 1,
+            index: 1,
+            external_id: "l1",
+            individual_contributor_title: "Level 1",
+            manager_title: "Level 1",
+            active_from_date: "2021-01-01",
+          },
+        },
         start_date: "2021-01-01",
       };
       renderModal({ ...defaultProps, mode: "edit", role });

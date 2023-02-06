@@ -23,8 +23,6 @@ function RolesList() {
   const { items, loading, createItem } = useRole();
   const [addModalOpen, setAddModalOpen] = useState(false);
 
-  console.log("ITEMS: ", items);
-
   if (loading) return <Loading />;
 
   const roleTitle = (role: Role) => {
@@ -69,9 +67,10 @@ function RolesList() {
         )}
       </td>
       <td>
-        {role.assigned_person ? (
+        {role.active_role_assignment?.person ? (
           <Link to={role.id.toString()}>
-            {role.assigned_person.first_name} {role.assigned_person.last_name}
+            {role.active_role_assignment.person.first_name}{" "}
+            {role.active_role_assignment.person.last_name}
           </Link>
         ) : (
           "Vacant"

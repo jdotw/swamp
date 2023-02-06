@@ -133,11 +133,11 @@ export function TribeHome(props: TribeHomeProps) {
         onClose={() => setMutateSquadModalOpen(false)}
         onSubmit={submitNewSquad}
       />
-      <AddTribeRoleModal
+      {/* <AddTribeRoleModal
         opened={addRoleModalOpen}
         onClose={() => setAddRoleModalOpen(false)}
         onSubmit={() => setAddRoleModalOpen(false)}
-      />
+      /> */}
     </>
   );
 }

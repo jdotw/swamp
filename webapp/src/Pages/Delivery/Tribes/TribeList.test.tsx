@@ -66,7 +66,6 @@ describe("TribeList", () => {
         squads: [],
         type: "tribe",
         formed_date: new Date().toISOString(),
-        functions: [],
       },
       {
         id: 2,
@@ -74,7 +73,6 @@ describe("TribeList", () => {
         squads: [],
         type: "tribe",
         formed_date: new Date().toISOString(),
-        functions: [],
       },
     ];
     useTribeMock.mockImplementation(() => ({

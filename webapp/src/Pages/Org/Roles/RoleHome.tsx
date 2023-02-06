@@ -29,10 +29,7 @@ function RoleHome() {
   }
   const role = items[0];
 
-  console.log("ROLE: ", role);
-
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
-    console.log("SUBMIT ROLE ASSIGNMENT: ", assignment);
     await createRoleAssignment(assignment);
     setAssignPersonModalOpen(false);
   };
@@ -41,19 +38,38 @@ function RoleHome() {
     <>
       <div>
         <Title order={3}>
-          Role: {role.assigned_level.individual_contributor_title}{" "}
-          {role.role_type?.title}
+          Role: {role.role_type?.title} (
+          {role.active_level_assignment.level.individual_contributor_title})
         </Title>
         <br />
         <Grid>
           <Grid.Col span={4}>
-            <PersonCard person={role.assigned_person} />
+            {role.active_role_assignment ? (
+              <PersonCard
+                person={role.active_role_assignment?.person}
+                onEditClicked={() => {}}
+              />
+            ) : (
+              <Text>Vacant</Text>
+            )}
           </Grid.Col>
           <Grid.Col span={8}>
             <Title order={5}>Assignments</Title>
             <ul>
-              a<li>Member of Checkout Squad</li>
-              <li>Manager of Front-End Engineering Chapter</li>
+              {role.capability_unit_assignment && (
+                <li>
+                  {role.capability_unit_assignment.function_type.name}
+                  {" of "}
+                  {role.capability_unit_assignment.unit.name}
+                </li>
+              )}
+              {role.delivery_unit_assignment && (
+                <li>
+                  {role.delivery_unit_assignment.function_type.name}
+                  {" of "}
+                  {role.delivery_unit_assignment.unit.name}
+                </li>
+              )}
             </ul>
           </Grid.Col>
         </Grid>

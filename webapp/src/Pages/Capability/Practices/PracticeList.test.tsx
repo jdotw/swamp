@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Mock, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -70,7 +70,6 @@ describe("PracticeList", () => {
         chapters: [],
         type: "practice",
         formed_date: new Date().toISOString(),
-        functions: [],
       },
       {
         id: 2,
@@ -78,7 +77,6 @@ describe("PracticeList", () => {
         chapters: [],
         type: "practice",
         formed_date: new Date().toISOString(),
-        functions: [],
       },
     ];
     usePracticeMock.mockImplementation(() => ({

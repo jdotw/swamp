@@ -55,7 +55,6 @@ export function AssignPersonModal({
       person_id: parseInt(values.person_id),
       role_id: role.id,
     };
-    console.log("submitFormValue: ", roleAssignment);
     onSubmit(roleAssignment);
   };
 

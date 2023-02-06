@@ -53,12 +53,12 @@ function SquadHome(props: SquadHomeProps) {
   const roleElements = roles.map((role) => (
     <tr
       key={role.id.toString()}
-      className={role.is_vacant ? classes.vacantRole : classes.filledRole}
+      className={
+        role.active_role_assignment ? classes.vacantRole : classes.filledRole
+      }
     >
       <td>
-        <Link to={`/org/roles/${role.role_type_id}`}>
-          {role.role_type!.title}
-        </Link>
+        <Link to={`/org/roles/${role.id}`}>{role.role_type!.title}</Link>
       </td>
       <td>
         {role.active_role_assignment ? (

@@ -1,24 +1,9 @@
-import {
-  Accordion,
-  Avatar,
-  Grid,
-  Group,
-  ScrollArea,
-  Table,
-  Title,
-  Text,
-} from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { Accordion, Grid, Group, Table, Title, Text } from "@mantine/core";
+import { useState } from "react";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
-import {
-  usePerson,
-  Person as PersonType,
-  MutatePerson,
-} from "../../../../Client/Person";
+import { usePerson, MutatePerson } from "../../../../Client/Person";
 import { useRoleAssignment } from "../../../../Client/RoleAssignment";
 import Loading from "../../../../Components/Loading/Loading";
-import { timeSinceDateString } from "../../../../Utils/TimeSinceDate";
 import { MutatePersonModal } from "../MutatePersonModal";
 import { PersonCard } from "./PersonCard";
 
@@ -183,18 +168,10 @@ function PersonHome() {
   ];
 
   interface AccordionLabelProps {
-    label: string;
-    image: string;
-    description: string;
     item: any;
   }
 
-  function AccordionLabel({
-    item,
-    label,
-    image,
-    description,
-  }: AccordionLabelProps) {
+  function AccordionLabel({ item }: AccordionLabelProps) {
     return (
       <Group noWrap>
         <div>
@@ -210,9 +187,9 @@ function PersonHome() {
   }
 
   const roleItems = roleHistoryContent.map((item, index) => (
-    <Accordion.Item value={item.id.toString()} key={item.label}>
+    <Accordion.Item value={item.id.toString()} key={item.id}>
       <Accordion.Control>
-        <AccordionLabel item={item} {...item} />
+        <AccordionLabel item={item} />
       </Accordion.Control>
       <Accordion.Panel>
         <Text>Levels</Text>

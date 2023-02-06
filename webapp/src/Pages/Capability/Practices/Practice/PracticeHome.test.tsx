@@ -99,7 +99,6 @@ describe("PracticeHome", () => {
         practice_id: 1,
         formed_date: new Date().toISOString(),
         type: "chapter",
-        functions: [],
       },
       {
         id: 2,
@@ -107,7 +106,6 @@ describe("PracticeHome", () => {
         practice_id: 1,
         formed_date: new Date().toISOString(),
         type: "chapter",
-        functions: [],
       },
     ];
     const mockPractice: Practice = {
@@ -115,7 +113,6 @@ describe("PracticeHome", () => {
       id: 1,
       name: "Test Practice",
       chapters: mockChapters,
-      functions: [],
       formed_date: new Date().toISOString(),
     };
     beforeEach(() => {
@@ -154,7 +151,6 @@ describe("PracticeHome", () => {
     const mockPractice: Practice = {
       id: 1,
       name: "Test Practice",
-      functions: [],
       formed_date: new Date().toISOString(),
       type: "practice",
     };

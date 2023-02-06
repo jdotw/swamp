@@ -99,7 +99,6 @@ describe("TribeHome", () => {
         tribe_id: 1,
         formed_date: new Date().toISOString(),
         type: "squad",
-        functions: [],
       },
       {
         id: 2,
@@ -107,7 +106,6 @@ describe("TribeHome", () => {
         tribe_id: 1,
         formed_date: new Date().toISOString(),
         type: "squad",
-        functions: [],
       },
     ];
     const mockTribe: Tribe = {
@@ -115,7 +113,6 @@ describe("TribeHome", () => {
       id: 1,
       name: "Test Tribe",
       squads: mockSquads,
-      functions: [],
       formed_date: new Date().toISOString(),
     };
     beforeEach(() => {
