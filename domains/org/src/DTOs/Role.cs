@@ -62,20 +62,16 @@ public class RoleDto
   public required RoleTypeDto RoleType { get; set; } = null!;
 
   public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
-  public RoleAssignmentDto ActiveRoleAssignment { get; set; } = null!;
   public List<UnitAssignmentDto> UnitAssignments { get; set; } = new();
   public required List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
 
   public required DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
 
+  public required LevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
+  public RoleAssignmentDto? ActiveRoleAssignment { get; set; } = null!;
   public UnitAssignmentDto? DeliveryUnitAssignment { get; set; } = null!;
   public UnitAssignmentDto? CapabilityUnitAssignment { get; set; } = null!;
-
-  // Convenience
-  public Boolean IsVacant { get; set; }
-  public PersonDto? AssignedPerson { get; set; } = null!;
-  public LevelDto? AssignedLevel { get; set; } = null!;
 }
 
 public class CreateRoleDto

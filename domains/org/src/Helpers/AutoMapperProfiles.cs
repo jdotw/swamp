@@ -75,23 +75,16 @@ public class AutoMapperProfiles : Profile
     CreateMap<RoleType, RoleTypeParentDto>();
 
     CreateMap<Role, RoleDto>()
-      .ForMember(dest => dest.IsVacant,
-        opt => opt.MapFrom(src => src.RoleAssignments.Where(r => r.EndDate == null).Count() == 0))
       .ForMember(dest => dest.ActiveRoleAssignment,
         opt => opt.MapFrom(src => src.RoleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))
-      .ForMember(dest => dest.AssignedPerson,
-        opt => opt.MapFrom(src => src.RoleAssignments
-          .Where(r => r.EndDate == null)
-          .OrderBy(u => u.StartDate)
-          .FirstOrDefault()!.Person))
-      .ForMember(dest => dest.AssignedLevel,
+      .ForMember(dest => dest.ActiveLevelAssignment,
         opt => opt.MapFrom(src => src.LevelAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
-          .First().Level))
+          .FirstOrDefault()))
       .ForMember(dest => dest.DeliveryUnitAssignment,
         opt => opt.MapFrom(src => src.UnitAssignments
           .Where(u => u.EndDate == null
