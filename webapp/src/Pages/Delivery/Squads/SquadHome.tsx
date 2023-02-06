@@ -54,7 +54,7 @@ function SquadHome(props: SquadHomeProps) {
     <tr
       key={role.id.toString()}
       className={
-        role.active_role_assignment ? classes.vacantRole : classes.filledRole
+        role.active_role_assignment ? classes.filledRole : classes.vacantRole
       }
     >
       <td>
