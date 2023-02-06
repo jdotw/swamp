@@ -91,10 +91,7 @@ export function MutateItemModal({
   return (
     <Modal opened={opened} onClose={onClose} title={title}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
-        <form
-          onSubmit={form.onSubmit(submitForm)}
-          onChange={() => console.log("FORM CHANGES: ", form)}
-        >
+        <form onSubmit={form.onSubmit(submitForm)}>
           {children}
           <Group position="right" mt="md">
             <Button variant="outline" onClick={cancelClicked}>

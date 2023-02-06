@@ -3,11 +3,6 @@ import { useParams } from "react-router-dom";
 import { createStyles, Table, ScrollArea, Button, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
-import {
-  Function,
-  MutateFunction,
-  useFunction,
-} from "../../../Client/Function";
 import { useChapter } from "../../../Client/Chapter";
 
 const useStyles = createStyles((theme) => ({

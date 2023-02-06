@@ -27,7 +27,6 @@ export interface LevelAssignment {
 export interface Role {
   id: number;
 
-  role_type_id: number;
   role_type?: RoleType;
 
   level_assignments?: LevelAssignment[];
@@ -38,10 +37,10 @@ export interface Role {
   end_date?: string;
 
   active_level_assignment: LevelAssignment;
-  active_role_assignment: RoleAssignment;
+  active_role_assignment?: RoleAssignment;
 
-  delivery_unit_assignment: UnitAssignment;
-  capability_unit_assignment: UnitAssignment;
+  delivery_unit_assignment?: UnitAssignment;
+  capability_unit_assignment?: UnitAssignment;
 }
 
 export interface MutateRole {

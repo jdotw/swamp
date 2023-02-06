@@ -22,6 +22,7 @@ expectHookAdoptsUseCRUDCorrectly<FunctionType, MutateFunctionType>({
       id: 1,
       name: "Function Type Name",
       active_from_date: Date.now().toString(),
+      is_individual_contributor: true,
       ...props,
     };
     return functionType;
@@ -30,6 +31,7 @@ expectHookAdoptsUseCRUDCorrectly<FunctionType, MutateFunctionType>({
     const mutateFunctionType: MutateFunctionType = {
       name: "Updated Function Type Name",
       retired_at_date: Date.now().toString(),
+      is_individual_contributor: true,
       ...props,
     };
     return mutateFunctionType;
