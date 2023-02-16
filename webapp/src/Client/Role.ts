@@ -54,18 +54,29 @@ export interface MutateRole {
 }
 
 export interface UseRoleProps extends UseCRUDOptionalProps {
-  tribeId?: number;
-  squadId?: number;
+  unitId?: number;
+  unitType?: "squad" | "chapter" | "practice" | "tribe" | "team";
+  parentUnitId?: number;
 }
 
 export function useRole(props: UseRoleProps = {}) {
   let path;
-  if (props.squadId) {
-    path = `/api/org/tribes/${props.tribeId}/squads/${props.squadId}/roles`;
-  } else if (props.tribeId) {
-    path = `/api/org/tribes/${props.tribeId}/roles`;
-  } else {
-    path = `/api/org/roles`;
+  switch (props.unitType) {
+    case "tribe":
+      path = `/api/org/tribes/${props.unitId}/roles`;
+      break;
+    case "squad":
+      path = `/api/org/tribes/${props.parentUnitId}/squads/${props.unitId}/roles`;
+      break;
+    case "practice":
+      path = `/api/org/practices/${props.unitId}/roles`;
+      break;
+    case "chapter":
+      path = `/api/org/practices/${props.parentUnitId}/chapters/${props.unitId}/roles`;
+      break;
+    default:
+      path = `/api/org/roles`;
+      break;
   }
   const {
     items,

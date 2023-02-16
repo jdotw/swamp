@@ -15,8 +15,8 @@ import {
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
 export interface MutateRoleModalProps {
-  unit_id: number;
-  unit_type: "squad" | "practice" | "team" | "tribe" | "chapter";
+  unitId: number;
+  unitType: "tribe" | "squad" | "practice" | "chapter" | "team";
   role?: Role;
   opened: boolean;
   onSubmit: (updatedPractice: any) => void;
@@ -30,8 +30,8 @@ export function MutateRoleModal({
   onSubmit,
   onClose,
   mode,
-  unit_id,
-  unit_type,
+  unitId,
+  unitType,
 }: MutateRoleModalProps) {
   const { items: levels, loading: loadingLevels } = useLevel();
   const { items: role_types, loading: loadingRoleTypes } = useRoleType();
@@ -77,8 +77,8 @@ export function MutateRoleModal({
       role_type_id: parseInt(values.role_type),
       level_id: parseInt(values.level),
       function_type_id: parseInt(values.function_type),
-      unit_id,
-      unit_type,
+      unit_id: unitId,
+      unit_type: unitType,
     };
     onSubmit(updatedRole);
   };

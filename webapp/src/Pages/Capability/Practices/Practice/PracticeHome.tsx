@@ -5,6 +5,7 @@ import Loading from "../../../../Components/Loading/Loading";
 import { MutateChapterModal } from "./MutateChapterModal";
 import { usePractice } from "../../../../Client/Practice";
 import { MutateChapter, useChapter } from "../../../../Client/Chapter";
+import RoleListTable from "../../../../Components/RoleListTable/RoleListTable";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -80,29 +81,7 @@ export function PracticeHome(props: PracticeHomeProps) {
         </div>
         <br />
         <Title order={4}>Practice Roles</Title>
-        <ScrollArea>
-          <Table verticalSpacing="xs">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Person</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <Link to={"/org/roles/3"}>Practice Lead</Link>
-                </td>
-                <td>
-                  <Link to={"/org/people/3"}>Marco Salizar</Link>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </ScrollArea>
-        <div className={classes.buttonBar}>
-          {/* <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button> */}
-        </div>
+        <RoleListTable unitId={id} unitType={"practice"} />
       </div>
       <MutateChapterModal
         opened={addChapterModalOpen}

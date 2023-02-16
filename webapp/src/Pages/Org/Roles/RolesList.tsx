@@ -8,6 +8,7 @@ import {
   useRoleType,
 } from "../../../Client/RoleType";
 import Loading from "../../../Components/Loading/Loading";
+import RoleListTable from "../../../Components/RoleListTable/RoleListTable";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -25,79 +26,12 @@ function RolesList() {
 
   if (loading) return <Loading />;
 
-  const roleTitle = (role: Role) => {
-    if (
-      (role.delivery_unit_assignment &&
-        !role.delivery_unit_assignment.function_type
-          .is_individual_contributor) ||
-      (role.capability_unit_assignment &&
-        !role.capability_unit_assignment.function_type
-          .is_individual_contributor)
-    ) {
-      return role.active_level_assignment.level.manager_title;
-    } else {
-      return role.active_level_assignment.level.individual_contributor_title;
-    }
-  };
-
-  const roleElements = items.map((role) => (
-    <tr key={role.id.toString()}>
-      <td>
-        <Link to={role.id.toString()}>{role.role_type!.title}</Link>
-      </td>
-      <td>
-        <Link to={role.id.toString()}>{roleTitle(role)}</Link>
-      </td>
-      <td>
-        {role.delivery_unit_assignment ? (
-          <Link to={role.id.toString()}>
-            {role.delivery_unit_assignment.unit.name}
-          </Link>
-        ) : (
-          "Not Assigned"
-        )}
-      </td>
-      <td>
-        {role.capability_unit_assignment ? (
-          <Link to={role.id.toString()}>
-            {role.capability_unit_assignment.unit.name}
-          </Link>
-        ) : (
-          "Not Assigned"
-        )}
-      </td>
-      <td>
-        {role.active_role_assignment?.person ? (
-          <Link to={role.id.toString()}>
-            {role.active_role_assignment.person.first_name}{" "}
-            {role.active_role_assignment.person.last_name}
-          </Link>
-        ) : (
-          "Vacant"
-        )}
-      </td>
-      <td>TODO</td>
-    </tr>
-  ));
-
   return (
     <div>
       <Title order={3}>Roles</Title>
       <br />
       <Title order={4}>All Roles</Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Level</th>
-            <th>Delivery Unit</th>
-            <th>Capability</th>
-            <th>Person</th>
-            <th>Tenure</th>
-          </tr>
-        </thead>
-        <tbody>{roleElements}</tbody>
-      </Table>
+      <RoleListTable />
     </div>
   );
 }

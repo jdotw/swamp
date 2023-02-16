@@ -40,8 +40,8 @@ const mockOnSubmit = vi.fn();
 const mockOnClose = vi.fn();
 
 const defaultProps: MutateRoleModalProps = {
-  unit_id: 1,
-  unit_type: "team",
+  unitId: 1,
+  unitType: "team",
   opened: true,
   mode: "create",
   onSubmit: mockOnSubmit,
@@ -57,7 +57,11 @@ describe("MutateRoleModal", () => {
     it("should render the edit title", async () => {
       const role: Role = {
         id: 1,
-        role_type_id: 1,
+        role_type: {
+          id: 1,
+          title: "Role Type 1",
+          active_from_date: "2021-01-01",
+        },
         active_level_assignment: {
           id: 1,
           level: {

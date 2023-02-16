@@ -14,6 +14,7 @@ import { useTribe } from "../../../../Client/Tribe";
 import { MutateSquadModal } from "./MutateSquadModal";
 import { MutateSquad, useSquad } from "../../../../Client/Squad";
 import { AddTribeRoleModal } from "./AddTribeRoleModal";
+import RoleListTable from "../../../../Components/RoleListTable/RoleListTable";
 
 const useStyles = createStyles((theme) => ({
   headline: {
@@ -96,48 +97,13 @@ export function TribeHome(props: TribeHomeProps) {
         </div>
         <br />
         <Title order={4}>Tribe Roles</Title>
-        <ScrollArea>
-          <Table verticalSpacing="xs">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Person</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <Link to={"/org/roles/3"}>Head of Product</Link>
-                </td>
-                <td>
-                  <Link to={"/org/people/3"}>John Thurman</Link>
-                </td>
-              </tr>
-              <tr className={classes.vacantRole}>
-                <td>Chief Engineer</td>
-                <td>vacant</td>
-              </tr>
-              <tr>
-                <td>Tribe Leader</td>
-                <td>Samuel Goleman</td>
-              </tr>
-            </tbody>
-          </Table>
-        </ScrollArea>
-        <div className={classes.buttonBar}>
-          <Button onClick={() => setAddRoleModalOpen(true)}>Add Role</Button>
-        </div>
+        <RoleListTable unitId={id} unitType={"tribe"} />
       </div>
       <MutateSquadModal
         opened={addSquadModalOpen}
         onClose={() => setMutateSquadModalOpen(false)}
         onSubmit={submitNewSquad}
       />
-      {/* <AddTribeRoleModal
-        opened={addRoleModalOpen}
-        onClose={() => setAddRoleModalOpen(false)}
-        onSubmit={() => setAddRoleModalOpen(false)}
-      /> */}
     </>
   );
 }
