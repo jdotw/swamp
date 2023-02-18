@@ -5,24 +5,40 @@ import {
   IconGitPullRequest,
   IconMessageDots,
 } from "@tabler/icons";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Person } from "../../../Client/Person";
-import { useRole } from "../../../Client/Role";
+import { Role, UnitAssignment, useRole } from "../../../Client/Role";
 import {
   MutateRoleAssignment,
   useRoleAssignment,
 } from "../../../Client/RoleAssignment";
+import {
+  MutateUnitAssignment,
+  useUnitAssignment,
+} from "../../../Client/UnitAssignment";
 import { PersonCard } from "../People/Person/PersonCard";
 import { AssignPersonModal } from "./AssignPersonModal";
+import {
+  MutateUnitAssignmentModal,
+  MutateUnitAssignmentType,
+} from "./MutateUnitAssignmentModal";
 
 function RoleHome() {
   const id = +useParams().roleId!;
-  const { items } = useRole({ id });
-  const { items: roleAssignment, createItem: createRoleAssignment } =
+  const { items, reload: reloadRole } = useRole({ id });
+  const { items: roleAssignments, createItem: createRoleAssignment } =
     useRoleAssignment({ roleId: id });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
+  const [mutateUnitAssignModalOpen, setMutateUnitAssignModalOpen] =
+    useState<boolean>(false);
+  const [mutatedAssignmentType, setMutatedAssignmentType] =
+    useState<MutateUnitAssignmentType>("delivery");
+  const [unitAssignmentToMutate, setUnitAssignmentToMutate] =
+    useState<UnitAssignment>();
+  const { items: unitAssignments, createItem: createUnitAssignment } =
+    useUnitAssignment({ roleId: id });
 
   if (items.length < 1) {
     return <div>Role not found</div>;
@@ -31,15 +47,35 @@ function RoleHome() {
 
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);
+    await reloadRole();
     setAssignPersonModalOpen(false);
+  };
+  const submitUnitAssignment = async (assignment: MutateUnitAssignment) => {
+    await createUnitAssignment(assignment);
+    await reloadRole();
+    setMutateUnitAssignModalOpen(false);
+  };
+
+  const roleTitle = (role: Role) => {
+    if (
+      (role.delivery_unit_assignment &&
+        !role.delivery_unit_assignment.function_type
+          .is_individual_contributor) ||
+      (role.capability_unit_assignment &&
+        !role.capability_unit_assignment.function_type
+          .is_individual_contributor)
+    ) {
+      return role.active_level_assignment.level.manager_title;
+    } else {
+      return role.active_level_assignment.level.individual_contributor_title;
+    }
   };
 
   return (
     <>
       <div>
         <Title order={3}>
-          Role: {role.role_type?.title} (
-          {role.active_level_assignment.level.individual_contributor_title})
+          Role: {role.role_type?.title} ({roleTitle(role)})
         </Title>
         <br />
         <Grid>
@@ -54,23 +90,60 @@ function RoleHome() {
             )}
           </Grid.Col>
           <Grid.Col span={8}>
-            <Title order={5}>Assignments</Title>
+            <Title order={5}>Capability Assignment</Title>
             <ul>
-              {role.capability_unit_assignment && (
-                <li>
-                  {role.capability_unit_assignment.function_type.name}
-                  {" of "}
-                  {role.capability_unit_assignment.unit.name}
-                </li>
-              )}
-              {role.delivery_unit_assignment && (
-                <li>
-                  {role.delivery_unit_assignment.function_type.name}
-                  {" of "}
-                  {role.delivery_unit_assignment.unit.name}
-                </li>
+              {role.capability_unit_assignment ? (
+                <>
+                  <li>
+                    {role.capability_unit_assignment.function_type.name}
+                    {" of "}
+                    {role.capability_unit_assignment.unit.name}
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>Unassigned</li>
+                </>
               )}
             </ul>
+            <Button
+              onClick={() => {
+                setMutatedAssignmentType("capability");
+                setMutateUnitAssignModalOpen(true);
+                setUnitAssignmentToMutate(role.capability_unit_assignment);
+              }}
+            >
+              {role.capability_unit_assignment
+                ? "Change Assignment"
+                : "Assign to Unit"}
+            </Button>
+            <Title order={5}>Delivery Assignment</Title>
+            <ul>
+              {role.delivery_unit_assignment ? (
+                <>
+                  <li>
+                    {role.delivery_unit_assignment.function_type.name}
+                    {" of "}
+                    {role.delivery_unit_assignment.unit.name}
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>Unassigned</li>
+                </>
+              )}
+            </ul>
+            <Button
+              onClick={() => {
+                setMutatedAssignmentType("delivery");
+                setUnitAssignmentToMutate(role.delivery_unit_assignment);
+                setMutateUnitAssignModalOpen(true);
+              }}
+            >
+              {role.delivery_unit_assignment
+                ? "Change Assignment"
+                : "Assign to Unit"}
+            </Button>
           </Grid.Col>
         </Grid>
         <br />
@@ -143,6 +216,14 @@ function RoleHome() {
         opened={assignPersonModalOpen}
         onSubmit={submitRoleAssignment}
         onClose={() => setAssignPersonModalOpen(false)}
+      />
+      <MutateUnitAssignmentModal
+        role={role}
+        opened={mutateUnitAssignModalOpen}
+        onSubmit={submitUnitAssignment}
+        onClose={() => setMutateUnitAssignModalOpen(false)}
+        assignmentType={mutatedAssignmentType}
+        unitAssignment={unitAssignmentToMutate}
       />
     </>
   );
