@@ -35,6 +35,52 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     return Ok(roleDto);
   }
 
+  // GET: /roles/5/history
+  [HttpGet("{id}/history")]
+  public async Task<IActionResult> GetHistory(int id)
+  {
+    var role = await Repository.GetWithDetailsAsync(id);
+    if (role is null) return NotFound();
+    var history = new List<RoleHistoryItemBase>();
+    history.Add(new RoleHistoryOpenedDto
+    {
+      Date = role.OpenFromDate,
+    });
+    if (role.ClosedAtDate.HasValue)
+    {
+      history.Add(new RoleHistoryClosedDto
+      {
+        Date = role.ClosedAtDate.Value,
+      });
+    }
+    foreach (var unitAssignment in role.UnitAssignments)
+    {
+      history.Add(new RoleHistoryUnitAssignmentDto
+      {
+        Date = unitAssignment.StartDate,
+        UnitAssignment = Mapper.Map<UnitAssignmentCollectionDto>(unitAssignment),
+      });
+    }
+    foreach (var levelAssignment in role.LevelAssignments)
+    {
+      history.Add(new RoleHistoryLevelAssignmentDto
+      {
+        Date = levelAssignment.StartDate,
+        LevelAssignment = Mapper.Map<LevelAssignmentCollectionDto>(levelAssignment),
+      });
+    }
+    foreach (var roleAssignment in role.RoleAssignments)
+    {
+      history.Add(new RoleHistoryRoleAssignmentDto
+      {
+        Date = roleAssignment.StartDate,
+        RoleAssignment = Mapper.Map<RoleAssignmentCollectionDto>(roleAssignment),
+      });
+    }
+    history = history.OrderBy(p => p.Date).ToList();
+    return Ok(history);
+  }
+
   // POST: /roles
   [HttpPost]
   public async Task<IActionResult> Create(CreateRoleDto roleDto)
@@ -42,12 +88,14 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     var role = Mapper.Map<Role>(roleDto);
     role.LevelAssignments.Add(new LevelAssignment
     {
-      LevelId = roleDto.LevelId
+      LevelId = roleDto.LevelId,
+      StartDate = DateTimeOffset.UtcNow
     });
     role.UnitAssignments.Add(new UnitAssignment
     {
       FunctionTypeId = roleDto.FunctionTypeId,
       UnitId = roleDto.UnitId,
+      StartDate = DateTimeOffset.UtcNow
     });
     await Repository.AddAsync(role);
 
@@ -115,12 +163,14 @@ public class SquadRolesController : ControllerBase<Role, IRoleRepository>
     var role = Mapper.Map<Role>(roleDto);
     role.LevelAssignments.Add(new LevelAssignment
     {
-      LevelId = roleDto.LevelId
+      LevelId = roleDto.LevelId,
+      StartDate = DateTimeOffset.UtcNow
     });
     role.UnitAssignments.Add(new UnitAssignment
     {
       FunctionTypeId = roleDto.FunctionTypeId,
       UnitId = unitId,
+      StartDate = DateTimeOffset.UtcNow
     });
     await Repository.AddAsync(role);
 

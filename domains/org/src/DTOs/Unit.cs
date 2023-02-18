@@ -11,6 +11,16 @@ public class UnitDto
   public DateTimeOffset? DisbandedDate { get; set; }
 }
 
+public class UnitCollectionDto
+{
+  public string UnitType { get; set; } = null!;
+  public int Id { get; set; }
+  public string Name { get; set; } = null!;
+  public string? Description { get; set; }
+  public DateTimeOffset FormedDate { get; set; }
+  public DateTimeOffset? DisbandedDate { get; set; }
+}
+
 public class CreateUnitDto
 {
   public string Name { get; set; } = null!;

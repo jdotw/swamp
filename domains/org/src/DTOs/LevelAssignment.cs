@@ -11,6 +11,17 @@ public class LevelAssignmentDto
   public DateTimeOffset? EndDate { get; set; }
 }
 
+public class LevelAssignmentCollectionDto
+{
+  public int Id { get; set; }
+  public int LevelId { get; set; }
+  public virtual LevelCollectionDto Level { get; set; } = null!;
+  public int RoleId { get; set; }
+  public virtual RoleCollectionDto Role { get; set; } = null!;
+  public DateTimeOffset StartDate { get; set; }
+  public DateTimeOffset? EndDate { get; set; }
+}
+
 public class CreateLevelAssignmentDto
 {
   public required int LevelId { get; set; }

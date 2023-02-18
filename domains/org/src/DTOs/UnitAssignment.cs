@@ -21,7 +21,7 @@ public class UnitAssignmentCollectionDto
 {
   public int Id { get; set; }
   public virtual FunctionTypeCollectionDto FunctionType { get; set; } = null!;
-  public virtual UnitDto Unit { get; set; } = null!;
+  public virtual UnitCollectionDto Unit { get; set; } = null!;
   public DateTimeOffset StartDate { get; set; }
   public DateTimeOffset? EndDate { get; set; }
 }

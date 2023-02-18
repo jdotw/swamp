@@ -18,10 +18,12 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateFunctionTypeDto, FunctionType>();
 
     CreateMap<Level, LevelDto>();
+    CreateMap<Level, LevelCollectionDto>();
     CreateMap<CreateLevelDto, Level>();
     CreateMap<UpdateLevelDto, Level>();
 
     CreateMap<LevelAssignment, LevelAssignmentDto>();
+    CreateMap<LevelAssignment, LevelAssignmentCollectionDto>();
     CreateMap<CreateLevelAssignmentDto, LevelAssignment>();
     CreateMap<UpdateLevelAssignmentDto, LevelAssignment>();
 
@@ -126,6 +128,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateTribeDto, Tribe>();
 
     CreateMap<Unit, UnitDto>()
+    .IncludeAllDerived();
+    CreateMap<Unit, UnitCollectionDto>()
     .IncludeAllDerived();
     CreateMap<CreateUnitDto, Unit>()
     .IncludeAllDerived();
