@@ -11,7 +11,9 @@ export interface MutateTribe extends MutateUnit {}
 
 interface UseTribeProps extends UseCRUDOptionalProps {}
 
-export function useTribe(props: UseTribeProps) {
+const defaultProps: UseTribeProps = {};
+
+export function useTribe(props: UseTribeProps = defaultProps) {
   const {
     loading,
     error,
