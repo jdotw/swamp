@@ -79,7 +79,7 @@ function RoleHome() {
         </Title>
         <br />
         <Grid>
-          <Grid.Col span={4}>
+          <Grid.Col sm={12} md={4}>
             {role.active_role_assignment ? (
               <PersonCard
                 person={role.active_role_assignment?.person}
@@ -88,8 +88,6 @@ function RoleHome() {
             ) : (
               <Text>Vacant</Text>
             )}
-          </Grid.Col>
-          <Grid.Col span={8}>
             <Title order={5}>Capability Assignment</Title>
             <ul>
               {role.capability_unit_assignment ? (
@@ -145,68 +143,76 @@ function RoleHome() {
                 : "Assign to Unit"}
             </Button>
           </Grid.Col>
+          <Grid.Col sm={12} md={8}>
+            <Timeline active={1} bulletSize={24} lineWidth={2}>
+              <Timeline.Item
+                bullet={<IconGitBranch size={12} />}
+                title="Promotion"
+              >
+                <Text color="dimmed" size="sm">
+                  Senior Engineer
+                </Text>
+                <Text size="xs" mt={4}>
+                  1 year ago
+                </Text>
+              </Timeline.Item>
+
+              <Timeline.Item
+                bullet={<IconGitCommit size={12} />}
+                title="Hired"
+                lineVariant="dashed"
+              >
+                <Text color="dimmed" size="sm">
+                  James Bond hired into role
+                </Text>
+                <Text size="xs" mt={4}>
+                  2 years ago
+                </Text>
+              </Timeline.Item>
+
+              <Timeline.Item
+                title="Role Vacant"
+                bullet={<IconGitPullRequest size={12} />}
+              >
+                <Text color="dimmed" size="sm">
+                  Megan Hunter resigned
+                </Text>
+                <Text size="xs" mt={4}>
+                  2years, 6 months ago
+                </Text>
+              </Timeline.Item>
+
+              <Timeline.Item
+                title="Hired"
+                lineVariant="dashed"
+                bullet={<IconMessageDots size={12} />}
+              >
+                <Text color="dimmed" size="sm">
+                  <Text variant="link" component="span" inherit>
+                    Megan Hunter
+                  </Text>{" "}
+                  hired into the role
+                </Text>
+                <Text size="xs" mt={4}>
+                  5 years ago
+                </Text>
+              </Timeline.Item>
+
+              <Timeline.Item
+                title="Opened"
+                bullet={<IconMessageDots size={12} />}
+              >
+                <Text color="dimmed" size="sm">
+                  Role was opened
+                </Text>
+                <Text size="xs" mt={4}>
+                  6 years ago
+                </Text>
+              </Timeline.Item>
+            </Timeline>
+          </Grid.Col>
         </Grid>
         <br />
-        <Timeline active={1} bulletSize={24} lineWidth={2}>
-          <Timeline.Item bullet={<IconGitBranch size={12} />} title="Promotion">
-            <Text color="dimmed" size="sm">
-              Senior Engineer
-            </Text>
-            <Text size="xs" mt={4}>
-              1 year ago
-            </Text>
-          </Timeline.Item>
-
-          <Timeline.Item
-            bullet={<IconGitCommit size={12} />}
-            title="Hired"
-            lineVariant="dashed"
-          >
-            <Text color="dimmed" size="sm">
-              James Bond hired into role
-            </Text>
-            <Text size="xs" mt={4}>
-              2 years ago
-            </Text>
-          </Timeline.Item>
-
-          <Timeline.Item
-            title="Role Vacant"
-            bullet={<IconGitPullRequest size={12} />}
-          >
-            <Text color="dimmed" size="sm">
-              Megan Hunter resigned
-            </Text>
-            <Text size="xs" mt={4}>
-              2years, 6 months ago
-            </Text>
-          </Timeline.Item>
-
-          <Timeline.Item
-            title="Hired"
-            lineVariant="dashed"
-            bullet={<IconMessageDots size={12} />}
-          >
-            <Text color="dimmed" size="sm">
-              <Text variant="link" component="span" inherit>
-                Megan Hunter
-              </Text>{" "}
-              hired into the role
-            </Text>
-            <Text size="xs" mt={4}>
-              5 years ago
-            </Text>
-          </Timeline.Item>
-
-          <Timeline.Item title="Opened" bullet={<IconMessageDots size={12} />}>
-            <Text color="dimmed" size="sm">
-              Role was opened
-            </Text>
-            <Text size="xs" mt={4}>
-              6 years ago
-            </Text>
-          </Timeline.Item>
-        </Timeline>
         <Button onClick={() => setAssignPersonModalOpen(true)}>
           Assign Person
         </Button>
