@@ -73,6 +73,8 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     var deleted = await Repository.DeleteAsync(id);
     return (deleted > 0) ? NoContent() : NotFound();
   }
+
+
 }
 
 [ApiController]
@@ -127,6 +129,38 @@ public class SquadRolesController : ControllerBase<Role, IRoleRepository>
     return CreatedAtAction(nameof(Get),
       new { parentId = parentId, unitId = unitId, id = role.Id },
       addedRoleDto);
+  }
+
+}
+
+[ApiController]
+[Route("/roles/{roleId}/unit_assignments")]
+public class RoleUnitAssignmentController : ControllerBase<Role, IUnitAssignmentRepository>
+{
+  public RoleUnitAssignmentController(ILogger<RolesController> logger, IUnitAssignmentRepository repository, IMapper mapper)
+    : base(logger, repository, mapper)
+  {
+  }
+
+  // GET: /roles/1/unit_assignments/2
+  [HttpGet("{id}")]
+  public async Task<IActionResult> Get(int unitAssignmentId)
+  {
+    var assignment = await Repository.GetByIdAsync(unitAssignmentId);
+    var assignmentDto = Mapper.Map<UnitAssignmentDto>(assignment);
+    return Ok(assignmentDto);
+  }
+
+  // POST: /roles/1/unit_assignments
+  [HttpPost]
+  public async Task<IActionResult> Create(int roleId, CreateUnitAssignmentDto dto)
+  {
+    var assignment = Mapper.Map<UnitAssignment>(dto);
+    await Repository.AddAsync(assignment);
+
+    return CreatedAtAction(nameof(Get),
+      new { roleId = roleId, id = assignment.Id },
+      Mapper.Map<UnitAssignmentDto>(assignment));
   }
 
 }
