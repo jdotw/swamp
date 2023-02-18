@@ -82,8 +82,12 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
         ...(await authHeaders()),
       },
     });
-    const response_json = (await response.json()) as ItemType[];
-    return response_json;
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    } else {
+      const response_json = (await response.json()) as ItemType[];
+      return response_json;
+    }
   };
 
   const createItem = async (newItem: NewItemType) => {
@@ -164,10 +168,13 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   useEffect(() => {
-    if (loadOnMount && url) {
+    console.log("PATH: ", path);
+    console.log("LOADONMOUNT: ", loadOnMount);
+    if (loadOnMount && path) {
+      console.log("RELOADING: ", url);
       (async () => await reload())();
     }
-  }, [loadOnMount, url]);
+  }, [loadOnMount, path]);
 
   return {
     items,
