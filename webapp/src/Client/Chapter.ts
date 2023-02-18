@@ -10,7 +10,7 @@ export interface Chapter extends Unit {
 export interface MutateChapter extends MutateUnit {}
 
 export interface UseChapterProps extends UseCRUDOptionalProps {
-  practiceId: number;
+  practiceId?: number;
 }
 
 export function useChapter(props: UseChapterProps) {
