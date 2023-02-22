@@ -125,8 +125,6 @@ const RoleListTable = ({
     return <Loading />;
   }
 
-  console.log("unitId: ", unitId);
-
   return (
     <>
       <div>

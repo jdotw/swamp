@@ -58,8 +58,6 @@ export function MutateUnitAssignmentModal({
     loadOnMount: assignmentType === "capability" && parentUnitId !== undefined,
   });
 
-  console.log("CHAPTERS: ", chapters);
-
   const fields: MutateItemModalFormField[] = [
     {
       key: "function_type_id",
@@ -88,7 +86,6 @@ export function MutateUnitAssignmentModal({
   };
 
   const onFormChanged = (values: MutateItemFormValues) => {
-    console.log("ON FORM CHANGED: ", values);
     if (values.parent_unit_id) {
       setParentUnitId(parseInt(values.parent_unit_id));
     } else {
@@ -99,15 +96,8 @@ export function MutateUnitAssignmentModal({
   const parentUnits = assignmentType === "delivery" ? tribes : practices;
   const units = assignmentType === "delivery" ? squads : chapters;
 
-  console.log("unitAssignment: ", unitAssignment);
-  console.log("fields: ", fields);
-  console.log("functions: ", function_types);
-
   if (loadingFunctionTypes || loadingTribes || loadingPractices)
     return <Loading />;
-
-  console.log("units: ", units);
-  console.log("parent id: ", parentUnitId);
 
   return (
     <MutateItemModal
