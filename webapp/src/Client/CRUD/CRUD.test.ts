@@ -11,6 +11,7 @@ function mockFetchResponse(data: any, code: number = 200) {
   (fetch as Mock<any[], any>).mockResolvedValue({
     json: () => new Promise((resolve) => resolve(data)),
     status: code,
+    ok: true,
   });
 }
 

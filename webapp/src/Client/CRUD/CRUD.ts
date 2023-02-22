@@ -168,10 +168,7 @@ export function useCRUD<ItemType extends TypeWithID, NewItemType>({
   };
 
   useEffect(() => {
-    console.log("PATH: ", path);
-    console.log("LOADONMOUNT: ", loadOnMount);
     if (loadOnMount && path) {
-      console.log("RELOADING: ", url);
       (async () => await reload())();
     }
   }, [loadOnMount, path]);
