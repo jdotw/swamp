@@ -13,7 +13,7 @@ export interface RoleHistory {
 }
 
 export interface UseRoleHistoryProps extends UseCRUDOptionalProps {
-  roleId: number;
+  id: number;
 }
 
 export function useRoleHistory(props: UseRoleHistoryProps) {
@@ -27,8 +27,9 @@ export function useRoleHistory(props: UseRoleHistoryProps) {
     updateItem,
     deleteItem,
   } = useCRUD<RoleHistory, undefined>({
-    path: `/api/org/role/${props.roleId}/history`,
+    path: `/api/org/roles/${props.id}/history`,
     ...props,
+    id: undefined,
   });
 
   return {

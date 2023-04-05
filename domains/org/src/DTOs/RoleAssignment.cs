@@ -15,6 +15,7 @@ public class RoleAssignmentCollectionDto
 {
   public int Id { get; set; }
   public virtual RoleCollectionDto Role { get; set; } = null!;
+  public virtual PersonCollectionDto Person { get; set; } = null!;
   public DateTimeOffset StartDate { get; set; }
   public DateTimeOffset? EndDate { get; set; }
 }

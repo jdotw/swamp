@@ -32,6 +32,11 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
     return await FindByConditionAsync(i => i.Id.Equals(id)).FirstOrDefaultAsync();
   }
 
+  public async Task<Person?> GetByExternalIdAsync(string externalId)
+  {
+    return await FindByConditionAsync(i => i.ExternalId.Equals(externalId)).AsNoTracking().FirstOrDefaultAsync();
+  }
+
   public async Task<Person?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))

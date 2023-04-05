@@ -1,4 +1,5 @@
-import { vi } from "vitest";
+import { Mock, vi } from "vitest";
+import { useCRUD } from "./CRUD/CRUD";
 import {
   RoleHistory,
   useRoleHistory,
@@ -6,7 +7,7 @@ import {
 } from "./RoleHistory";
 import { expectHookAdoptsUseCRUDCorrectly } from "./UseCRUDTestHelpers";
 
-const defaultProps: UseRoleHistoryProps = { roleId: 1 };
+const defaultProps: UseRoleHistoryProps = { id: 1 };
 
 vi.mock("./CRUD/CRUD", () => {
   return {
@@ -26,4 +27,23 @@ expectHookAdoptsUseCRUDCorrectly<RoleHistory, undefined>({
     return roleHistory;
   },
   mutateItemFactory: (props) => props,
+});
+
+describe("useRoleHistory", () => {
+  it("should NOT pass the (role) id to the CRUD hook", () => {
+    const id = 1234;
+    useRoleHistory({ id });
+    expect(useCRUD).toHaveBeenCalledWith({
+      path: expect.anything(),
+      id: undefined,
+    });
+  });
+  it("should use the correct path prefix", () => {
+    const id = 1234;
+    useRoleHistory({ id });
+    expect(useCRUD).toHaveBeenCalledWith({
+      path: `/api/org/roles/${id}/history`,
+      id: undefined,
+    });
+  });
 });

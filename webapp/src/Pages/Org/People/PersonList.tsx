@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
 import { MutateItemModalMode } from "../../../Components/MutateItemModal/MutateItemModal";
+import { ImportPeopleModal } from "./ImportPeopleModal";
 
 const useStyles = createStyles((theme) => ({
   buttonBar: {
@@ -21,6 +22,7 @@ export function PersonList(props: PersonListProps) {
   const { classes, theme } = useStyles();
   const { items, loading, createItem } = usePerson();
   const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
@@ -50,6 +52,10 @@ export function PersonList(props: PersonListProps) {
     })();
   };
 
+  const onImportSubmit = () => {
+  	setImportModalOpen(false);
+  }
+
   return (
     <>
       <div>
@@ -69,6 +75,9 @@ export function PersonList(props: PersonListProps) {
           <Button onClick={() => setAddPersonModalOpen(true)}>
             Onboard Person
           </Button>
+          <Button onClick={() => setImportModalOpen(true)}>
+            Import
+          </Button>
         </div>
       </div>
       <MutatePersonModal
@@ -78,6 +87,7 @@ export function PersonList(props: PersonListProps) {
         mode="create"
         onClose={() => setAddPersonModalOpen(false)}
       />
+	  <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
     </>
   );
 }

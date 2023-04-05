@@ -1,10 +1,15 @@
 import { Text } from "@mantine/core";
 
-export const LoadingComponentTestID = "loading-component";
+export const loadingComponentTestID = "loading-component";
 
-function Loading() {
+export interface LoadingProps {
+  "data-testid"?: string;
+}
+
+function Loading({ "data-testid": dataTestId }: LoadingProps = {}) {
+  dataTestId = dataTestId || loadingComponentTestID;
   return (
-    <div data-testid={LoadingComponentTestID}>
+    <div data-testid={dataTestId}>
       <Text>Loading</Text>
     </div>
   );

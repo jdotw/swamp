@@ -6,7 +6,7 @@ import {
   expectTableToHave,
 } from "../../../../test/UITestHelpers";
 import { useTeam } from "../../../Client/Team";
-import { LoadingComponentTestID } from "../../../Components/Loading/Loading";
+import { loadingComponentTestID } from "../../../Components/Loading/Loading";
 import MutateTeamModal, { MutateTeamModalTestID } from "./MutateTeamModal";
 import TeamList from "./TeamList";
 
@@ -60,7 +60,7 @@ describe("TeamList", () => {
         loading: true,
       }));
       renderTeamList();
-      expect(screen.getByTestId(LoadingComponentTestID)).toBeInTheDocument();
+      expect(screen.getByTestId(loadingComponentTestID)).toBeInTheDocument();
     });
   });
 

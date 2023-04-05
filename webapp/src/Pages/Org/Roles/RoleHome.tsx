@@ -13,10 +13,13 @@ import {
   MutateRoleAssignment,
   useRoleAssignment,
 } from "../../../Client/RoleAssignment";
+import { RoleHistory, useRoleHistory } from "../../../Client/RoleHistory";
 import {
   MutateUnitAssignment,
   useUnitAssignment,
 } from "../../../Client/UnitAssignment";
+import Loading from "../../../Components/Loading/Loading";
+import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHistoryTimeline";
 import { PersonCard } from "../People/Person/PersonCard";
 import { AssignPersonModal } from "./AssignPersonModal";
 import {
@@ -24,9 +27,11 @@ import {
   MutateUnitAssignmentType,
 } from "./MutateUnitAssignmentModal";
 
-function RoleHome() {
+export interface RoleHomeProps {}
+
+function RoleHome(props: RoleHomeProps) {
   const id = +useParams().roleId!;
-  const { items, reload: reloadRole } = useRole({ id });
+  const { items, reload: reloadRole, loading } = useRole({ id });
   const { items: roleAssignments, createItem: createRoleAssignment } =
     useRoleAssignment({ roleId: id });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
@@ -39,6 +44,10 @@ function RoleHome() {
     useState<UnitAssignment>();
   const { items: unitAssignments, createItem: createUnitAssignment } =
     useUnitAssignment({ roleId: id });
+
+  if (loading) {
+    return <Loading data-testid="loading-role-home" />;
+  }
 
   if (items.length < 1) {
     return <div>Role not found</div>;
@@ -144,72 +153,7 @@ function RoleHome() {
             </Button>
           </Grid.Col>
           <Grid.Col sm={12} md={8}>
-            <Timeline active={1} bulletSize={24} lineWidth={2}>
-              <Timeline.Item
-                bullet={<IconGitBranch size={12} />}
-                title="Promotion"
-              >
-                <Text color="dimmed" size="sm">
-                  Senior Engineer
-                </Text>
-                <Text size="xs" mt={4}>
-                  1 year ago
-                </Text>
-              </Timeline.Item>
-
-              <Timeline.Item
-                bullet={<IconGitCommit size={12} />}
-                title="Hired"
-                lineVariant="dashed"
-              >
-                <Text color="dimmed" size="sm">
-                  James Bond hired into role
-                </Text>
-                <Text size="xs" mt={4}>
-                  2 years ago
-                </Text>
-              </Timeline.Item>
-
-              <Timeline.Item
-                title="Role Vacant"
-                bullet={<IconGitPullRequest size={12} />}
-              >
-                <Text color="dimmed" size="sm">
-                  Megan Hunter resigned
-                </Text>
-                <Text size="xs" mt={4}>
-                  2years, 6 months ago
-                </Text>
-              </Timeline.Item>
-
-              <Timeline.Item
-                title="Hired"
-                lineVariant="dashed"
-                bullet={<IconMessageDots size={12} />}
-              >
-                <Text color="dimmed" size="sm">
-                  <Text variant="link" component="span" inherit>
-                    Megan Hunter
-                  </Text>{" "}
-                  hired into the role
-                </Text>
-                <Text size="xs" mt={4}>
-                  5 years ago
-                </Text>
-              </Timeline.Item>
-
-              <Timeline.Item
-                title="Opened"
-                bullet={<IconMessageDots size={12} />}
-              >
-                <Text color="dimmed" size="sm">
-                  Role was opened
-                </Text>
-                <Text size="xs" mt={4}>
-                  6 years ago
-                </Text>
-              </Timeline.Item>
-            </Timeline>
+            <RoleHistoryTimeline role={role} />
           </Grid.Col>
         </Grid>
         <br />
