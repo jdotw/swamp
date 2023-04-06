@@ -65,6 +65,9 @@ describe("PersonList", () => {
       expect(
         screen.queryByRole("columnheader", { name: "External ID" })
       ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("columnheader", { name: "Current Role" })
+      ).toBeInTheDocument();
     });
     it("renders a table with the correct number of rows", async () => {
       const mockPersons = [
@@ -73,6 +76,9 @@ describe("PersonList", () => {
           first_name: "John",
           last_name: "Doe",
           external_id: "123",
+          active_role: {
+            id: 1,
+            },
         },
         {
           id: "2",

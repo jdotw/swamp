@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Person, MutatePerson, usePerson } from "../../../Client/Person";
-import { createStyles, Table, ScrollArea, Button } from "@mantine/core";
+import { createStyles, Table, ScrollArea, Button, Text } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
@@ -13,6 +13,9 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: 20,
+  },
+  unassignedRole: {
+    backgroundColor: "#ff000040",
   },
 }));
 
@@ -30,6 +33,8 @@ export function PersonList(props: PersonListProps) {
 
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
+    console.log("row: ", row);
+    const active_role = row.active_role_assignments[0]?.role;
     return (
       <tr key={id}>
         <td>
@@ -40,6 +45,9 @@ export function PersonList(props: PersonListProps) {
         </td>
         <td>
           <Link to={id}>{row.external_id}</Link>
+        </td>
+        <td>
+          <Link to={id}><Text className={!active_role && classes.unassignedRole}>{active_role?.role_type?.title ?? "unassigned"}</Text></Link>
         </td>
       </tr>
     );
@@ -59,18 +67,17 @@ export function PersonList(props: PersonListProps) {
   return (
     <>
       <div>
-        <ScrollArea>
-          <Table verticalSpacing="xs">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>External ID</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </Table>
-        </ScrollArea>
+        <Table verticalSpacing="xs">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>External ID</th>
+              <th>Current Role</th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddPersonModalOpen(true)}>
             Onboard Person

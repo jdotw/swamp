@@ -76,8 +76,6 @@ describe("useUpload", () => {
           body: formData,
           method: "POST",
           headers: {
-            'Content-Type': file.type,
-            'Content-Length': `${file.size}`,
             ...(await hook.result.current.authHeaders()),
           },
         }
