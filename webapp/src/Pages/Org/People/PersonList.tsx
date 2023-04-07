@@ -33,8 +33,7 @@ export function PersonList(props: PersonListProps) {
 
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
-    console.log("row: ", row);
-    const active_role = row.active_role_assignments[0]?.role;
+    const active_role = row.active_role_assignments?.[0]?.role;
     return (
       <tr key={id}>
         <td>
