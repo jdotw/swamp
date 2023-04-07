@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { vi } from "vitest";
 import { addTestPolyfills } from "../../../test/UITestHelpers";
 import { SideNavbar } from "./SideNavbar";
 
@@ -39,34 +38,11 @@ describe("SideNavbar", () => {
         );
       });
     });
-    it("should render a Role Types link", async () => {
-      await waitFor(() => {
-        expect(
-          screen.getByRole("link", { name: "Role Types" })
-        ).toHaveAttribute("href", "/org/roletypes");
-      });
-    });
     it("should render a Roles link", async () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "Roles" })).toHaveAttribute(
           "href",
           "/org/roles"
-        );
-      });
-    });
-    it("should render a Levels link", async () => {
-      await waitFor(() => {
-        expect(screen.getByRole("link", { name: "Levels" })).toHaveAttribute(
-          "href",
-          "/org/levels"
-        );
-      });
-    });
-    it("should render a Functions link", async () => {
-      await waitFor(() => {
-        expect(screen.getByRole("link", { name: "Functions" })).toHaveAttribute(
-          "href",
-          "/org/functions"
         );
       });
     });
@@ -102,14 +78,14 @@ describe("SideNavbar", () => {
     });
   });
   // Capability
-  it("should render a link to Capability", async () => {
-    expect(screen.getByRole("link", { name: "Capability" })).toHaveAttribute(
+  it("should render a link to Capabilities", async () => {
+    expect(screen.getByRole("link", { name: "Capabilities" })).toHaveAttribute(
       "href",
       "/capability"
     );
-    describe("when clicking on Capability", () => {
+    describe("when clicking on Capabilities", () => {
       beforeEach(async () => {
-        const button = screen.getByRole("button", { name: "Capability" });
+        const button = screen.getByRole("button", { name: "Capabilities" });
         await userEvent.click(button);
       });
       it("should render a Practices link", async () => {
@@ -121,4 +97,42 @@ describe("SideNavbar", () => {
       });
     });
   });
+
+  // Setup
+  it("should render a link to Setup", async () => {
+    expect(screen.getByRole("link", { name: "Setup" })).toHaveAttribute(
+      "href",
+      "/setup"
+    );
+  });
+  describe("when clicking on Setup", () => {
+    beforeEach(async () => {
+      const button = screen.getByRole("button", { name: "Setup" });
+      await userEvent.click(button);
+    });
+    it("should render a Role Types link", async () => {
+      await waitFor(() => {
+        expect(
+          screen.getByRole("link", { name: "Role Types" })
+        ).toHaveAttribute("href", "/org/roletypes");
+      });
+    });
+    it("should render a Role Levels link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Levels" })).toHaveAttribute(
+          "href",
+          "/org/levels"
+        );
+      });
+    });
+    it("should render a Deployment Types link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Deployments" })).toHaveAttribute(
+          "href",
+          "/org/deployments"
+        );
+      });
+    });
+  });
+
 });

@@ -4,6 +4,7 @@ import {
   IconUsers,
   IconBulb,
   IconClipboardList,
+  IconSettings
 } from "@tabler/icons";
 import { LinksGroup } from "./NavbarLinksGroup";
 
@@ -27,16 +28,13 @@ const data = [
     icon: IconUsers,
     links: [
       { label: "People", link: "/org/people" },
-      { label: "Role Types", link: "/org/roletypes" },
       { label: "Roles", link: "/org/roles" },
-      { label: "Levels", link: "/org/levels" },
-      { label: "Functions", link: "/org/functions" },
       { label: "Teams", link: "/org/teams" },
     ],
   },
   {
     link: "/capability",
-    label: "Capability",
+    label: "Capabilities",
     icon: IconBulb,
     links: [{ label: "Practices", link: "/capability/practices" }],
   },
@@ -45,6 +43,16 @@ const data = [
     label: "Delivery",
     icon: IconClipboardList,
     links: [{ label: "Tribes", link: "/delivery/tribes" }],
+  },
+  {
+    link: "/setup",
+    label: "Setup",
+    icon: IconSettings,
+    links: [
+      { label: "Role Types", link: "/org/roletypes" },
+      { label: "Levels", link: "/org/levels" },
+      { label: "Deployments", link: "/org/deployments" },
+    ],
   },
 ];
 
