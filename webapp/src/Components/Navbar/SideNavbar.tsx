@@ -36,22 +36,25 @@ const data = [
     link: "/capability",
     label: "Capabilities",
     icon: IconBulb,
-    links: [{ label: "Practices", link: "/capability/practices" }],
+    links: [
+      { label: "Types", link: "/capability/types" },
+      { label: "Teams", link: "/capability/teams" },
+    ],
   },
   {
     link: "/delivery",
     label: "Delivery",
     icon: IconClipboardList,
-    links: [{ label: "Tribes", link: "/delivery/tribes" }],
+    links: [{ label: "Teams", link: "/delivery/teams" }],
   },
   {
     link: "/setup",
     label: "Setup",
     icon: IconSettings,
     links: [
-      { label: "Role Types", link: "/org/roletypes" },
-      { label: "Levels", link: "/org/levels" },
-      { label: "Deployments", link: "/org/deployments" },
+      { label: "Role Types", link: "/setup/roletypes" },
+      { label: "Levels", link: "/setup/levels" },
+      { label: "Deployments", link: "/setup/deploymenttypes" },
     ],
   },
 ];

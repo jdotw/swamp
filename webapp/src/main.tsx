@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import Home from "./Components/Home";
+import Home from "./Pages/Home/Home";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Pages/Capability/CapabilityShell";
 import TribeHome from "./Pages/Delivery/Tribes/Tribe/TribeHome";
@@ -28,6 +28,12 @@ import RoleTypeList from "./Pages/Org/RoleTypes/RoleTypeList";
 import RoleTypeHome from "./Pages/Org/RoleTypes/RoleTypeHome";
 import FunctionList from "./Pages/Org/Functions/FunctionTypeList";
 import FunctionHome from "./Pages/Org/Functions/FunctionTypeHome";
+import SetupHome from "./Pages/Setup/SetupHome";
+import SetupShell from "./Pages/Setup/SetupShell";
+import DeploymentTypeList from "./Pages/Org/DeploymentTypes/DeploymentTypeList";
+import CapabilityTeamList from "./Pages/Capability/Teams/CapabilityTeamList";
+import CapabilityTypeList from "./Pages/Capability/Types/CapabilityTypeList";
+import DeliveryTeamList from "./Pages/Delivery/Teams/DeliveryTeamList";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -47,19 +53,58 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               <Route path=":personId" element={<PersonHome />} />
             </Route>
 
-            {/* Role Types */}
-            <Route path="roletypes">
-              <Route index element={<RoleTypeList />} />
-              <Route path=":roleTypeId">
-                <Route index element={<RoleTypeHome />} />
-              </Route>
-            </Route>
-
             {/* Roles */}
             <Route path="roles">
               <Route index element={<RolesList />} />
               <Route path=":roleId">
                 <Route index element={<RoleHome />} />
+              </Route>
+            </Route>
+
+            {/* Teams */}
+            <Route path="teams">
+              <Route index element={<TeamsList />} />
+              <Route path=":teamId">
+                <Route index element={<TeamHome />} />
+              </Route>
+            </Route>
+
+          </Route>
+
+          {/* Capability */}
+          <Route path="capability" element={<CapabilityShell />}>
+            <Route index element={<CapabilityHome />} />
+
+            {/* Capability Teams */}
+            <Route path="teams">
+              <Route index element={<CapabilityTeamList />} />
+            </Route>
+
+            {/* Capability Types */}
+            <Route path="types">
+              <Route index element={<CapabilityTypeList />} />
+            </Route>
+          </Route>
+
+          {/* Delivery */}
+          <Route path="delivery" element={<DeliveryShell />}>
+            <Route index element={<DeliveryHome />} />
+            
+            {/* Delivery Teams */}
+            <Route path="teams">
+              <Route index element={<DeliveryTeamList />} />
+            </Route>
+          </Route>
+
+          {/* Setup */}
+          <Route path="setup" element={<SetupShell />}>
+            <Route index element={<SetupHome />} />
+            
+            {/* Role Types */}
+            <Route path="roletypes">
+              <Route index element={<RoleTypeList />} />
+              <Route path=":roleTypeId">
+                <Route index element={<RoleTypeHome />} />
               </Route>
             </Route>
 
@@ -71,61 +116,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               </Route>
             </Route>
 
-            {/* Functions */}
-            <Route path="functions">
-              <Route index element={<FunctionList />} />
-              <Route path=":functionId">
-                <Route index element={<FunctionHome />} />
+            {/* Deployment Types */}
+            <Route path="deploymenttypes">
+              <Route index element={<DeploymentTypeList />} />
+              {/*
+              <Route path=":deploymentTypeId">
+                <Route index element={<DeploymentTypeHome />} />
               </Route>
+              */}
             </Route>
 
-            {/* Teams */}
-            <Route path="teams">
-              <Route index element={<TeamsList />} />
-              <Route path=":teamId">
-                <Route index element={<TeamHome />} />
-              </Route>
-            </Route>
-          </Route>
-
-          {/* Capability */}
-          <Route path="capability" element={<CapabilityShell />}>
-            <Route index element={<CapabilityHome />} />
-
-            {/* Practices */}
-            <Route path="practices">
-              <Route index element={<PracticeList />} />
-              <Route path=":practiceId">
-                <Route index element={<PracticeHome />} />
-
-                {/* Chapters */}
-                <Route path="chapters">
-                  <Route path=":chapterId">
-                    <Route index element={<ChapterHome />} />
-                  </Route>
-                </Route>
-              </Route>
-            </Route>
-          </Route>
-
-          {/* Delivery */}
-          <Route path="delivery" element={<DeliveryShell />}>
-            <Route index element={<DeliveryHome />} />
-
-            {/* Tribes */}
-            <Route path="tribes">
-              <Route index element={<TribeList />} />
-              <Route path=":tribeId">
-                <Route index element={<TribeHome />} />
-
-                {/* Squads */}
-                <Route path="squads">
-                  <Route path=":squadId">
-                    <Route index element={<SquadHome />} />
-                  </Route>
-                </Route>
-              </Route>
-            </Route>
           </Route>
         </Route>
       </Routes>

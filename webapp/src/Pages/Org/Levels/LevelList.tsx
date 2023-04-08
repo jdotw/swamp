@@ -1,4 +1,4 @@
-import { Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
+import { Text, Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MutateLevel, useLevel } from "../../../Client/Level";
@@ -49,6 +49,7 @@ function LevelList() {
     <>
       <div>
         <Title order={3}>Levels</Title>
+        <Text>Levels describe the titles applied to the various seniorities for both individual contributors and manager Roles</Text>
         <ScrollArea>
           <Table>
             <thead>

@@ -1,4 +1,4 @@
-import { Button, Grid, Text, Timeline, Title } from "@mantine/core";
+import { createStyles, Button, Grid, Text, Timeline, Title } from "@mantine/core";
 import {
   IconGitBranch,
   IconGitCommit,
@@ -28,6 +28,27 @@ import {
 } from "./MutateUnitAssignmentModal";
 
 export interface RoleHomeProps {}
+const useStyles = createStyles((theme) => ({
+  buttonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  vacantRole: {
+    backgroundColor: "#ff000040",
+  },
+  filledRole: {},
+  tableHeader: {
+    textAlign: "left",
+  },
+  capabilityTable: {
+    width: "100%",
+  },
+  deploymentTable: {
+    width: "100%",
+  },
+}));
 
 function RoleHome(props: RoleHomeProps) {
   const id = +useParams().roleId!;
@@ -44,6 +65,7 @@ function RoleHome(props: RoleHomeProps) {
     useState<UnitAssignment>();
   const { items: unitAssignments, createItem: createUnitAssignment } =
     useUnitAssignment({ roleId: id });
+  const {classes} = useStyles();
 
   if (loading) {
     return <Loading data-testid="loading-role-home" />;
@@ -88,7 +110,7 @@ function RoleHome(props: RoleHomeProps) {
         </Title>
         <br />
         <Grid>
-          <Grid.Col sm={12} md={4}>
+          <Grid.Col xs={12} sm={8}>
             {role.active_role_assignment ? (
               <PersonCard
                 person={role.active_role_assignment?.person}
@@ -97,6 +119,34 @@ function RoleHome(props: RoleHomeProps) {
             ) : (
               <Text>Vacant</Text>
             )}
+            <Title order={5}>Manager</Title>
+            <Text>Chis Watson</Text>
+            <Title order={5}>Capabilities</Title>
+            <table className={classes.capabilityTable}>
+              <thead>
+                <th className={classes.tableHeader}>Capability</th>
+                <th className={classes.tableHeader}>Home Team</th>
+                <th className={classes.tableHeader}>Deployed To</th>
+                <th className={classes.tableHeader}>Type</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>C# Backend Engineer</td>
+                  <td>C# Chapter</td>
+                  <td>Checkout Squad</td>
+                  <td>Contributor</td>
+                  <td>Edit</td>
+                </tr>
+                <tr>
+                  <td>Chapter Lead</td>
+                  <td>Chapter Leads</td>
+                  <td>C# Chapter</td>
+                  <td>Manager</td>
+                  <td>Edit</td>
+                </tr>
+              </tbody>
+            </table>
+            {/*
             <Title order={5}>Capability Assignment</Title>
             <ul>
               {role.capability_unit_assignment ? (
@@ -151,8 +201,9 @@ function RoleHome(props: RoleHomeProps) {
                 ? "Change Assignment"
                 : "Assign to Unit"}
             </Button>
+            */}
           </Grid.Col>
-          <Grid.Col sm={12} md={8}>
+          <Grid.Col xs={12} sm={4}>
             <RoleHistoryTimeline role={role} />
           </Grid.Col>
         </Grid>

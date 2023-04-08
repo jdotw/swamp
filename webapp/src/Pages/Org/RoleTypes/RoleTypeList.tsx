@@ -1,4 +1,4 @@
-import { Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
+import { Button, createStyles, ScrollArea, Table, Title, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -55,6 +55,7 @@ function RoleTypeList() {
     <>
       <div>
         <Title order={3}>Role Types</Title>
+        <Text>Role Types are the job families or archetypes of the Roles to which people are assigned.</Text>
         <ScrollArea>
           <Table>
             <thead>

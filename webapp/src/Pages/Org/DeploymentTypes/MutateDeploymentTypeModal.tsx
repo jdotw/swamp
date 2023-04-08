@@ -11,32 +11,31 @@ import {
 } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { MutateCapability, Capability } from "../../Client/Capability";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
   MutateItemModalMode,
   nonEmptyString,
-} from "../../Components/MutateItemModal/MutateItemModal";
+} from "../../../Components/MutateItemModal/MutateItemModal";
 
-export interface MutateCapabilityModalProps {
-  capability?: Capability;
-  capabilities?: Capability[];
+export interface MutateDeploymentTypeModalProps {
+  capability?: DeploymentType;
+  capabilities?: DeploymentType[];
   opened: boolean;
-  onSubmit: (capability: MutateCapability) => void;
+  onSubmit: (capability: MutateDeploymentType) => void;
   onClose: () => void;
   mode?: MutateItemModalMode;
 }
 
-export function MutateCapabilityModal({
+export function MutateDeploymentTypeModal({
   capability,
   capabilities,
   opened,
   onSubmit,
   onClose,
   mode,
-}: MutateCapabilityModalProps) {
+}: MutateDeploymentTypeModalProps) {
   const fields: MutateItemModalFormField[] = [
     {
       key: "title",
@@ -51,14 +50,14 @@ export function MutateCapabilityModal({
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual capability
-    let capability: MutateCapability = {
+    let capability: MutateDeploymentType = {
       title: values.title,
       parent_id: parseInt(values.parent_id) ?? undefined,
     };
     onSubmit(capability);
   };
 
-  const parentCapabilityData = () =>
+  const parentDeploymentTypeData = () =>
     (capabilities ?? []).map((capability) => ({
       value: capability.id.toString(),
       label: capability.title,
@@ -68,7 +67,7 @@ export function MutateCapabilityModal({
 
   return (
     <MutateItemModal
-      title={mode === "edit" ? "Edit Capability" : "Add Capability"}
+      title={mode === "edit" ? "Edit DeploymentType" : "Add DeploymentType"}
       opened={opened}
       onClose={onClose}
       fields={fields}
@@ -80,7 +79,7 @@ export function MutateCapabilityModal({
         key="parent_id"
         label="Parent"
         placeholder="parent capability"
-        data={parentCapabilityData()}
+        data={parentDeploymentTypeData()}
       />
     </MutateItemModal>
   );

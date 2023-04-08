@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Person, MutatePerson, usePerson } from "../../../Client/Person";
-import { createStyles, Table, ScrollArea, Button, Text } from "@mantine/core";
+import { createStyles, Table, ScrollArea, Button, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
@@ -66,6 +66,8 @@ export function PersonList(props: PersonListProps) {
   return (
     <>
       <div>
+        <Title order={2}>People</Title>
+        <Text>This is the full list of people in our organisation.</Text>
         <Table verticalSpacing="xs">
           <thead>
             <tr>

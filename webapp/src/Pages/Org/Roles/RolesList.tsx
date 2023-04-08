@@ -1,4 +1,4 @@
-import { Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
+import { Button, createStyles, ScrollArea, Table, Title, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Role, useRole } from "../../../Client/Role";
@@ -29,8 +29,7 @@ function RolesList() {
   return (
     <div>
       <Title order={3}>Roles</Title>
-      <br />
-      <Title order={4}>All Roles</Title>
+      <Text>This is the list of Roles, or positions, that people can be assigned to.</Text>
       <RoleListTable />
     </div>
   );
