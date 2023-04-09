@@ -23,19 +23,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrgDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase"))
             .UseSnakeCaseNamingConvention());
-builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
-builder.Services.AddScoped<IFunctionTypeRepository, FunctionTypeRepository>();
 builder.Services.AddScoped<ILevelRepository, LevelRepository>();
 builder.Services.AddScoped<ILevelAssignmentRepository, LevelAssignmentRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleAssignmentRepository, RoleAssignmentRepository>();
 builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
-builder.Services.AddScoped<ISquadRepository, SquadRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<ITribeRepository, TribeRepository>();
-builder.Services.AddScoped<IUnitAssignmentRepository, UnitAssignmentRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

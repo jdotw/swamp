@@ -7,46 +7,36 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Org.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateV3 : Migration
+    public partial class InitialCreateV4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "function_types",
+                name: "ParameterBase",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    activefromdate = table.Column<DateTimeOffset>(name: "active_from_date", type: "timestamp with time zone", nullable: false),
+                    parentid = table.Column<int>(name: "parent_id", type: "integer", nullable: true),
+                    discriminator = table.Column<string>(type: "text", nullable: false),
+                    index = table.Column<int>(type: "integer", nullable: true),
+                    externalid = table.Column<string>(name: "external_id", type: "text", nullable: true),
+                    individualcontributortitle = table.Column<string>(name: "individual_contributor_title", type: "text", nullable: true),
+                    managertitle = table.Column<string>(name: "manager_title", type: "text", nullable: true),
+                    activefromdate = table.Column<DateTimeOffset>(name: "active_from_date", type: "timestamp with time zone", nullable: true),
                     retiredatdate = table.Column<DateTimeOffset>(name: "retired_at_date", type: "timestamp with time zone", nullable: true),
                     createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
                     updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_function_types", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "levels",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    index = table.Column<int>(type: "integer", nullable: false),
-                    externalid = table.Column<string>(name: "external_id", type: "text", nullable: true),
-                    individualcontributortitle = table.Column<string>(name: "individual_contributor_title", type: "text", nullable: false),
-                    managertitle = table.Column<string>(name: "manager_title", type: "text", nullable: false),
-                    activefromdate = table.Column<DateTimeOffset>(name: "active_from_date", type: "timestamp with time zone", nullable: false),
-                    retiredatdate = table.Column<DateTimeOffset>(name: "retired_at_date", type: "timestamp with time zone", nullable: false),
-                    createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
-                    updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_levels", x => x.id);
+                    table.PrimaryKey("pk_parameter_base", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_parameter_base_parameter_base_parent_id",
+                        column: x => x.parentid,
+                        principalTable: "ParameterBase",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -92,36 +82,28 @@ namespace Org.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Units",
+                name: "teams",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
+                    type = table.Column<int>(type: "integer", nullable: false),
+                    parentid = table.Column<int>(name: "parent_id", type: "integer", nullable: true),
                     formeddate = table.Column<DateTimeOffset>(name: "formed_date", type: "timestamp with time zone", nullable: false),
                     disbandeddate = table.Column<DateTimeOffset>(name: "disbanded_date", type: "timestamp with time zone", nullable: true),
-                    unittype = table.Column<string>(name: "unit_type", type: "text", nullable: false),
-                    practiceid = table.Column<int>(name: "practice_id", type: "integer", nullable: true),
-                    tribeid = table.Column<int>(name: "tribe_id", type: "integer", nullable: true),
                     createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
                     updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_units", x => x.id);
+                    table.PrimaryKey("pk_teams", x => x.id);
                     table.ForeignKey(
-                        name: "fk_units_units_practice_id",
-                        column: x => x.practiceid,
-                        principalTable: "Units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_units_units_tribe_id",
-                        column: x => x.tribeid,
-                        principalTable: "Units",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "fk_teams_teams_parent_id",
+                        column: x => x.parentid,
+                        principalTable: "teams",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -163,9 +145,9 @@ namespace Org.Migrations
                 {
                     table.PrimaryKey("pk_level_assignments", x => x.id);
                     table.ForeignKey(
-                        name: "fk_level_assignments_levels_level_id",
+                        name: "fk_level_assignments_parameter_base_level_id",
                         column: x => x.levelid,
-                        principalTable: "levels",
+                        principalTable: "ParameterBase",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -206,66 +188,6 @@ namespace Org.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "unit_assignments",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    roleid = table.Column<int>(name: "role_id", type: "integer", nullable: false),
-                    functiontypeid = table.Column<int>(name: "function_type_id", type: "integer", nullable: false),
-                    practiceid = table.Column<int>(name: "practice_id", type: "integer", nullable: true),
-                    chapterid = table.Column<int>(name: "chapter_id", type: "integer", nullable: true),
-                    squadid = table.Column<int>(name: "squad_id", type: "integer", nullable: true),
-                    teamid = table.Column<int>(name: "team_id", type: "integer", nullable: true),
-                    tribeid = table.Column<int>(name: "tribe_id", type: "integer", nullable: true),
-                    startdate = table.Column<DateTimeOffset>(name: "start_date", type: "timestamp with time zone", nullable: false),
-                    enddate = table.Column<DateTimeOffset>(name: "end_date", type: "timestamp with time zone", nullable: true),
-                    createddate = table.Column<DateTimeOffset>(name: "created_date", type: "timestamp with time zone", nullable: false),
-                    updateddate = table.Column<DateTimeOffset>(name: "updated_date", type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_unit_assignments", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_function_types_function_type_id",
-                        column: x => x.functiontypeid,
-                        principalTable: "function_types",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_roles_role_id",
-                        column: x => x.roleid,
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_chapter_id",
-                        column: x => x.chapterid,
-                        principalTable: "Units",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_practice_id",
-                        column: x => x.practiceid,
-                        principalTable: "Units",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_squad_id",
-                        column: x => x.squadid,
-                        principalTable: "Units",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_team_id",
-                        column: x => x.teamid,
-                        principalTable: "Units",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_unit_assignments_units_tribe_id",
-                        column: x => x.tribeid,
-                        principalTable: "Units",
-                        principalColumn: "id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "ix_level_assignments_level_id",
                 table: "level_assignments",
@@ -275,6 +197,11 @@ namespace Org.Migrations
                 name: "ix_level_assignments_role_id",
                 table: "level_assignments",
                 column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_parameter_base_parent_id",
+                table: "ParameterBase",
+                column: "parent_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_role_assignments_person_id",
@@ -297,49 +224,9 @@ namespace Org.Migrations
                 column: "role_type_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_chapter_id",
-                table: "unit_assignments",
-                column: "chapter_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_function_type_id",
-                table: "unit_assignments",
-                column: "function_type_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_practice_id",
-                table: "unit_assignments",
-                column: "practice_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_role_id",
-                table: "unit_assignments",
-                column: "role_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_squad_id",
-                table: "unit_assignments",
-                column: "squad_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_team_id",
-                table: "unit_assignments",
-                column: "team_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_unit_assignments_tribe_id",
-                table: "unit_assignments",
-                column: "tribe_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_units_practice_id",
-                table: "Units",
-                column: "practice_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_units_tribe_id",
-                table: "Units",
-                column: "tribe_id");
+                name: "ix_teams_parent_id",
+                table: "teams",
+                column: "parent_id");
         }
 
         /// <inheritdoc />
@@ -352,22 +239,16 @@ namespace Org.Migrations
                 name: "role_assignments");
 
             migrationBuilder.DropTable(
-                name: "unit_assignments");
+                name: "teams");
 
             migrationBuilder.DropTable(
-                name: "levels");
+                name: "ParameterBase");
 
             migrationBuilder.DropTable(
                 name: "persons");
 
             migrationBuilder.DropTable(
-                name: "function_types");
-
-            migrationBuilder.DropTable(
                 name: "roles");
-
-            migrationBuilder.DropTable(
-                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "role_types");

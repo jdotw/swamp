@@ -53,14 +53,14 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
         Date = role.ClosedAtDate.Value,
       });
     }
-    foreach (var unitAssignment in role.UnitAssignments)
-    {
-      history.Add(new RoleHistoryUnitAssignmentDto
-      {
-        Date = unitAssignment.StartDate,
-        UnitAssignment = Mapper.Map<UnitAssignmentCollectionDto>(unitAssignment),
-      });
-    }
+    // foreach (var unitAssignment in role.UnitAssignments)
+    // {
+    //   history.Add(new RoleHistoryUnitAssignmentDto
+    //   {
+    //     Date = unitAssignment.StartDate,
+    //     UnitAssignment = Mapper.Map<UnitAssignmentCollectionDto>(unitAssignment),
+    //   });
+    // }
     foreach (var levelAssignment in role.LevelAssignments)
     {
       history.Add(new RoleHistoryLevelAssignmentDto
@@ -91,12 +91,12 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
       LevelId = roleDto.LevelId,
       StartDate = DateTimeOffset.UtcNow
     });
-    role.UnitAssignments.Add(new UnitAssignment
-    {
-      FunctionTypeId = roleDto.FunctionTypeId,
-      UnitId = roleDto.UnitId,
-      StartDate = DateTimeOffset.UtcNow
-    });
+    // role.UnitAssignments.Add(new UnitAssignment
+    // {
+    //   FunctionTypeId = roleDto.FunctionTypeId,
+    //   UnitId = roleDto.UnitId,
+    //   StartDate = DateTimeOffset.UtcNow
+    // });
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);
@@ -166,12 +166,12 @@ public class SquadRolesController : ControllerBase<Role, IRoleRepository>
       LevelId = roleDto.LevelId,
       StartDate = DateTimeOffset.UtcNow
     });
-    role.UnitAssignments.Add(new UnitAssignment
-    {
-      FunctionTypeId = roleDto.FunctionTypeId,
-      UnitId = unitId,
-      StartDate = DateTimeOffset.UtcNow
-    });
+    // role.UnitAssignments.Add(new UnitAssignment
+    // {
+    //   FunctionTypeId = roleDto.FunctionTypeId,
+    //   UnitId = unitId,
+    //   StartDate = DateTimeOffset.UtcNow
+    // });
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);
@@ -183,7 +183,7 @@ public class SquadRolesController : ControllerBase<Role, IRoleRepository>
 
 }
 
-[ApiController]
+/* [ApiController]
 [Route("/roles/{roleId}/unit_assignments")]
 public class RoleUnitAssignmentController : ControllerBase<Role, IUnitAssignmentRepository>
 {
@@ -214,4 +214,4 @@ public class RoleUnitAssignmentController : ControllerBase<Role, IUnitAssignment
   }
 
 }
-
+*/

@@ -96,16 +96,16 @@ public class PersonsController : ControllerBase<Person, IPersonRepository>
 public class PersonCSVRow
 {
   public int Number { get; set; }
-  public string Gender { get; set; }
-  public string GivenName { get; set; }
-  public string Surname { get; set; }
-  public string StreetAddress { get; set; }
-  public string City { get; set; }
-  public string State { get; set; }
+  public string Gender { get; set; } = null!;
+  public string GivenName { get; set; } = null!;
+  public string Surname { get; set; } = null!;
+  public string StreetAddress { get; set; } = null!;
+  public string City { get; set; } = null!;
+  public string State { get; set; } = null!;
   public int ZipCode { get; set; }
-  public string CountryFull { get; set; }
-  public string EmailAddress { get; set; }
-  public string Username { get; set; }
-  public string TelephoneNumber { get; set; }
-  public string Birthday { get; set; }
+  public string CountryFull { get; set; } = null!;
+  public string EmailAddress { get; set; } = null!;
+  public string Username { get; set; } = null!;
+  public string TelephoneNumber { get; set; } = null!;
+  public string Birthday { get; set; } = null!;
 }

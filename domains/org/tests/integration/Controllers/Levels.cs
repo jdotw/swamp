@@ -48,16 +48,33 @@ public class LevelTests
   {
     // Arrange
     var existingLevel = _seedData.Level;
+    var childLevel = _seedData.ChildLevel;
 
     // Act
     var roles = await _client.GetFromJsonAsync<List<Level>>($"{_path}", _options);
 
     // Assert
+    // This does return all Levels in a flat list
     Assert.Contains(roles!, t => t.Id == existingLevel.Id);
+    Assert.Contains(roles!, t => t.Id == childLevel.Id);
   }
 
   [Fact]
-  public async Task TestGetLevel()
+  public async Task TestGetLevelWithoutChildren()
+  {
+    // Arrange
+    var existingLevel = _seedData.LevelWithoutChildren;
+
+    // Act
+    var level = await _client.GetFromJsonAsync<LevelDto>($"{_path}/{existingLevel.Id}", _options);
+
+    // Assert
+    Assert.Equal(level!.Id, existingLevel.Id);
+    Assert.Empty(level.Children);
+  }
+
+  [Fact]
+  public async Task TestGetLevelWithChildren()
   {
     // Arrange
     var existingLevel = _seedData.Level;
@@ -67,6 +84,21 @@ public class LevelTests
 
     // Assert
     Assert.Equal(level!.Id, existingLevel.Id);
+    Assert.Contains(level.Children, t => t.Id == _seedData.ChildLevel.Id);
+  }
+
+  [Fact]
+  public async Task TestGetChildLevel()
+  {
+    // Arrange
+    var existingLevel = _seedData.ChildLevel;
+
+    // Act
+    var level = await _client.GetFromJsonAsync<LevelDto>($"{_path}/{existingLevel.Id}", _options);
+
+    // Assert
+    Assert.Equal(level!.Id, existingLevel.Id);
+    Assert.Empty(level.Children);
   }
 
   [Fact]
@@ -111,7 +143,7 @@ public class LevelTests
   public async Task TestDeleteLevel()
   {
     // Arrange
-    var role = _seedData.Level;
+    var role = _seedData.LevelWithoutChildren;
 
     // Act
     var response = await _client.DeleteAsync($"{_path}/{role.Id}");
@@ -124,6 +156,8 @@ public class LevelTests
 public class LevelsSeedDataClass : ISeedDataClass<OrgDbContext>
 {
   public Level Level = null!;
+  public Level LevelWithoutChildren = null!;
+  public Level ChildLevel = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -135,6 +169,20 @@ public class LevelsSeedDataClass : ISeedDataClass<OrgDbContext>
     {
       IndividualContributorTitle = "Individual Contributor",
       ManagerTitle = "Manager",
+    }).Entity;
+    db.SaveChanges(true);
+    
+    LevelWithoutChildren = db.Levels.Add(new Level
+    {
+      IndividualContributorTitle = "IC Without Children",
+      ManagerTitle = "Manager Without Children",
+    }).Entity;
+    db.SaveChanges(true);
+
+    ChildLevel = db.Levels.Add(new Level
+    {
+      IndividualContributorTitle = "IC Variation",
+      Parent = Level
     }).Entity;
     db.SaveChanges(true);
   }

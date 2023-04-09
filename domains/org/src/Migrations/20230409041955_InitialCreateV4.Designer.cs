@@ -12,8 +12,8 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    [Migration("20230203225538_AddedIsIndividualContributor")]
-    partial class AddedIsIndividualContributor
+    [Migration("20230409041955_InitialCreateV4")]
+    partial class InitialCreateV4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Org.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Org.Entities.FunctionType", b =>
+            modelBuilder.Entity("Base.Entities.ParameterBase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,84 +34,34 @@ namespace Org.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("ActiveFromDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("active_from_date");
-
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
-                    b.Property<bool>("IsIndividualContributor")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_individual_contributor");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnName("discriminator");
 
-                    b.Property<DateTimeOffset?>("RetiredAtDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("retired_at_date");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_id");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
 
                     b.HasKey("Id")
-                        .HasName("pk_function_types");
+                        .HasName("pk_parameter_base");
 
-                    b.ToTable("function_types", (string)null);
-                });
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_parameter_base_parent_id");
 
-            modelBuilder.Entity("Org.Entities.Level", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                    b.ToTable("ParameterBase");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ParameterBase");
 
-                    b.Property<DateTimeOffset>("ActiveFromDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("active_from_date");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
-
-                    b.Property<string>("ExternalId")
-                        .HasColumnType("text")
-                        .HasColumnName("external_id");
-
-                    b.Property<int>("Index")
-                        .HasColumnType("integer")
-                        .HasColumnName("index");
-
-                    b.Property<string>("IndividualContributorTitle")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("individual_contributor_title");
-
-                    b.Property<string>("ManagerTitle")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("manager_title");
-
-                    b.Property<DateTimeOffset>("RetiredAtDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("retired_at_date");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_levels");
-
-                    b.ToTable("levels", (string)null);
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Org.Entities.LevelAssignment", b =>
@@ -327,7 +277,7 @@ namespace Org.Migrations
                     b.ToTable("role_types", (string)null);
                 });
 
-            modelBuilder.Entity("Org.Entities.Unit", b =>
+            modelBuilder.Entity("Org.Entities.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,124 +307,68 @@ namespace Org.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("UnitType")
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_id");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_teams");
+
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_teams_parent_id");
+
+                    b.ToTable("teams", (string)null);
+                });
+
+            modelBuilder.Entity("Org.Entities.Level", b =>
+                {
+                    b.HasBaseType("Base.Entities.ParameterBase");
+
+                    b.Property<DateTimeOffset>("ActiveFromDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("active_from_date");
+
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("text")
+                        .HasColumnName("external_id");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("integer")
+                        .HasColumnName("index");
+
+                    b.Property<string>("IndividualContributorTitle")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("unit_type");
+                        .HasColumnName("individual_contributor_title");
 
-                    b.Property<DateTimeOffset>("UpdatedDate")
+                    b.Property<string>("ManagerTitle")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("manager_title");
+
+                    b.Property<DateTimeOffset>("RetiredAtDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
+                        .HasColumnName("retired_at_date");
 
-                    b.HasKey("Id")
-                        .HasName("pk_units");
-
-                    b.ToTable("Units");
-
-                    b.HasDiscriminator<string>("UnitType").HasValue("Unit");
-
-                    b.UseTphMappingStrategy();
+                    b.HasDiscriminator().HasValue("Level");
                 });
 
-            modelBuilder.Entity("Org.Entities.UnitAssignment", b =>
+            modelBuilder.Entity("Base.Entities.ParameterBase", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                    b.HasOne("Base.Entities.ParameterBase", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_parameter_base_parameter_base_parent_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
-
-                    b.Property<DateTimeOffset?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_date");
-
-                    b.Property<int>("FunctionTypeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("function_type_id");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer")
-                        .HasColumnName("role_id");
-
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_date");
-
-                    b.Property<int>("UnitId")
-                        .HasColumnType("integer")
-                        .HasColumnName("unit_id");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_unit_assignments");
-
-                    b.HasIndex("FunctionTypeId")
-                        .HasDatabaseName("ix_unit_assignments_function_type_id");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_unit_assignments_role_id");
-
-                    b.HasIndex("UnitId")
-                        .HasDatabaseName("ix_unit_assignments_unit_id");
-
-                    b.ToTable("unit_assignments", (string)null);
-                });
-
-            modelBuilder.Entity("Org.Entities.Chapter", b =>
-                {
-                    b.HasBaseType("Org.Entities.Unit");
-
-                    b.Property<int>("PracticeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("practice_id");
-
-                    b.HasIndex("PracticeId")
-                        .HasDatabaseName("ix_units_practice_id");
-
-                    b.HasDiscriminator().HasValue("chapter");
-                });
-
-            modelBuilder.Entity("Org.Entities.Practice", b =>
-                {
-                    b.HasBaseType("Org.Entities.Unit");
-
-                    b.HasDiscriminator().HasValue("practice");
-                });
-
-            modelBuilder.Entity("Org.Entities.Squad", b =>
-                {
-                    b.HasBaseType("Org.Entities.Unit");
-
-                    b.Property<int>("TribeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("tribe_id");
-
-                    b.HasIndex("TribeId")
-                        .HasDatabaseName("ix_units_tribe_id");
-
-                    b.HasDiscriminator().HasValue("squad");
-                });
-
-            modelBuilder.Entity("Org.Entities.Team", b =>
-                {
-                    b.HasBaseType("Org.Entities.Unit");
-
-                    b.HasDiscriminator().HasValue("team");
-                });
-
-            modelBuilder.Entity("Org.Entities.Tribe", b =>
-                {
-                    b.HasBaseType("Org.Entities.Unit");
-
-                    b.HasDiscriminator().HasValue("tribe");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Org.Entities.LevelAssignment", b =>
@@ -484,7 +378,7 @@ namespace Org.Migrations
                         .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_level_assignments_levels_level_id");
+                        .HasConstraintName("fk_level_assignments_parameter_base_level_id");
 
                     b.HasOne("Org.Entities.Role", "Role")
                         .WithMany("LevelAssignments")
@@ -540,68 +434,14 @@ namespace Org.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Org.Entities.UnitAssignment", b =>
+            modelBuilder.Entity("Org.Entities.Team", b =>
                 {
-                    b.HasOne("Org.Entities.FunctionType", "FunctionType")
-                        .WithMany("UnitAssignments")
-                        .HasForeignKey("FunctionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_function_types_function_type_id");
+                    b.HasOne("Org.Entities.Team", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_teams_teams_parent_id");
 
-                    b.HasOne("Org.Entities.Role", "Role")
-                        .WithMany("UnitAssignments")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_roles_role_id");
-
-                    b.HasOne("Org.Entities.Unit", "Unit")
-                        .WithMany("UnitAssignments")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_unit_assignments_units_unit_id");
-
-                    b.Navigation("FunctionType");
-
-                    b.Navigation("Role");
-
-                    b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("Org.Entities.Chapter", b =>
-                {
-                    b.HasOne("Org.Entities.Practice", "Practice")
-                        .WithMany("Chapters")
-                        .HasForeignKey("PracticeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_units_units_practice_id");
-
-                    b.Navigation("Practice");
-                });
-
-            modelBuilder.Entity("Org.Entities.Squad", b =>
-                {
-                    b.HasOne("Org.Entities.Tribe", "Tribe")
-                        .WithMany("Squads")
-                        .HasForeignKey("TribeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_units_units_tribe_id");
-
-                    b.Navigation("Tribe");
-                });
-
-            modelBuilder.Entity("Org.Entities.FunctionType", b =>
-                {
-                    b.Navigation("UnitAssignments");
-                });
-
-            modelBuilder.Entity("Org.Entities.Level", b =>
-                {
-                    b.Navigation("LevelAssignments");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Org.Entities.Person", b =>
@@ -614,8 +454,6 @@ namespace Org.Migrations
                     b.Navigation("LevelAssignments");
 
                     b.Navigation("RoleAssignments");
-
-                    b.Navigation("UnitAssignments");
                 });
 
             modelBuilder.Entity("Org.Entities.RoleType", b =>
@@ -625,19 +463,14 @@ namespace Org.Migrations
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("Org.Entities.Unit", b =>
+            modelBuilder.Entity("Org.Entities.Team", b =>
                 {
-                    b.Navigation("UnitAssignments");
+                    b.Navigation("Children");
                 });
 
-            modelBuilder.Entity("Org.Entities.Practice", b =>
+            modelBuilder.Entity("Org.Entities.Level", b =>
                 {
-                    b.Navigation("Chapters");
-                });
-
-            modelBuilder.Entity("Org.Entities.Tribe", b =>
-                {
-                    b.Navigation("Squads");
+                    b.Navigation("LevelAssignments");
                 });
 #pragma warning restore 612, 618
         }

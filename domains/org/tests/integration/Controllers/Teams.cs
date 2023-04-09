@@ -42,33 +42,66 @@ public class TeamTests
   public async Task TestGetAllTeams()
   {
     // Arrange
-    var existingTeam = _seedData.Team;
+    var existingTeam = _seedData.ParentTeam;
 
     // Act
     var teams = await _client.GetFromJsonAsync<List<Team>>($"{_path}", _options);
 
     // Assert
+    // Returns flat list, so all teams will be present
     Assert.Contains(teams!, t => t.Id == existingTeam.Id);
+    Assert.Contains(teams!, t => t.Id == _seedData.ChildTeam.Id);
+    Assert.Contains(teams!, t => t.Id == _seedData.GrandChildTeam.Id);
   }
 
   [Fact]
-  public async Task TestGetTeam()
+  public async Task TestGetTeamWithoutChildren()
   {
     // Arrange
-    var existingTeam = _seedData.Team;
+    var existingTeam = _seedData.TeamWithoutChildren;
 
     // Act
     var team = await _client.GetFromJsonAsync<TeamDto>($"{_path}/{existingTeam.Id}", _options);
 
     // Assert
     Assert.Equal(team!.Id, existingTeam.Id);
+    Assert.Empty(team.Children);
+  }
+
+  [Fact]
+  public async Task TestGetTeamWithChildren()
+  {
+    // Arrange
+    var existingTeam = _seedData.ParentTeam;
+
+    // Act
+    var team = await _client.GetFromJsonAsync<TeamDto>($"{_path}/{existingTeam.Id}", _options);
+
+    // Assert
+    Console.WriteLine("Children: " + team!.Children.Count);
+    Assert.Equal(team!.Id, existingTeam.Id);
+    Assert.Contains(team.Children, t => t.Id == _seedData.ChildTeam.Id);
+  }
+
+  [Fact]
+  public async Task TestGetChildTeam()
+  {
+    // Arrange
+    var existingTeam = _seedData.ChildTeam;
+
+    // Act
+    var team = await _client.GetFromJsonAsync<TeamDto>($"{_path}/{existingTeam.Id}", _options);
+
+    // Assert
+    Assert.Equal(team!.Id, existingTeam.Id);
+    Assert.Contains(team.Children, t => t.Id == _seedData.GrandChildTeam.Id);
   }
 
   [Fact]
   public async Task TestUpdateTeam_OnSuccess_ReturnsNoContent()
   {
     // Arrange
-    var existingTeam = _seedData.Team;
+    var existingTeam = _seedData.ParentTeam;
     var updateDto = new UpdateTeamDto
     {
       Name = existingTeam.Name,
@@ -85,7 +118,7 @@ public class TeamTests
   public async Task TestUpdateTeam_ForNonExistentTeam_ReturnsNotFound()
   {
     // Arrange
-    var existingTeam = _seedData.Team;
+    var existingTeam = _seedData.ParentTeam;
     var updateDto = new UpdateTeamDto
     {
       Name = existingTeam.Name,
@@ -99,10 +132,10 @@ public class TeamTests
   }
 
   [Fact]
-  public async Task TestDeleteTeam()
+  public async Task TestDeleteTeamWithoutChildren()
   {
     // Arrange
-    var team = _seedData.Team;
+    var team = _seedData.TeamWithoutChildren;
 
     // Act
     var response = await _client.DeleteAsync($"{_path}/{team.Id}");
@@ -110,22 +143,54 @@ public class TeamTests
     // Assert
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
+
+  [Fact]
+  public async Task TestDeleteTeamWithChildren()
+  {
+    // Arrange
+    var team = _seedData.ParentTeam;
+
+    // Act
+    var response = await _client.DeleteAsync($"{_path}/{team.Id}");
+
+    // Assert
+    Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+  }
 }
 
 public class TeamsSeedDataClass : ISeedDataClass<OrgDbContext>
 {
-  public Team Team = null!;
+  public Team ParentTeam = null!;
+  public Team ChildTeam = null!;
+  public Team GrandChildTeam = null!;
+  public Team TeamWithoutChildren = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
     // Performs DB initialization before the 
     // start of all tests in the TeamTests class.
     // The DB is not re-initialized between tests.
-    Team = db.Teams.Add(new Team
+    ParentTeam = db.Teams.Add(new Team
     {
       Name = "Team Name",
     }).Entity;
-
+    db.SaveChanges(true);
+    ChildTeam = db.Teams.Add(new Team
+    {
+      Name = "Child Team",
+      Parent = ParentTeam,
+    }).Entity;
+    db.SaveChanges(true);
+    GrandChildTeam = db.Teams.Add(new Team
+    {
+      Name = "Grand Child Team",
+      Parent = ChildTeam,
+    }).Entity;
+    db.SaveChanges(true);
+    TeamWithoutChildren = db.Teams.Add(new Team
+    {
+      Name = "Team Without Children",
+    }).Entity;
     db.SaveChanges(true);
   }
 }

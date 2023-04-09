@@ -20,8 +20,6 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
         .ThenInclude(r => r.LevelAssignments)
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
-        .ThenInclude(r => r.UnitAssignments)
-        .ThenInclude(u => u.Unit)
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
         .ThenInclude(r => r.RoleType)

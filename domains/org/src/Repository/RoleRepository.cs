@@ -11,10 +11,6 @@ static public class RoleRepositoryExtensions
   {
     return query.Include(p => p.RoleAssignments.Where(p => p.EndDate == null).OrderBy(p => p.Id).Take(1));
   }
-  static public IIncludableQueryable<Role, IEnumerable<UnitAssignment>> IncludeActiveUnitAssignment(this IQueryable<Role> query)
-  {
-    return query.Include(p => p.UnitAssignments.Where(p => p.EndDate == null).OrderBy(p => p.Id));
-  }
 }
 
 public class RoleRepository : RepositoryBase<Role>, IRoleRepository
@@ -32,10 +28,6 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         .ThenInclude(p => p.Level)
       .IncludeActiveRoleAssignment()
         .ThenInclude(p => p.Person)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.FunctionType)
-      .IncludeActiveUnitAssignment()
-        .ThenInclude(p => p.Unit)
       .AsSplitQuery()
       .OrderBy(s => s.Id);
   }
@@ -50,7 +42,6 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
   public async Task<IEnumerable<Role>> GetAllAsync(int unitId)
   {
     return await GetAll()
-    .Where(s => s.UnitAssignments.Any(u => u.UnitId == unitId))
     .ToListAsync();
   }
 
@@ -67,10 +58,6 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .ThenInclude(p => p.Level)
       .Include(p => p.RoleAssignments)
       .ThenInclude(p => p.Person)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.FunctionType)
-      .Include(p => p.UnitAssignments)
-      .ThenInclude(p => p.Unit)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }

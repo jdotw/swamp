@@ -30,7 +30,6 @@ public class RoleTests
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
       UnitId = _seedData.Team.Id,
-      FunctionTypeId = _seedData.FunctionType.Id
     };
 
     // Act
@@ -54,7 +53,6 @@ public class RoleTests
     {
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
-      FunctionTypeId = _seedData.FunctionType.Id
     };
 
     // Act
@@ -73,9 +71,6 @@ public class RoleTests
   public Task TestCreateRole_ForTeam() => TestCreateRoleForUnitAtPath($"/teams/{_seedData.Team.Id}/roles");
 
   [Fact]
-  public Task TestCreateRole_ForSquad() => TestCreateRoleForUnitAtPath($"/tribes/{_seedData.Squad.TribeId}/squads/{_seedData.Squad.Id}/roles");
-
-  [Fact]
   public async Task TestGetAllRoles()
   {
     // Arrange
@@ -88,37 +83,7 @@ public class RoleTests
     Assert.Contains(roles!, t => t.Id == existingRole.Id);
     Assert.Contains(roles!, t => t.RoleType!.Id == existingRole.RoleTypeId);
     var expectedRole = roles!.First(t => t.Id == existingRole.Id);
-    Assert.NotNull(expectedRole.CapabilityUnitAssignment);
-    Assert.NotNull(expectedRole.DeliveryUnitAssignment);
-    var delivery = expectedRole.CapabilityUnitAssignment;
-    expectedRole.CapabilityUnitAssignment.Unit.Id.Should().Be(_seedData.Chapter.Id);
-    expectedRole.DeliveryUnitAssignment.Unit.Id.Should().Be(_seedData.Team.Id);
   }
-
-  [Fact]
-  public async Task TestGetAllRoles_BySquad()
-  {
-    // Arrange
-    var existingSquad = _seedData.Squad;
-    var existingSquadRole = _seedData.SquadRole;
-
-    // Act
-    var path = $"/tribes/{existingSquad.TribeId}/squads/{existingSquad.Id}/roles";
-    var roles = await _client.GetFromJsonAsync<List<RoleCollectionDto>>(path, _options);
-
-    // Assert
-    Assert.Contains(roles!, t => t.Id == existingSquadRole.Id);
-    Assert.Contains(roles!, t => t.RoleType!.Id == existingSquadRole.RoleTypeId);
-    var expectedRole = roles!.First(t => t.Id == existingSquadRole.Id);
-    Assert.NotNull(expectedRole.ActiveLevelAssignment);
-    Assert.Null(expectedRole.ActiveRoleAssignment);
-    Assert.NotNull(expectedRole.CapabilityUnitAssignment);
-    Assert.NotNull(expectedRole.DeliveryUnitAssignment);
-    var delivery = expectedRole.CapabilityUnitAssignment;
-    expectedRole.CapabilityUnitAssignment.Unit.Id.Should().Be(_seedData.Chapter.Id);
-    expectedRole.DeliveryUnitAssignment.Unit.Id.Should().Be(_seedData.Squad.Id);
-  }
-
 
   [Fact]
   public async Task TestGetRole()
@@ -189,12 +154,7 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
   public RoleType RoleType = null!;
   public Role Role = null!;
   public Team Team = null!;
-  public Practice Practice = null!;
-  public Chapter Chapter = null!;
-  public Tribe Tribe = null!;
-  public Squad Squad = null!;
   public Role SquadRole = null!;
-  public FunctionType FunctionType = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -205,12 +165,6 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     RoleType = db.RoleTypes.Add(new RoleType
     {
       Title = "Seed Role Type",
-    }).Entity;
-    db.SaveChanges(true);
-
-    FunctionType = db.FunctionTypes.Add(new FunctionType
-    {
-      Name = "Seed Function Type",
     }).Entity;
     db.SaveChanges(true);
 
@@ -227,32 +181,6 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
-    Practice = db.Practices.Add(new Practice
-    {
-      Name = "Seed Practice",
-    }).Entity;
-    db.SaveChanges(true);
-
-    Chapter = db.Chapters.Add(new Chapter
-    {
-      Name = "Seed Chapter",
-      PracticeId = Practice.Id,
-    }).Entity;
-    db.SaveChanges(true);
-
-    Tribe = db.Tribes.Add(new Tribe
-    {
-      Name = "Seed Tribe",
-    }).Entity;
-    db.SaveChanges(true);
-
-    Squad = db.Squads.Add(new Squad
-    {
-      Name = "Seed Squad",
-      TribeId = Tribe.Id,
-    }).Entity;
-    db.SaveChanges(true);
-
     Role = db.Roles.Add(new Role
     {
       RoleTypeId = RoleType.Id,
@@ -263,19 +191,6 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
           LevelId = Level.Id,
         }
       },
-      UnitAssignments = new List<UnitAssignment>
-      {
-        new UnitAssignment
-        {
-          UnitId = Team.Id,
-          FunctionTypeId = FunctionType.Id,
-        },
-        new UnitAssignment
-        {
-          UnitId = Chapter.Id,
-          FunctionTypeId = FunctionType.Id,
-        }
-      }
     }).Entity;
     db.SaveChanges(true);
 
@@ -289,19 +204,6 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
           LevelId = Level.Id,
         }
       },
-      UnitAssignments = new List<UnitAssignment>
-      {
-        new UnitAssignment
-        {
-          UnitId = Squad.Id,
-          FunctionTypeId = FunctionType.Id,
-        },
-        new UnitAssignment
-        {
-          UnitId = Chapter.Id,
-          FunctionTypeId = FunctionType.Id,
-        }
-      }
     }).Entity;
     db.SaveChanges(true);
   }

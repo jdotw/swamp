@@ -28,6 +28,8 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.LevelAssignments)
+      .Include(p => p.Children)
+      .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
 

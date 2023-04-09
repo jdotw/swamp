@@ -26,7 +26,7 @@ public class RoleHistoryClosedDto : RoleHistoryItemBase
 public class RoleHistoryUnitAssignmentDto : RoleHistoryItemBase
 {
   public string Type { get; } = "unit_assignment";
-  public UnitAssignmentCollectionDto UnitAssignment { get; set; } = null!;
+  // public UnitAssignmentCollectionDto UnitAssignment { get; set; } = null!;
 }
 
 public class RoleHistoryLevelAssignmentDto : RoleHistoryItemBase

@@ -4,7 +4,7 @@ using Base.Repository;
 
 namespace Org.Repository;
 
-public class TeamRepository : UnitRepository<Team>, ITeamRepository
+public class TeamRepository : RepositoryBase<Team>, ITeamRepository
 {
   public TeamRepository(OrgDbContext repositoryContext)
       : base(repositoryContext)
@@ -27,7 +27,7 @@ public class TeamRepository : UnitRepository<Team>, ITeamRepository
   public async Task<Team?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.UnitAssignments)
+      .Include(p => p.Children)
       .FirstOrDefaultAsync();
   }
 
@@ -39,7 +39,6 @@ public class TeamRepository : UnitRepository<Team>, ITeamRepository
 
   public virtual void UpdateFields(Team update, Team existing)
   {
-    base.UpdateFields(update, existing);
   }
 
   public async Task<int> UpdateAsync(Team updatedTeam)
