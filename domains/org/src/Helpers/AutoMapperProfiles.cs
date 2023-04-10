@@ -73,6 +73,7 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateRoleTypeDto, RoleType>();
 
     CreateMap<Team, TeamDto>();
+    CreateMap<Team, TeamCollectionDto>();
     CreateMap<CreateTeamDto, Team>();
     CreateMap<UpdateTeamDto, Team>();
   }

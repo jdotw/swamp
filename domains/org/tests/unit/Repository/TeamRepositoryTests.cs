@@ -22,6 +22,7 @@ public class TeamRepositoryTests
     var existingTeam = new Team()
     {
       Id = 1,
+      Type = "delivery",
       Name = "Team Name",
       Description = "Description",
       DisbandedDate = null,
@@ -29,11 +30,43 @@ public class TeamRepositoryTests
     var update = new Team()
     {
       Id = existingTeam.Id,
+      Type = existingTeam.Type,
+      Name = "New Name",
+      Description = "New Description",
+      DisbandedDate = DateTimeOffset.MaxValue,
+      ParentId = 100,
+    };
+    _repo.Object.UpdateFields(update, existingTeam);
+    Assert.Equal(update.Name, existingTeam.Name);
+    Assert.Equal(update.Description, existingTeam.Description);
+    Assert.Equal(update.DisbandedDate, existingTeam.DisbandedDate);
+    Assert.Equal(update.ParentId, existingTeam.ParentId);
+  }
+
+  [Fact]
+  public void UpdateTeamFields_DoesNotUpdateExpectedFields()
+  {
+    var ExpectedId = 1;
+    var ExpectedType = "delivery";
+    var existingTeam = new Team()
+    {
+      Id = ExpectedId,
+      Type = ExpectedType,
+      Name = "Team Name",
+      Description = "Description",
+      DisbandedDate = null,
+    };
+    var update = new Team()
+    {
+      Id = 100000, // Should not change
+      Type = "NOTdelivery", // should not change
       Name = existingTeam.Name,
       Description = existingTeam.Description,
       DisbandedDate = existingTeam.DisbandedDate,
     };
     _repo.Object.UpdateFields(update, existingTeam);
+    Assert.Equal(ExpectedId, existingTeam.Id);
+    Assert.Equal(ExpectedType, existingTeam.Type);
   }
 
   [Fact]
@@ -43,6 +76,7 @@ public class TeamRepositoryTests
     {
       Id = 1,
       Name = "Team Name",
+      Type = "delivery",
       Description = "Description",
       DisbandedDate = null,
     };
@@ -52,6 +86,7 @@ public class TeamRepositoryTests
     {
       Id = existingTeam.Id,
       Name = existingTeam.Name,
+      Type = "delivery",
       Description = existingTeam.Description,
       DisbandedDate = existingTeam.DisbandedDate,
     };

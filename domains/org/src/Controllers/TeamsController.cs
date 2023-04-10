@@ -21,7 +21,7 @@ public class TeamsController : ControllerBase<Team, ITeamRepository>
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var teams = await Repository.GetAllAsync(ids);
-    var teamsDto = Mapper.Map<IEnumerable<TeamDto>>(teams);
+    var teamsDto = Mapper.Map<IEnumerable<TeamCollectionDto>>(teams);
     return Ok(teamsDto);
   }
 

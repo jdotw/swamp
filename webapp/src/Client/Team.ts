@@ -2,9 +2,26 @@ import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps, UseCRUDProps } from "./CRUD/CRUD";
 import { MutateUnit, Unit } from "./UnitInterface";
 
-export interface Team extends Unit {}
+export interface Team {
+  id: number;
+  name: string;
+  description?: string;
+  type: string;
+  formed_date: string;
+  disbanded_date?: string;
+  parent_id?: number;
+  parent?: Team;
+  children: Team[];
+}
 
-export interface MutateTeam extends MutateUnit {}
+export interface MutateTeam {
+  name: string;
+  description?: string;
+  type: string;
+  parent_id?: number;
+  formed_date: string;
+  disbanded_date?: string;
+}
 
 export interface UseTeamProps extends UseCRUDOptionalProps {}
 

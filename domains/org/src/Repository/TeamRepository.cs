@@ -39,6 +39,10 @@ public class TeamRepository : RepositoryBase<Team>, ITeamRepository
 
   public virtual void UpdateFields(Team update, Team existing)
   {
+    existing.Name = update.Name;
+    existing.Description = update.Description;
+    existing.ParentId = update.ParentId;
+    existing.DisbandedDate = update.DisbandedDate;
   }
 
   public async Task<int> UpdateAsync(Team updatedTeam)

@@ -178,6 +178,7 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     Team = db.Teams.Add(new Team
     {
       Name = "Seed Team",
+      Type = "home",
     }).Entity;
     db.SaveChanges(true);
 

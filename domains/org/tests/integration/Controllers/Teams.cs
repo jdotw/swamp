@@ -28,6 +28,7 @@ public class TeamTests
     var newTeam = new CreateTeamDto
     {
       Name = "Test Team",
+      Type = "delivery",
     };
 
     // Act
@@ -36,6 +37,28 @@ public class TeamTests
 
     // Assert
     Assert.NotEqual(0, team!.Id);
+  }
+
+  [Fact]
+  public async Task TestCreateTeamWithParent()
+  {
+    // Arrange
+    var existingTeam = _seedData.ParentTeam;
+    var testStart = DateTime.UtcNow;
+    var newTeam = new CreateTeamDto
+    {
+      Name = "Test Child Team",
+      ParentId = existingTeam.Id,
+      Type = "delivery",
+    };
+
+    // Act
+    var team = await _client.PostAsJsonAsync(_path, newTeam, _options)
+      .ContinueWith<TeamDto?>(t => t.Result.Content.ReadFromJsonAsync<TeamDto>(_options).Result);
+
+    // Assert
+    Assert.NotEqual(0, team!.Id);
+    Assert.Equal(existingTeam.Id, team.ParentId);
   }
 
   [Fact]
@@ -173,23 +196,27 @@ public class TeamsSeedDataClass : ISeedDataClass<OrgDbContext>
     ParentTeam = db.Teams.Add(new Team
     {
       Name = "Team Name",
+      Type = "delivery",
     }).Entity;
     db.SaveChanges(true);
     ChildTeam = db.Teams.Add(new Team
     {
       Name = "Child Team",
       Parent = ParentTeam,
+      Type = "delivery",
     }).Entity;
     db.SaveChanges(true);
     GrandChildTeam = db.Teams.Add(new Team
     {
       Name = "Grand Child Team",
       Parent = ChildTeam,
+      Type = "delivery",
     }).Entity;
     db.SaveChanges(true);
     TeamWithoutChildren = db.Teams.Add(new Team
     {
       Name = "Team Without Children",
+      Type = "delivery",
     }).Entity;
     db.SaveChanges(true);
   }
