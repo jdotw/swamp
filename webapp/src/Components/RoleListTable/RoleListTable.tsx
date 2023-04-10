@@ -7,8 +7,8 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Role, useRole } from "../../Client/Role";
-import { MutateRoleModal } from "../../Pages/Delivery/Squads/MutateRoleModal";
+import { MutateRole, Role, useRole } from "../../Client/Role";
+import { MutateRoleModal } from "./MutateRoleModal";
 import Loading from "../Loading/Loading";
 
 const useStyles = createStyles((theme) => ({
@@ -25,10 +25,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface RoleListTableProps {
-  unitId?: number;
-  parentUnitId?: number;
-  unitType?: "tribe" | "squad" | "practice" | "chapter" | "team";
-  showCapability?: boolean;
 }
 
 export const RoleListTablePropsDefaults = {
@@ -36,40 +32,31 @@ export const RoleListTablePropsDefaults = {
 };
 
 const RoleListTable = ({
-  unitId,
-  parentUnitId,
-  unitType,
-  showCapability = true,
 }: RoleListTableProps) => {
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
     loading,
     items: roles,
     createItem: createRole,
-  } = useRole({
-    unitId,
-    parentUnitId,
-    unitType,
-  });
+  } = useRole({});
 
-  const submitNewRole = async (newRole: any) => {
+  const submitNewRole = async (newRole: MutateRole) => {
     await createRole(newRole);
     setAddModalOpen(false);
   };
 
   const roleTitle = (role: Role) => {
-    if (
-      (role.delivery_unit_assignment &&
-        !role.delivery_unit_assignment.function_type
-          .is_individual_contributor) ||
-      (role.capability_unit_assignment &&
-        !role.capability_unit_assignment.function_type
-          .is_individual_contributor)
-    ) {
+    if (role.active_level_assignment.level.manager_title
+     && role.active_level_assignment.level.individual_contributor_title)
+    {
+      return `${role.active_level_assignment.level.manager_title} / ${role.active_level_assignment.level.individual_contributor_title}`;
+    } else if (role.active_level_assignment.level.manager_title) {
       return role.active_level_assignment.level.manager_title;
-    } else {
+    } else if (role.active_level_assignment.level.individual_contributor_title) {
       return role.active_level_assignment.level.individual_contributor_title;
+    } else {
+      return "No Title";
     }
   };
 
@@ -88,25 +75,11 @@ const RoleListTable = ({
         </Link>
       </td>
       <td>
-        {role.delivery_unit_assignment ? (
-          <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
-            {role.delivery_unit_assignment.unit.name}
-          </Link>
-        ) : (
-          "Not Assigned"
-        )}
+        Not Assigned
       </td>
-      {showCapability && (
-        <td>
-          {role.capability_unit_assignment ? (
-            <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
-              {role.capability_unit_assignment.unit.name}
-            </Link>
-          ) : (
-            "Not Assigned"
-          )}
-        </td>
-      )}
+      <td>
+        Not Assigned
+      </td>
       <td>
         {role.active_role_assignment?.person ? (
           <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
@@ -135,7 +108,7 @@ const RoleListTable = ({
                 <th>Type</th>
                 <th>Level</th>
                 <th>Delivery</th>
-                {showCapability && <th>Capability</th>}
+                <th>Capability</th>
                 <th>Person</th>
                 <th>Tenure</th>
               </tr>
@@ -143,21 +116,15 @@ const RoleListTable = ({
             <tbody>{roleElements}</tbody>
           </Table>
         </ScrollArea>
-        {unitId && unitType && (
-          <div className={classes.buttonBar}>
-            <Button onClick={() => setAddModalOpen(true)}>Add Role</Button>
-          </div>
-        )}
+        <div className={classes.buttonBar}>
+          <Button onClick={() => setAddModalOpen(true)}>Add Role</Button>
+        </div>
       </div>
-      {unitId && unitType && (
-        <MutateRoleModal
-          unitId={unitId}
-          unitType={unitType}
-          opened={addModalOpen}
-          onClose={() => setAddModalOpen(false)}
-          onSubmit={submitNewRole}
-        />
-      )}
+      <MutateRoleModal
+        opened={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSubmit={submitNewRole}
+      />
     </>
   );
 };
