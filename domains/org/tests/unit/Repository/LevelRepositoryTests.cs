@@ -76,4 +76,14 @@ public class LevelRepositoryTests
     _repo.Verify(x => x.UpdateFields(update, existingLevel), Times.Once);
     _repo.Verify(x => x.Update(existingLevel), Times.Once);
   }
+
+  [Fact]
+  public async Task AddAsync_FailsWithNoTitles()
+  {
+    var level = new Level()
+    {
+      // No Titles specified
+    };
+    await Assert.ThrowsAsync<ArgumentException>(() => _repo.Object.AddAsync(level));
+  }
 }

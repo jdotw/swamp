@@ -16,7 +16,7 @@ public class LevelsController : ControllerBase<Level, ILevelRepository>
   {
   }
 
-  // GET: /functiontypes
+  // GET: /levels
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
@@ -25,7 +25,7 @@ public class LevelsController : ControllerBase<Level, ILevelRepository>
     return Ok(levelsDto);
   }
 
-  // GET: /functiontypes/5
+  // GET: /levels/5
   [HttpGet("{id}")]
   public async Task<IActionResult> Get(int id)
   {
@@ -35,7 +35,7 @@ public class LevelsController : ControllerBase<Level, ILevelRepository>
     return Ok(levelDto);
   }
 
-  // POST: /functiontypes
+  // POST: /levels
   [HttpPost]
   public async Task<IActionResult> Create(CreateLevelDto levelDto)
   {
@@ -44,7 +44,7 @@ public class LevelsController : ControllerBase<Level, ILevelRepository>
     return CreatedAtAction(nameof(Get), new { id = level.Id }, Mapper.Map<LevelDto>(level));
   }
 
-  // PUT: /functiontypes/5
+  // PUT: /levels/5
   [HttpPut("{id}")]
   public async Task<IActionResult> Update(int id, UpdateLevelDto levelDto)
   {
@@ -54,7 +54,7 @@ public class LevelsController : ControllerBase<Level, ILevelRepository>
     return (updated > 0) ? NoContent() : NotFound();
   }
 
-  // DELETE: /functiontypes/5
+  // DELETE: /levels/5
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete(int id)
   {

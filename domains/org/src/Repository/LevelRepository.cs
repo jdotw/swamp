@@ -35,6 +35,10 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
 
   public override async Task<int> AddAsync(Level Level)
   {
+    if (Level.ManagerTitle is null && Level.IndividualContributorTitle is null)
+    {
+      throw new ArgumentException("Level must have either a ManagerTitle or IndividualContributorTitle");
+    }
     await base.AddAsync(Level);
     return await SaveAsync();
   }
