@@ -1,9 +1,6 @@
 using System.Net;
-using System.Text.Json;
 using Org.DTOs;
 using Org.Entities;
-using JorgeSerrano.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using Org.Repository;
 using Base.IntegrationTests;
@@ -27,6 +24,7 @@ public class LevelTests
     var testStart = DateTime.UtcNow;
     var newLevel = new CreateLevelDto
     {
+      Index = 1,
       IndividualContributorTitle = "IC Title",
       ManagerTitle = "Manager Title"
     };
@@ -108,6 +106,7 @@ public class LevelTests
     var existingLevel = _seedData.Level;
     var updateDto = new UpdateLevelDto
     {
+      Index = 1,
       IndividualContributorTitle = "New IC Title",
       ManagerTitle = "New Manager Title",
       RetiredAtDate = DateTime.UtcNow,
@@ -127,6 +126,7 @@ public class LevelTests
     var nonexistentId = 4352345;
     var updateDto = new UpdateLevelDto
     {
+      Index = 1,
       IndividualContributorTitle = "New IC Title",
       ManagerTitle = "New Manager Title",
       RetiredAtDate = DateTime.UtcNow,
