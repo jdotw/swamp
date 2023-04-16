@@ -60,7 +60,6 @@ public class AutoMapperProfiles : Profile
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));
     CreateMap<CreateRoleDto, Role>();
-    CreateMap<CreateUnitRoleDto, Role>();
     CreateMap<UpdateRoleDto, Role>();
 
     CreateMap<RoleAssignment, RoleAssignmentDto>();
@@ -76,5 +75,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<Team, TeamCollectionDto>();
     CreateMap<CreateTeamDto, Team>();
     CreateMap<UpdateTeamDto, Team>();
+
+    CreateMap<DeploymentType, DeploymentTypeDto>();
+    CreateMap<DeploymentType, DeploymentTypeCollectionDto>();
+    CreateMap<CreateDeploymentTypeDto, DeploymentType>();
+    CreateMap<UpdateDeploymentTypeDto, DeploymentType>();
   }
 }

@@ -14,88 +14,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const fakeData: Level[] = [
-  {
-    id: 1,
-    index: 1,
-    individual_contributor_title: "Graduate",
-    manager_title: null,
-    external_id: "1",
-  },
-  {
-    id: 2,
-    index: 2,
-    individual_contributor_title: "Associate",
-    manager_title: null,
-    external_id: "2",
-  },
-  {
-    id: 3,
-    index: 3,
-    individual_contributor_title: "Senior",
-    manager_title: "Manager",
-    external_id: "3",
-  },
-  {
-    id: 30,
-    index: 3,
-    individual_contributor_title: "",
-    manager_title: "Head Of",
-    external_id: "3a",
-    parent_id: 3,
-  },
-  {
-    id: 4,
-    index: 4,
-    individual_contributor_title: "Principal",
-    manager_title: "Senior Manager",
-    external_id: "4",
-  },
-  {
-    id: 40,
-    index: 4,
-    individual_contributor_title: "Staff",
-    manager_title: null,
-    external_id: "4a",
-    parent_id: 4,
-  },
-  {
-    id: 5,
-    index: 5,
-    individual_contributor_title: "Chief",
-    manager_title: "Director",
-    external_id: "5",
-  },
-  {
-    id: 6,
-    index: 6,
-    individual_contributor_title: "Distinguished",
-    manager_title: "General Manager",
-    external_id: "6",
-  },
-  {
-    id: 7,
-    index: 7,
-    individual_contributor_title: null,
-    manager_title: "Managing Director",
-    external_id: "7",
-  },
-  {
-    id: 70,
-    index: 7,
-    individual_contributor_title: null,
-    manager_title: "CTO",
-    external_id: "7a",
-    parent_id: 7,
-  },
-  ];
-
 function LevelList() {
   const { classes } = useStyles();
-  // const { items, loading, createItem } = useLevel();
-  const { loading, createItem } = useLevel();
+  const { items, loading, createItem } = useLevel();
   const [addLevelModalOpen, setAddLevelModalOpen] = useState(false);
-  const items = fakeData;
 
   if (loading) return <Loading />;
 
@@ -125,7 +47,7 @@ function LevelList() {
 
   const levelRows = (items: Level[], parent?: Level, indent = 0) =>
     items.reduce((acc, level) => {
-      if (level.parent_id == parent?.id) {
+      if (level.parent_id == (parent?.id ?? 0)) {
         acc.push(levelRow(level, indent));
         acc.push(...levelRows(items, level, indent + 1));
       }
@@ -160,6 +82,7 @@ function LevelList() {
         onClose={() => setAddLevelModalOpen(false)}
         onSubmit={submitNewLevel}
         mode="create"
+        parent_levels={items}
       />
     </>
   );

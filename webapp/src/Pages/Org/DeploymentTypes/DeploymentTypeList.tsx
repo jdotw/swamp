@@ -2,12 +2,14 @@
 import { Text, Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { DeploymentType, MutateDeploymentType, useDeploymentType } from "../../../Client/DeploymentTypes";
 import {
   MutateRoleType,
   RoleType,
   useRoleType,
 } from "../../../Client/RoleType";
 import Loading from "../../../Components/Loading/Loading";
+import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
 // import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
 
 const useStyles = createStyles((theme) => ({
@@ -19,57 +21,33 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface DeploymentType {
-  id: number;
-  title: string;
-  parent_id?: number;
-  children?: DeploymentType[];
-};
-
-const mockData: DeploymentType[] = [
-  {
-    "id": 1,
-    "title": "Member",
-  },
-  {
-    id: 2,
-    title: "Manager",
-  },
-  {
-    id: 3,
-    title: "Support",
-  },
-]
-
 function DeploymentTypeList() {
   const { classes } = useStyles();
-  // const { items, loading, createItem } = useRoleType();
+  const { items, loading, createItem } = useDeploymentType();
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const items = mockData;
 
-  // if (loading) return <Loading />;
+  if (loading) return <Loading />;
 
   const submitNewDeploymentType = async (newDeploymentType: MutateDeploymentType) => {
-    // await createItem(newRoleType);
+    await createItem(newDeploymentType);
     setAddModalOpen(false);
   };
 
-  const capabilityRow = (team: DeploymentType, level: number) => (
-    <tr key={team.id.toString()}>
+  const deploymentTypeRow = (deploymentType: DeploymentType, level: number) => (
+    <tr key={deploymentType.id.toString()}>
       <td>
-        <Link style={{ marginLeft: level * 20 }} to={team.id.toString()}>
-          {team.title}
+        <Link style={{ marginLeft: level * 20 }} to={deploymentType.id.toString()}>
+          {deploymentType.name}
         </Link>
       </td>
     </tr>
   );
 
-  const capabilityRows = (items: DeploymentType[], parent?: DeploymentType, level = 0) =>
-    items.reduce((acc, team) => {
-      console.log("team.parent_id", team.parent_id);
-      if (team.parent_id == parent?.id) {
-        acc.push(capabilityRow(team, level));
-        acc.push(...capabilityRows(items, team, level + 1));
+  const deploymentTypeRows = (items: DeploymentType[], parent?: DeploymentType, level = 0) =>
+    items.reduce((acc, deploymentType) => {
+      if (deploymentType.parent_id == (parent?.id ?? 0)) {
+        acc.push(deploymentTypeRow(deploymentType, level));
+        acc.push(...deploymentTypeRows(items, deploymentType, level + 1));
       }
       return acc;
     }, [] as JSX.Element[]);
@@ -86,22 +64,20 @@ function DeploymentTypeList() {
                 <th>Name</th>
               </tr>
             </thead>
-            <tbody>{capabilityRows(mockData)}</tbody>
+            <tbody>{deploymentTypeRows(items)}</tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddModalOpen(true)}>Add Deployment Type</Button>
         </div>
       </div>
-      {/*
       <MutateDeploymentTypeModal
-        capabilities={items}
+        parentCandidates={items}
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSubmit={submitNewDeploymentType}
         mode="create"
       />
-      */}
     </>
   );
 }

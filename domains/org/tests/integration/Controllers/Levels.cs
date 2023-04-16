@@ -42,6 +42,33 @@ public class LevelTests
   }
 
   [Fact]
+  public async Task TestCreateChildLevel()
+  {
+    // Arrange
+    var parentLevel = _seedData.Level;
+    var testStart = DateTime.UtcNow;
+    var newLevel = new CreateLevelDto
+    {
+      Index = parentLevel.Index,
+      IndividualContributorTitle = "Child IC Title",
+      ManagerTitle = "Child Manager Title",
+      ParentId = parentLevel.Id
+    };
+
+    // Act
+    var level = await _client.PostAsJsonAsync(_path, newLevel, _options)
+      .ContinueWith<LevelDto?>(t => t.Result.Content.ReadFromJsonAsync<LevelDto>(_options).Result);
+
+    // Assert
+    Assert.NotEqual(0, level!.Id);
+    Assert.Equal(parentLevel.Id, level.ParentId);
+    Assert.Equal(newLevel.IndividualContributorTitle, level.IndividualContributorTitle);
+    Assert.Equal(newLevel.ManagerTitle, level.ManagerTitle);
+    level.ActiveFromDate.Should().BeOnOrAfter(testStart);
+    level.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+  }
+
+  [Fact]
   public async Task TestGetAllLevels()
   {
     // Arrange
@@ -89,6 +116,7 @@ public class LevelTests
   public async Task TestGetChildLevel()
   {
     // Arrange
+    var parentLevel = _seedData.Level;
     var existingLevel = _seedData.ChildLevel;
 
     // Act
@@ -96,6 +124,8 @@ public class LevelTests
 
     // Assert
     Assert.Equal(level!.Id, existingLevel.Id);
+    Assert.Equal(level.ParentId, parentLevel.Id);
+    Assert.NotNull(level.Parent);
     Assert.Empty(level.Children);
   }
 
@@ -110,6 +140,7 @@ public class LevelTests
       IndividualContributorTitle = "New IC Title",
       ManagerTitle = "New Manager Title",
       RetiredAtDate = DateTime.UtcNow,
+      ParentId = _seedData.ChildLevel.Id,
     };
 
     // Act
@@ -151,6 +182,20 @@ public class LevelTests
     // Assert
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
+
+  [Fact]
+  public async Task TestDeleteLevelWithChildren()
+  {
+    // Arrange
+    var role = _seedData.Level;
+
+    // Act
+    var response = await _client.DeleteAsync($"{_path}/{role.Id}");
+
+    // Assert
+    Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+  }
+
 }
 
 public class LevelsSeedDataClass : ISeedDataClass<OrgDbContext>

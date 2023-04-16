@@ -42,7 +42,6 @@ public class RoleCollectionLevelDto
   public string ManagerTitle { get; set; } = null!;
 }
 
-
 public class RoleCollectionPersonDto
 {
   public int Id { get; set; }
@@ -70,13 +69,6 @@ public class RoleDto
 }
 
 public class CreateRoleDto
-{
-  public required int RoleTypeId { get; set; }
-  public required int LevelId { get; set; }
-  public required int UnitId { get; set; }
-}
-
-public class CreateUnitRoleDto
 {
   public required int RoleTypeId { get; set; }
   public required int LevelId { get; set; }

@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Base.Repository;
 using Base.Entities;
 
 namespace Base.Repository;

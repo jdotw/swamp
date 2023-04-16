@@ -86,4 +86,22 @@ public class LevelRepositoryTests
     };
     await Assert.ThrowsAsync<ArgumentException>(() => _repo.Object.AddAsync(level));
   }
+
+  [Fact]
+  public async Task AddAsync_FailsIfChildIndexDoesNotEqualParentIndex()
+  {
+    var existingLevel = new Level()
+    {
+      Index = 1,
+      ManagerTitle = "Manager"
+    };
+    _repo.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(existingLevel);
+    var childLevel = new Level()
+    {
+      Index = 2,
+      ManagerTitle = "Manager",
+      ParentId = existingLevel.Id,
+    };
+    await Assert.ThrowsAsync<ArgumentException>(() => _repo.Object.AddAsync(childLevel));
+  }
 }

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Base.Controllers;

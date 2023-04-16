@@ -18,19 +18,20 @@ import {
   MutateItemModalMode,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
+import { DeploymentType, MutateDeploymentType } from "../../../Client/DeploymentTypes";
 
 export interface MutateDeploymentTypeModalProps {
-  capability?: DeploymentType;
-  capabilities?: DeploymentType[];
+  deploymentType?: DeploymentType;
+  parentCandidates?: DeploymentType[];
   opened: boolean;
-  onSubmit: (capability: MutateDeploymentType) => void;
+  onSubmit: (deploymentType: MutateDeploymentType) => void;
   onClose: () => void;
   mode?: MutateItemModalMode;
 }
 
 export function MutateDeploymentTypeModal({
-  capability,
-  capabilities,
+  deploymentType,
+  parentCandidates,
   opened,
   onSubmit,
   onClose,
@@ -38,9 +39,9 @@ export function MutateDeploymentTypeModal({
 }: MutateDeploymentTypeModalProps) {
   const fields: MutateItemModalFormField[] = [
     {
-      key: "title",
-      initialValue: capability?.title ?? "",
-      validation: (value) => nonEmptyString(value, "Title is required"),
+      key: "name",
+      initialValue: deploymentType?.name ?? "",
+      validation: (value) => nonEmptyString(value, "Name is required"),
     },
     {
       key: "parent_id",
@@ -49,36 +50,34 @@ export function MutateDeploymentTypeModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    // Make sure we update a copy, not the actual capability
-    let capability: MutateDeploymentType = {
-      title: values.title,
+    // Make sure we update a copy, not the actual deploymentType
+    let deploymentType: MutateDeploymentType = {
+      name: values.name,
       parent_id: parseInt(values.parent_id) ?? undefined,
     };
-    onSubmit(capability);
+    onSubmit(deploymentType);
   };
 
   const parentDeploymentTypeData = () =>
-    (capabilities ?? []).map((capability) => ({
-      value: capability.id.toString(),
-      label: capability.title,
+    (parentCandidates ?? []).map((deploymentType) => ({
+      value: deploymentType.id.toString(),
+      label: deploymentType.name,
     })) as SelectItem[];
     
-  console.log("Cap: ", capabilities);
-
   return (
     <MutateItemModal
-      title={mode === "edit" ? "Edit DeploymentType" : "Add DeploymentType"}
+      title={mode === "edit" ? "Edit Deployment Type" : "Add Deployment Type"}
       opened={opened}
       onClose={onClose}
       fields={fields}
       onSubmit={submitFormValues}
       mode={mode}
     >
-      <TextInput key="title" withAsterisk label="Title" placeholder="title" />
+      <TextInput key="name" withAsterisk label="Name" placeholder="name" />
       <Select
         key="parent_id"
         label="Parent"
-        placeholder="parent capability"
+        placeholder="parent deploymentType"
         data={parentDeploymentTypeData()}
       />
     </MutateItemModal>

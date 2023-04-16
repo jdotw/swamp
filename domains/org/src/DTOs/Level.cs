@@ -33,6 +33,7 @@ public class CreateLevelDto
   public string? ExternalId { get; set; } = null!;
   public string? IndividualContributorTitle { get; set; }
   public string? ManagerTitle { get; set; }
+  public int? ParentId { get; set; }
   public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? RetiredAtDate { get; set; }
 }
@@ -43,5 +44,6 @@ public class UpdateLevelDto
   public string? ExternalId { get; set; } = null!;
   public string? IndividualContributorTitle { get; set; } = null!;
   public string? ManagerTitle { get; set; } = null!;
+  public int? ParentId { get; set; }
   public DateTimeOffset? RetiredAtDate { get; set; }
 }

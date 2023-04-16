@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
 import { TextInput, Checkbox, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { FormValidateInput, UseFormReturnType } from "@mantine/form/lib/types";
+import { FormValidateInput, UseForm, UseFormReturnType } from "@mantine/form/lib/types";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { IconCornerRightUpDouble } from "@tabler/icons";
 
@@ -23,7 +23,7 @@ export interface MutateItemModalProps {
   fields: MutateItemModalFormField[];
 
   opened: boolean;
-  onChange?: (values: MutateItemFormValues) => void;
+  onChange?: (values: MutateItemFormValues, form: UseFormReturnType<MutateItemFormValues, (values: MutateItemFormValues) => MutateItemFormValues>) => void;
   onSubmit: (values: MutateItemFormValues) => void;
   onClose: () => void;
   mode?: MutateItemModalMode;
@@ -72,7 +72,7 @@ export function MutateItemModal({
 
   useEffect(() => {
     if (onChange) {
-      onChange(form.values);
+      onChange(form.values, form);
     }
   }, [form.values]);
 

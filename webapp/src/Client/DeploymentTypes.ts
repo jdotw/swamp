@@ -1,29 +1,23 @@
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Role } from "./Role";
 
-export interface Level {
+export interface DeploymentType {
   id: number;
-  index: number;
-  external_id: string;
-  individual_contributor_title: string;
-  manager_title: string;
+  name: string;
   parent_id?: number;
   active_from_date: string;
   retired_at_date?: string;
 }
 
-export interface MutateLevel {
-  index: number;
-  external_id: string;
-  individual_contributor_title: string;
-  manager_title: string;
+export interface MutateDeploymentType {
+  name: string;
   parent_id?: number;
   retired_at_date?: string;
 }
 
-export interface UseLevelProps extends UseCRUDOptionalProps {}
+export interface UseDeploymentTypeProps extends UseCRUDOptionalProps {}
 
-export function useLevel(props?: UseLevelProps) {
+export function useDeploymentType(props?: UseDeploymentTypeProps) {
   const {
     reload,
     items,
@@ -33,8 +27,8 @@ export function useLevel(props?: UseLevelProps) {
     retrieveItem,
     updateItem,
     deleteItem,
-  } = useCRUD<Level, MutateLevel>({
-    path: "/api/org/levels",
+  } = useCRUD<DeploymentType, MutateDeploymentType>({
+    path: "/api/org/deploymenttypes",
     ...props,
   });
   return {

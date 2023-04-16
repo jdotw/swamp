@@ -29,7 +29,6 @@ public class RoleTests
     {
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
-      UnitId = _seedData.Team.Id,
     };
 
     // Act
@@ -43,32 +42,6 @@ public class RoleTests
     Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
     Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
   }
-
-  private async Task TestCreateRoleForUnitAtPath(string path)
-  {
-    // Arrange
-    var testStart = DateTime.UtcNow;
-    var existingUnit = _seedData.Team;
-    var newRole = new CreateUnitRoleDto
-    {
-      RoleTypeId = _seedData.RoleType.Id,
-      LevelId = _seedData.Level.Id,
-    };
-
-    // Act
-    var roleRespose = await _client.PostAsJsonAsync(path, newRole, _options);
-    var role = roleRespose.Content.ReadFromJsonAsync<RoleDto>(_options).Result;
-
-    // Assert
-    Assert.NotEqual(0, role!.Id);
-    Assert.Equal(newRole.RoleTypeId, role.RoleType.Id);
-    Assert.NotEmpty(role.LevelAssignments);
-    Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
-    Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
-  }
-
-  [Fact]
-  public Task TestCreateRole_ForTeam() => TestCreateRoleForUnitAtPath($"/teams/{_seedData.Team.Id}/roles");
 
   [Fact]
   public async Task TestGetAllRoles()
