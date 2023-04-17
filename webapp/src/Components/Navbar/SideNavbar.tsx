@@ -55,6 +55,7 @@ const data = [
       { label: "Role Types", link: "/setup/roletypes" },
       { label: "Levels", link: "/setup/levels" },
       { label: "Deployments", link: "/setup/deploymenttypes" },
+      { label: "Capabilities", link: "/setup/capabilitytypes" },
     ],
   },
 ];

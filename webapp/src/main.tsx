@@ -5,15 +5,9 @@ import "./index.css";
 import Home from "./Pages/Home/Home";
 import { MantineProvider } from "@mantine/core";
 import CapabilityShell from "./Pages/Capability/CapabilityShell";
-import TribeHome from "./Pages/Delivery/Tribes/Tribe/TribeHome";
-import TribeList from "./Pages/Delivery/Tribes/TribeList";
-import PracticeList from "./Pages/Capability/Practices/PracticeList";
 import DeliveryShell from "./Pages/Delivery/DeliveryShell";
 import DeliveryHome from "./Pages/Delivery/DeliveryHome";
-import SquadHome from "./Pages/Delivery/Squads/SquadHome";
 import CapabilityHome from "./Pages/Capability/CapabilityHome";
-import PracticeHome from "./Pages/Capability/Practices/Practice/PracticeHome";
-import ChapterHome from "./Pages/Capability/Chapters/ChapterHome";
 import OrgShell from "./Pages/Org/OrgShell";
 import OrgHome from "./Pages/Org/OrgHome";
 import PersonList from "./Pages/Org/People/PersonList";
@@ -26,14 +20,12 @@ import LevelList from "./Pages/Org/Levels/LevelList";
 import LevelHome from "./Pages/Org/Levels/LevelHome";
 import RoleTypeList from "./Pages/Org/RoleTypes/RoleTypeList";
 import RoleTypeHome from "./Pages/Org/RoleTypes/RoleTypeHome";
-import FunctionList from "./Pages/Org/Functions/FunctionTypeList";
-import FunctionHome from "./Pages/Org/Functions/FunctionTypeHome";
 import SetupHome from "./Pages/Setup/SetupHome";
 import SetupShell from "./Pages/Setup/SetupShell";
 import DeploymentTypeList from "./Pages/Org/DeploymentTypes/DeploymentTypeList";
 import CapabilityTeamList from "./Pages/Capability/Teams/CapabilityTeamList";
-import CapabilityTypeList from "./Pages/Capability/Types/CapabilityTypeList";
 import DeliveryTeamList from "./Pages/Delivery/Teams/DeliveryTeamList";
+import CapabilityTypeList from "./Pages/Setup/CapabilityTypes/CapabilityTypeList";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -122,6 +114,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               {/*
               <Route path=":deploymentTypeId">
                 <Route index element={<DeploymentTypeHome />} />
+              </Route>
+              */}
+            </Route>
+
+            {/* Capability Types */}
+            <Route path="capabilitytypes">
+              <Route index element={<CapabilityTypeList />} />
+              {/*
+              <Route path=":capabilityTypeId">
+                <Route index element={<CapabilityTypeHome />} />
               </Route>
               */}
             </Route>
