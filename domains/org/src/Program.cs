@@ -24,6 +24,7 @@ builder.Services.AddDbContext<OrgDbContext>(options =>
             .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<ILevelRepository, LevelRepository>();
 builder.Services.AddScoped<IDeploymentTypeRepository, DeploymentTypeRepository>();
+builder.Services.AddScoped<ICapabilityTypeRepository, CapabilityTypeRepository>();
 builder.Services.AddScoped<ILevelAssignmentRepository, LevelAssignmentRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();

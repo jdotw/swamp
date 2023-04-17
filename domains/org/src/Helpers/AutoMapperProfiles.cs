@@ -80,5 +80,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<DeploymentType, DeploymentTypeCollectionDto>();
     CreateMap<CreateDeploymentTypeDto, DeploymentType>();
     CreateMap<UpdateDeploymentTypeDto, DeploymentType>();
+
+    CreateMap<CapabilityType, CapabilityTypeDto>();
+    CreateMap<CapabilityType, CapabilityTypeCollectionDto>();
+    CreateMap<CreateCapabilityTypeDto, CapabilityType>();
+    CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
   }
 }

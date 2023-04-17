@@ -18,6 +18,7 @@ public class OrgDbContext : DbContextBase
   public DbSet<Person> Persons => Set<Person>();
 
   public DbSet<DeploymentType> DeploymentTypes => Set<DeploymentType>();
+  public DbSet<CapabilityType> CapabilityTypes => Set<CapabilityType>();
 
   public OrgDbContext(DbContextOptions options) : base(options)
   {
