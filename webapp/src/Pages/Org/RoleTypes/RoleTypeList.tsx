@@ -34,7 +34,7 @@ function RoleTypeList() {
     <tr key={roleType.id.toString()}>
       <td>
         <Link style={{ marginLeft: level * 20 }} to={roleType.id.toString()}>
-          {roleType.title}
+          {roleType.name}
         </Link>
       </td>
       <td>TODO</td>
@@ -60,7 +60,7 @@ function RoleTypeList() {
           <Table>
             <thead>
               <tr>
-                <th>Title</th>
+                <th>Name</th>
                 <th>Vacant</th>
                 <th>Total</th>
               </tr>

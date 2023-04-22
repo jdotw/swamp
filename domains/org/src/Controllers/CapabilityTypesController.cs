@@ -22,7 +22,7 @@ public class CapabilityTypesController : ControllerBase<CapabilityType, ICapabil
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
     var capabilityTypes = await Repository.GetAllAsync(ids);
-    var capabilityTypesDto = Mapper.Map<IEnumerable<CapabilityTypeDto>>(capabilityTypes);
+    var capabilityTypesDto = Mapper.Map<IEnumerable<CapabilityTypeCollectionDto>>(capabilityTypes);
     return Ok(capabilityTypesDto);
   }
 

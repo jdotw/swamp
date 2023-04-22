@@ -17,6 +17,7 @@ public class RoleTypeRepository : RepositoryBase<RoleType>, IRoleTypeRepository
       .Where(s => filterIds == null || filterIds.Contains(s.Id))
       .Include(p => p.Parent)
       .Include(p => p.Children)
+      .Include(p => p.CapabilityTypes)
       .AsSplitQuery()
       .OrderBy(s => s.Id)
       .ToListAsync();
@@ -44,7 +45,7 @@ public class RoleTypeRepository : RepositoryBase<RoleType>, IRoleTypeRepository
 
   public virtual void UpdateFields(RoleType update, RoleType existing)
   {
-    existing.Title = update.Title;
+    existing.Name = update.Name;
   }
 
   public async Task<int> UpdateAsync(RoleType updatedRoleType)

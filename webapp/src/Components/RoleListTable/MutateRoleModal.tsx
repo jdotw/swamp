@@ -42,7 +42,7 @@ export function MutateRoleModal({
     },
   ];
 
-  const formValuesChanged = (values: MutateItemFormValues) => {
+  const formValuesChanged = (_: MutateItemFormValues) => {
   };
 
   const submitFormValues = (values: MutateItemFormValues) => {
@@ -70,7 +70,7 @@ export function MutateRoleModal({
         data={role_types.map((role_type) => {
           return {
             value: role_type.id.toString(),
-            label: role_type.title,
+            label: role_type.name,
           };
         })}
       />

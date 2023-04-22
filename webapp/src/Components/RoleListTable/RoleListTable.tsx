@@ -1,7 +1,6 @@
 import {
   Button,
   createStyles,
-  NumberInputHandlers,
   ScrollArea,
   Table,
 } from "@mantine/core";
@@ -11,7 +10,7 @@ import { MutateRole, Role, useRole } from "../../Client/Role";
 import { MutateRoleModal } from "./MutateRoleModal";
 import Loading from "../Loading/Loading";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
     justifyContent: "flex-end",
@@ -66,7 +65,7 @@ const RoleListTable = ({
     <tr key={role.id.toString()}>
       <td>
         <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
-          {role.role_type!.title}
+          {role.role_type!.name}
         </Link>
       </td>
       <td>

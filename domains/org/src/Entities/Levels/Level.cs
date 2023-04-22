@@ -9,5 +9,8 @@ public class Level : ParameterBase
   public string? IndividualContributorTitle { get; set; }
   public string? ManagerTitle { get; set; }
 
+  public Level? Parent { get; set; }
+  public List<Level> Children { get; set; } = new();
+
   public List<LevelAssignment> LevelAssignments { get; set; } = new();
 }

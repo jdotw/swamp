@@ -1,9 +1,6 @@
 using System.Net;
-using System.Text.Json;
 using Org.DTOs;
 using Org.Entities;
-using JorgeSerrano.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using Org.Repository;
 using Base.IntegrationTests;
@@ -27,7 +24,7 @@ public class RoleTypeTests
     var testStart = DateTime.UtcNow;
     var newRoleType = new CreateRoleTypeDto
     {
-      Title = "Test RoleType",
+      Name = "Test RoleType",
     };
 
     // Act
@@ -36,7 +33,7 @@ public class RoleTypeTests
 
     // Assert
     Assert.NotEqual(0, roletype!.Id);
-    Assert.Equal(newRoleType.Title, roletype.Title);
+    Assert.Equal(newRoleType.Name, roletype.Name);
   }
 
   [Fact]
@@ -54,7 +51,7 @@ public class RoleTypeTests
     Assert.Contains(roletypes!, t => t.Id == existingRoleType.Id);
     Assert.Contains(roletypes!, t => t.Id == existingChildRoleType.Id);
     childRoleType.Parent!.Id.Should().Be(existingRoleType.Id);
-    childRoleType.Parent!.Title.Should().Be(existingRoleType.Title);
+    childRoleType.Parent!.Name.Should().Be(existingRoleType.Name);
   }
 
   [Fact]
@@ -68,7 +65,7 @@ public class RoleTypeTests
 
     // Assert
     Assert.Equal(roletype!.Id, existingRoleType.Id);
-    Assert.Equal(roletype.Title, existingRoleType.Title);
+    Assert.Equal(roletype.Name, existingRoleType.Name);
   }
 
   [Fact]
@@ -78,7 +75,7 @@ public class RoleTypeTests
     var existingRoleType = _seedData.RoleType;
     var updateDto = new UpdateRoleTypeDto
     {
-      Title = "NewTitle",
+      Name = "NewName",
     };
 
     // Act
@@ -95,7 +92,7 @@ public class RoleTypeTests
     var existingRoleType = _seedData.RoleType;
     var updateDto = new UpdateRoleTypeDto
     {
-      Title = "NewTitle",
+      Name = "NewName",
     };
 
     // Act
@@ -131,13 +128,13 @@ public class RoleTypesSeedDataClass : ISeedDataClass<OrgDbContext>
     // The DB is not re-initialized between tests.
     RoleType = db.RoleTypes.Add(new RoleType
     {
-      Title = "Test RoleType"
+      Name = "Test RoleType"
     }).Entity;
     db.SaveChanges(true);
 
     ChildRoleType = db.RoleTypes.Add(new RoleType
     {
-      Title = "Test Child RoleType",
+      Name = "Test Child RoleType",
       ParentId = RoleType.Id
     }).Entity;
     db.SaveChanges(true);

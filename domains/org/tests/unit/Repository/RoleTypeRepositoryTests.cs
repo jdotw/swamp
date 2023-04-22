@@ -22,14 +22,14 @@ public class RoleTypeRepositoryTests
     var existingRoleType = new RoleType()
     {
       Id = 1,
-      Title = "Existing Role Type"
+      Name = "Existing Role Type"
     };
     var update = new RoleType()
     {
-      Title = "Updated Title"
+      Name = "Updated Name"
     };
     _repo.Object.UpdateFields(update, existingRoleType);
-    Assert.Equal(update.Title, existingRoleType.Title);
+    Assert.Equal(update.Name, existingRoleType.Name);
   }
 
   [Fact]
@@ -38,13 +38,13 @@ public class RoleTypeRepositoryTests
     var existingRoleType = new RoleType()
     {
       Id = 1,
-      Title = "Existing Role Type"
+      Name = "Existing Role Type"
     };
     _repo.Setup(x => x.FindById(It.IsAny<int>())).ReturnsAsync(existingRoleType);
     _repo.Setup(x => x.Update(It.IsAny<RoleType>()));
     var update = new RoleType()
     {
-      Title = "Updated Title"
+      Name = "Updated Name"
     };
     var result = await _repo.Object.UpdateAsync(update);
     _repo.Verify(x => x.UpdateFields(update, existingRoleType), Times.Once);

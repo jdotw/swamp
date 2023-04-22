@@ -1,10 +1,13 @@
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Role } from "./Role";
+import { RoleType } from "./RoleType";
 
 export interface CapabilityType {
   id: number;
   name: string;
   parent_id?: number;
+  role_type_id?: number;
+  role_type?: RoleType;
   active_from_date: string;
   retired_at_date?: string;
 }
@@ -12,6 +15,7 @@ export interface CapabilityType {
 export interface MutateCapabilityType {
   name: string;
   parent_id?: number;
+  role_type_id?: number;
   retired_at_date?: string;
 }
 

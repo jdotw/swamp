@@ -1,10 +1,6 @@
 using System.Net;
-using System.Text.Json;
 using Org.DTOs;
 using Org.Entities;
-using JorgeSerrano.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
-using FluentAssertions;
 using Org.Repository;
 using Base.IntegrationTests;
 using System.Net.Http.Json;
@@ -137,7 +133,7 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
 
     RoleType = db.RoleTypes.Add(new RoleType
     {
-      Title = "Seed Role Type",
+      Name = "Seed Role Type",
     }).Entity;
     db.SaveChanges(true);
 

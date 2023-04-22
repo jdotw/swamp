@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230422012224_InitialCreateV4")]
+    partial class InitialCreateV4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,12 +241,7 @@ namespace Org.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("RoleTypeId")
-                        .HasColumnType("integer");
-
                     b.HasIndex("ParentId");
-
-                    b.HasIndex("RoleTypeId");
 
                     b.ToTable("CapabilityTypes");
                 });
@@ -357,13 +355,7 @@ namespace Org.Migrations
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
-                    b.HasOne("Org.Entities.RoleType", "RoleType")
-                        .WithMany("CapabilityTypes")
-                        .HasForeignKey("RoleTypeId");
-
                     b.Navigation("Parent");
-
-                    b.Navigation("RoleType");
                 });
 
             modelBuilder.Entity("Org.Entities.DeploymentType", b =>
@@ -429,8 +421,6 @@ namespace Org.Migrations
 
             modelBuilder.Entity("Org.Entities.RoleType", b =>
                 {
-                    b.Navigation("CapabilityTypes");
-
                     b.Navigation("Children");
 
                     b.Navigation("Roles");

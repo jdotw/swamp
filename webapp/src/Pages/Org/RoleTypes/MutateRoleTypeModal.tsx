@@ -39,9 +39,9 @@ export function MutateRoleTypeModal({
 }: MutateRoleTypeModalProps) {
   const fields: MutateItemModalFormField[] = [
     {
-      key: "title",
-      initialValue: roleType?.title ?? "",
-      validation: (value) => nonEmptyString(value, "Title is required"),
+      key: "name",
+      initialValue: roleType?.name ?? "",
+      validation: (value) => nonEmptyString(value, "Name is required"),
     },
     {
       key: "parent_id",
@@ -52,7 +52,7 @@ export function MutateRoleTypeModal({
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual roleType
     let roleType: MutateRoleType = {
-      title: values.title,
+      name: values.name,
       parent_id: parseInt(values.parent_id) ?? undefined,
     };
     onSubmit(roleType);
@@ -61,7 +61,7 @@ export function MutateRoleTypeModal({
   const parentRoleTypeData = () =>
     (roleTypes ?? []).map((roleType) => ({
       value: roleType.id.toString(),
-      label: roleType.title,
+      label: roleType.name,
     })) as SelectItem[];
 
   return (
@@ -73,7 +73,7 @@ export function MutateRoleTypeModal({
       onSubmit={submitFormValues}
       mode={mode}
     >
-      <TextInput key="title" withAsterisk label="Title" placeholder="title" />
+      <TextInput key="name" withAsterisk label="Name" placeholder="name" />
       <Select
         key="parent_id"
         label="Parent"

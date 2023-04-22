@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { CapabilityType } from "./CapabilityTypes";
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 
 export interface RoleType {
   id: number;
-  title: string;
+  name: string;
   active_from_date: string;
   retired_at_date?: string;
+  parent_id?: number;
   parent?: RoleType;
-  children?: RoleType[];
+  children: RoleType[];
+  capability_types: CapabilityType[];
 }
 
 export interface MutateRoleType {
-  title: string;
+  name: string;
   retired_at_date?: string;
   parent_id?: number;
 }

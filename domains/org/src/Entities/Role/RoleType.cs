@@ -2,15 +2,14 @@ using Base.Entities;
 
 namespace Org.Entities;
 
-public class RoleType : EntityBase
+public class RoleType : ParameterBase
 {
-  public string Title { get; set; } = null!;
-  public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
-  public DateTimeOffset? RetiredAtDate { get; set; }
+  public string Name { get; set; } = null!;
 
-  public int? ParentId { get; set; }
+  public List<Role> Roles { get; set; } = new();
+
   public RoleType? Parent { get; set; }
   public List<RoleType> Children { get; set; } = new();
 
-  public List<Role> Roles { get; set; } = new();
+  public List<CapabilityType> CapabilityTypes { get; set; } = new();
 }

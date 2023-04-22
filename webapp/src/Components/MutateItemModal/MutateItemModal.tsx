@@ -15,6 +15,7 @@ export type MutateItemFormValidationRule = (value: string) => string | null;
 export interface MutateItemModalFormField {
   key: string;
   initialValue: string;
+  value?: string;
   validation?: MutateItemFormValidationRule;
   element?: ReactJSXElement;
 }
@@ -55,6 +56,7 @@ export function MutateItemModal({
       }, [] as [string, MutateItemFormValidationRule][])
     );
 
+
   const form = useForm({
     validate: validationRules,
     initialValues: initialValues,
@@ -75,6 +77,13 @@ export function MutateItemModal({
       onChange(form.values, form);
     }
   }, [form.values]);
+
+  useEffect(() => {
+    const values: Record<string,string|undefined> = Object.fromEntries(
+      fields.map((field) => [field.key, field.value])
+    );
+    form.setValues(values);
+    }, [fields]);
 
   if (children) {
     children = React.Children.map(children, (child) => {

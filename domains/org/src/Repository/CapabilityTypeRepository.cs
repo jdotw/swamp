@@ -16,6 +16,7 @@ public class CapabilityTypeRepository : RepositoryBase<CapabilityType>, ICapabil
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
+        .Include(p => p.RoleType)
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
@@ -30,6 +31,7 @@ public class CapabilityTypeRepository : RepositoryBase<CapabilityType>, ICapabil
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.Children)
       .Include(p => p.Parent)
+      .Include(p => p.RoleType)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
@@ -43,6 +45,8 @@ public class CapabilityTypeRepository : RepositoryBase<CapabilityType>, ICapabil
   public virtual void UpdateFields(CapabilityType update, CapabilityType existing)
   {
     existing.Name = update.Name;
+    existing.ParentId = update.ParentId > 0 ? update.ParentId : null;
+    existing.RoleTypeId = update.RoleTypeId > 0 ? update.RoleTypeId : null;
     existing.RetiredAtDate = update.RetiredAtDate;
   }
 

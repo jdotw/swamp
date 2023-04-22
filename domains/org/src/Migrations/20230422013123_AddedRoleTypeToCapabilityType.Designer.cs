@@ -12,8 +12,8 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    [Migration("20230420231552_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230422013123_AddedRoleTypeToCapabilityType")]
+    partial class AddedRoleTypeToCapabilityType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,8 +52,6 @@ namespace Org.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable((string)null);
 
@@ -194,40 +192,6 @@ namespace Org.Migrations
                     b.ToTable("RoleAssignments");
                 });
 
-            modelBuilder.Entity("Org.Entities.RoleType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTimeOffset>("ActiveFromDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset?>("RetiredAtDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("RoleTypes");
-                });
-
             modelBuilder.Entity("Org.Entities.Team", b =>
                 {
                     b.Property<int>("Id")
@@ -277,6 +241,13 @@ namespace Org.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("RoleTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("RoleTypeId");
+
                     b.ToTable("CapabilityTypes");
                 });
 
@@ -287,6 +258,8 @@ namespace Org.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("DeploymentTypes");
                 });
@@ -307,16 +280,22 @@ namespace Org.Migrations
                     b.Property<string>("ManagerTitle")
                         .HasColumnType("text");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("Levels");
                 });
 
-            modelBuilder.Entity("Base.Entities.ParameterBase", b =>
+            modelBuilder.Entity("Org.Entities.RoleType", b =>
                 {
-                    b.HasOne("Base.Entities.ParameterBase", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                    b.HasBaseType("Base.Entities.ParameterBase");
 
-                    b.Navigation("Parent");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("RoleTypes");
                 });
 
             modelBuilder.Entity("Org.Entities.LevelAssignment", b =>
@@ -366,16 +345,6 @@ namespace Org.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Org.Entities.RoleType", b =>
-                {
-                    b.HasOne("Org.Entities.RoleType", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Parent");
-                });
-
             modelBuilder.Entity("Org.Entities.Team", b =>
                 {
                     b.HasOne("Org.Entities.Team", "Parent")
@@ -385,9 +354,46 @@ namespace Org.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Base.Entities.ParameterBase", b =>
+            modelBuilder.Entity("Org.Entities.CapabilityType", b =>
                 {
-                    b.Navigation("Children");
+                    b.HasOne("Org.Entities.CapabilityType", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Org.Entities.RoleType", "RoleType")
+                        .WithMany("CapabilityTypes")
+                        .HasForeignKey("RoleTypeId");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("RoleType");
+                });
+
+            modelBuilder.Entity("Org.Entities.DeploymentType", b =>
+                {
+                    b.HasOne("Org.Entities.DeploymentType", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("Org.Entities.Level", b =>
+                {
+                    b.HasOne("Org.Entities.Level", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("Org.Entities.RoleType", b =>
+                {
+                    b.HasOne("Org.Entities.RoleType", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Org.Entities.Person", b =>
@@ -402,21 +408,35 @@ namespace Org.Migrations
                     b.Navigation("RoleAssignments");
                 });
 
-            modelBuilder.Entity("Org.Entities.RoleType", b =>
+            modelBuilder.Entity("Org.Entities.Team", b =>
                 {
                     b.Navigation("Children");
-
-                    b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("Org.Entities.Team", b =>
+            modelBuilder.Entity("Org.Entities.CapabilityType", b =>
+                {
+                    b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("Org.Entities.DeploymentType", b =>
                 {
                     b.Navigation("Children");
                 });
 
             modelBuilder.Entity("Org.Entities.Level", b =>
                 {
+                    b.Navigation("Children");
+
                     b.Navigation("LevelAssignments");
+                });
+
+            modelBuilder.Entity("Org.Entities.RoleType", b =>
+                {
+                    b.Navigation("CapabilityTypes");
+
+                    b.Navigation("Children");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

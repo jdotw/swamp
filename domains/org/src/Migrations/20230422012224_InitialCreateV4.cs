@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Org.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateV4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +20,9 @@ namespace Org.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ParameterBaseSequence\"')"),
-                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     ActiveFromDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RetiredAtDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -30,6 +30,11 @@ namespace Org.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CapabilityTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CapabilityTypes_CapabilityTypes_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "CapabilityTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -37,9 +42,9 @@ namespace Org.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ParameterBaseSequence\"')"),
-                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     ActiveFromDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RetiredAtDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -47,6 +52,11 @@ namespace Org.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeploymentTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeploymentTypes_DeploymentTypes_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "DeploymentTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -54,9 +64,9 @@ namespace Org.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ParameterBaseSequence\"')"),
-                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     ActiveFromDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RetiredAtDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: true),
                     Index = table.Column<int>(type: "integer", nullable: false),
                     ExternalId = table.Column<string>(type: "text", nullable: true),
                     IndividualContributorTitle = table.Column<string>(type: "text", nullable: true),
@@ -67,6 +77,11 @@ namespace Org.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Levels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Levels_Levels_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Levels",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -91,12 +106,11 @@ namespace Org.Migrations
                 name: "RoleTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"ParameterBaseSequence\"')"),
                     ActiveFromDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    RetiredAtDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    RetiredAtDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ParentId = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -107,8 +121,7 @@ namespace Org.Migrations
                         name: "FK_RoleTypes_RoleTypes_ParentId",
                         column: x => x.ParentId,
                         principalTable: "RoleTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

@@ -126,7 +126,7 @@ public class LevelAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
 
     RoleType = db.RoleTypes.Add(new RoleType
     {
-      Title = "Seed Role Type",
+      Name = "Seed Role Type",
     }).Entity;
     db.SaveChanges(true);
 
