@@ -1,9 +1,4 @@
-import {
-  Button,
-  createStyles,
-  ScrollArea,
-  Table,
-} from "@mantine/core";
+import { Button, createStyles, ScrollArea, Table } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MutateRole, Role, useRole } from "../../Client/Role";
@@ -23,22 +18,16 @@ const useStyles = createStyles(() => ({
   filledRole: {},
 }));
 
-export interface RoleListTableProps {
-}
+export interface RoleListTableProps {}
 
 export const RoleListTablePropsDefaults = {
   showCapability: false,
 };
 
-const RoleListTable = ({
-}: RoleListTableProps) => {
+const RoleListTable = ({}: RoleListTableProps) => {
   const { classes } = useStyles();
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const {
-    loading,
-    items: roles,
-    createItem: createRole,
-  } = useRole({});
+  const { loading, items: roles, createItem: createRole } = useRole({});
 
   const submitNewRole = async (newRole: MutateRole) => {
     await createRole(newRole);
@@ -46,13 +35,16 @@ const RoleListTable = ({
   };
 
   const roleTitle = (role: Role) => {
-    if (role.active_level_assignment.level.manager_title
-     && role.active_level_assignment.level.individual_contributor_title)
-    {
+    if (
+      role.active_level_assignment.level.manager_title &&
+      role.active_level_assignment.level.individual_contributor_title
+    ) {
       return `${role.active_level_assignment.level.manager_title} / ${role.active_level_assignment.level.individual_contributor_title}`;
     } else if (role.active_level_assignment.level.manager_title) {
       return role.active_level_assignment.level.manager_title;
-    } else if (role.active_level_assignment.level.individual_contributor_title) {
+    } else if (
+      role.active_level_assignment.level.individual_contributor_title
+    ) {
       return role.active_level_assignment.level.individual_contributor_title;
     } else {
       return "No Title";
@@ -73,12 +65,8 @@ const RoleListTable = ({
           {roleTitle(role)}
         </Link>
       </td>
-      <td>
-        Not Assigned
-      </td>
-      <td>
-        Not Assigned
-      </td>
+      <td>Not Assigned</td>
+      <td>Not Assigned</td>
       <td>
         {role.active_role_assignment?.person ? (
           <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
