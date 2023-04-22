@@ -20,8 +20,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrgDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase"))
-            .UseSnakeCaseNamingConvention());
+            options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase")));
+            // .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<ILevelRepository, LevelRepository>();
 builder.Services.AddScoped<IDeploymentTypeRepository, DeploymentTypeRepository>();
 builder.Services.AddScoped<ICapabilityTypeRepository, CapabilityTypeRepository>();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Base.Repository;
+using Base.Entities;
 using Org.Entities;
 
 namespace Org.Repository;
@@ -31,5 +32,7 @@ public class OrgDbContext : DbContextBase
       .WithOne(rt => rt.Parent)
       .HasForeignKey(rt => rt.ParentId)
       .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<ParameterBase>().UseTpcMappingStrategy();
   }
 }
