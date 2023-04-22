@@ -1,34 +1,18 @@
-import { createStyles, Button, Grid, Text, Timeline, Title } from "@mantine/core";
-import {
-  IconGitBranch,
-  IconGitCommit,
-  IconGitPullRequest,
-  IconMessageDots,
-} from "@tabler/icons";
-import React, { useState } from "react";
+import { createStyles, Button, Grid, Text, Title } from "@mantine/core";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { Person } from "../../../Client/Person";
-import { Role, UnitAssignment, useRole } from "../../../Client/Role";
+import { Role, useRole } from "../../../Client/Role";
 import {
   MutateRoleAssignment,
   useRoleAssignment,
 } from "../../../Client/RoleAssignment";
-import { RoleHistory, useRoleHistory } from "../../../Client/RoleHistory";
-import {
-  MutateUnitAssignment,
-  useUnitAssignment,
-} from "../../../Client/UnitAssignment";
 import Loading from "../../../Components/Loading/Loading";
 import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHistoryTimeline";
 import { PersonCard } from "../People/Person/PersonCard";
 import { AssignPersonModal } from "./AssignPersonModal";
-import {
-  MutateUnitAssignmentModal,
-  MutateUnitAssignmentType,
-} from "./MutateUnitAssignmentModal";
 
 export interface RoleHomeProps {}
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
     justifyContent: "flex-end",
@@ -50,22 +34,15 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-function RoleHome(props: RoleHomeProps) {
+function RoleHome() {
   const id = +useParams().roleId!;
   const { items, reload: reloadRole, loading } = useRole({ id });
-  const { items: roleAssignments, createItem: createRoleAssignment } =
-    useRoleAssignment({ roleId: id });
+  const { createItem: createRoleAssignment } = useRoleAssignment({
+    roleId: id,
+  });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
-  const [mutateUnitAssignModalOpen, setMutateUnitAssignModalOpen] =
-    useState<boolean>(false);
-  const [mutatedAssignmentType, setMutatedAssignmentType] =
-    useState<MutateUnitAssignmentType>("delivery");
-  const [unitAssignmentToMutate, setUnitAssignmentToMutate] =
-    useState<UnitAssignment>();
-  const { items: unitAssignments, createItem: createUnitAssignment } =
-    useUnitAssignment({ roleId: id });
-  const {classes} = useStyles();
+  const { classes } = useStyles();
 
   if (loading) {
     return <Loading data-testid="loading-role-home" />;
@@ -81,32 +58,16 @@ function RoleHome(props: RoleHomeProps) {
     await reloadRole();
     setAssignPersonModalOpen(false);
   };
-  const submitUnitAssignment = async (assignment: MutateUnitAssignment) => {
-    await createUnitAssignment(assignment);
-    await reloadRole();
-    setMutateUnitAssignModalOpen(false);
-  };
 
   const roleTitle = (role: Role) => {
-    if (
-      (role.delivery_unit_assignment &&
-        !role.delivery_unit_assignment.function_type
-          .is_individual_contributor) ||
-      (role.capability_unit_assignment &&
-        !role.capability_unit_assignment.function_type
-          .is_individual_contributor)
-    ) {
-      return role.active_level_assignment.level.manager_title;
-    } else {
-      return role.active_level_assignment.level.individual_contributor_title;
-    }
+    return `${role.active_level_assignment.level.individual_contributor_title} / ${role.active_level_assignment.level.manager_title}`;
   };
 
   return (
     <>
       <div>
         <Title order={3}>
-          Role: {role.role_type?.title} ({roleTitle(role)})
+          Role: {role.role_type?.name} ({roleTitle(role)})
         </Title>
         <br />
         <Grid>
@@ -119,15 +80,20 @@ function RoleHome(props: RoleHomeProps) {
             ) : (
               <Text>Vacant</Text>
             )}
+            <Button onClick={() => setAssignPersonModalOpen(true)}>
+              Assign Person
+            </Button>
             <Title order={5}>Manager</Title>
-            <Text>Chis Watson</Text>
+            <Text>Chis Watson -- FAKE (TODO)</Text>
             <Title order={5}>Capabilities</Title>
             <table className={classes.capabilityTable}>
               <thead>
-                <th className={classes.tableHeader}>Capability</th>
-                <th className={classes.tableHeader}>Home Team</th>
-                <th className={classes.tableHeader}>Deployed To</th>
-                <th className={classes.tableHeader}>Type</th>
+                <tr>
+                  <th className={classes.tableHeader}>Capability</th>
+                  <th className={classes.tableHeader}>Home Team</th>
+                  <th className={classes.tableHeader}>Deployed To</th>
+                  <th className={classes.tableHeader}>Type</th>
+                </tr>
               </thead>
               <tbody>
                 <tr>
@@ -208,23 +174,12 @@ function RoleHome(props: RoleHomeProps) {
           </Grid.Col>
         </Grid>
         <br />
-        <Button onClick={() => setAssignPersonModalOpen(true)}>
-          Assign Person
-        </Button>
       </div>
       <AssignPersonModal
         role={role}
         opened={assignPersonModalOpen}
         onSubmit={submitRoleAssignment}
         onClose={() => setAssignPersonModalOpen(false)}
-      />
-      <MutateUnitAssignmentModal
-        role={role}
-        opened={mutateUnitAssignModalOpen}
-        onSubmit={submitUnitAssignment}
-        onClose={() => setMutateUnitAssignModalOpen(false)}
-        assignmentType={mutatedAssignmentType}
-        unitAssignment={unitAssignmentToMutate}
       />
     </>
   );
