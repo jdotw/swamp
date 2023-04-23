@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230423050257_AddedCapabilities")]
+    partial class AddedCapabilities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,16 +66,10 @@ namespace Org.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("ActiveFromDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("CapabilityTypeId")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset?>("RetiredAtDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("RoleId")
@@ -339,7 +336,7 @@ namespace Org.Migrations
                         .IsRequired();
 
                     b.HasOne("Org.Entities.Role", "Role")
-                        .WithMany("Capabilities")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -455,8 +452,6 @@ namespace Org.Migrations
 
             modelBuilder.Entity("Org.Entities.Role", b =>
                 {
-                    b.Navigation("Capabilities");
-
                     b.Navigation("LevelAssignments");
 
                     b.Navigation("RoleAssignments");

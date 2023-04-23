@@ -68,7 +68,17 @@ function RoleHome() {
   }
 
   const role = items[0];
-  const globalCapabilityTypes = capabilityTypes.filter((p) => !p.role_type_id);
+  const unassignedGlobalCapabilityTypes = capabilityTypes.filter(
+    (p) =>
+      !p.role_type_id &&
+      capabilities?.find((c) => c.capability_type_id === p.id) === undefined
+  );
+
+  const unassignedRoleCapabilityTypes = capabilityTypes.filter(
+    (p) =>
+      p.role_type_id &&
+      capabilities?.find((c) => c.capability_type_id === p.id) === undefined
+  );
 
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);
@@ -170,9 +180,7 @@ function RoleHome() {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                {capabilityTypeRows(role.role_type?.capability_types)}
-              </tbody>
+              <tbody>{capabilityTypeRows(unassignedRoleCapabilityTypes)}</tbody>
             </table>
             <Title order={5}>Global Capabilities</Title>
             <table className={classes.capabilityTable}>
@@ -185,7 +193,9 @@ function RoleHome() {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>{capabilityTypeRows(globalCapabilityTypes)}</tbody>
+              <tbody>
+                {capabilityTypeRows(unassignedGlobalCapabilityTypes)}
+              </tbody>
             </table>
             {/*
             <Title order={5}>Capability Assignment</Title>
