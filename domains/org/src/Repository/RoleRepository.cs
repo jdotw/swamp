@@ -52,8 +52,12 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
 
   public async Task<Role?> GetWithDetailsAsync(int id)
   {
+
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.RoleType)
+#pragma warning disable CS8602 // https://github.com/dotnet/efcore/issues/17212
+      .ThenInclude(p => p.CapabilityTypes)
+#pragma warning restore CS8602 
       .Include(p => p.LevelAssignments)
       .ThenInclude(p => p.Level)
       .Include(p => p.RoleAssignments)

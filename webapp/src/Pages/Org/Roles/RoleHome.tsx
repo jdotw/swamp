@@ -1,6 +1,10 @@
 import { createStyles, Button, Grid, Text, Title } from "@mantine/core";
 import React from "react";
 import { useParams } from "react-router-dom";
+import {
+  CapabilityType,
+  useCapabilityType,
+} from "../../../Client/CapabilityTypes";
 import { Role, useRole } from "../../../Client/Role";
 import {
   MutateRoleAssignment,
@@ -40,6 +44,7 @@ function RoleHome() {
   const { createItem: createRoleAssignment } = useRoleAssignment({
     roleId: id,
   });
+  const { items: capabilityTypes } = useCapabilityType();
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
   const { classes } = useStyles();
@@ -51,7 +56,9 @@ function RoleHome() {
   if (items.length < 1) {
     return <div>Role not found</div>;
   }
+
   const role = items[0];
+  const globalCapabilityTypes = capabilityTypes.filter((p) => !p.role_type_id);
 
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);
@@ -62,6 +69,20 @@ function RoleHome() {
   const roleTitle = (role: Role) => {
     return `${role.active_level_assignment.level.individual_contributor_title} / ${role.active_level_assignment.level.manager_title}`;
   };
+
+  const capabilityRows = (capabilityTypes?: CapabilityType[]) =>
+    capabilityTypes?.map((capabilityType) => (
+      <tr>
+        <td>{capabilityType.name}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <Button>Add</Button>
+        </td>
+      </tr>
+    ));
 
   return (
     <>
@@ -85,7 +106,7 @@ function RoleHome() {
             </Button>
             <Title order={5}>Manager</Title>
             <Text>Chis Watson -- FAKE (TODO)</Text>
-            <Title order={5}>Capabilities</Title>
+            <Title order={5}>Role-Specific Capabilities</Title>
             <table className={classes.capabilityTable}>
               <thead>
                 <tr>
@@ -93,24 +114,23 @@ function RoleHome() {
                   <th className={classes.tableHeader}>Home Team</th>
                   <th className={classes.tableHeader}>Deployed To</th>
                   <th className={classes.tableHeader}>Type</th>
+                  <th></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody>{capabilityRows(role.role_type?.capability_types)}</tbody>
+            </table>
+            <Title order={5}>Global Capabilities</Title>
+            <table className={classes.capabilityTable}>
+              <thead>
                 <tr>
-                  <td>C# Backend Engineer</td>
-                  <td>C# Chapter</td>
-                  <td>Checkout Squad</td>
-                  <td>Contributor</td>
-                  <td>Edit</td>
+                  <th className={classes.tableHeader}>Capability</th>
+                  <th className={classes.tableHeader}>Home Team</th>
+                  <th className={classes.tableHeader}>Deployed To</th>
+                  <th className={classes.tableHeader}>Type</th>
+                  <th></th>
                 </tr>
-                <tr>
-                  <td>Chapter Lead</td>
-                  <td>Chapter Leads</td>
-                  <td>C# Chapter</td>
-                  <td>Manager</td>
-                  <td>Edit</td>
-                </tr>
-              </tbody>
+              </thead>
+              <tbody>{capabilityRows(globalCapabilityTypes)}</tbody>
             </table>
             {/*
             <Title order={5}>Capability Assignment</Title>
