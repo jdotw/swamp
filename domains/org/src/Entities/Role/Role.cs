@@ -10,6 +10,8 @@ public class Role : EntityBase
   public virtual List<RoleAssignment> RoleAssignments { get; set; } = new();
   public virtual List<LevelAssignment> LevelAssignments { get; set; } = new();
 
+  public virtual List<Capability> Capabilities { get; set; } = new();
+
   public DateTimeOffset OpenFromDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? ClosedAtDate { get; set; }
 }

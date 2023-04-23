@@ -21,13 +21,15 @@ public class OrgDbContext : DbContextBase
   public DbSet<DeploymentType> DeploymentTypes => Set<DeploymentType>();
   public DbSet<CapabilityType> CapabilityTypes => Set<CapabilityType>();
 
+  public DbSet<Capability> Capabilities => Set<Capability>();
+
   public OrgDbContext(DbContextOptions options) : base(options)
   {
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<RoleType>().HasMany(p => p.Children).WithOne(p => p.Parent).HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Cascade); 
+    modelBuilder.Entity<RoleType>().HasMany(p => p.Children).WithOne(p => p.Parent).HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Cascade);
     modelBuilder.Entity<ParameterBase>().UseTpcMappingStrategy();
   }
 }

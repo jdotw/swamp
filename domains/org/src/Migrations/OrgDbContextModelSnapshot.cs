@@ -55,6 +55,35 @@ namespace Org.Migrations
                     b.UseTpcMappingStrategy();
                 });
 
+            modelBuilder.Entity("Org.Entities.Capability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CapabilityTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CapabilityTypeId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Capabilities");
+                });
+
             modelBuilder.Entity("Org.Entities.LevelAssignment", b =>
                 {
                     b.Property<int>("Id")
@@ -295,6 +324,25 @@ namespace Org.Migrations
                     b.ToTable("RoleTypes");
                 });
 
+            modelBuilder.Entity("Org.Entities.Capability", b =>
+                {
+                    b.HasOne("Org.Entities.CapabilityType", "CapabilityType")
+                        .WithMany()
+                        .HasForeignKey("CapabilityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Org.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CapabilityType");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Org.Entities.LevelAssignment", b =>
                 {
                     b.HasOne("Org.Entities.Level", "Level")
@@ -388,7 +436,8 @@ namespace Org.Migrations
                 {
                     b.HasOne("Org.Entities.RoleType", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Parent");
                 });

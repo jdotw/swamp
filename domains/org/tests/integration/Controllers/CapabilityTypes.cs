@@ -200,13 +200,12 @@ public class CapabilityTypesSeedDataClass : ISeedDataClass<OrgDbContext>
     // Performs DB initialization before the 
     // start of all tests in the CapabilityTypeTests class.
     // The DB is not re-initialized between tests.
-
     CapabilityType = db.CapabilityTypes.Add(new CapabilityType
     {
       Name = "Test Capability Type",
     }).Entity;
     db.SaveChanges(true);
-    
+
     CapabilityTypeWithoutChildren = db.CapabilityTypes.Add(new CapabilityType
     {
       Name = "Capability Type Without Children",

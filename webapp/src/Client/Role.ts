@@ -2,6 +2,7 @@ import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { RoleType } from "./RoleType";
 import { Level } from "./Level";
 import { RoleAssignment } from "./RoleAssignment";
+import { Capability } from "./Capabilities";
 
 export interface LevelAssignment {
   id: number;
@@ -21,6 +22,8 @@ export interface Role {
 
   active_level_assignment: LevelAssignment;
   active_role_assignment?: RoleAssignment;
+
+  capabilities: Capability[];
 }
 
 export interface MutateRole {

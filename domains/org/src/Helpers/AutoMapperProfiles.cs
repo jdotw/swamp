@@ -81,5 +81,10 @@ public class AutoMapperProfiles : Profile
     CreateMap<CapabilityType, CapabilityTypeCollectionDto>();
     CreateMap<CreateCapabilityTypeDto, CapabilityType>();
     CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
+
+    CreateMap<Capability, CapabilityDto>();
+    CreateMap<Capability, CapabilityCollectionDto>();
+    CreateMap<CreateCapabilityDto, Capability>();
+    CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
   }
 }

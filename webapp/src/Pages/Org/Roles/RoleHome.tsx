@@ -2,6 +2,11 @@ import { createStyles, Button, Grid, Text, Title } from "@mantine/core";
 import React from "react";
 import { useParams } from "react-router-dom";
 import {
+  Capability,
+  MutateCapability,
+  useCapabilities,
+} from "../../../Client/Capabilities";
+import {
   CapabilityType,
   useCapabilityType,
 } from "../../../Client/CapabilityTypes";
@@ -15,7 +20,7 @@ import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHis
 import { PersonCard } from "../People/Person/PersonCard";
 import { AssignPersonModal } from "./AssignPersonModal";
 
-export interface RoleHomeProps {}
+export interface RoleHomeProps { }
 const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
@@ -45,6 +50,11 @@ function RoleHome() {
     roleId: id,
   });
   const { items: capabilityTypes } = useCapabilityType();
+  const {
+    items: capabilities,
+    createItem: createCapability,
+    deleteItem: deleteCapability,
+  } = useCapabilities({ roleId: id });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
   const { classes } = useStyles();
@@ -70,16 +80,46 @@ function RoleHome() {
     return `${role.active_level_assignment.level.individual_contributor_title} / ${role.active_level_assignment.level.manager_title}`;
   };
 
-  const capabilityRows = (capabilityTypes?: CapabilityType[]) =>
+  const addCapabilityClicked = async (capabilityType: CapabilityType) => {
+    const newCapability: MutateCapability = {
+      capability_type_id: capabilityType.id,
+      role_id: role.id,
+    };
+    await createCapability(newCapability);
+  };
+
+  const deleteCapabilityClicked = async (capability: Capability) => {
+    await deleteCapability(capability.id);
+  };
+
+  const capabilityRows = (capabilities?: Capability[]) =>
+    capabilities?.map((capability) => (
+      <tr key={capability.id.toString()}>
+        <td>{capability.capability_type.name}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <Button onClick={() => deleteCapabilityClicked(capability)}>
+            Delete
+          </Button>
+        </td>
+      </tr>
+    ));
+
+  const capabilityTypeRows = (capabilityTypes?: CapabilityType[]) =>
     capabilityTypes?.map((capabilityType) => (
-      <tr>
+      <tr key={capabilityType.id.toString()}>
         <td>{capabilityType.name}</td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td>
-          <Button>Add</Button>
+          <Button onClick={() => addCapabilityClicked(capabilityType)}>
+            Add
+          </Button>
         </td>
       </tr>
     ));
@@ -96,7 +136,7 @@ function RoleHome() {
             {role.active_role_assignment ? (
               <PersonCard
                 person={role.active_role_assignment?.person}
-                onEditClicked={() => {}}
+                onEditClicked={() => { }}
               />
             ) : (
               <Text>Vacant</Text>
@@ -106,6 +146,19 @@ function RoleHome() {
             </Button>
             <Title order={5}>Manager</Title>
             <Text>Chis Watson -- FAKE (TODO)</Text>
+            <Title order={5}>Assigned Capabilities</Title>
+            <table className={classes.capabilityTable}>
+              <thead>
+                <tr>
+                  <th className={classes.tableHeader}>Capability</th>
+                  <th className={classes.tableHeader}>Home Team</th>
+                  <th className={classes.tableHeader}>Deployed To</th>
+                  <th className={classes.tableHeader}>Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>{capabilityRows(capabilities)}</tbody>
+            </table>
             <Title order={5}>Role-Specific Capabilities</Title>
             <table className={classes.capabilityTable}>
               <thead>
@@ -117,7 +170,9 @@ function RoleHome() {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>{capabilityRows(role.role_type?.capability_types)}</tbody>
+              <tbody>
+                {capabilityTypeRows(role.role_type?.capability_types)}
+              </tbody>
             </table>
             <Title order={5}>Global Capabilities</Title>
             <table className={classes.capabilityTable}>
@@ -130,7 +185,7 @@ function RoleHome() {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>{capabilityRows(globalCapabilityTypes)}</tbody>
+              <tbody>{capabilityTypeRows(globalCapabilityTypes)}</tbody>
             </table>
             {/*
             <Title order={5}>Capability Assignment</Title>

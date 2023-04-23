@@ -14,6 +14,8 @@ public class RoleDto
 
   public required LevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
   public RoleAssignmentDto? ActiveRoleAssignment { get; set; } = null!;
+
+  public List<CapabilityDto> Capabilities { get; set; } = new();
 }
 
 public class RoleCollectionDto

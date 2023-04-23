@@ -115,6 +115,20 @@ public class RoleTests
     // Assert
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
+
+  [Fact]
+  public async Task TestGetRoleCapabilities()
+  {
+    // Arrange
+    var existingRole = _seedData.Role;
+    var existingCapability = _seedData.Capability;
+
+    // Act
+    var capabilities = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>($"{_path}/{existingRole.Id}/capabilities", _options);
+
+    // Assert
+    Assert.Contains(capabilities!, t => t.Id == existingCapability.Id);
+  }
 }
 
 public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
@@ -123,7 +137,8 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
   public RoleType RoleType = null!;
   public Role Role = null!;
   public Team Team = null!;
-  public Role SquadRole = null!;
+  public Capability Capability = null!;
+  public CapabilityType CapabilityType = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -164,16 +179,16 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
-    SquadRole = db.Roles.Add(new Role
+    CapabilityType = db.CapabilityTypes.Add(new CapabilityType
     {
-      RoleTypeId = RoleType.Id,
-      LevelAssignments = new List<LevelAssignment>
-      {
-        new LevelAssignment
-        {
-          LevelId = Level.Id,
-        }
-      },
+      Name = "Seed Capability Type",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Capability = db.Capabilities.Add(new Capability
+    {
+      CapabilityTypeId = CapabilityType.Id,
+      RoleId = Role.Id,
     }).Entity;
     db.SaveChanges(true);
   }
