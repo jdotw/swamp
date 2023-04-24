@@ -18,6 +18,11 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateLevelAssignmentDto, LevelAssignment>();
     CreateMap<UpdateLevelAssignmentDto, LevelAssignment>();
 
+    CreateMap<HomeAssignment, HomeAssignmentDto>();
+    CreateMap<HomeAssignment, HomeAssignmentCollectionDto>();
+    CreateMap<CreateHomeAssignmentDto, HomeAssignment>();
+    CreateMap<UpdateHomeAssignmentDto, HomeAssignment>();
+
     CreateMap<Person, PersonDto>();
     CreateMap<Person, PersonCollectionDto>().ForMember(dest => dest.ActiveRoleAssignments,
       opt => opt.MapFrom(src => src.RoleAssignments
@@ -82,8 +87,18 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateCapabilityTypeDto, CapabilityType>();
     CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
 
-    CreateMap<Capability, CapabilityDto>();
-    CreateMap<Capability, CapabilityCollectionDto>();
+    CreateMap<Capability, CapabilityDto>()
+      .ForMember(dest => dest.ActiveHomeAssignment,
+        opt => opt.MapFrom(src => src.HomeAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()));
+    CreateMap<Capability, CapabilityCollectionDto>()
+      .ForMember(dest => dest.ActiveHomeAssignment,
+        opt => opt.MapFrom(src => src.HomeAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()));
     CreateMap<CreateCapabilityDto, Capability>();
     CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
   }

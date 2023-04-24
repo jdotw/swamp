@@ -14,6 +14,7 @@ public class CapabilityCollectionDto
   public required RoleDto Role { get; set; }
   public DateTimeOffset ActiveFromDate { get; set; }
   public DateTimeOffset? RetiredAtDate { get; set; }
+  public HomeAssignmentCollectionDto? ActiveHomeAssignment { get; set; }
 }
 
 public class CreateCapabilityDto : UpdateCapabilityDto

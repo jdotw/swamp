@@ -16,6 +16,7 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
   {
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
+        .Include(p => p.HomeAssignments)
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
@@ -26,6 +27,7 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
         .Where(s => s.RoleId == roleId)
         .Where(s => !activeOnly || s.RetiredAtDate == null)
         .Include(p => p.CapabilityType)
+        .Include(p => p.HomeAssignments)
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
@@ -40,6 +42,7 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.CapabilityType)
       .Include(p => p.Role)
+      .Include(p => p.HomeAssignments)
       .AsSplitQuery()
       .AsNoTracking()
       .FirstOrDefaultAsync();

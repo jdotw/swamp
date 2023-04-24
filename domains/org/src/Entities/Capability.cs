@@ -12,4 +12,6 @@ public class Capability : EntityBase
 
   public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
   public DateTimeOffset? RetiredAtDate { get; set; }
+
+  public List<HomeAssignment> HomeAssignments { get; set; } = new();
 }

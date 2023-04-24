@@ -6,6 +6,7 @@ using FluentAssertions;
 using Org.Repository;
 using Base.IntegrationTests;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Org.IntegrationTests;
 
@@ -30,6 +31,23 @@ public class CapabilitiesTests
     // Assert
     // This does return all Capabilitys in a flat list
     Assert.Contains(roles!, t => t.Id == existingCapability.Id);
+  }
+
+  [Fact]
+  public async Task TestGetAllIncludesActiveHomeAssignment()
+  {
+    // Arrange
+    var existingCapability = _seedData.Capability;
+
+    // Act
+    var roles = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>(_path, _options);
+    var fetchedCapability = roles!.First(t => t.Id == existingCapability.Id);
+    // Log the fetchedCapability as JSON using System.JSON
+    var json = JsonSerializer.Serialize(fetchedCapability);
+    Console.WriteLine(json);
+
+    // Assert
+    Assert.NotNull(fetchedCapability.ActiveHomeAssignment);
   }
 
 
@@ -65,11 +83,26 @@ public class CapabilitiesTests
     var existingCapability = _seedData.Capability;
 
     // Act
-    var roles = await _client.GetFromJsonAsync<List<Capability>>($"/roles/{existingRole.Id}/capabilities", _options);
+    var roles = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>($"/roles/{existingRole.Id}/capabilities", _options);
 
     // Assert
     // This does return all Capabilitys in a flat list
     Assert.Contains(roles!, t => t.Id == existingCapability.Id);
+  }
+
+  [Fact]
+  public async Task TestGetAllCapabilitiesForRoleIncludesActiveHomeAssignment()
+  {
+    // Arrange
+    var existingRole = _seedData.Role;
+    var existingCapability = _seedData.Capability;
+
+    // Act
+    var roles = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>($"/roles/{existingRole.Id}/capabilities", _options);
+    var fetchedRole = roles!.First(t => t.Id == existingCapability.Id);
+
+    // Assert
+    Assert.NotNull(fetchedRole.ActiveHomeAssignment);
   }
 
   [Fact]
@@ -148,6 +181,8 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
   public Role Role = null!;
   public CapabilityType CapabilityType = null!;
   public Capability Capability = null!;
+  public Team HomeTeam = null!;
+  public HomeAssignment HomeAssignment = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -183,5 +218,22 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
     };
     db.Capabilities.Add(Capability);
     db.SaveChanges();
+
+    HomeTeam = new Team
+    {
+      Type = "home",
+      Name = "Test Team",
+    };
+    db.Teams.Add(HomeTeam);
+    db.SaveChanges();
+
+    HomeAssignment = new HomeAssignment
+    {
+      TeamId = HomeTeam.Id,
+      CapabilityId = Capability.Id,
+    };
+    db.HomeAssignments.Add(HomeAssignment);
+    db.SaveChanges();
+
   }
 }

@@ -23,6 +23,8 @@ public class OrgDbContext : DbContextBase
 
   public DbSet<Capability> Capabilities => Set<Capability>();
 
+  public DbSet<HomeAssignment> HomeAssignments => Set<HomeAssignment>();
+
   public OrgDbContext(DbContextOptions options) : base(options)
   {
   }
