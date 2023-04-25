@@ -21,9 +21,9 @@ public class CapabilitiesController : ControllerBase<Capability, ICapabilitiesRe
   [HttpGet()]
   public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
   {
-    var capabilitys = await Repository.GetAllAsync(ids);
-    var capabilitysDto = Mapper.Map<IEnumerable<CapabilityCollectionDto>>(capabilitys);
-    return Ok(capabilitysDto);
+    var capabilities = await Repository.GetAllAsync(ids);
+    var capabilitiesDto = Mapper.Map<IEnumerable<CapabilityCollectionDto>>(capabilities);
+    return Ok(capabilitiesDto);
   }
 
   // GET: /capabilities/5

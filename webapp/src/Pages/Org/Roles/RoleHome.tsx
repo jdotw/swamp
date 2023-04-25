@@ -10,6 +10,7 @@ import {
   CapabilityType,
   useCapabilityType,
 } from "../../../Client/CapabilityTypes";
+import { MutateDeployment, useDeployment } from "../../../Client/Deployments";
 import {
   MutateHomeAssignment,
   useHomeAssignment,
@@ -24,8 +25,9 @@ import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHis
 import { PersonCard } from "../People/Person/PersonCard";
 import { AssignHomeTeamModal } from "./AssignHomeTeamModal";
 import { AssignPersonModal } from "./AssignPersonModal";
+import { DeploymentModal } from "./DeploymentModal";
 
-export interface RoleHomeProps { }
+export interface RoleHomeProps {}
 const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
@@ -62,10 +64,12 @@ function RoleHome() {
     deleteItem: deleteCapability,
   } = useCapabilities({ roleId: id });
   const { createItem: createHomeAssignment } = useHomeAssignment();
+  const { createItem: createDeployment } = useDeployment();
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
   const [assignHomeTeamModalOpen, setAssignHomeTeamModalOpen] =
     React.useState(false);
+  const [deploymentModalOpen, setDeploymentModalOpen] = React.useState(false);
   const [selectedCapability, setSelectedCapability] =
     React.useState<Capability>();
   const { classes } = useStyles();
@@ -124,6 +128,17 @@ function RoleHome() {
     setAssignHomeTeamModalOpen(false);
   };
 
+  const deployClicked = async (capability: Capability) => {
+    setSelectedCapability(capability);
+    setDeploymentModalOpen(true);
+  };
+
+  const onDeploymentSubmit = async (deployment: MutateDeployment) => {
+    await createDeployment(deployment);
+    await reloadCapabilities();
+    setDeploymentModalOpen(false);
+  };
+
   const capabilityRows = (capabilities?: Capability[]) =>
     capabilities?.map((capability) => (
       <tr key={capability.id.toString()}>
@@ -137,7 +152,13 @@ function RoleHome() {
             </Button>
           )}
         </td>
-        <td></td>
+        <td>
+          {capability.active_deployment ? (
+            capability.active_deployment.team.name
+          ) : (
+            <Button onClick={() => deployClicked(capability)}>Deploy</Button>
+          )}
+        </td>
         <td></td>
         <td></td>
         <td>
@@ -176,7 +197,7 @@ function RoleHome() {
             {role.active_role_assignment ? (
               <PersonCard
                 person={role.active_role_assignment?.person}
-                onEditClicked={() => { }}
+                onEditClicked={() => {}}
               />
             ) : (
               <Text>Vacant</Text>
@@ -301,6 +322,12 @@ function RoleHome() {
         opened={assignHomeTeamModalOpen}
         onSubmit={onAssignHomeTeamSubmit}
         onClose={() => setAssignHomeTeamModalOpen(false)}
+      />
+      <DeploymentModal
+        capability={selectedCapability!}
+        opened={deploymentModalOpen}
+        onSubmit={onDeploymentSubmit}
+        onClose={() => setDeploymentModalOpen(false)}
       />
     </>
   );

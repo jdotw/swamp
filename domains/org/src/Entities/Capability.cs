@@ -14,4 +14,5 @@ public class Capability : EntityBase
   public DateTimeOffset? RetiredAtDate { get; set; }
 
   public List<HomeAssignment> HomeAssignments { get; set; } = new();
+  public List<Deployment> Deployments { get; set; } = new();
 }

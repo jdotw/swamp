@@ -42,12 +42,26 @@ public class CapabilitiesTests
     // Act
     var roles = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>(_path, _options);
     var fetchedCapability = roles!.First(t => t.Id == existingCapability.Id);
-    // Log the fetchedCapability as JSON using System.JSON
+
+    // Assert
+    Assert.NotNull(fetchedCapability.ActiveHomeAssignment);
+  }
+
+  [Fact]
+  public async Task TestGetAllIncludesActiveDeployment()
+  {
+    // Arrange
+    var existingCapability = _seedData.Capability;
+
+    // Act
+    var roles = await _client.GetFromJsonAsync<List<CapabilityCollectionDto>>(_path, _options);
+    var fetchedCapability = roles!.First(t => t.Id == existingCapability.Id);
+    // Log the JSON responses
     var json = JsonSerializer.Serialize(fetchedCapability);
     Console.WriteLine(json);
 
     // Assert
-    Assert.NotNull(fetchedCapability.ActiveHomeAssignment);
+    Assert.NotNull(fetchedCapability.ActiveDeployment);
   }
 
 
@@ -183,6 +197,8 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
   public Capability Capability = null!;
   public Team HomeTeam = null!;
   public HomeAssignment HomeAssignment = null!;
+  public Team DeliveryTeam = null!;
+  public Deployment Deployment = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -222,7 +238,7 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
     HomeTeam = new Team
     {
       Type = "home",
-      Name = "Test Team",
+      Name = "Home Team",
     };
     db.Teams.Add(HomeTeam);
     db.SaveChanges();
@@ -233,6 +249,22 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
       CapabilityId = Capability.Id,
     };
     db.HomeAssignments.Add(HomeAssignment);
+    db.SaveChanges();
+
+    DeliveryTeam = new Team
+    {
+      Type = "delivery",
+      Name = "Delivery Team",
+    };
+    db.Teams.Add(DeliveryTeam);
+    db.SaveChanges();
+
+    Deployment = new Deployment
+    {
+      TeamId = DeliveryTeam.Id,
+      CapabilityId = Capability.Id,
+    };
+    db.Deployments.Add(Deployment);
     db.SaveChanges();
 
   }

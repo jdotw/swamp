@@ -15,6 +15,7 @@ public class CapabilityCollectionDto
   public DateTimeOffset ActiveFromDate { get; set; }
   public DateTimeOffset? RetiredAtDate { get; set; }
   public HomeAssignmentCollectionDto? ActiveHomeAssignment { get; set; }
+  public DeploymentCollectionDto? ActiveDeployment { get; set; }
 }
 
 public class CreateCapabilityDto : UpdateCapabilityDto

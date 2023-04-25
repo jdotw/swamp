@@ -6,24 +6,24 @@ import {
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
 import Loading from "../../../Components/Loading/Loading";
-import { MutateHomeAssignment } from "../../../Client/HomeAssignment";
 import { Capability } from "../../../Client/Capabilities";
 import { useTeam } from "../../../Client/Team";
+import { MutateDeployment } from "../../../Client/Deployments";
 
-export interface AssignHomeTeamModalProps {
+export interface DeploymentModalProps {
   capability: Capability;
   opened: boolean;
-  onSubmit: (homeAssignment: MutateHomeAssignment) => void;
+  onSubmit: (deployment: MutateDeployment) => void;
   onClose: () => void;
 }
 
-export function AssignHomeTeamModal({
+export function DeploymentModal({
   capability,
   opened,
   onSubmit,
   onClose,
-}: AssignHomeTeamModalProps) {
-  const { items: teams, loading: loadingTeams } = useTeam({ type: "home" });
+}: DeploymentModalProps) {
+  const { items: teams, loading: loadingTeams } = useTeam({ type: "delivery" });
 
   if (loadingTeams) {
     return <Loading />;
@@ -38,11 +38,11 @@ export function AssignHomeTeamModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    let homeAssignment: MutateHomeAssignment = {
+    let deployment: MutateDeployment = {
       team_id: parseInt(values.team_id),
       capability_id: capability.id,
     };
-    onSubmit(homeAssignment);
+    onSubmit(deployment);
   };
 
   return (
@@ -52,7 +52,7 @@ export function AssignHomeTeamModal({
       opened={opened}
       onSubmit={submitFormValues}
       onClose={onClose}
-      title={"Assign Home Team"}
+      title={"Deploy Capability"}
     >
       <Select
         key="team_id"

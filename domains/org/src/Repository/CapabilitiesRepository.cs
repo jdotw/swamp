@@ -17,6 +17,8 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
         .Include(p => p.HomeAssignments)
+        .Include(p => p.Deployments)
+        .AsSplitQuery()
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
@@ -29,6 +31,9 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
         .Include(p => p.CapabilityType)
         .Include(p => p.HomeAssignments)
         .ThenInclude(p => p.Team)
+        .Include(p => p.Deployments)
+        .ThenInclude(p => p.Team)
+        .AsSplitQuery()
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
@@ -44,6 +49,7 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
       .Include(p => p.CapabilityType)
       .Include(p => p.Role)
       .Include(p => p.HomeAssignments)
+      .Include(p => p.Deployments)
       .AsSplitQuery()
       .AsNoTracking()
       .FirstOrDefaultAsync();

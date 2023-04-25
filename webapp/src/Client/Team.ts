@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useCRUD, UseCRUDOptionalProps, UseCRUDProps } from "./CRUD/CRUD";
-import { MutateUnit, Unit } from "./UnitInterface";
+import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 
 export interface Team {
   id: number;
@@ -23,7 +21,9 @@ export interface MutateTeam {
   disbanded_date?: string;
 }
 
-export interface UseTeamProps extends UseCRUDOptionalProps {}
+export interface UseTeamProps extends UseCRUDOptionalProps {
+  type?: "home" | "delivery";
+}
 
 export function useTeam(props?: UseTeamProps) {
   const {
@@ -40,8 +40,12 @@ export function useTeam(props?: UseTeamProps) {
     ...props,
   });
 
+  const filteredTeams = props?.type
+    ? items.filter((team) => team.type === props?.type)
+    : items;
+
   return {
-    items,
+    items: filteredTeams,
     loading,
     error,
     reload,

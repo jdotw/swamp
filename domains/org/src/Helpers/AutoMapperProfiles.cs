@@ -93,12 +93,22 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdateCapabilityTypeDto, CapabilityType>();
 
     CreateMap<Capability, CapabilityDto>()
+      .ForMember(dest => dest.ActiveDeployment,
+        opt => opt.MapFrom(src => src.Deployments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
       .ForMember(dest => dest.ActiveHomeAssignment,
         opt => opt.MapFrom(src => src.HomeAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));
     CreateMap<Capability, CapabilityCollectionDto>()
+      .ForMember(dest => dest.ActiveDeployment,
+        opt => opt.MapFrom(src => src.Deployments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
       .ForMember(dest => dest.ActiveHomeAssignment,
         opt => opt.MapFrom(src => src.HomeAssignments
           .Where(r => r.EndDate == null)
