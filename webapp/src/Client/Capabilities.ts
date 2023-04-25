@@ -1,5 +1,6 @@
 import { CapabilityType } from "./CapabilityTypes";
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
+import { HomeAssignment } from "./HomeAssignment";
 import { RoleType } from "./RoleType";
 
 export interface Capability {
@@ -10,6 +11,7 @@ export interface Capability {
   capability_type: CapabilityType;
   active_from_date: string;
   retired_at_date?: string;
+  active_home_assignment?: HomeAssignment;
 }
 
 export interface MutateCapability {

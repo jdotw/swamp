@@ -10,6 +10,10 @@ import {
   CapabilityType,
   useCapabilityType,
 } from "../../../Client/CapabilityTypes";
+import {
+  MutateHomeAssignment,
+  useHomeAssignment,
+} from "../../../Client/HomeAssignment";
 import { Role, useRole } from "../../../Client/Role";
 import {
   MutateRoleAssignment,
@@ -18,6 +22,7 @@ import {
 import Loading from "../../../Components/Loading/Loading";
 import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHistoryTimeline";
 import { PersonCard } from "../People/Person/PersonCard";
+import { AssignHomeTeamModal } from "./AssignHomeTeamModal";
 import { AssignPersonModal } from "./AssignPersonModal";
 
 export interface RoleHomeProps { }
@@ -52,11 +57,17 @@ function RoleHome() {
   const { items: capabilityTypes } = useCapabilityType();
   const {
     items: capabilities,
+    reload: reloadCapabilities,
     createItem: createCapability,
     deleteItem: deleteCapability,
   } = useCapabilities({ roleId: id });
+  const { createItem: createHomeAssignment } = useHomeAssignment();
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
+  const [assignHomeTeamModalOpen, setAssignHomeTeamModalOpen] =
+    React.useState(false);
+  const [selectedCapability, setSelectedCapability] =
+    React.useState<Capability>();
   const { classes } = useStyles();
 
   if (loading) {
@@ -102,11 +113,30 @@ function RoleHome() {
     await deleteCapability(capability.id);
   };
 
+  const assignHomeTeamClicked = async (capability: Capability) => {
+    setSelectedCapability(capability);
+    setAssignHomeTeamModalOpen(true);
+  };
+
+  const onAssignHomeTeamSubmit = async (assignment: MutateHomeAssignment) => {
+    await createHomeAssignment(assignment);
+    await reloadCapabilities();
+    setAssignHomeTeamModalOpen(false);
+  };
+
   const capabilityRows = (capabilities?: Capability[]) =>
     capabilities?.map((capability) => (
       <tr key={capability.id.toString()}>
         <td>{capability.capability_type.name}</td>
-        <td></td>
+        <td>
+          {capability.active_home_assignment ? (
+            capability.active_home_assignment.team.name
+          ) : (
+            <Button onClick={() => assignHomeTeamClicked(capability)}>
+              Assign
+            </Button>
+          )}
+        </td>
         <td></td>
         <td></td>
         <td></td>
@@ -265,6 +295,12 @@ function RoleHome() {
         opened={assignPersonModalOpen}
         onSubmit={submitRoleAssignment}
         onClose={() => setAssignPersonModalOpen(false)}
+      />
+      <AssignHomeTeamModal
+        capability={selectedCapability!}
+        opened={assignHomeTeamModalOpen}
+        onSubmit={onAssignHomeTeamSubmit}
+        onClose={() => setAssignHomeTeamModalOpen(false)}
       />
     </>
   );

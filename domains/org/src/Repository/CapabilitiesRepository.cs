@@ -28,6 +28,7 @@ public class CapabilitiesRepository : RepositoryBase<Capability>, ICapabilitiesR
         .Where(s => !activeOnly || s.RetiredAtDate == null)
         .Include(p => p.CapabilityType)
         .Include(p => p.HomeAssignments)
+        .ThenInclude(p => p.Team)
         .OrderBy(s => s.Id)
         .ToListAsync();
   }
