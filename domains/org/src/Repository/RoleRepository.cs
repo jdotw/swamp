@@ -28,6 +28,7 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         .ThenInclude(p => p.Level)
       .IncludeActiveRoleAssignment()
         .ThenInclude(p => p.Person)
+      .Include(p => p.ManagerAssignments)
       .AsSplitQuery()
       .OrderBy(s => s.Id);
   }

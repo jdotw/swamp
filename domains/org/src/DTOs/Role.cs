@@ -8,6 +8,7 @@ public class RoleDto
 
   public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
   public required List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
+  public List<ManagerAssignmentDto> ManagerAssignments { get; set; } = new();
 
   public required DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
@@ -29,6 +30,7 @@ public class RoleCollectionDto
 
   public required LevelAssignmentCollectionDto ActiveLevelAssignment { get; set; } = null!;
   public RoleAssignmentCollectionDto? ActiveRoleAssignment { get; set; } = null!;
+  public ManagerAssignmentCollectionDto? ActiveManagerAssignment { get; set; } = null!;
 }
 
 public class CreateRoleDto : UpdateRoleDto

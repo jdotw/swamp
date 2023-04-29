@@ -10,7 +10,6 @@ public class PersonCollectionDto
   public string LastName { get; set; } = null!;
 
   public RoleAssignmentCollectionDto? ActiveRoleAssignment { get; set; }
-  public List<RoleAssignmentCollectionDto> ActiveRoleAssignments { get; set; } = new();
 }
 
 
@@ -24,7 +23,6 @@ public class PersonDto
   public string LastName { get; set; } = null!;
 
   public RoleAssignmentCollectionDto? ActiveRoleAssignment { get; set; }
-  public List<RoleAssignmentCollectionDto> ActiveRoleAssignments { get; set; } = new();
 
   public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
 }

@@ -9,6 +9,7 @@ public class Role : EntityBase
 
   public virtual List<RoleAssignment> RoleAssignments { get; set; } = new();
   public virtual List<LevelAssignment> LevelAssignments { get; set; } = new();
+  public virtual List<ManagerAssignment> ManagerAssignments { get; set; } = new();
 
   public virtual List<Capability> Capabilities { get; set; } = new();
 

@@ -20,10 +20,12 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
         .ThenInclude(r => r.LevelAssignments)
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
+        .ThenInclude(r => r.RoleType)
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
-        .ThenInclude(r => r.RoleType)
+        .ThenInclude(r => r.ManagerAssignments)
         .AsSplitQuery()
+        .AsTracking()
         .OrderBy(p => p.Id)
         .ToListAsync();
   }

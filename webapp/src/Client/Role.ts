@@ -3,6 +3,7 @@ import { RoleType } from "./RoleType";
 import { Level } from "./Level";
 import { RoleAssignment } from "./RoleAssignment";
 import { Capability } from "./Capabilities";
+import { ManagerAssignment } from "./ManagerAssignment";
 
 export interface LevelAssignment {
   id: number;
@@ -16,12 +17,14 @@ export interface Role {
 
   level_assignments?: LevelAssignment[];
   role_assignments?: RoleAssignment[];
+  manager_assignments?: ManagerAssignment[];
 
   start_date: string;
   end_date?: string;
 
   active_level_assignment: LevelAssignment;
   active_role_assignment?: RoleAssignment;
+  active_manager_assignment?: ManagerAssignment
 
   capabilities: Capability[];
 }

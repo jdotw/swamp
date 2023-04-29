@@ -34,6 +34,7 @@ public class OrgDbContext : DbContextBase
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    modelBuilder.Entity<ManagerAssignment>().HasOne(p => p.Role).WithMany(p => p.ManagerAssignments).HasForeignKey(p => p.RoleId).OnDelete(DeleteBehavior.Restrict);
     modelBuilder.Entity<RoleType>().HasMany(p => p.Children).WithOne(p => p.Parent).HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Cascade);
     modelBuilder.Entity<ParameterBase>().UseTpcMappingStrategy();
   }

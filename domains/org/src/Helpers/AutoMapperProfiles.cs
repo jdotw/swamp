@@ -38,29 +38,24 @@ public class AutoMapperProfiles : Profile
         opt => opt.MapFrom(src => src.RoleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
-          .FirstOrDefault()))
-      .ForMember(dest => dest.ActiveRoleAssignments,
-        opt => opt.MapFrom(src => src.RoleAssignments
-          .Where(r => r.EndDate == null)
-          .OrderBy(u => u.StartDate)
-          .ToList()));
+          .FirstOrDefault()));
     CreateMap<Person, PersonCollectionDto>()
       .ForMember(dest => dest.ActiveRoleAssignment,
         opt => opt.MapFrom(src => src.RoleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
-          .FirstOrDefault()))
-      .ForMember(dest => dest.ActiveRoleAssignments,
-        opt => opt.MapFrom(src => src.RoleAssignments
-          .Where(r => r.EndDate == null)
-          .OrderBy(u => u.StartDate)
-          .ToList()));
+          .FirstOrDefault()));
     CreateMap<CreatePersonDto, Person>();
     CreateMap<UpdatePersonDto, Person>();
 
     CreateMap<Role, RoleCollectionDto>()
       .ForMember(dest => dest.ActiveLevelAssignment,
         opt => opt.MapFrom(src => src.LevelAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.ActiveManagerAssignment,
+        opt => opt.MapFrom(src => src.ManagerAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))

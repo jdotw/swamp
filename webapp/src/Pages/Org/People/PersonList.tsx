@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Person, MutatePerson, usePerson } from "../../../Client/Person";
-import { createStyles, Table, ScrollArea, Button, Text, Title } from "@mantine/core";
+import { createStyles, Table, Button, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
-import { MutateItemModalMode } from "../../../Components/MutateItemModal/MutateItemModal";
 import { ImportPeopleModal } from "./ImportPeopleModal";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
     justifyContent: "flex-end",
@@ -19,10 +18,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface PersonListProps {}
+interface PersonListProps { }
 
-export function PersonList(props: PersonListProps) {
-  const { classes, theme } = useStyles();
+export function PersonList(_: PersonListProps) {
+  const { classes } = useStyles();
   const { items, loading, createItem } = usePerson();
   const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -33,7 +32,8 @@ export function PersonList(props: PersonListProps) {
 
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
-    const active_role = row.active_role_assignments?.[0]?.role;
+    const active_role = row.active_role_assignment?.role;
+    console.log("ACTIVE ROLE: ", active_role);
     return (
       <tr key={id}>
         <td>
@@ -46,7 +46,10 @@ export function PersonList(props: PersonListProps) {
           <Link to={id}>{row.external_id}</Link>
         </td>
         <td>
-          <Link to={id}><Text className={!active_role && classes.unassignedRole}>{active_role?.role_type?.title ?? "unassigned"}</Text></Link>
+          <Link to={id}><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
+        </td>
+        <td>
+          <Link to={id}>{active_role.active_manager_assignment?.manager.active_role_assignment?.person.first_name ?? "unassigned"}</Link>
         </td>
       </tr>
     );
@@ -60,7 +63,7 @@ export function PersonList(props: PersonListProps) {
   };
 
   const onImportSubmit = () => {
-  	setImportModalOpen(false);
+    setImportModalOpen(false);
   }
 
   return (
@@ -74,7 +77,8 @@ export function PersonList(props: PersonListProps) {
               <th>First Name</th>
               <th>Last Name</th>
               <th>External ID</th>
-              <th>Current Role</th>
+              <th>Role</th>
+              <th>Manager</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
@@ -95,7 +99,7 @@ export function PersonList(props: PersonListProps) {
         mode="create"
         onClose={() => setAddPersonModalOpen(false)}
       />
-	  <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
+      <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
     </>
   );
 }

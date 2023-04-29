@@ -14,20 +14,21 @@ public class ManagerAssignmentRepository : RepositoryBase<ManagerAssignment>, IM
   public async Task<IEnumerable<ManagerAssignment>> GetAllAsync(List<int>? filterIds = null)
   {
     return await FindAllAsync()
-        .Where(s => filterIds == null || filterIds.Contains(s.Id))
-        .OrderBy(s => s.Id)
-        .ToListAsync();
+      .Where(s => filterIds == null || filterIds.Contains(s.Id))
+      .OrderBy(s => s.Id)
+      .ToListAsync();
   }
 
   public async Task<IEnumerable<ManagerAssignment>> GetAllByRoleIdAsync(int roleId)
   {
     return await FindAllAsync()
-        .Include(p => p.Manager)
-        .ThenInclude(p => p.RoleAssignments)
-        .ThenInclude(p => p.Person)
-        .AsSplitQuery()
-        .OrderBy(s => s.Id)
-        .ToListAsync();
+      .Where(s => s.RoleId == roleId)
+      .Include(p => p.Manager)
+      .ThenInclude(p => p.RoleAssignments)
+      .ThenInclude(p => p.Person)
+      .AsSplitQuery()
+      .OrderBy(s => s.Id)
+      .ToListAsync();
   }
 
   public async Task<ManagerAssignment?> GetByIdAsync(int id)
