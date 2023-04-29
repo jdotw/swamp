@@ -24,6 +24,8 @@ public class OrgDbContext : DbContextBase
   public DbSet<Capability> Capabilities => Set<Capability>();
 
   public DbSet<HomeAssignment> HomeAssignments => Set<HomeAssignment>();
+  public DbSet<ManagerAssignment> ManagerAssignments => Set<ManagerAssignment>();
+
   public DbSet<Deployment> Deployments => Set<Deployment>();
 
   public OrgDbContext(DbContextOptions options) : base(options)

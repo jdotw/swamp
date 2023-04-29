@@ -5,29 +5,29 @@ import {
   Capability,
   MutateCapability,
   useCapabilities,
-} from "../../../Client/Capabilities";
+} from "@/Client/Capabilities";
 import {
   CapabilityType,
   useCapabilityType,
-} from "../../../Client/CapabilityTypes";
-import { MutateDeployment, useDeployment } from "../../../Client/Deployments";
+} from "@/Client/CapabilityTypes";
+import { MutateDeployment, useDeployment } from "@/Client/Deployments";
 import {
   MutateHomeAssignment,
   useHomeAssignment,
-} from "../../../Client/HomeAssignment";
-import { Role, useRole } from "../../../Client/Role";
+} from "@/Client/HomeAssignment";
+import { Role, useRole } from "@/Client/Role";
 import {
   MutateRoleAssignment,
   useRoleAssignment,
-} from "../../../Client/RoleAssignment";
-import Loading from "../../../Components/Loading/Loading";
-import RoleHistoryTimeline from "../../../Components/RoleHistoryTimeline/RoleHistoryTimeline";
-import { PersonCard } from "../People/Person/PersonCard";
+} from "@/Client/RoleAssignment";
+import Loading from "@/Components/Loading/Loading";
+import RoleHistoryTimeline from "@/Components/RoleHistoryTimeline/RoleHistoryTimeline";
+import { PersonCard } from "@Pages/People/Person/PersonCard";
 import { AssignHomeTeamModal } from "./AssignHomeTeamModal";
 import { AssignPersonModal } from "./AssignPersonModal";
 import { DeploymentModal } from "./DeploymentModal";
 
-export interface RoleHomeProps {}
+export interface RoleHomeProps { }
 const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
@@ -197,7 +197,7 @@ function RoleHome() {
             {role.active_role_assignment ? (
               <PersonCard
                 person={role.active_role_assignment?.person}
-                onEditClicked={() => {}}
+                onEditClicked={() => { }}
               />
             ) : (
               <Text>Vacant</Text>

@@ -28,6 +28,11 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateHomeAssignmentDto, HomeAssignment>();
     CreateMap<UpdateHomeAssignmentDto, HomeAssignment>();
 
+    CreateMap<ManagerAssignment, ManagerAssignmentDto>();
+    CreateMap<ManagerAssignment, ManagerAssignmentCollectionDto>();
+    CreateMap<CreateManagerAssignmentDto, ManagerAssignment>();
+    CreateMap<UpdateManagerAssignmentDto, ManagerAssignment>();
+
     CreateMap<Person, PersonDto>();
     CreateMap<Person, PersonCollectionDto>().ForMember(dest => dest.ActiveRoleAssignments,
       opt => opt.MapFrom(src => src.RoleAssignments

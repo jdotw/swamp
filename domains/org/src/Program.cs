@@ -33,6 +33,7 @@ builder.Services.AddScoped<IRoleAssignmentRepository, RoleAssignmentRepository>(
 builder.Services.AddScoped<IRoleTypeRepository, RoleTypeRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IHomeAssignmentRepository, HomeAssignmentRepository>();
+builder.Services.AddScoped<IManagerAssignmentRepository, ManagerAssignmentRepository>();
 builder.Services.AddScoped<IDeploymentRepository, DeploymentRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
