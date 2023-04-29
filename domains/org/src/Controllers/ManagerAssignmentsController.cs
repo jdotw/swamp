@@ -18,9 +18,17 @@ public class ManagerAssignmentsController : ControllerBase<ManagerAssignment, IM
 
   // GET: /managerassignments
   [HttpGet()]
-  public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null)
+  public async Task<IActionResult> GetAll([FromQuery(Name = "id")] List<int>? ids = null, [FromQuery(Name = "role_id")] int? roleId = 0)
   {
-    var assignments = await Repository.GetAllAsync(ids);
+    IEnumerable<ManagerAssignment> assignments;
+    if (roleId > 0)
+    {
+      assignments = await Repository.GetAllByRoleIdAsync(roleId.Value);
+    }
+    else
+    {
+      assignments = await Repository.GetAllAsync(ids);
+    }
     var assignmentsDto = Mapper.Map<IEnumerable<ManagerAssignmentDto>>(assignments);
     return Ok(assignmentsDto);
   }
@@ -40,8 +48,10 @@ public class ManagerAssignmentsController : ControllerBase<ManagerAssignment, IM
   public async Task<IActionResult> Create(CreateManagerAssignmentDto assignmentDto)
   {
     var assignment = Mapper.Map<ManagerAssignment>(assignmentDto);
-    await Repository.AddAsync(assignment);
-    return CreatedAtAction(nameof(Get), new { id = assignment.Id }, Mapper.Map<ManagerAssignmentDto>(assignment));
+    var changed = await Repository.AddAsync(assignment);
+    if (changed < 1) return BadRequest();
+    var createdAssignment = await Repository.GetWithDetailsAsync(assignment.Id);
+    return CreatedAtAction(nameof(Get), new { id = assignment.Id }, Mapper.Map<ManagerAssignmentDto>(createdAssignment));
   }
 
   // PUT: /managerassignments/5

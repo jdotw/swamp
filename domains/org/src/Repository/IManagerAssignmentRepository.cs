@@ -5,6 +5,7 @@ namespace Org.Repository;
 public interface IManagerAssignmentRepository
 {
   Task<IEnumerable<ManagerAssignment>> GetAllAsync(List<int>? filterIds);
+  Task<IEnumerable<ManagerAssignment>> GetAllByRoleIdAsync(int roleId);
   Task<ManagerAssignment?> GetByIdAsync(int id);
   Task<ManagerAssignment?> GetWithDetailsAsync(int id);
   Task<int> AddAsync(ManagerAssignment assignment);

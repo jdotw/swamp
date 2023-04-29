@@ -33,12 +33,28 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateManagerAssignmentDto, ManagerAssignment>();
     CreateMap<UpdateManagerAssignmentDto, ManagerAssignment>();
 
-    CreateMap<Person, PersonDto>();
-    CreateMap<Person, PersonCollectionDto>().ForMember(dest => dest.ActiveRoleAssignments,
-      opt => opt.MapFrom(src => src.RoleAssignments
-        .Where(r => r.EndDate == null)
-        .OrderBy(u => u.StartDate)
-        .ToList()));
+    CreateMap<Person, PersonDto>()
+      .ForMember(dest => dest.ActiveRoleAssignment,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.ActiveRoleAssignments,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .ToList()));
+    CreateMap<Person, PersonCollectionDto>()
+      .ForMember(dest => dest.ActiveRoleAssignment,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .FirstOrDefault()))
+      .ForMember(dest => dest.ActiveRoleAssignments,
+        opt => opt.MapFrom(src => src.RoleAssignments
+          .Where(r => r.EndDate == null)
+          .OrderBy(u => u.StartDate)
+          .ToList()));
     CreateMap<CreatePersonDto, Person>();
     CreateMap<UpdatePersonDto, Person>();
 

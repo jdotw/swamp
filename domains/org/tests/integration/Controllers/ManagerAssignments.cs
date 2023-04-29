@@ -20,6 +20,7 @@ public class ManagerAssignmentTests
   public async Task TestCreateManagerAssignment()
   {
     // Arrange
+    var existingManagerAssignment = _seedData.ManagerAssignment;
     var testStart = DateTime.UtcNow;
     var newManagerAssignment = new CreateManagerAssignmentDto
     {
@@ -30,11 +31,15 @@ public class ManagerAssignmentTests
     // Act
     var assignment = await _client.PostAsJsonAsync(_path, newManagerAssignment, _options)
       .ContinueWith<ManagerAssignmentDto?>(t => t.Result.Content.ReadFromJsonAsync<ManagerAssignmentDto>(_options).Result);
+    var fetchedOldAssignment = await _client.GetFromJsonAsync<ManagerAssignmentDto>($"{_path}/{existingManagerAssignment.Id}", _options);
 
     // Assert
     Assert.NotEqual(0, assignment!.Id);
     Assert.Equal(newManagerAssignment.ManagerId, assignment.ManagerId);
     Assert.Equal(newManagerAssignment.RoleId, assignment.RoleId);
+    Assert.NotNull(assignment.Role);
+    Assert.NotNull(assignment.Manager);
+    Assert.NotNull(fetchedOldAssignment!.EndDate);
   }
 
   [Fact]
@@ -48,6 +53,33 @@ public class ManagerAssignmentTests
 
     // Assert
     Assert.Contains(assignments!, t => t.Id == existingManagerAssignment.Id);
+  }
+
+  [Fact]
+  public async Task TestGetAllManagerAssignmentsForRoleWithAssignments()
+  {
+    // Arrange
+    var existingRole = _seedData.Role;
+    var existingManagerAssignment = _seedData.ManagerAssignment;
+
+    // Act
+    var assignments = await _client.GetFromJsonAsync<List<ManagerAssignment>>($"{_path}?role_id={existingRole.Id}", _options);
+
+    // Assert
+    Assert.Contains(assignments!, t => t.Id == existingManagerAssignment.Id);
+  }
+
+  [Fact]
+  public async Task TestGetAllManagerAssignmentsForRoleWithoutAssignments()
+  {
+    // Arrange
+    var existingRoleWithoutAssignments = _seedData.RoleWithoutManagerAssignments;
+
+    // Act
+    var assignments = await _client.GetFromJsonAsync<List<ManagerAssignment>>($"{_path}?role_id={existingRoleWithoutAssignments.Id}", _options);
+
+    // Assert
+    Assert.Empty(assignments!);
   }
 
   [Fact]
@@ -115,6 +147,7 @@ public class ManagerAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
 {
   public RoleType RoleType { get; set; } = null!;
   public Role Role { get; set; } = null!;
+  public Role RoleWithoutManagerAssignments { get; set; } = null!;
   public RoleType ManagerType { get; set; } = null!;
   public Role Manager { get; set; } = null!;
   public ManagerAssignment ManagerAssignment { get; set; } = null!;
@@ -132,6 +165,12 @@ public class ManagerAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
     db.SaveChanges(true);
 
     Role = db.Roles.Add(new Role
+    {
+      RoleTypeId = RoleType.Id,
+    }).Entity;
+    db.SaveChanges(true);
+
+    RoleWithoutManagerAssignments = db.Roles.Add(new Role
     {
       RoleTypeId = RoleType.Id,
     }).Entity;

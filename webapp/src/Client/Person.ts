@@ -1,5 +1,5 @@
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
-import { Role } from "./Role";
+import { RoleAssignment } from "./RoleAssignment";
 
 export interface Person {
   id: number;
@@ -7,6 +7,7 @@ export interface Person {
   first_name: string;
   middle_names?: string;
   last_name: string;
+  active_role_assignment: RoleAssignment;
 }
 
 export interface MutatePerson {
@@ -16,7 +17,7 @@ export interface MutatePerson {
   last_name: string;
 }
 
-export interface UsePersonProps extends UseCRUDOptionalProps {}
+export interface UsePersonProps extends UseCRUDOptionalProps { }
 
 export function usePerson(props?: UsePersonProps) {
   const {

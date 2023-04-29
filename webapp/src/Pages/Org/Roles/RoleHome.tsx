@@ -22,10 +22,12 @@ import {
 } from "@/Client/RoleAssignment";
 import Loading from "@/Components/Loading/Loading";
 import RoleHistoryTimeline from "@/Components/RoleHistoryTimeline/RoleHistoryTimeline";
-import { PersonCard } from "@Pages/People/Person/PersonCard";
 import { AssignHomeTeamModal } from "./AssignHomeTeamModal";
 import { AssignPersonModal } from "./AssignPersonModal";
 import { DeploymentModal } from "./DeploymentModal";
+import { MutateManagerAssignment, useManagerAssignment } from "@/Client/ManagerAssignment";
+import { PersonCard } from "@/Pages/Org/People/Person/PersonCard";
+import { AssignManagerModal } from "./AssignManagerModal";
 
 export interface RoleHomeProps { }
 const useStyles = createStyles(() => ({
@@ -65,7 +67,10 @@ function RoleHome() {
   } = useCapabilities({ roleId: id });
   const { createItem: createHomeAssignment } = useHomeAssignment();
   const { createItem: createDeployment } = useDeployment();
+  const { items: managerAssignments, createItem: createManagerAssignment } = useManagerAssignment({ roleId: id });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
+    React.useState(false);
+  const [assignManagerModalOpen, setAssignManagerModalOpen] =
     React.useState(false);
   const [assignHomeTeamModalOpen, setAssignHomeTeamModalOpen] =
     React.useState(false);
@@ -95,10 +100,18 @@ function RoleHome() {
       capabilities?.find((c) => c.capability_type_id === p.id) === undefined
   );
 
+  const activeManagerAssignment = managerAssignments?.filter((p) => p.end_date === null)[0];
+  console.log(activeManagerAssignment);
+
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);
     await reloadRole();
     setAssignPersonModalOpen(false);
+  };
+
+  const submitManagerAssignment = async (assignment: MutateManagerAssignment) => {
+    await createManagerAssignment(assignment);
+    setAssignManagerModalOpen(false);
   };
 
   const roleTitle = (role: Role) => {
@@ -206,7 +219,12 @@ function RoleHome() {
               Assign Person
             </Button>
             <Title order={5}>Manager</Title>
-            <Text>Chis Watson -- FAKE (TODO)</Text>
+            {activeManagerAssignment ? (
+              <><Text>{activeManagerAssignment.manager.active_role_assignment?.person.first_name} {activeManagerAssignment.manager.active_role_assignment?.person.last_name}</Text>
+                <Button onClick={() => setAssignManagerModalOpen(true)}>Change Manager</Button></>
+            ) : (
+              <Button onClick={() => setAssignManagerModalOpen(true)}>Assign Manager</Button>)
+            }
             <Title order={5}>Assigned Capabilities</Title>
             <table className={classes.capabilityTable}>
               <thead>
@@ -316,6 +334,12 @@ function RoleHome() {
         opened={assignPersonModalOpen}
         onSubmit={submitRoleAssignment}
         onClose={() => setAssignPersonModalOpen(false)}
+      />
+      <AssignManagerModal
+        role={role}
+        opened={assignManagerModalOpen}
+        onSubmit={submitManagerAssignment}
+        onClose={() => setAssignManagerModalOpen(false)}
       />
       <AssignHomeTeamModal
         capability={selectedCapability!}
