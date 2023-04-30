@@ -2,7 +2,6 @@ import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Outlet } from "react-router";
 
-import "./App.css";
 import { HeaderSimple } from "./Components/Header/Header";
 import { SideNavbar } from "./Components/Navbar/SideNavbar";
 
