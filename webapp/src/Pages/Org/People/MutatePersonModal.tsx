@@ -31,21 +31,21 @@ export function MutatePersonModal({
   const fields: MutateItemModalFormField[] = [
     {
       key: "first_name",
-      initialValue: person?.first_name ?? "",
+      value: person?.first_name,
       validation: (value) => nonEmptyString(value, "First name is required"),
     },
     {
       key: "external_id",
-      initialValue: person?.external_id ?? "",
+      value: person?.external_id,
       validation: (value) => nonEmptyString(value, "External ID is required"),
     },
     {
       key: "middle_names",
-      initialValue: person?.middle_names ?? "",
+      value: person?.middle_names,
     },
     {
       key: "last_name",
-      initialValue: person?.last_name ?? "",
+      value: person?.last_name,
       validation: (value) => nonEmptyString(value, "Last name is required"),
     },
   ];

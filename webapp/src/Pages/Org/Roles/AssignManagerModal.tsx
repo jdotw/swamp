@@ -31,9 +31,7 @@ export function AssignManagerModal({
     return <Loading />;
   }
 
-  console.log("PEOPLE: ", people);
   const managerCandidates = people.filter((person) => (person.active_role_assignment && person.active_role_assignment.role_id != role.id));
-  console.log("MANAGER CANDIDATES: ", managerCandidates);
 
   const fields: MutateItemModalFormField[] = [
     {

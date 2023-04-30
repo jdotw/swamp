@@ -65,6 +65,7 @@ function MutateTeamModal({
       onSubmit={submitForm}
       onClose={onClose}
       title={title}
+      testId={MutateTeamModalTestID}
     >
       <Select
         key="type"

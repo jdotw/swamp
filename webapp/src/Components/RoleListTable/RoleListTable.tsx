@@ -18,13 +18,12 @@ const useStyles = createStyles(() => ({
   filledRole: {},
 }));
 
-export interface RoleListTableProps {}
+export interface RoleListTableProps { }
 
 export const RoleListTablePropsDefaults = {
-  showCapability: false,
 };
 
-const RoleListTable = ({}: RoleListTableProps) => {
+const RoleListTable = ({ }: RoleListTableProps) => {
   const { classes } = useStyles();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const { loading, items: roles, createItem: createRole } = useRole({});
@@ -104,9 +103,9 @@ const RoleListTable = ({}: RoleListTableProps) => {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddModalOpen(true)}>Add Role</Button>
+          <Button onClick={() => setAddModalOpen(true)} data-testid="add-team-button">Add Role</Button>
         </div>
-      </div>
+      </div >
       <MutateRoleModal
         opened={addModalOpen}
         onClose={() => setAddModalOpen(false)}

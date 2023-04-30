@@ -10,7 +10,7 @@ describe("SideNavbar", () => {
   beforeEach(async () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
-        <SideNavbar hidden={false} onLinkClicked={() => {}} />
+        <SideNavbar hidden={false} onLinkClicked={() => { }} />
       </MemoryRouter>
     );
   });
@@ -114,14 +114,14 @@ describe("SideNavbar", () => {
       await waitFor(() => {
         expect(
           screen.getByRole("link", { name: "Role Types" })
-        ).toHaveAttribute("href", "/org/roletypes");
+        ).toHaveAttribute("href", "/setup/roletypes");
       });
     });
-    it("should render a Role Levels link", async () => {
+    it("should render a Levels link", async () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "Levels" })).toHaveAttribute(
           "href",
-          "/org/levels"
+          "/setup/levels"
         );
       });
     });
@@ -129,7 +129,7 @@ describe("SideNavbar", () => {
       await waitFor(() => {
         expect(screen.getByRole("link", { name: "Deployments" })).toHaveAttribute(
           "href",
-          "/org/deployments"
+          "/setup/deploymenttypes"
         );
       });
     });

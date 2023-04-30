@@ -24,12 +24,11 @@ export interface MutateCapabilityTypeModalProps {
 export function MutateCapabilityTypeModal({
   capabilityType,
   parentCandidates,
-  roleTypeCandidates, 
+  roleTypeCandidates,
   opened,
   onSubmit,
   onClose,
 }: MutateCapabilityTypeModalProps) {
-  console.log("MODAL: ", capabilityType);
   const fields: MutateItemModalFormField[] = [
     {
       key: "name",
@@ -66,7 +65,7 @@ export function MutateCapabilityTypeModal({
       value: capabilityType.id.toString(),
       label: capabilityType.name,
     })) as SelectItem[];
-    
+
   const roleTypeData = () =>
     (roleTypeCandidates ?? []).map((capabilityType) => ({
       value: capabilityType.id.toString(),

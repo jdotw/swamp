@@ -101,7 +101,6 @@ function RoleHome() {
   );
 
   const activeManagerAssignment = managerAssignments?.filter((p) => p.end_date === null)[0];
-  console.log(activeManagerAssignment);
 
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);

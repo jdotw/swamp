@@ -27,11 +27,11 @@ interface ExpectHookAdoptsUseCRUDCorrectlyProps<
   mutateItemFactory: (props?: Partial<TMutateItem>) => TMutateItem;
 }
 
-vi.mock("./CRUD/CRUD", () => {
-  return {
-    useCRUD: vi.fn(),
-  };
-});
+//
+// NOTE: Do not, I repeat DO EFFING NOT, try to mock out useCRUD in this file.
+//       If you do, it will create a mock that is scoped just to this file and 
+//       the return value that we mock out here wont actually be returned to 
+//       the hook under test. 30/4/2023: Least productive day ever. 
 
 export function expectHookAdoptsUseCRUDCorrectly<
   TItem extends TypeWithID,
@@ -42,11 +42,6 @@ export function expectHookAdoptsUseCRUDCorrectly<
   mutateItemFactory,
 }: ExpectHookAdoptsUseCRUDCorrectlyProps<TItem, TMutateItem>) {
   const defaultProps = {};
-
-  const renderHookUnderTest = (props?: UseCRUDOptionalProps) => {
-    const hook = renderHook(() => hookFactory({ ...defaultProps, ...props }));
-    return hook;
-  };
 
   const mockReload = vi.fn();
   const mockCreateItem = vi.fn();
@@ -60,6 +55,11 @@ export function expectHookAdoptsUseCRUDCorrectly<
     updateItem: mockUpdateItem,
     deleteItem: mockDeleteItem,
   });
+
+  const renderHookUnderTest = (props?: UseCRUDOptionalProps) => {
+    const hook = renderHook(() => hookFactory({ ...defaultProps, ...props }));
+    return hook;
+  };
 
   describe("hook that uses useCRUD", () => {
     it("should call useCRUD with expected parameters", async () => {

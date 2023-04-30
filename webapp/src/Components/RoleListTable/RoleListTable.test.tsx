@@ -39,18 +39,4 @@ describe("RoleListTable", () => {
     renderPage();
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
-
-  describe("when no unitId etc is specified", () => {
-    it("should not show the Add Role button", async () => {
-      renderPage();
-      expect(screen.queryByText("Add Role")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("when showCapability is false", () => {
-    it("should not show the Capability column", async () => {
-      renderPage({ showCapability: false });
-      expect(screen.queryByText("Capability")).not.toBeInTheDocument();
-    });
-  });
 });

@@ -67,8 +67,8 @@ function TeamList() {
           </Table>
         </ScrollArea>
         <Button
-          data-testid={"add-team-button"}
-          onClick={() => { setTeamToEdit(undefined); setMutateTeamModalOpen(true)}}
+          data-testid="add-team-button"
+          onClick={() => { setTeamToEdit(undefined); setMutateTeamModalOpen(true) }}
         >
           Add Team
         </Button>
@@ -76,7 +76,7 @@ function TeamList() {
       <MutateTeamModal
         parentCandidates={items}
         opened={mutateTeamModalOpen}
-        mode={teamToEdit ? "edit" : "create" }
+        mode={teamToEdit ? "edit" : "create"}
         team={teamToEdit}
         onClose={() => setMutateTeamModalOpen(false)}
         onSubmit={onMutateTeamSubmit}

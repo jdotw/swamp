@@ -33,9 +33,8 @@ export function PersonList(_: PersonListProps) {
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
     const active_role = row.active_role_assignment?.role;
-    console.log("ACTIVE ROLE: ", active_role);
     return (
-      <tr key={id}>
+      <tr key={id} data-testid={`person-${id}`}>
         <td>
           <Link to={id}>{row.first_name}</Link>
         </td>
@@ -46,12 +45,12 @@ export function PersonList(_: PersonListProps) {
           <Link to={id}>{row.external_id}</Link>
         </td>
         <td>
-          <Link to={id}><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
-        </td>
+          <Link to={"/org/roles/" + id} data-testid="role-column-link"><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
+        </td >
         <td>
           <Link to={id}>{active_role?.active_manager_assignment?.manager.active_role_assignment?.person.first_name ?? "unassigned"}</Link>
         </td>
-      </tr>
+      </tr >
     );
   });
 

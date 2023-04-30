@@ -13,7 +13,7 @@ export type MutateItemFormValidationRule = (value: string) => string | null;
 
 export interface MutateItemModalFormField {
   key: string;
-  initialValue: string;
+  initialValue?: string;
   value?: string;
   validation?: MutateItemFormValidationRule;
   element?: ReactJSXElement;
@@ -29,6 +29,7 @@ export interface MutateItemModalProps {
   mode?: MutateItemModalMode;
   title: string;
   children?: React.ReactNode[] | React.ReactNode;
+  testId?: string;
 }
 
 export function MutateItemModal({
@@ -40,12 +41,11 @@ export function MutateItemModal({
   onSubmit,
   onClose,
   children,
+  testId,
 }: MutateItemModalProps) {
   const initialValues: MutateItemFormValues = Object.fromEntries(
-    fields.map((field) => [field.key, field.initialValue])
+    fields.map((field) => [field.key, field.initialValue ?? ""])
   );
-
-  console.log("INITIAL VALUES: ", initialValues);
 
   const validationRules: FormValidateInput<MutateItemFormValues> =
     Object.fromEntries(
@@ -80,10 +80,7 @@ export function MutateItemModal({
   }, [form.values]);
 
   useEffect(() => {
-    const values: Record<string, string | undefined> = Object.fromEntries(
-      fields.map((field) => [field.key, field.value])
-    );
-    form.setValues(values);
+    form.setValues(_valuesFromFormFields(fields));
   }, [fields]);
 
   if (children) {
@@ -99,7 +96,7 @@ export function MutateItemModal({
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title={title}>
+    <Modal opened={opened} onClose={onClose} title={title} data-testid={testId}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
           {children}
@@ -120,4 +117,10 @@ export function MutateItemModal({
 
 export function nonEmptyString(value: string, errorString: string) {
   return /^(?!\s*$).+/.test(value) ? null : errorString;
+}
+
+export function _valuesFromFormFields(fields: MutateItemModalFormField[]) {
+  return Object.fromEntries(
+    fields.map((field) => [field.key, field.value ?? ""])
+  );
 }

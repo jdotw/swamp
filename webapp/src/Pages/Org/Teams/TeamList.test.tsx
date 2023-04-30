@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Mock, vi } from "vitest";
 import {
@@ -97,7 +97,9 @@ describe("TeamList", () => {
     it("should show Add Team modal when clicked", async () => {
       renderTeamList();
       const addTeamButton = screen.getByTestId("add-team-button");
-      fireEvent.click(addTeamButton);
+      await act(async () => {
+        await fireEvent.click(addTeamButton);
+      });
       await waitFor(async () => {
         expect(screen.getByTestId(MutateTeamModalTestID)).toBeInTheDocument();
       });

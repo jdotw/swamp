@@ -36,7 +36,7 @@ describe("MutateRoleTypeModal", () => {
   it("should render the expected input fields", async () => {
     renderModal();
     expect(
-      await screen.getByText("Title", { selector: "label" })
+      await screen.getByText("Name", { selector: "label" })
     ).toBeInTheDocument();
     expect(
       await screen.getByText("Parent", { selector: "label" })
@@ -45,11 +45,11 @@ describe("MutateRoleTypeModal", () => {
   it("should validate input fields", async () => {
     renderModal();
     const submitButton = await screen.getByText("Add");
-    const titleInput = await screen.getByPlaceholderText("title");
-    await userEvent.clear(titleInput);
+    const nameInput = await screen.getByPlaceholderText("name");
+    await userEvent.clear(nameInput);
     await userEvent.click(submitButton);
     await waitFor(async () => {
-      expect(await screen.findByText("Title is required")).toBeInTheDocument();
+      expect(await screen.findByText("Name is required")).toBeInTheDocument();
     });
   });
 });
