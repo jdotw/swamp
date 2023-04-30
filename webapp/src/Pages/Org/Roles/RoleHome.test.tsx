@@ -6,7 +6,7 @@ import { Role, useRole } from "../../../Client/Role";
 import RoleHome, { RoleHomeProps } from "./RoleHome";
 import { roleHistoryTimelineTestId } from "../../../Components/RoleHistoryTimeline/RoleHistoryTimeline";
 import { useManagerAssignment } from "@/Client/ManagerAssignment";
-import { useCapabilities } from "@/Client/Capabilities";
+import { useCapability } from "@/Client/Capability";
 
 addTestPolyfills();
 
@@ -29,9 +29,9 @@ vi.mock("@/Client/ManagerAssignment", () => {
   };
 });
 
-vi.mock("@/Client/Capabilities", () => {
+vi.mock("@/Client/Capability", () => {
   return {
-    useCapabilities: vi.fn(),
+    useCapability: vi.fn(),
   };
 });
 
@@ -194,7 +194,7 @@ const mockManagerAssignment = {
 
 }
 
-const mockCapabilities = [{
+const mockCapability = [{
   "id": 18,
   "capability_type_id": 19,
   "capability_type": {
@@ -316,8 +316,8 @@ useManagerAssignmentMock.mockImplementation(() => ({
   ...mockUseManagerAssignmentReturn,
 }));
 
-const mockUseCapabilityReturn = { loading: false, items: mockCapabilities };
-const useCapabilityMock = useCapabilities as Mock;
+const mockUseCapabilityReturn = { loading: false, items: mockCapability };
+const useCapabilityMock = useCapability as Mock;
 useCapabilityMock.mockImplementation(() => ({
   ...mockUseCapabilityReturn,
 }));

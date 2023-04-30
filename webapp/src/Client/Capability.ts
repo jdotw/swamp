@@ -23,11 +23,11 @@ export interface MutateCapability {
   retired_at_date?: string;
 }
 
-export interface UseCapabilitiesProps extends UseCRUDOptionalProps {
+export interface UseCapabilityProps extends UseCRUDOptionalProps {
   roleId?: number;
 }
 
-export function useCapabilities(props?: UseCapabilitiesProps) {
+export function useCapability(props?: UseCapabilityProps) {
   const {
     reload,
     items,

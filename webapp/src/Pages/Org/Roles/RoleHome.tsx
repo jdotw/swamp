@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import {
   Capability,
   MutateCapability,
-  useCapabilities,
-} from "@/Client/Capabilities";
+  useCapability,
+} from "@/Client/Capability";
 import {
   CapabilityType,
   useCapabilityType,
@@ -64,7 +64,7 @@ function RoleHome() {
     reload: reloadCapabilities,
     createItem: createCapability,
     deleteItem: deleteCapability,
-  } = useCapabilities({ roleId: id });
+  } = useCapability({ roleId: id });
   const { createItem: createHomeAssignment } = useHomeAssignment();
   const { createItem: createDeployment } = useDeployment();
   const { items: managerAssignments, createItem: createManagerAssignment } = useManagerAssignment({ roleId: id });
