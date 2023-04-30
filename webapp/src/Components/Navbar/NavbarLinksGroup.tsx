@@ -21,9 +21,9 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     width: "100%",
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    fontSize: theme.fontSizes.sm,
+    // fontSize: theme.fontSizes.sm,
 
     "&:hover": {
       backgroundColor:
@@ -38,7 +38,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     textDecoration: "none",
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
     paddingLeft: 31,
     marginLeft: 30,
     fontSize: theme.fontSizes.sm,
@@ -46,9 +46,7 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderLeft: `2px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
 
     "&:hover": {
       backgroundColor:

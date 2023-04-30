@@ -56,7 +56,7 @@ function App() {
       // }
       styles={(theme) => ({
         main: {
-          fontSize: "1rem",
+          fontSize: '1rem',
           backgroundColor:
             theme.colorScheme === "dark"
               ? theme.colors.dark[8]

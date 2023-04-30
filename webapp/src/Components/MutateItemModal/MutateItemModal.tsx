@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
-import { TextInput, Checkbox, Box } from "@mantine/core";
+import React, { useEffect } from "react";
+import { Button, Modal, Group } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { FormValidateInput, UseForm, UseFormReturnType } from "@mantine/form/lib/types";
+import { FormValidateInput, UseFormReturnType } from "@mantine/form/lib/types";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
-import { IconCornerRightUpDouble } from "@tabler/icons";
 
 export type MutateItemModalMode = "edit" | "create";
 
@@ -46,6 +45,8 @@ export function MutateItemModal({
     fields.map((field) => [field.key, field.initialValue])
   );
 
+  console.log("INITIAL VALUES: ", initialValues);
+
   const validationRules: FormValidateInput<MutateItemFormValues> =
     Object.fromEntries(
       fields.reduce((result, value) => {
@@ -79,11 +80,11 @@ export function MutateItemModal({
   }, [form.values]);
 
   useEffect(() => {
-    const values: Record<string,string|undefined> = Object.fromEntries(
+    const values: Record<string, string | undefined> = Object.fromEntries(
       fields.map((field) => [field.key, field.value])
     );
     form.setValues(values);
-    }, [fields]);
+  }, [fields]);
 
   if (children) {
     children = React.Children.map(children, (child) => {

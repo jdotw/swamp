@@ -81,7 +81,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           {/* Delivery */}
           <Route path="delivery" element={<DeliveryShell />}>
             <Route index element={<DeliveryHome />} />
-            
+
             {/* Delivery Teams */}
             <Route path="teams">
               <Route index element={<DeliveryTeamList />} />
@@ -91,7 +91,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           {/* Setup */}
           <Route path="setup" element={<SetupShell />}>
             <Route index element={<SetupHome />} />
-            
+
             {/* Role Types */}
             <Route path="roletypes">
               <Route index element={<RoleTypeList />} />

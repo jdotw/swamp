@@ -15,9 +15,8 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: 0,
   },
   footer: {
-    borderTop: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
   },
 }));
 
@@ -84,7 +83,7 @@ export function SideNavbar(props: NavbarSimpleColoredProps) {
       className={classes.navbar}
       hiddenBreakpoint="sm"
       hidden={hidden}
-      width={{ sm: 200, lg: 200 }}
+      width={{ sm: "14rem", lg: "16rem" }}
     >
       <Navbar.Section grow>{links}</Navbar.Section>
       <Navbar.Section className={classes.footer}>{footerLinks}</Navbar.Section>

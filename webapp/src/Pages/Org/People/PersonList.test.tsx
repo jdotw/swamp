@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Mock, vi } from "vitest";
-import { usePerson } from "../../../Client/Person";
+import { usePerson } from "@/Client/Person";
 import { addTestPolyfills } from "../../../../test/UITestHelpers";
 import PersonList from "./PersonList";
 import userEvent from "@testing-library/user-event";
@@ -15,7 +15,7 @@ const renderPage = () =>
     </MemoryRouter>
   );
 
-vi.mock("../../../Client/Person", () => {
+vi.mock("@/Client/Person", () => {
   return {
     usePerson: vi.fn(),
   };
@@ -26,6 +26,7 @@ const mockUsePersonReturn = {
   items: [],
 };
 const usePersonMock = usePerson as Mock;
+console.log("usePersonMock: ", usePersonMock);
 usePersonMock.mockImplementation(() => ({
   ...mockUsePersonReturn,
 }));
@@ -66,7 +67,10 @@ describe("PersonList", () => {
         screen.queryByRole("columnheader", { name: "External ID" })
       ).toBeInTheDocument();
       expect(
-        screen.queryByRole("columnheader", { name: "Current Role" })
+        screen.queryByRole("columnheader", { name: "Role" })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("columnheader", { name: "Manager" })
       ).toBeInTheDocument();
     });
     it("renders a table with the correct number of rows", async () => {
@@ -78,7 +82,7 @@ describe("PersonList", () => {
           external_id: "123",
           active_role: {
             id: 1,
-            },
+          },
         },
         {
           id: "2",
@@ -119,7 +123,9 @@ describe("PersonList", () => {
         "Onboard Person"
       ) as HTMLButtonElement;
       if (addPersonButton) {
-        await userEvent.click(addPersonButton);
+        await act(async () => {
+          await userEvent.click(addPersonButton);
+        });
         await waitFor(() => {
           expect(
             screen.queryByText("First Name", { selector: "label" })
@@ -133,6 +139,8 @@ describe("PersonList", () => {
         });
         const firstNameInput =
           screen.getByPlaceholderText<HTMLInputElement>("first name");
+        const middleNameInput =
+          screen.getByPlaceholderText<HTMLInputElement>("middle names (optional)");
         const lastNameInput =
           screen.getByPlaceholderText<HTMLInputElement>("last name");
         const externalIdInput =
@@ -141,23 +149,28 @@ describe("PersonList", () => {
         if (
           firstNameInput &&
           lastNameInput &&
+          middleNameInput &&
           externalIdInput &&
           submitButton
         ) {
           const expectedPerson = {
             first_name: "Jim",
             last_name: "More",
-            middle_names: "",
+            middle_names: "Bob",
             external_id: "JXJ2222444",
           };
           const user = userEvent.setup();
-          await user.clear(firstNameInput);
-          await user.type(firstNameInput, expectedPerson.first_name);
-          await user.clear(lastNameInput);
-          await user.type(lastNameInput, expectedPerson.last_name);
-          await user.clear(externalIdInput);
-          await user.type(externalIdInput, expectedPerson.external_id);
-          await user.click(submitButton);
+          await act(async () => {
+            await user.clear(firstNameInput);
+            await user.type(firstNameInput, expectedPerson.first_name);
+            await user.clear(middleNameInput);
+            await user.type(middleNameInput, expectedPerson.middle_names);
+            await user.clear(lastNameInput);
+            await user.type(lastNameInput, expectedPerson.last_name);
+            await user.clear(externalIdInput);
+            await user.type(externalIdInput, expectedPerson.external_id);
+            await user.click(submitButton);
+          });
           await waitFor(async () => {
             expect(createMock).toHaveBeenCalledTimes(1);
             expect(createMock).toHaveBeenCalledWith(expectedPerson);

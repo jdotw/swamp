@@ -49,7 +49,7 @@ export function PersonList(_: PersonListProps) {
           <Link to={id}><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
         </td>
         <td>
-          <Link to={id}>{active_role.active_manager_assignment?.manager.active_role_assignment?.person.first_name ?? "unassigned"}</Link>
+          <Link to={id}>{active_role?.active_manager_assignment?.manager.active_role_assignment?.person.first_name ?? "unassigned"}</Link>
         </td>
       </tr>
     );
