@@ -36,15 +36,13 @@ const data = [
     label: "Capabilities",
     icon: IconBulb,
     links: [
-      { label: "Types", link: "/capability/types" },
-      { label: "Teams", link: "/capability/teams" },
     ],
   },
   {
     link: "/delivery",
     label: "Delivery",
     icon: IconClipboardList,
-    links: [{ label: "Teams", link: "/delivery/teams" }],
+    links: [],
   },
   {
     link: "/setup",
