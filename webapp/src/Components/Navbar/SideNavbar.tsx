@@ -5,7 +5,7 @@ import {
   IconBulb,
   IconClipboardList,
   IconSettings
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { LinksGroup } from "./NavbarLinksGroup";
 
 const useStyles = createStyles((theme) => ({

@@ -1,5 +1,5 @@
 import { Text, Timeline } from "@mantine/core";
-import { IconGitBranch, IconStar, TablerIcon } from "@tabler/icons";
+import { IconGitBranch, IconStar, TablerIcon } from "@tabler/icons-react";
 import { Role } from "../../Client/Role";
 import { RoleHistory, useRoleHistory } from "../../Client/RoleHistory";
 import Loading from "../Loading/Loading";

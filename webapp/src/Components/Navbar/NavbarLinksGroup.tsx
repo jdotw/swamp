@@ -13,7 +13,7 @@ import {
   IconCalendarStats,
   IconChevronLeft,
   IconChevronRight,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 import { NavLink } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
