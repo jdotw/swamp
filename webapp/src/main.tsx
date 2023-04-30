@@ -16,15 +16,13 @@ import RolesList from "./Pages/Org/Roles/RolesList";
 import RoleHome from "./Pages/Org/Roles/RoleHome";
 import TeamsList from "./Pages/Org/Teams/TeamList";
 import TeamHome from "./Pages/Org/Teams/Team/TeamHome";
-import LevelList from "./Pages/Org/Levels/LevelList";
-import LevelHome from "./Pages/Org/Levels/LevelHome";
-import RoleTypeList from "./Pages/Org/RoleTypes/RoleTypeList";
-import RoleTypeHome from "./Pages/Org/RoleTypes/RoleTypeHome";
+import LevelList from "./Pages/Setup/Levels/LevelList";
+import LevelHome from "./Pages/Setup/Levels/LevelHome";
+import RoleTypeList from "./Pages/Setup/RoleTypes/RoleTypeList";
+import RoleTypeHome from "./Pages/Setup/RoleTypes/RoleTypeHome";
 import SetupHome from "./Pages/Setup/SetupHome";
 import SetupShell from "./Pages/Setup/SetupShell";
-import DeploymentTypeList from "./Pages/Org/DeploymentTypes/DeploymentTypeList";
-import CapabilityTeamList from "./Pages/Capability/Teams/CapabilityTeamList";
-import DeliveryTeamList from "./Pages/Delivery/Teams/DeliveryTeamList";
+import DeploymentTypeList from "./Pages/Setup/DeploymentTypes/DeploymentTypeList";
 import CapabilityTypeList from "./Pages/Setup/CapabilityTypes/CapabilityTypeList";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -67,11 +65,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="capability" element={<CapabilityShell />}>
             <Route index element={<CapabilityHome />} />
 
-            {/* Capability Teams */}
-            <Route path="teams">
-              <Route index element={<CapabilityTeamList />} />
-            </Route>
-
             {/* Capability Types */}
             <Route path="types">
               <Route index element={<CapabilityTypeList />} />
@@ -81,11 +74,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           {/* Delivery */}
           <Route path="delivery" element={<DeliveryShell />}>
             <Route index element={<DeliveryHome />} />
-
-            {/* Delivery Teams */}
-            <Route path="teams">
-              <Route index element={<DeliveryTeamList />} />
-            </Route>
           </Route>
 
           {/* Setup */}
