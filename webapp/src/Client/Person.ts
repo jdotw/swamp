@@ -7,7 +7,8 @@ export interface Person {
   first_name: string;
   middle_names?: string;
   last_name: string;
-  active_role_assignment: RoleAssignment;
+  active_role_assignment?: RoleAssignment;
+  role_assignments: RoleAssignment[];
 }
 
 export interface MutatePerson {

@@ -10,15 +10,17 @@ export interface RoleType {
   parent?: RoleType;
   children: RoleType[];
   capability_types: CapabilityType[];
+  title_type: string;
 }
 
 export interface MutateRoleType {
   name: string;
   retired_at_date?: string;
   parent_id?: number;
+  title_type: string;
 }
 
-export interface UseRoleTypeProps extends UseCRUDOptionalProps {}
+export interface UseRoleTypeProps extends UseCRUDOptionalProps { }
 
 export function useRoleType(props?: UseRoleTypeProps) {
   const {

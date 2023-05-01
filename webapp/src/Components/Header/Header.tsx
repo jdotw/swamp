@@ -129,7 +129,9 @@ export function HeaderSimple({
         />
         <Text mr="xl">
           <Link className={classes.home} to="/">
-            SWAMP
+            <h1>
+              SWAMP
+            </h1>
           </Link>
         </Text>
         <Container className={classes.linkContainer}>

@@ -23,6 +23,7 @@ builder.Services.AddDbContext<OrgDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("OrgDatabase")));
 // .UseSnakeCaseNamingConvention());
 builder.Services.AddScoped<ILevelRepository, LevelRepository>();
+builder.Services.AddScoped<ITrackRepository, TrackRepository>();
 builder.Services.AddScoped<IDeploymentTypeRepository, DeploymentTypeRepository>();
 builder.Services.AddScoped<ICapabilityTypeRepository, CapabilityTypeRepository>();
 builder.Services.AddScoped<ICapabilitiesRepository, CapabilitiesRepository>();

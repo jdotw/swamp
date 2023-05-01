@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230501004531_AddedTitleTypeToRoleType")]
+    partial class AddedTitleTypeToRoleType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,10 +275,6 @@ namespace Org.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CareerTrack")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset?>("ClosedAtDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -434,20 +433,13 @@ namespace Org.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("RoleTypes");
-                });
-
-            modelBuilder.Entity("Org.Entities.Track", b =>
-                {
-                    b.HasBaseType("Base.Entities.ParameterBase");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("TitleType")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("Tracks");
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("RoleTypes");
                 });
 
             modelBuilder.Entity("Org.Entities.Capability", b =>

@@ -40,20 +40,26 @@ export function MutateRoleTypeModal({
   const fields: MutateItemModalFormField[] = [
     {
       key: "name",
-      initialValue: roleType?.name ?? "",
       validation: (value) => nonEmptyString(value, "Name is required"),
+      value: roleType?.name,
     },
     {
       key: "parent_id",
-      initialValue: "",
+      value: roleType?.parent_id?.toString(),
     },
+    {
+      key: "title_type",
+      validation: (value) => nonEmptyString(value, "Title type is required"),
+      value: roleType?.title_type,
+    }
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual roleType
-    let roleType: MutateRoleType = {
+    const roleType: MutateRoleType = {
       name: values.name,
       parent_id: parseInt(values.parent_id) ?? undefined,
+      title_type: values.title_type,
     };
     onSubmit(roleType);
   };
@@ -79,6 +85,14 @@ export function MutateRoleTypeModal({
         label="Parent"
         placeholder="parent role type"
         data={parentRoleTypeData()}
+      />
+      <Select
+        key="title_type"
+        label="Title Type"
+        placeholder="role title type"
+        data={[
+          { value: "ic", label: "Individual Contributor" },
+          { value: "manager", label: "Manager" }]}
       />
     </MutateItemModal>
   );
