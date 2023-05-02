@@ -10,6 +10,7 @@ public class LevelDto
   public DateTimeOffset ActiveFromDate { get; set; }
   public DateTimeOffset? RetiredAtDate { get; set; }
   public List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
+  public List<TitleDto> Titles { get; set; } = new();
   public int ParentId { get; set; }
   public LevelDto? Parent { get; set; }
   public List<LevelCollectionDto> Children { get; set; } = new();

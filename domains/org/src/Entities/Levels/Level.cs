@@ -13,4 +13,5 @@ public class Level : ParameterBase
   public List<Level> Children { get; set; } = new();
 
   public List<LevelAssignment> LevelAssignments { get; set; } = new();
+  public List<Title> Titles { get; set; } = new();
 }
