@@ -53,6 +53,7 @@ const data = [
       { label: "Levels", link: "/setup/levels" },
       { label: "Deployments", link: "/setup/deploymenttypes" },
       { label: "Capabilities", link: "/setup/capabilitytypes" },
+      { label: "Tracks", link: "/setup/tracks" },
     ],
   },
 ];

@@ -133,6 +133,14 @@ describe("SideNavbar", () => {
         );
       });
     });
+    it("should render a Tracks link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Tracks" })).toHaveAttribute(
+          "href",
+          "/setup/tracks"
+        );
+      });
+    });
   });
 
 });

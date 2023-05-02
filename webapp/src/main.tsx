@@ -24,6 +24,7 @@ import SetupHome from "./Pages/Setup/SetupHome";
 import SetupShell from "./Pages/Setup/SetupShell";
 import DeploymentTypeList from "./Pages/Setup/DeploymentTypes/DeploymentTypeList";
 import CapabilityTypeList from "./Pages/Setup/CapabilityTypes/CapabilityTypeList";
+import TrackList from "./Pages/Setup/Tracks/TrackList";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
@@ -116,6 +117,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               */}
             </Route>
 
+            {/* Career Tracks */}
+            <Route path="tracks">
+              <Route index element={<TrackList />} />
+              {/*
+              <Route path=":trackId">
+                <Route index element={<TrackHome />} />
+              </Route>
+              */}
+            </Route>
           </Route>
         </Route>
       </Routes>
