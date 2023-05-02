@@ -18,6 +18,11 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTrackDto, Track>();
     CreateMap<UpdateTrackDto, Track>();
 
+    CreateMap<Title, TitleDto>();
+    CreateMap<Title, TitleCollectionDto>();
+    CreateMap<CreateTitleDto, Title>();
+    CreateMap<UpdateTitleDto, Title>();
+
     CreateMap<LevelAssignment, LevelAssignmentDto>();
     CreateMap<LevelAssignment, LevelAssignmentCollectionDto>();
     CreateMap<CreateLevelAssignmentDto, LevelAssignment>();

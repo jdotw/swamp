@@ -29,6 +29,7 @@ public class OrgDbContext : DbContextBase
   public DbSet<Deployment> Deployments => Set<Deployment>();
 
   public DbSet<Track> Tracks => Set<Track>();
+  public DbSet<Title> Titles => Set<Title>();
 
   public OrgDbContext(DbContextOptions options) : base(options)
   {

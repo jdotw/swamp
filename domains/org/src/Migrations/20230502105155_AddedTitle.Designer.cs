@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Org.Repository;
@@ -11,9 +12,11 @@ using Org.Repository;
 namespace Org.Migrations
 {
     [DbContext(typeof(OrgDbContext))]
-    partial class OrgDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230502105155_AddedTitle")]
+    partial class AddedTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,19 +446,9 @@ namespace Org.Migrations
                 {
                     b.HasBaseType("Base.Entities.ParameterBase");
 
-                    b.Property<int>("LevelId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int?>("TrackId")
-                        .HasColumnType("integer");
-
-                    b.HasIndex("LevelId");
-
-                    b.HasIndex("TrackId");
 
                     b.ToTable("Titles");
                 });
@@ -646,23 +639,6 @@ namespace Org.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("Org.Entities.Title", b =>
-                {
-                    b.HasOne("Org.Entities.Level", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Org.Entities.Track", "Track")
-                        .WithMany()
-                        .HasForeignKey("TrackId");
-
-                    b.Navigation("Level");
-
-                    b.Navigation("Track");
                 });
 
             modelBuilder.Entity("Org.Entities.Track", b =>
