@@ -25,6 +25,7 @@ import SetupShell from "./Pages/Setup/SetupShell";
 import DeploymentTypeList from "./Pages/Setup/DeploymentTypes/DeploymentTypeList";
 import CapabilityTypeList from "./Pages/Setup/CapabilityTypes/CapabilityTypeList";
 import TrackList from "./Pages/Setup/Tracks/TrackList";
+import TitleList from "./Pages/Setup/Titles/TitleList";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>

@@ -16,6 +16,7 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
         .OrderBy(s => s.Id)
+        .Include(s => s.Titles)
         .ToListAsync();
   }
 
@@ -36,10 +37,6 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
 
   public override async Task<int> AddAsync(Level level)
   {
-    if (level.ManagerTitle is null && level.IndividualContributorTitle is null)
-    {
-      throw new ArgumentException("Level must have either a ManagerTitle or IndividualContributorTitle");
-    }
     if (level.ParentId is not null)
     {
       var parent = await GetByIdAsync(level.ParentId.Value);
@@ -60,8 +57,7 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
   {
     existing.Index = update.Index;
     existing.ExternalId = update.ExternalId;
-    existing.ManagerTitle = update.ManagerTitle;
-    existing.IndividualContributorTitle = update.IndividualContributorTitle;
+    existing.Name = update.Name;
     existing.RetiredAtDate = update.RetiredAtDate;
   }
 

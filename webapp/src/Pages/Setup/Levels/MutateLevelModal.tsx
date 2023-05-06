@@ -1,7 +1,7 @@
 import { Select } from "@mantine/core";
 import { TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MutateLevel, Level } from "../../../Client/Level";
 import {
   MutateItemFormValues,
@@ -32,48 +32,47 @@ export function MutateLevelModal({
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual level
-    let level: MutateLevel = {
+    const level: MutateLevel = {
       index: parseInt(values.index),
+      name: values.name,
       external_id: values.external_id,
-      individual_contributor_title: values.individual_contributor_title,
-      manager_title: values.manager_title,
       parent_id: values.parent_id ? parseInt(values.parent_id) : undefined,
     };
     onSubmit(level);
+    setSelectedParent(undefined);
   };
 
-  const onChange = (values: MutateItemFormValues, form: UseFormReturnType<MutateItemFormValues, (values: MutateItemFormValues) => MutateItemFormValues>) => {
+  const onChange = (values: MutateItemFormValues) => {
     const parent = parent_levels?.find(
       (parent_level) => parent_level.id.toString() === values.parent_id
     );
     setSelectedParent(parent);
-    if (parent) {
-      form.setFieldValue("index", parent.index.toString());
-    }
   }
-  
+
+  const onModalClosed = () => {
+    setSelectedParent(undefined);
+    onClose();
+  }
+
   const fields: MutateItemModalFormField[] = [
     {
       key: "index",
-      initialValue: level?.index.toString() ?? (selectedParent?.index.toString() ?? ""),
       validation: (value) => nonEmptyString(value, "Index is required"),
+      value: level ? level.index.toString() : (selectedParent?.index.toString() ?? ""),
     },
     {
       key: "external_id",
-      initialValue: level?.external_id ?? "",
       validation: (value) => nonEmptyString(value, "External ID is required"),
+      value: level?.external_id ?? "",
     },
     {
-      key: "individual_contributor_title",
-      initialValue: level?.individual_contributor_title ?? "",
-    },
-    {
-      key: "manager_title",
-      initialValue: level?.manager_title ?? "",
+      key: "name",
+      validation: (value) => nonEmptyString(value, "Name is required"),
+      value: level?.name ?? "",
     },
     {
       key: "parent_id",
-      initialValue: level?.parent_id?.toString() ?? "",
+      value: level ? level.parent_id?.toString() : (selectedParent?.id.toString() ?? ""),
     },
   ];
 
@@ -81,22 +80,22 @@ export function MutateLevelModal({
     <MutateItemModal
       title={mode === "edit" ? "Edit Level" : "Add Level"}
       opened={opened}
-      onClose={onClose}
+      onClose={onModalClosed}
       fields={fields}
       onSubmit={submitFormValues}
       mode={mode}
       onChange={onChange}
     >
-      {parent_levels && 
+      {parent_levels &&
         <Select
           key="parent_id"
           label="Parent"
           placeholder="select parent level"
           data={parent_levels.map((parent_level) => {
-            const title = `${parent_level.individual_contributor_title} / ${parent_level.manager_title}`;
+            const label = `${parent_level.name} - ${parent_level.index.toString()} (${parent_level.external_id})`;
             return {
               value: parent_level.id.toString(),
-              label: title,
+              label: label,
             };
           })}
         />
@@ -106,24 +105,19 @@ export function MutateLevelModal({
         withAsterisk
         label="Index"
         placeholder="level index"
-        disabled={selectedParent !== undefined}
+        disabled={level !== undefined || selectedParent !== undefined}
+      />
+      <TextInput
+        key="name"
+        withAsterisk
+        label="Name"
+        placeholder="name"
       />
       <TextInput
         key="external_id"
         label="External ID"
         placeholder="external id"
       />
-      <TextInput
-        key="individual_contributor_title"
-        label="Individual Contributor Title"
-        placeholder="individual contributor title"
-      />
-      <TextInput
-        key="manager_title"
-        label="Manager Title"
-        placeholder="manager title"
-      />
-
     </MutateItemModal>
   );
 }

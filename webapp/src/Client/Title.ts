@@ -1,14 +1,22 @@
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
+import { Level } from "./Level";
+import { Track } from "./Track";
 
 export interface Title {
   id: number;
   name: string;
+  level_id: number;
+  level: Level;
+  track_id?: number;
+  track?: Track;
   active_from_date: string;
   retired_at_date?: string;
 }
 
 export interface MutateTitle {
   name: string;
+  level_id: number;
+  track_id?: number;
   retired_at_date?: string;
 }
 

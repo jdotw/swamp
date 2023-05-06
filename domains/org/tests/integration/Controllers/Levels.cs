@@ -24,9 +24,8 @@ public class LevelTests
     var testStart = DateTime.UtcNow;
     var newLevel = new CreateLevelDto
     {
+      Name = "Test Level",
       Index = 1,
-      IndividualContributorTitle = "IC Title",
-      ManagerTitle = "Manager Title"
     };
 
     // Act
@@ -35,8 +34,6 @@ public class LevelTests
 
     // Assert
     Assert.NotEqual(0, level!.Id);
-    Assert.Equal(newLevel.IndividualContributorTitle, level.IndividualContributorTitle);
-    Assert.Equal(newLevel.ManagerTitle, level.ManagerTitle);
     level.ActiveFromDate.Should().BeOnOrAfter(testStart);
     level.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
   }
@@ -49,9 +46,8 @@ public class LevelTests
     var testStart = DateTime.UtcNow;
     var newLevel = new CreateLevelDto
     {
+      Name = "Test Child Level",
       Index = parentLevel.Index,
-      IndividualContributorTitle = "Child IC Title",
-      ManagerTitle = "Child Manager Title",
       ParentId = parentLevel.Id
     };
 
@@ -62,8 +58,6 @@ public class LevelTests
     // Assert
     Assert.NotEqual(0, level!.Id);
     Assert.Equal(parentLevel.Id, level.ParentId);
-    Assert.Equal(newLevel.IndividualContributorTitle, level.IndividualContributorTitle);
-    Assert.Equal(newLevel.ManagerTitle, level.ManagerTitle);
     level.ActiveFromDate.Should().BeOnOrAfter(testStart);
     level.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
   }
@@ -137,9 +131,8 @@ public class LevelTests
     var updateDto = new UpdateLevelDto
     {
       Index = 1,
-      IndividualContributorTitle = "New IC Title",
-      ManagerTitle = "New Manager Title",
       RetiredAtDate = DateTime.UtcNow,
+      Name = "New Name",
       ParentId = _seedData.ChildLevel.Id,
     };
 
@@ -158,8 +151,7 @@ public class LevelTests
     var updateDto = new UpdateLevelDto
     {
       Index = 1,
-      IndividualContributorTitle = "New IC Title",
-      ManagerTitle = "New Manager Title",
+      Name = "New Name",
       RetiredAtDate = DateTime.UtcNow,
     };
 
@@ -212,21 +204,19 @@ public class LevelsSeedDataClass : ISeedDataClass<OrgDbContext>
 
     Level = db.Levels.Add(new Level
     {
-      IndividualContributorTitle = "Individual Contributor",
-      ManagerTitle = "Manager",
+      Name = "Seed Level",
     }).Entity;
     db.SaveChanges(true);
-    
+
     LevelWithoutChildren = db.Levels.Add(new Level
     {
-      IndividualContributorTitle = "IC Without Children",
-      ManagerTitle = "Manager Without Children",
+      Name = "Seed Level Without Children",
     }).Entity;
     db.SaveChanges(true);
 
     ChildLevel = db.Levels.Add(new Level
     {
-      IndividualContributorTitle = "IC Variation",
+      Name = "Seed Child Level",
       Parent = Level
     }).Entity;
     db.SaveChanges(true);

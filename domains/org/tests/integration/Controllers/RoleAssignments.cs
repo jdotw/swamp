@@ -140,8 +140,7 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
 
     Level = db.Levels.Add(new Level
     {
-      IndividualContributorTitle = "Seed IC",
-      ManagerTitle = "Seed Manager"
+      Name = "Seed Level",
     }).Entity;
     db.SaveChanges(true);
 

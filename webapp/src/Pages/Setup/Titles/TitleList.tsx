@@ -1,4 +1,4 @@
-import { Text, Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
+import { Text, Button, createStyles, Table, Title } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MutateTitle, useTitle, Title as TitleType } from "../../../Client/Title";
@@ -22,6 +22,7 @@ function TitleList() {
   if (loading) return <Loading />;
 
   const submitNewTitle = async (newTitle: MutateTitle) => {
+    console.log("submitNewTitle", newTitle);
     await createItem(newTitle);
     setAddTitleModalOpen(false);
   };
@@ -30,6 +31,12 @@ function TitleList() {
     <tr key={title.id.toString()}>
       <td>
         <Link to={title.id.toString()}>{title.name}</Link>
+      </td>
+      <td>
+        <Link to={title.id.toString()}>{title.level.index}</Link>
+      </td>
+      <td>
+        <Link to={title.id.toString()}>{title.track?.name ?? ""}</Link>
       </td>
     </tr>
   );
@@ -44,9 +51,11 @@ function TitleList() {
           <thead>
             <tr>
               <th>Title</th>
+              <th>Level</th>
+              <th>Track</th>
             </tr>
           </thead>
-          <tbody>{map(items, (item) => titleRow(item))}</tbody>
+          <tbody>{items.map((item) => titleRow(item))}</tbody>
         </Table>
         <div className={classes.buttonBar}>
           <Button onClick={() => setAddTitleModalOpen(true)}>Add Title</Button>
@@ -56,8 +65,6 @@ function TitleList() {
         opened={addTitleModalOpen}
         onClose={() => setAddTitleModalOpen(false)}
         onSubmit={submitNewTitle}
-        mode="create"
-        parent_titles={items}
       />
     </>
   );

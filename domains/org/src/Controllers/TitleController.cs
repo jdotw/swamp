@@ -41,7 +41,8 @@ public class TitlesController : ControllerBase<Title, ITitleRepository>
   {
     var title = Mapper.Map<Title>(titleDto);
     await Repository.AddAsync(title);
-    return CreatedAtAction(nameof(Get), new { id = title.Id }, Mapper.Map<TitleDto>(title));
+    var addedTitle = await Repository.GetWithDetailsAsync(title.Id);
+    return CreatedAtAction(nameof(Get), new { id = title.Id }, Mapper.Map<TitleDto>(addedTitle));
   }
 
   // PUT: /titles/5

@@ -16,6 +16,8 @@ public class TitleRepository : RepositoryBase<Title>, ITitleRepository
     return await FindAllAsync()
         .Where(s => filterIds == null || filterIds.Contains(s.Id))
         .OrderBy(s => s.Id)
+        .Include(s => s.Track)
+        .Include(s => s.Level)
         .ToListAsync();
   }
 
@@ -27,6 +29,8 @@ public class TitleRepository : RepositoryBase<Title>, ITitleRepository
   public async Task<Title?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
+      .Include(s => s.Track)
+      .Include(s => s.Level)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }
