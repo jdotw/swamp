@@ -26,6 +26,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .Include(p => p.RoleType)
       .Include(p => p.LevelAssignments)
         .ThenInclude(p => p.Level)
+      .Include(p => p.TitleAssignments)
+        .ThenInclude(p => p.Title)
       .IncludeActiveRoleAssignment()
         .ThenInclude(p => p.Person)
       .Include(p => p.ManagerAssignments)
@@ -65,6 +67,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
       .ThenInclude(p => p.Person)
       .Include(p => p.Capabilities)
       .ThenInclude(p => p.CapabilityType)
+      .Include(p => p.TitleAssignments)
+      .ThenInclude(p => p.Title)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }

@@ -91,12 +91,11 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
       LevelId = roleDto.LevelId,
       StartDate = DateTimeOffset.UtcNow
     });
-    // role.UnitAssignments.Add(new UnitAssignment
-    // {
-    //   FunctionTypeId = roleDto.FunctionTypeId,
-    //   UnitId = roleDto.UnitId,
-    //   StartDate = DateTimeOffset.UtcNow
-    // });
+    role.TitleAssignments.Add(new TitleAssignment
+    {
+      TitleId = roleDto.TitleId,
+      StartDate = DateTimeOffset.UtcNow
+    });
     await Repository.AddAsync(role);
 
     var addedRole = await Repository.GetWithDetailsAsync(role.Id);

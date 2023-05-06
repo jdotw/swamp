@@ -8,6 +8,7 @@ import {
   MutateItemModalFormField,
   nonEmptyString,
 } from "../MutateItemModal/MutateItemModal";
+import { useTitle } from "@/Client/Title";
 
 export interface MutateRoleModalProps {
   role?: Role;
@@ -23,9 +24,10 @@ export function MutateRoleModal({
   onClose,
 }: MutateRoleModalProps) {
   const { items: levels, loading: loadingLevels } = useLevel();
+  const { items: titles, loading: loadingTitles } = useTitle();
   const { items: role_types, loading: loadingRoleTypes } = useRoleType();
 
-  if (loadingLevels || loadingRoleTypes) {
+  if (loadingLevels || loadingRoleTypes || loadingTitles) {
     return <div>Loading...</div>;
   }
 
@@ -40,15 +42,18 @@ export function MutateRoleModal({
       initialValue: "",
       validation: (value) => nonEmptyString(value, "Level is required"),
     },
+    {
+      key: "title",
+      initialValue: "",
+      validation: (value) => nonEmptyString(value, "Title is required"),
+    },
   ];
 
-  const formValuesChanged = (_: MutateItemFormValues) => {
-  };
-
   const submitFormValues = (values: MutateItemFormValues) => {
-    let updatedRole: MutateRole = {
+    const updatedRole: MutateRole = {
       role_type_id: parseInt(values.role_type),
       level_id: parseInt(values.level),
+      title_id: parseInt(values.title),
     };
     onSubmit(updatedRole);
   };
@@ -58,7 +63,6 @@ export function MutateRoleModal({
       mode={role ? "edit" : "create"}
       fields={fields}
       opened={opened}
-      onChange={formValuesChanged}
       onSubmit={submitFormValues}
       onClose={onClose}
       title={role ? "Edit Role" : "Add Role"}
@@ -77,12 +81,23 @@ export function MutateRoleModal({
       <Select
         key="level"
         label="Level"
-        placeholder="select role type"
+        placeholder="select role level"
         data={levels.reduce((acc, level) => {
-          const title = `${level.individual_contributor_title} / ${level.manager_title}`;
           acc.push({
             value: level.id.toString(),
-            label: title,
+            label: level.name,
+          });
+          return acc;
+        }, [] as { value: string; label: string }[])}
+      />
+      <Select
+        key="title"
+        label="Title"
+        placeholder="select role title"
+        data={titles.reduce((acc, title) => {
+          acc.push({
+            value: title.id.toString(),
+            label: title.name,
           });
           return acc;
         }, [] as { value: string; label: string }[])}
