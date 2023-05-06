@@ -126,6 +126,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
               </Route>
               */}
             </Route>
+
+            {/* Titles */}
+            <Route path="titles">
+              <Route index element={<TitleList />} />
+              {/*
+              <Route path=":trackId">
+                <Route index element={<TrackHome />} />
+              </Route>
+              */}
+            </Route>
           </Route>
         </Route>
       </Routes>

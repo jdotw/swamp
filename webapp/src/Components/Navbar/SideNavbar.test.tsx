@@ -141,6 +141,14 @@ describe("SideNavbar", () => {
         );
       });
     });
+    it("should render a Titles link", async () => {
+      await waitFor(() => {
+        expect(screen.getByRole("link", { name: "Titles" })).toHaveAttribute(
+          "href",
+          "/setup/titles"
+        );
+      });
+    });
   });
 
 });
