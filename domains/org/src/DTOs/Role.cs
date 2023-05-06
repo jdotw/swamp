@@ -8,12 +8,14 @@ public class RoleDto
 
   public List<RoleAssignmentDto> RoleAssignments { get; set; } = new();
   public required List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
+  public required List<TitleAssignmentDto> TitleAssignments { get; set; } = new();
   public List<ManagerAssignmentDto> ManagerAssignments { get; set; } = new();
 
   public required DateTimeOffset OpenFromDate { get; set; }
   public DateTimeOffset? ClosedAtDate { get; set; }
 
   public required LevelAssignmentDto ActiveLevelAssignment { get; set; } = null!;
+  public required TitleAssignmentDto ActiveTitleAssignment { get; set; } = null!;
   public RoleAssignmentDto? ActiveRoleAssignment { get; set; } = null!;
 
   public List<CapabilityDto> Capabilities { get; set; } = new();
@@ -29,6 +31,7 @@ public class RoleCollectionDto
   public required RoleTypeCollectionDto RoleType { get; set; } = null!;
 
   public required LevelAssignmentCollectionDto ActiveLevelAssignment { get; set; } = null!;
+  public required TitleAssignmentCollectionDto ActiveTitleAssignment { get; set; } = null!;
   public RoleAssignmentCollectionDto? ActiveRoleAssignment { get; set; } = null!;
   public ManagerAssignmentCollectionDto? ActiveManagerAssignment { get; set; } = null!;
 }
@@ -37,6 +40,7 @@ public class CreateRoleDto : UpdateRoleDto
 {
   public required int RoleTypeId { get; set; }
   public required int LevelId { get; set; }
+  public required int TitleId { get; set; }
 }
 
 public class UpdateRoleDto

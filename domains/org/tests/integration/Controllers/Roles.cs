@@ -23,6 +23,7 @@ public class RoleTests
     var testStart = DateTime.UtcNow;
     var newRole = new CreateRoleDto
     {
+      TitleId = _seedData.Title.Id,
       RoleTypeId = _seedData.RoleType.Id,
       LevelId = _seedData.Level.Id,
     };
@@ -137,6 +138,7 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
   public RoleType RoleType = null!;
   public Role Role = null!;
   public Team Team = null!;
+  public Title Title = null!;
   public Capability Capability = null!;
   public CapabilityType CapabilityType = null!;
 
@@ -155,6 +157,13 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     Level = db.Levels.Add(new Level
     {
       Name = "Seed Level",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Title = db.Titles.Add(new Title
+    {
+      Name = "Seed Title",
+      LevelId = Level.Id,
     }).Entity;
     db.SaveChanges(true);
 

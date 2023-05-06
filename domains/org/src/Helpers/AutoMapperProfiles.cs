@@ -23,6 +23,11 @@ public class AutoMapperProfiles : Profile
     CreateMap<CreateTitleDto, Title>();
     CreateMap<UpdateTitleDto, Title>();
 
+    CreateMap<TitleAssignment, TitleAssignmentDto>();
+    CreateMap<TitleAssignment, TitleAssignmentCollectionDto>();
+    CreateMap<CreateTitleAssignmentDto, TitleAssignment>();
+    CreateMap<UpdateTitleAssignmentDto, TitleAssignment>();
+
     CreateMap<LevelAssignment, LevelAssignmentDto>();
     CreateMap<LevelAssignment, LevelAssignmentCollectionDto>();
     CreateMap<CreateLevelAssignmentDto, LevelAssignment>();

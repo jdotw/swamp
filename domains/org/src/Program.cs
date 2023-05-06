@@ -37,6 +37,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IHomeAssignmentRepository, HomeAssignmentRepository>();
 builder.Services.AddScoped<IManagerAssignmentRepository, ManagerAssignmentRepository>();
 builder.Services.AddScoped<IDeploymentRepository, DeploymentRepository>();
+builder.Services.AddScoped<ITitleAssignmentRepository, TitleAssignmentRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
