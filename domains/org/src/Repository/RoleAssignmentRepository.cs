@@ -18,7 +18,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .OrderBy(s => s.Id)
       .Include(p => p.Person)
       .Include(p => p.Role)
-      .ThenInclude(r => r.LevelAssignments)
+      .ThenInclude(r => r.TitleAssignments)
       .AsSplitQuery()
       .ToListAsync();
   }
@@ -31,8 +31,8 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .Include(p => p.Role)
       .ThenInclude(r => r.RoleType)
       .Include(p => p.Role)
-      .ThenInclude(r => r.LevelAssignments)
-      .ThenInclude(r => r.Level)
+      .ThenInclude(r => r.TitleAssignments)
+      .ThenInclude(r => r.Title)
       .Include(p => p.Role)
       .ThenInclude(r => r.ManagerAssignments)
       .ThenInclude(r => r.Manager)
@@ -58,7 +58,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
       .OrderBy(s => s.Id)
       .Include(p => p.Person)
       .Include(p => p.Role)
-      .ThenInclude(r => r.LevelAssignments)
+      .ThenInclude(r => r.TitleAssignments)
       .AsSplitQuery()
       .ToListAsync();
   }
@@ -68,7 +68,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.Person)
       .Include(p => p.Role)
-      .ThenInclude(r => r.LevelAssignments)
+      .ThenInclude(r => r.TitleAssignments)
       .FirstOrDefaultAsync();
   }
 
@@ -77,7 +77,7 @@ public class RoleAssignmentRepository : RepositoryBase<RoleAssignment>, IRoleAss
     return await FindByConditionAsync(i => i.Id.Equals(id))
       .Include(p => p.Person)
       .Include(p => p.Role)
-      .ThenInclude(r => r.LevelAssignments)
+      .ThenInclude(r => r.TitleAssignments)
       .AsSplitQuery()
       .FirstOrDefaultAsync();
   }

@@ -97,7 +97,7 @@ export function MutateItemModal({
 
   return (
     <Modal opened={opened} onClose={onClose} title={title} data-testid={testId}>
-      <Box sx={{ maxWidth: 300 }} mx="auto">
+      <Box sx={{ maxWidth: 300, minHeight: 250 }} mx="auto">
         <form onSubmit={form.onSubmit(submitForm)}>
           {children}
           <Group position="right" mt="md">

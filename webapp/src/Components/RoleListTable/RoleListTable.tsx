@@ -33,35 +33,18 @@ const RoleListTable = ({ }: RoleListTableProps) => {
     setAddModalOpen(false);
   };
 
-  const roleTitle = (role: Role) => {
-    if (
-      role.active_level_assignment.level.manager_title &&
-      role.active_level_assignment.level.individual_contributor_title
-    ) {
-      return `${role.active_level_assignment.level.manager_title} / ${role.active_level_assignment.level.individual_contributor_title}`;
-    } else if (role.active_level_assignment.level.manager_title) {
-      return role.active_level_assignment.level.manager_title;
-    } else if (
-      role.active_level_assignment.level.individual_contributor_title
-    ) {
-      return role.active_level_assignment.level.individual_contributor_title;
-    } else {
-      return "No Title";
-    }
-  };
-
   const roleUrlPrefix = "/org/roles";
 
   const roleElements = roles.map((role) => (
     <tr key={role.id.toString()}>
       <td>
         <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
-          {role.role_type!.name}
+          {role.role_type?.name}
         </Link>
       </td>
       <td>
         <Link to={`${roleUrlPrefix}/${role.id.toString()}`}>
-          {roleTitle(role)}
+          {role.active_title_assignment.title.name}
         </Link>
       </td>
       <td>Not Assigned</td>

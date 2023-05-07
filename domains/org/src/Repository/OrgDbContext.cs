@@ -8,7 +8,6 @@ namespace Org.Repository;
 public class OrgDbContext : DbContextBase
 {
   public DbSet<Level> Levels => Set<Level>();
-  public DbSet<LevelAssignment> LevelAssignments => Set<LevelAssignment>();
 
   public DbSet<Role> Roles => Set<Role>();
   public DbSet<RoleAssignment> RoleAssignments => Set<RoleAssignment>();

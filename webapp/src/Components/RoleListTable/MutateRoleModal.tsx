@@ -1,5 +1,4 @@
 import { Select } from "@mantine/core";
-import { useLevel } from "../../Client/Level";
 import { MutateRole, Role } from "../../Client/Role";
 import { useRoleType } from "../../Client/RoleType";
 import {
@@ -23,11 +22,10 @@ export function MutateRoleModal({
   onSubmit,
   onClose,
 }: MutateRoleModalProps) {
-  const { items: levels, loading: loadingLevels } = useLevel();
   const { items: titles, loading: loadingTitles } = useTitle();
   const { items: role_types, loading: loadingRoleTypes } = useRoleType();
 
-  if (loadingLevels || loadingRoleTypes || loadingTitles) {
+  if (loadingRoleTypes || loadingTitles) {
     return <div>Loading...</div>;
   }
 
@@ -36,11 +34,6 @@ export function MutateRoleModal({
       key: "role_type",
       initialValue: "",
       validation: (value) => nonEmptyString(value, "Type is required"),
-    },
-    {
-      key: "level",
-      initialValue: "",
-      validation: (value) => nonEmptyString(value, "Level is required"),
     },
     {
       key: "title",
@@ -52,7 +45,6 @@ export function MutateRoleModal({
   const submitFormValues = (values: MutateItemFormValues) => {
     const updatedRole: MutateRole = {
       role_type_id: parseInt(values.role_type),
-      level_id: parseInt(values.level),
       title_id: parseInt(values.title),
     };
     onSubmit(updatedRole);
@@ -77,18 +69,6 @@ export function MutateRoleModal({
             label: role_type.name,
           };
         })}
-      />
-      <Select
-        key="level"
-        label="Level"
-        placeholder="select role level"
-        data={levels.reduce((acc, level) => {
-          acc.push({
-            value: level.id.toString(),
-            label: level.name,
-          });
-          return acc;
-        }, [] as { value: string; label: string }[])}
       />
       <Select
         key="title"

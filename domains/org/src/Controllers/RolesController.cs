@@ -61,12 +61,12 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
     //     UnitAssignment = Mapper.Map<UnitAssignmentCollectionDto>(unitAssignment),
     //   });
     // }
-    foreach (var levelAssignment in role.LevelAssignments)
+    foreach (var levelAssignment in role.TitleAssignments)
     {
-      history.Add(new RoleHistoryLevelAssignmentDto
+      history.Add(new RoleHistoryTitleAssignmentDto
       {
         Date = levelAssignment.StartDate,
-        LevelAssignment = Mapper.Map<LevelAssignmentCollectionDto>(levelAssignment),
+        TitleAssignment = Mapper.Map<TitleAssignmentCollectionDto>(levelAssignment),
       });
     }
     foreach (var roleAssignment in role.RoleAssignments)

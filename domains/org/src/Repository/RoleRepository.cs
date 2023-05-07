@@ -24,8 +24,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
   {
     return FindAllAsync()
       .Include(p => p.RoleType)
-      .Include(p => p.LevelAssignments)
-        .ThenInclude(p => p.Level)
+      .Include(p => p.TitleAssignments)
+        .ThenInclude(p => p.Title)
       .Include(p => p.TitleAssignments)
         .ThenInclude(p => p.Title)
       .IncludeActiveRoleAssignment()
@@ -61,8 +61,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
 #pragma warning disable CS8602 // https://github.com/dotnet/efcore/issues/17212
       .ThenInclude(p => p.CapabilityTypes)
 #pragma warning restore CS8602 
-      .Include(p => p.LevelAssignments)
-      .ThenInclude(p => p.Level)
+      .Include(p => p.TitleAssignments)
+      .ThenInclude(p => p.Title)
       .Include(p => p.RoleAssignments)
       .ThenInclude(p => p.Person)
       .Include(p => p.Capabilities)

@@ -6,7 +6,7 @@ namespace Org.DTOs;
 [JsonDerivedType(typeof(RoleHistoryOpenedDto))]
 [JsonDerivedType(typeof(RoleHistoryClosedDto))]
 [JsonDerivedType(typeof(RoleHistoryUnitAssignmentDto))]
-[JsonDerivedType(typeof(RoleHistoryLevelAssignmentDto))]
+[JsonDerivedType(typeof(RoleHistoryTitleAssignmentDto))]
 [JsonDerivedType(typeof(RoleHistoryRoleAssignmentDto))]
 public class RoleHistoryItemBase
 {
@@ -29,10 +29,10 @@ public class RoleHistoryUnitAssignmentDto : RoleHistoryItemBase
   // public UnitAssignmentCollectionDto UnitAssignment { get; set; } = null!;
 }
 
-public class RoleHistoryLevelAssignmentDto : RoleHistoryItemBase
+public class RoleHistoryTitleAssignmentDto : RoleHistoryItemBase
 {
   public string Type { get; } = "level_assignment";
-  public LevelAssignmentCollectionDto LevelAssignment { get; set; } = null!;
+  public TitleAssignmentCollectionDto TitleAssignment { get; set; } = null!;
 }
 
 public class RoleHistoryRoleAssignmentDto : RoleHistoryItemBase

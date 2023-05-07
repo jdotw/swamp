@@ -17,7 +17,7 @@ public class PersonRepository : RepositoryBase<Person>, IPersonRepository
         .Where(p => filterIds == null || filterIds.Contains(p.Id))
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
-        .ThenInclude(r => r.LevelAssignments)
+        .ThenInclude(r => r.TitleAssignments)
         .Include(p => p.RoleAssignments.Where(r => r.EndDate == null))
         .ThenInclude(r => r.Role)
         .ThenInclude(r => r.RoleType)

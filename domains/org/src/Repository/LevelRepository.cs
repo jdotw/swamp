@@ -28,7 +28,6 @@ public class LevelRepository : RepositoryBase<Level>, ILevelRepository
   public async Task<Level?> GetWithDetailsAsync(int id)
   {
     return await FindByConditionAsync(i => i.Id.Equals(id))
-      .Include(p => p.LevelAssignments)
       .Include(p => p.Children)
       .Include(p => p.Parent)
       .AsSplitQuery()

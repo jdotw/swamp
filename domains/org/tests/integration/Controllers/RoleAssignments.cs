@@ -119,6 +119,7 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
 {
   public RoleType RoleType = null!;
   public Level Level = null!;
+  public Title Title = null!;
   public Role Role = null!;
   public Person Person = null!;
   public RoleAssignment RoleAssignment = null!;
@@ -144,13 +145,19 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
+    Title = db.Titles.Add(new Title
+    {
+      Name = "Seed Title",
+      LevelId = Level.Id,
+    }).Entity;
+
     Role = db.Roles.Add(new Role
     {
-      LevelAssignments = new List<LevelAssignment>
+      TitleAssignments = new List<TitleAssignment>
       {
-        new LevelAssignment
+        new TitleAssignment
         {
-          LevelId = Level.Id,
+          TitleId = Title.Id,
         }
       },
       RoleTypeId = RoleType.Id,
@@ -174,11 +181,11 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
 
     OtherPersonsRole = db.Roles.Add(new Role
     {
-      LevelAssignments = new List<LevelAssignment>
+      TitleAssignments = new List<TitleAssignment>
       {
-        new LevelAssignment
+        new TitleAssignment
         {
-          LevelId = Level.Id,
+          TitleId = Title.Id,
         }
       },
       RoleTypeId = RoleType.Id,

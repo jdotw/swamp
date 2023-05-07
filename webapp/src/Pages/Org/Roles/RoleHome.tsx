@@ -15,7 +15,7 @@ import {
   MutateHomeAssignment,
   useHomeAssignment,
 } from "@/Client/HomeAssignment";
-import { Role, useRole } from "@/Client/Role";
+import { useRole } from "@/Client/Role";
 import {
   MutateRoleAssignment,
   useRoleAssignment,
@@ -113,10 +113,6 @@ function RoleHome() {
     setAssignManagerModalOpen(false);
   };
 
-  const roleTitle = (role: Role) => {
-    return `${role.active_level_assignment.level.individual_contributor_title} / ${role.active_level_assignment.level.manager_title}`;
-  };
-
   const addCapabilityClicked = async (capabilityType: CapabilityType) => {
     const newCapability: MutateCapability = {
       capability_type_id: capabilityType.id,
@@ -201,7 +197,7 @@ function RoleHome() {
     <>
       <div>
         <Title order={3}>
-          Role: {role.role_type?.name} ({roleTitle(role)})
+          Role: {role.role_type?.name} ({role.active_title_assignment.title.name})
         </Title>
         <br />
         <Grid>
