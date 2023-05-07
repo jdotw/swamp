@@ -37,6 +37,7 @@ public class CreateRoleDto : UpdateRoleDto
 {
   public required int RoleTypeId { get; set; }
   public required int TitleId { get; set; }
+  public DateTimeOffset OpenFromDate { get; set; } = DateTimeOffset.UtcNow;
 }
 
 public class UpdateRoleDto

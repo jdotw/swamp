@@ -1,11 +1,11 @@
 import { Text, Timeline } from "@mantine/core";
-import { IconGitBranch, IconStar, TablerIcon } from "@tabler/icons-react";
-import { Role } from "../../Client/Role";
-import { RoleHistory, useRoleHistory } from "../../Client/RoleHistory";
+import { IconGitBranch, IconStar } from "@tabler/icons-react";
+import { RoleHistory } from "../../Client/RoleHistory";
 import Loading from "../Loading/Loading";
 
 export interface RoleHistoryTimelineProps {
-  role: Role;
+  items: RoleHistory[];
+  loading: boolean;
 }
 
 export const roleHistoryTimelineTestId = "role-history-timeline";
@@ -13,13 +13,15 @@ export const roleHistoryTimelineTestId = "role-history-timeline";
 export const roleHistoryTitle = (item: RoleHistory) => {
   switch (item.type) {
     case "opened":
-      return "Opened";
-    case "level_assignment":
-      return "Level Change";
+      return "Role Opened";
+    case "title_assignment":
+      return "Title Changed";
     case "person_assignment":
-      return "Person Assignment";
-    case "unit_assignment":
-      return "Unit Assignment";
+      return "Person Assigned";
+    case "capability_added":
+      return "Capability Added";
+    case "capability_removed":
+      return "Capability Removed";
     case "closed":
       return "Closed";
     default:
@@ -29,22 +31,19 @@ export const roleHistoryTitle = (item: RoleHistory) => {
 
 export const roleHistoryDetail = (item: RoleHistory) => {
   switch (item.type) {
-    case "opened":
-      return "Opened";
-    case "level_assignment":
-      return "Level Change";
+    case "title_assignment":
+      return item.title_assignment?.title.name;
     case "person_assignment":
       return (
         item.role_assignment?.person.first_name +
         " " +
         item.role_assignment?.person.last_name
       );
-    case "unit_assignment":
-      return "Unit Assignment";
-    case "closed":
-      return "Closed";
+    case "capability_added":
+    case "capability_removed":
+      return item.capability?.capability_type.name;
     default:
-      return item.type;
+      return undefined;
   }
 };
 
@@ -60,14 +59,12 @@ const roleHistoryIcon = (item: RoleHistory) => {
   }
 };
 
-export const RoleHistoryTimeline = ({ role }: RoleHistoryTimelineProps) => {
-  const { items: roleHistory, loading } = useRoleHistory({ id: role.id });
-
-  if (loading) {
+export const RoleHistoryTimeline = ({ items, loading }: RoleHistoryTimelineProps) => {
+  if (items.length < 1 && loading) {
     return <Loading />;
   }
 
-  const roleHistoryTimelineItems = roleHistory.map((item, index) => {
+  const roleHistoryTimelineItems = items.map((item, index) => {
     return (
       <Timeline.Item
         key={index.toString()}

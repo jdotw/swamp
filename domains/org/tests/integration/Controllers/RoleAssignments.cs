@@ -150,6 +150,7 @@ public class RoleAssignmentsSeedDataClass : ISeedDataClass<OrgDbContext>
       Name = "Seed Title",
       LevelId = Level.Id,
     }).Entity;
+    db.SaveChanges(true);
 
     Role = db.Roles.Add(new Role
     {

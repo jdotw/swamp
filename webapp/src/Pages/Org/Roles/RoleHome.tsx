@@ -28,6 +28,7 @@ import { DeploymentModal } from "./DeploymentModal";
 import { MutateManagerAssignment, useManagerAssignment } from "@/Client/ManagerAssignment";
 import { PersonCard } from "@/Pages/Org/People/Person/PersonCard";
 import { AssignManagerModal } from "./AssignManagerModal";
+import { useRoleHistory } from "@/Client/RoleHistory";
 
 export interface RoleHomeProps { }
 const useStyles = createStyles(() => ({
@@ -67,6 +68,7 @@ function RoleHome() {
   } = useCapability({ roleId: id });
   const { createItem: createHomeAssignment } = useHomeAssignment();
   const { createItem: createDeployment } = useDeployment();
+  const { items: roleHistory, loading: loadingRoleHistory, reload: reloadRoleHistory } = useRoleHistory({ id });
   const { items: managerAssignments, createItem: createManagerAssignment } = useManagerAssignment({ roleId: id });
   const [assignPersonModalOpen, setAssignPersonModalOpen] =
     React.useState(false);
@@ -119,10 +121,12 @@ function RoleHome() {
       role_id: role.id,
     };
     await createCapability(newCapability);
+    await reloadRoleHistory();
   };
 
   const deleteCapabilityClicked = async (capability: Capability) => {
     await deleteCapability(capability.id);
+    await reloadRoleHistory();
   };
 
   const assignHomeTeamClicked = async (capability: Capability) => {
@@ -319,7 +323,7 @@ function RoleHome() {
             */}
           </Grid.Col>
           <Grid.Col xs={12} sm={4}>
-            <RoleHistoryTimeline role={role} />
+            <RoleHistoryTimeline items={roleHistory} loading={loadingRoleHistory} />
           </Grid.Col>
         </Grid>
         <br />

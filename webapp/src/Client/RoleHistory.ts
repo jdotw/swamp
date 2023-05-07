@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
-import { LevelAssignment, UnitAssignment } from "./Role";
+import { Capability } from "./Capability";
+import { TitleAssignment } from "./Role";
 import { RoleAssignment } from "./RoleAssignment";
 
 export interface RoleHistory {
   id: number; // Actually not used
   type: string;
   date: string;
-  level_assignment?: LevelAssignment;
+  title_assignment?: TitleAssignment;
   role_assignment?: RoleAssignment;
-  unit_assignment?: UnitAssignment;
+  capability?: Capability;
 }
 
 export interface UseRoleHistoryProps extends UseCRUDOptionalProps {

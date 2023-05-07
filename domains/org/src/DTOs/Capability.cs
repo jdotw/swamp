@@ -22,7 +22,7 @@ public class CreateCapabilityDto : UpdateCapabilityDto
 {
   public required int RoleId { get; set; }
   public required int CapabilityTypeId { get; set; }
-  public DateTimeOffset? ActiveFromDate { get; set; }
+  public DateTimeOffset ActiveFromDate { get; set; } = DateTimeOffset.UtcNow;
 }
 
 public class UpdateCapabilityDto

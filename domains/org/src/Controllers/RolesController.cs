@@ -53,20 +53,12 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
         Date = role.ClosedAtDate.Value,
       });
     }
-    // foreach (var unitAssignment in role.UnitAssignments)
-    // {
-    //   history.Add(new RoleHistoryUnitAssignmentDto
-    //   {
-    //     Date = unitAssignment.StartDate,
-    //     UnitAssignment = Mapper.Map<UnitAssignmentCollectionDto>(unitAssignment),
-    //   });
-    // }
-    foreach (var levelAssignment in role.TitleAssignments)
+    foreach (var titleAssignment in role.TitleAssignments)
     {
       history.Add(new RoleHistoryTitleAssignmentDto
       {
-        Date = levelAssignment.StartDate,
-        TitleAssignment = Mapper.Map<TitleAssignmentCollectionDto>(levelAssignment),
+        Date = titleAssignment.StartDate,
+        TitleAssignment = Mapper.Map<TitleAssignmentCollectionDto>(titleAssignment),
       });
     }
     foreach (var roleAssignment in role.RoleAssignments)
@@ -76,6 +68,22 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
         Date = roleAssignment.StartDate,
         RoleAssignment = Mapper.Map<RoleAssignmentCollectionDto>(roleAssignment),
       });
+    }
+    foreach (var capability in role.Capabilities)
+    {
+      history.Add(new RoleHistoryCapabilityAddedDto
+      {
+        Date = capability.ActiveFromDate,
+        Capability = Mapper.Map<CapabilityCollectionDto>(capability),
+      });
+      if (capability.RetiredAtDate.HasValue)
+      {
+        history.Add(new RoleHistoryCapabilityRemovedDto
+        {
+          Date = capability.RetiredAtDate.Value,
+          Capability = Mapper.Map<CapabilityCollectionDto>(capability),
+        });
+      }
     }
     history = history.OrderBy(p => p.Date).ToList();
     return Ok(history);
