@@ -23,6 +23,7 @@ public class DeploymentTests
     var testStart = DateTime.UtcNow;
     var newDeployment = new CreateDeploymentDto
     {
+      DeploymentTypeId = _seedData.DeploymentType.Id,
       CapabilityId = _seedData.Capability.Id,
       TeamId = _seedData.Team.Id,
     };
@@ -117,6 +118,7 @@ public class DeploymentsSeedDataClass : ISeedDataClass<OrgDbContext>
   public Capability Capability { get; set; } = null!;
   public RoleType RoleType { get; set; } = null!;
   public Role Role { get; set; } = null!;
+  public DeploymentType DeploymentType { get; set; } = null!;
   public Deployment Deployment { get; set; } = null!;
   public Team Team { get; set; } = null!;
 
@@ -158,10 +160,17 @@ public class DeploymentsSeedDataClass : ISeedDataClass<OrgDbContext>
     }).Entity;
     db.SaveChanges(true);
 
+    DeploymentType = db.DeploymentTypes.Add(new DeploymentType
+    {
+      Name = "Seed Deployment Type",
+    }).Entity;
+    db.SaveChanges(true);
+
     Deployment = db.Deployments.Add(new Deployment
     {
       CapabilityId = Capability.Id,
       TeamId = Team.Id,
+      DeploymentTypeId = DeploymentType.Id,
     }).Entity;
     db.SaveChanges(true);
   }

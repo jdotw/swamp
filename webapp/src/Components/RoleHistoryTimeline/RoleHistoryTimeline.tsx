@@ -22,6 +22,14 @@ export const roleHistoryTitle = (item: RoleHistory) => {
       return "Capability Added";
     case "capability_removed":
       return "Capability Removed";
+    case "capability_home_assignment_start":
+      return "Home Team Assigned";
+    case "capability_home_assignment_end":
+      return "Home Team Removed";
+    case "capability_deployment_start":
+      return "Deployed to Team";
+    case "capability_deployment_end":
+      return "Removed from Team";
     case "closed":
       return "Closed";
     default:
@@ -42,6 +50,12 @@ export const roleHistoryDetail = (item: RoleHistory) => {
     case "capability_added":
     case "capability_removed":
       return item.capability?.capability_type.name;
+    case "capability_home_assignment_start":
+    case "capability_home_assignment_end":
+      return item.home_assignment?.team.name;
+    case "capability_deployment_start":
+    case "capability_deployment_end":
+      return `${item.deployment?.team.name} (${item.deployment?.deployment_type.name})`;
     default:
       return undefined;
   }
@@ -64,7 +78,11 @@ export const RoleHistoryTimeline = ({ items, loading }: RoleHistoryTimelineProps
     return <Loading />;
   }
 
-  const roleHistoryTimelineItems = items.map((item, index) => {
+  const sortedItems = items.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  const roleHistoryTimelineItems = sortedItems.map((item, index) => {
     return (
       <Timeline.Item
         key={index.toString()}

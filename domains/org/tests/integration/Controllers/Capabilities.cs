@@ -198,6 +198,7 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
   public Team HomeTeam = null!;
   public HomeAssignment HomeAssignment = null!;
   public Team DeliveryTeam = null!;
+  public DeploymentType DeploymentType = null!;
   public Deployment Deployment = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
@@ -259,8 +260,16 @@ public class CapabilitysSeedDataClass : ISeedDataClass<OrgDbContext>
     db.Teams.Add(DeliveryTeam);
     db.SaveChanges();
 
+    DeploymentType = new DeploymentType
+    {
+      Name = "Test Deployment Type",
+    };
+    db.DeploymentTypes.Add(DeploymentType);
+    db.SaveChanges();
+
     Deployment = new Deployment
     {
+      DeploymentTypeId = DeploymentType.Id,
       TeamId = DeliveryTeam.Id,
       CapabilityId = Capability.Id,
     };

@@ -84,6 +84,38 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
           Capability = Mapper.Map<CapabilityCollectionDto>(capability),
         });
       }
+      foreach (var homeAssignment in capability.HomeAssignments)
+      {
+        history.Add(new RoleHistoryCapabilityHomeAssignmentStartDto
+        {
+          Date = homeAssignment.StartDate,
+          HomeAssignment = Mapper.Map<HomeAssignmentCollectionDto>(homeAssignment),
+        });
+        if (homeAssignment.EndDate.HasValue)
+        {
+          history.Add(new RoleHistoryCapabilityHomeAssignmentEndDto
+          {
+            Date = homeAssignment.EndDate.Value,
+            HomeAssignment = Mapper.Map<HomeAssignmentCollectionDto>(homeAssignment),
+          });
+        }
+      }
+      foreach (var deployment in capability.Deployments)
+      {
+        history.Add(new RoleHistoryCapabilityDeploymentStartDto
+        {
+          Date = deployment.StartDate,
+          Deployment = Mapper.Map<DeploymentCollectionDto>(deployment),
+        });
+        if (deployment.EndDate.HasValue)
+        {
+          history.Add(new RoleHistoryCapabilityDeploymentEndDto
+          {
+            Date = deployment.EndDate.Value,
+            Deployment = Mapper.Map<DeploymentCollectionDto>(deployment),
+          });
+        }
+      }
     }
     history = history.OrderBy(p => p.Date).ToList();
     return Ok(history);

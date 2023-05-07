@@ -1,9 +1,12 @@
-import { Capability } from "./Capabilities";
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
+import { Capability } from "./Capability";
+import { DeploymentType } from "./DeploymentTypes";
 import { Team } from "./Team";
 
 export interface Deployment {
   id: number;
+  deployment_type_id: number;
+  deployment_type: DeploymentType;
   capability_id: number;
   capability: Capability;
   team_id: number;
@@ -11,11 +14,12 @@ export interface Deployment {
 }
 
 export interface MutateDeployment {
+  deployment_type_id: number;
   capability_id: number;
   team_id: number;
 }
 
-export interface UseDeploymentProps extends UseCRUDOptionalProps {}
+export interface UseDeploymentProps extends UseCRUDOptionalProps { }
 
 export function useDeployment(props?: UseDeploymentProps) {
   const {

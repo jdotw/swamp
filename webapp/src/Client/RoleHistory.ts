@@ -1,5 +1,7 @@
 import { useCRUD, UseCRUDOptionalProps } from "./CRUD/CRUD";
 import { Capability } from "./Capability";
+import { Deployment } from "./Deployments";
+import { HomeAssignment } from "./HomeAssignment";
 import { TitleAssignment } from "./Role";
 import { RoleAssignment } from "./RoleAssignment";
 
@@ -10,6 +12,8 @@ export interface RoleHistory {
   title_assignment?: TitleAssignment;
   role_assignment?: RoleAssignment;
   capability?: Capability;
+  home_assignment?: HomeAssignment;
+  deployment?: Deployment;
 }
 
 export interface UseRoleHistoryProps extends UseCRUDOptionalProps {

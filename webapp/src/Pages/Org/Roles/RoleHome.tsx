@@ -107,11 +107,13 @@ function RoleHome() {
   const submitRoleAssignment = async (assignment: MutateRoleAssignment) => {
     await createRoleAssignment(assignment);
     await reloadRole();
+    await reloadRoleHistory();
     setAssignPersonModalOpen(false);
   };
 
   const submitManagerAssignment = async (assignment: MutateManagerAssignment) => {
     await createManagerAssignment(assignment);
+    await reloadRoleHistory();
     setAssignManagerModalOpen(false);
   };
 
@@ -137,6 +139,7 @@ function RoleHome() {
   const onAssignHomeTeamSubmit = async (assignment: MutateHomeAssignment) => {
     await createHomeAssignment(assignment);
     await reloadCapabilities();
+    await reloadRoleHistory();
     setAssignHomeTeamModalOpen(false);
   };
 
@@ -148,6 +151,7 @@ function RoleHome() {
   const onDeploymentSubmit = async (deployment: MutateDeployment) => {
     await createDeployment(deployment);
     await reloadCapabilities();
+    await reloadRoleHistory();
     setDeploymentModalOpen(false);
   };
 

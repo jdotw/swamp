@@ -11,8 +11,8 @@ public class TrackCollectionDto
 
 public class TrackDto : TrackCollectionDto
 {
-  public DeploymentTypeDto? Parent { get; set; }
-  public List<DeploymentTypeCollectionDto> Children { get; set; } = new();
+  public TrackCollectionDto? Parent { get; set; }
+  public List<TrackCollectionDto> Children { get; set; } = new();
 }
 
 public class UpdateTrackDto
