@@ -64,8 +64,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<UpdatePersonDto, Person>();
 
     CreateMap<Role, RoleCollectionDto>()
-      .ForMember(dest => dest.ActiveLevelAssignment,
-        opt => opt.MapFrom(src => src.LevelAssignments
+      .ForMember(dest => dest.ActiveTitleAssignment,
+        opt => opt.MapFrom(src => src.TitleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))
@@ -87,8 +87,8 @@ public class AutoMapperProfiles : Profile
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()))
-      .ForMember(dest => dest.ActiveLevelAssignment,
-        opt => opt.MapFrom(src => src.LevelAssignments
+      .ForMember(dest => dest.ActiveTitleAssignment,
+        opt => opt.MapFrom(src => src.TitleAssignments
           .Where(r => r.EndDate == null)
           .OrderBy(u => u.StartDate)
           .FirstOrDefault()));

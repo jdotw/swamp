@@ -86,11 +86,6 @@ public class RolesController : ControllerBase<Role, IRoleRepository>
   public async Task<IActionResult> Create(CreateRoleDto roleDto)
   {
     var role = Mapper.Map<Role>(roleDto);
-    role.LevelAssignments.Add(new LevelAssignment
-    {
-      LevelId = roleDto.LevelId,
-      StartDate = DateTimeOffset.UtcNow
-    });
     role.TitleAssignments.Add(new TitleAssignment
     {
       TitleId = roleDto.TitleId,

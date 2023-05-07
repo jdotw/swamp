@@ -25,7 +25,6 @@ public class RoleTests
     {
       TitleId = _seedData.Title.Id,
       RoleTypeId = _seedData.RoleType.Id,
-      LevelId = _seedData.Level.Id,
     };
 
     // Act
@@ -35,9 +34,9 @@ public class RoleTests
     // Assert
     Assert.NotEqual(0, role!.Id);
     Assert.Equal(newRole.RoleTypeId, role.RoleType.Id);
-    Assert.NotEmpty(role.LevelAssignments);
-    Assert.Equal(newRole.LevelId, role.LevelAssignments[0].LevelId);
-    Assert.Equal(role.Id, role.LevelAssignments[0].RoleId);
+    Assert.NotEmpty(role.TitleAssignments);
+    Assert.Equal(newRole.TitleId, role.TitleAssignments[0].TitleId);
+    Assert.Equal(role.Id, role.TitleAssignments[0].RoleId);
   }
 
   [Fact]
@@ -67,7 +66,7 @@ public class RoleTests
     // Assert
     Assert.Equal(role!.Id, existingRole.Id);
     Assert.Equal(role.RoleType.Id, existingRole.RoleType!.Id);
-    Assert.NotEmpty(role.LevelAssignments);
+    Assert.NotEmpty(role.TitleAssignments);
   }
 
   [Fact]
@@ -177,11 +176,11 @@ public class RolesSeedDataClass : ISeedDataClass<OrgDbContext>
     Role = db.Roles.Add(new Role
     {
       RoleTypeId = RoleType.Id,
-      LevelAssignments = new List<LevelAssignment>
+      TitleAssignments = new List<TitleAssignment>
       {
-        new LevelAssignment
+        new TitleAssignment
         {
-          LevelId = Level.Id,
+          TitleId = Title.Id,
         }
       },
     }).Entity;

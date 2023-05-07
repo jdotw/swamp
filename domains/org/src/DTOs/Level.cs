@@ -2,7 +2,6 @@ namespace Org.DTOs;
 
 public class LevelDto : LevelCollectionDto
 {
-  public List<LevelAssignmentDto> LevelAssignments { get; set; } = new();
   public List<TitleDto> Titles { get; set; } = new();
   public LevelDto? Parent { get; set; }
   public List<LevelCollectionDto> Children { get; set; } = new();

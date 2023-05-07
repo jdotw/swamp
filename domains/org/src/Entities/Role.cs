@@ -10,7 +10,6 @@ public class Role : EntityBase
   public string CareerTrack { get; set; } = string.Empty;
 
   public virtual List<RoleAssignment> RoleAssignments { get; set; } = new();
-  public virtual List<LevelAssignment> LevelAssignments { get; set; } = new();
   public virtual List<TitleAssignment> TitleAssignments { get; set; } = new();
   public virtual List<ManagerAssignment> ManagerAssignments { get; set; } = new();
 
