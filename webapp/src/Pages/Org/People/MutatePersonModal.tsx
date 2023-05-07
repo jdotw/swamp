@@ -1,13 +1,9 @@
-import { useState } from "react";
-import { Avatar, Text, Button, Paper, Modal, Group } from "@mantine/core";
-import { TextInput, Checkbox, Box } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { TextInput } from "@mantine/core";
 import { Person, MutatePerson } from "../../../Client/Person";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
-  MutateItemModalMode,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
@@ -16,7 +12,6 @@ export interface MutatePersonModalProps {
   opened: boolean;
   onSubmit: (updatedPerson: MutatePerson) => void;
   onClose: () => void;
-  mode?: MutateItemModalMode;
   title: string;
 }
 
@@ -25,7 +20,6 @@ export function MutatePersonModal({
   opened,
   onSubmit,
   onClose,
-  mode = "create",
   title,
 }: MutatePersonModalProps) {
   const fields: MutateItemModalFormField[] = [
@@ -52,9 +46,9 @@ export function MutatePersonModal({
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual person
-    let updatedPerson: MutatePerson = {
+    const updatedPerson: MutatePerson = {
       ...person,
-      external_id: mode === "edit" ? person!.external_id : values.external_id,
+      external_id: values.external_id,
       first_name: values.first_name,
       middle_names: values.middle_names,
       last_name: values.last_name,
@@ -64,21 +58,20 @@ export function MutatePersonModal({
 
   return (
     <MutateItemModal
-      mode={mode}
+      mode={person ? "edit" : "create"}
       fields={fields}
       opened={opened}
       onSubmit={submitFormValues}
       onClose={onClose}
       title={title}
     >
-      {mode === "create" && (
-        <TextInput
-          key="external_id"
-          withAsterisk
-          label="External ID"
-          placeholder="external ID"
-        />
-      )}
+      <TextInput
+        key="external_id"
+        withAsterisk
+        label="External ID"
+        placeholder="external ID"
+        disabled={person !== undefined}
+      />
       <TextInput
         key="first_name"
         withAsterisk

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
 import { ImportPeopleModal } from "./ImportPeopleModal";
+import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -13,26 +14,49 @@ const useStyles = createStyles(() => ({
     alignItems: "center",
     marginTop: 20,
   },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
+  },
   unassignedRole: {
-    backgroundColor: "#ff000040",
+    color: "red",
   },
 }));
 
-interface PersonListProps { }
-
-export function PersonList(_: PersonListProps) {
+export function PersonList() {
   const { classes } = useStyles();
-  const { items, loading, createItem } = usePerson();
-  const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
+  const { items, loading, createItem, updateItem, deleteItem } = usePerson();
+  const [mutatePersonModalOpen, setMutatePersonModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState<Person | undefined>(undefined);
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
 
   if (loading) {
     return <Loading />;
   }
 
+  const editClicked = (person: Person) => {
+    setSelectedPerson(person);
+    setMutatePersonModalOpen(true);
+  }
+
+  const deleteClicked = (person: Person) => {
+    setSelectedPerson(person);
+    setConfirmDeleteModalOpen(true);
+  }
+
+  const onDeleteConfirmed = () => {
+    if (selectedPerson)
+      deleteItem(selectedPerson.id);
+    setConfirmDeleteModalOpen(false);
+  }
+
   const rows = items.map((row: Person) => {
     const id = row.id.toString();
     const active_role = row.active_role_assignment?.role;
+    const manager = active_role?.active_manager_assignment?.manager.active_role_assignment?.person;
     return (
       <tr key={id} data-testid={`person-${id}`}>
         <td>
@@ -48,16 +72,23 @@ export function PersonList(_: PersonListProps) {
           <Link to={"/org/roles/" + id} data-testid="role-column-link"><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
         </td >
         <td>
-          <Link to={id}>{active_role?.active_manager_assignment?.manager.active_role_assignment?.person.first_name ?? "unassigned"}</Link>
+          <Link to={id}><Text className={manager ? "" : classes.unassignedRole}>{manager?.first_name ?? "unassigned"}</Text></Link>
+        </td>
+        <td>
+          <div className={classes.rowButtonBar}><Button onClick={() => editClicked(row)}>Edit</Button><Button onClick={() => deleteClicked(row)}>Delete</Button></div>
         </td>
       </tr >
     );
   });
 
-  const onAddSubmit = (newPerson: MutatePerson) => {
+  const onPersonSubmit = (newPerson: MutatePerson) => {
     (async () => {
-      await createItem(newPerson);
-      setAddPersonModalOpen(false);
+      if (selectedPerson) {
+        await updateItem(selectedPerson.id, newPerson);
+      } else {
+        await createItem(newPerson);
+      }
+      setMutatePersonModalOpen(false);
     })();
   };
 
@@ -78,12 +109,13 @@ export function PersonList(_: PersonListProps) {
               <th>External ID</th>
               <th>Role</th>
               <th>Manager</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
         </Table>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddPersonModalOpen(true)}>
+          <Button onClick={() => setMutatePersonModalOpen(true)}>
             Onboard Person
           </Button>
           <Button onClick={() => setImportModalOpen(true)}>
@@ -92,13 +124,14 @@ export function PersonList(_: PersonListProps) {
         </div>
       </div>
       <MutatePersonModal
-        title={"Onboard Person"}
-        opened={addPersonModalOpen}
-        onSubmit={onAddSubmit}
-        mode="create"
-        onClose={() => setAddPersonModalOpen(false)}
+        person={selectedPerson}
+        title={selectedPerson ? "Edit Person" : "Onboard Person"}
+        opened={mutatePersonModalOpen}
+        onSubmit={onPersonSubmit}
+        onClose={() => setMutatePersonModalOpen(false)}
       />
       <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
+      <ConfirmModal opened={confirmDeleteModalOpen} onConfirm={onDeleteConfirmed} onCancel={() => setConfirmDeleteModalOpen(false)} title="Confirm Delete" description="Are you sure you want to delete the person?" action="Delete" />
     </>
   );
 }
