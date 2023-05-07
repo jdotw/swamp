@@ -14,10 +14,23 @@ const useStyles = createStyles(() => ({
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: 20,
+    marginRight: 10,
+    gap: 10,
+  },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
   },
   roleRowName: {
     fontWeight: 800,
   },
+  section: {
+    marginTop: 20,
+    paddingTop: 20,
+    borderTop: "0.5px solid #ccc",
+  }
 }));
 
 function CapabilityTypeList() {
@@ -40,7 +53,7 @@ function CapabilityTypeList() {
   };
 
   const globalCapabilities = items.filter((capabilityType) => !capabilityType.role_type_id);
-  
+
   const onEditClicked = (capabilityType: CapabilityType) => {
     setCapabilityTypeToEdit(capabilityType);
     setAddModalOpen(true);
@@ -63,8 +76,10 @@ function CapabilityTypeList() {
         </Link>
       </td>
       <td>
-        <Button onClick={() => onEditClicked(capabilityType)}>Edit</Button>
-        <Button onClick={() => onDeleteClicked(capabilityType)}>Delete</Button>
+        <div className={classes.rowButtonBar}>
+          <Button onClick={() => onEditClicked(capabilityType)}>Edit</Button>
+          <Button onClick={() => onDeleteClicked(capabilityType)}>Delete</Button>
+        </div>
       </td>
     </tr>
   );
@@ -106,30 +121,34 @@ function CapabilityTypeList() {
       <div>
         <Title order={3}>Capability Types</Title>
         <Text>Capability Types describe how a Capability is deployed into a Team. For example, the Capability might be a member of the team (contributor), the Manager of the team, or a Support role in the team.</Text>
-        <Title order={4}>Global Capabilities</Title>
-        <Text>Global Capabilities can be applied to any Role Type. These would typically be a capability that is not specific to a particular job family. For example, any job family could be a Chapter Lead.</Text>
-        <Table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{capabilityTypeRows(globalCapabilities)}</tbody>
-        </Table>
-        <Title order={4}>Role-Specific Capabilities</Title>
-        <Text>Role-Specific Capabilities can only be applied to a specific Role Type and any children of that Role Type. For example, a Software Engineer Role Type can have a React Web Capability, but a Product Role Type can not.</Text>
-        <Table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{roleTypesWithCapbilitiesRows()}</tbody>
-        </Table>
-        <div className={classes.buttonBar}>
-          <Button onClick={onAddClicked}>Add Capability Type</Button>
+        <div className={classes.section}>
+          <Title order={4}>Global Capabilities</Title>
+          <Text>Global Capabilities can be applied to any Role Type. These would typically be a capability that is not specific to a particular job family. For example, any job family could be a Chapter Lead.</Text>
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{capabilityTypeRows(globalCapabilities)}</tbody>
+          </Table>
+        </div>
+        <div className={classes.section}>
+          <Title order={4}>Role-Specific Capabilities</Title>
+          <Text>Role-Specific Capabilities can only be applied to a specific Role Type and any children of that Role Type. For example, a Software Engineer Role Type can have a React Web Capability, but a Product Role Type can not.</Text>
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{roleTypesWithCapbilitiesRows()}</tbody>
+          </Table>
+          <div className={classes.buttonBar}>
+            <Button onClick={onAddClicked}>Add Capability Type</Button>
+          </div>
         </div>
       </div>
       <MutateCapabilityTypeModal

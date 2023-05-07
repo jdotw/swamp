@@ -13,6 +13,7 @@ const useStyles = createStyles(() => ({
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: 20,
+    gap: 10,
   },
   rowButtonBar: {
     display: "flex",
