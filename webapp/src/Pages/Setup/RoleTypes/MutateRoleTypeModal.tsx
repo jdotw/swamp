@@ -1,16 +1,8 @@
-import { useState } from "react";
 import {
-  Avatar,
-  Text,
-  Button,
-  Paper,
-  Modal,
-  Group,
   Select,
   SelectItem,
 } from "@mantine/core";
-import { TextInput, Checkbox, Box } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { TextInput } from "@mantine/core";
 import { MutateRoleType, RoleType } from "../../../Client/RoleType";
 import {
   MutateItemFormValues,
@@ -47,11 +39,6 @@ export function MutateRoleTypeModal({
       key: "parent_id",
       value: roleType?.parent_id?.toString(),
     },
-    {
-      key: "title_type",
-      validation: (value) => nonEmptyString(value, "Title type is required"),
-      value: roleType?.title_type,
-    }
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
@@ -59,7 +46,6 @@ export function MutateRoleTypeModal({
     const roleType: MutateRoleType = {
       name: values.name,
       parent_id: parseInt(values.parent_id) ?? undefined,
-      title_type: values.title_type,
     };
     onSubmit(roleType);
   };
@@ -85,14 +71,6 @@ export function MutateRoleTypeModal({
         label="Parent"
         placeholder="parent role type"
         data={parentRoleTypeData()}
-      />
-      <Select
-        key="title_type"
-        label="Title Type"
-        placeholder="role title type"
-        data={[
-          { value: "ic", label: "Individual Contributor" },
-          { value: "manager", label: "Manager" }]}
       />
     </MutateItemModal>
   );
