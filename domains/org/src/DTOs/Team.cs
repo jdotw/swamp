@@ -1,17 +1,6 @@
 
 namespace Org.DTOs;
 
-public class TeamDto
-{
-  public int Id { get; set; }
-  public string Name { get; set; } = null!;
-  public string? Description { get; set; }
-  public string Type { get; set; } = null!;
-  public int? ParentId { get; set; }
-  public TeamDto? Parent { get; set; }
-  public List<TeamDto> Children { get; set; } = new();
-}
-
 public class TeamCollectionDto
 {
   public int Id { get; set; }
@@ -20,16 +9,19 @@ public class TeamCollectionDto
   public string Type { get; set; } = null!;
   public int? ParentId { get; set; }
   public List<TeamDto> Children { get; set; } = new();
+  public DateTimeOffset FormedAtDate { get; set; }
+  public DateTimeOffset? DisbandedAtDate { get; set; }
 }
 
-public class CreateTeamDto
+public class TeamDto : TeamCollectionDto
 {
-  public required string Name { get; set; }
-  public string? Description { get; set; }
+  public TeamDto? Parent { get; set; }
+}
+
+public class CreateTeamDto : UpdateTeamDto
+{
   public required string Type { get; set; }
-  public int? ParentId { get; set; }
   public DateTimeOffset FormedAtDate { get; set; } = DateTimeOffset.UtcNow;
-  public DateTimeOffset? DisbandedAtDate { get; set; }
 }
 
 public class UpdateTeamDto

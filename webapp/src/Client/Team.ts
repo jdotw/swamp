@@ -5,8 +5,8 @@ export interface Team {
   name: string;
   description?: string;
   type: string;
-  formed_date: string;
-  disbanded_date?: string;
+  formed_at_date: string;
+  disbanded_at_date?: string;
   parent_id?: number;
   parent?: Team;
   children: Team[];
@@ -17,8 +17,8 @@ export interface MutateTeam {
   description?: string;
   type: string;
   parent_id?: number;
-  formed_date: string;
-  disbanded_date?: string;
+  formed_at_date: string;
+  disbanded_at_date?: string;
 }
 
 export interface UseTeamProps extends UseCRUDOptionalProps {

@@ -42,7 +42,7 @@ public class TeamRepository : RepositoryBase<Team>, ITeamRepository
     existing.Name = update.Name;
     existing.Description = update.Description;
     existing.ParentId = update.ParentId;
-    existing.DisbandedDate = update.DisbandedDate;
+    existing.DisbandedAtDate = update.DisbandedAtDate;
   }
 
   public async Task<int> UpdateAsync(Team updatedTeam)

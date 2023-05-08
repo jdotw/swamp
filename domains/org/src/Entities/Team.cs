@@ -13,6 +13,6 @@ public class Team : EntityBase
   public Team? Parent { get; set; }
   public List<Team> Children { get; set; } = new List<Team>();
 
-  public DateTimeOffset FormedDate { get; set; }
-  public DateTimeOffset? DisbandedDate { get; set; }
+  public DateTimeOffset FormedAtDate { get; set; }
+  public DateTimeOffset? DisbandedAtDate { get; set; }
 }
