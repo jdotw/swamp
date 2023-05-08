@@ -31,10 +31,10 @@ export interface Role {
 }
 
 export interface MutateRole {
-  role_type_id: number;
-  title_id: number;
-  start_date?: string;
-  end_date?: string;
+  role_type_id?: number;
+  title_id?: number;
+  open_from_date?: string;
+  closed_at_date?: string;
 }
 
 export interface UseRoleProps extends UseCRUDOptionalProps {
