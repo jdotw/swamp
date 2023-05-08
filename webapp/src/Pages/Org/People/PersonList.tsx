@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
 import { ImportPeopleModal } from "./ImportPeopleModal";
-import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { DeletePersonConfirmModal } from "./DeletePersonConfirmModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -132,7 +132,12 @@ export function PersonList() {
         onClose={() => setMutatePersonModalOpen(false)}
       />
       <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
-      <ConfirmModal opened={confirmDeleteModalOpen} onConfirm={onDeleteConfirmed} onCancel={() => setConfirmDeleteModalOpen(false)} title="Confirm Delete" description="Are you sure you want to delete the person?" action="Delete" />
+      <DeletePersonConfirmModal
+        person={selectedPerson}
+        opened={confirmDeleteModalOpen}
+        onConfirm={onDeleteConfirmed}
+        onCancel={() => setConfirmDeleteModalOpen(false)}
+      />
     </>
   );
 }

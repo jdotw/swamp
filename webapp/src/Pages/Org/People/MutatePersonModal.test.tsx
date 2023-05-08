@@ -12,7 +12,6 @@ const mockOnClose = vi.fn();
 const defaultProps: MutatePersonModalProps = {
   title: "Unit Tests",
   opened: true,
-  mode: "create",
   onSubmit: mockOnSubmit,
   onClose: mockOnClose,
 };
