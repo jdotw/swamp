@@ -49,7 +49,7 @@ function TrackList() {
   return (
     <>
       <div>
-        <Title order={3}>Tracks</Title>
+        <Title order={3}>Career Tracks</Title>
         <Text>Tracks (Career Tracks) define the mode of progression in a company, for example there may be an Individual Contributor Track and a separate Management Track. The concept of Tracks in the data model allows us to set different level titles for different Tracks. For example, &quot;Senior Manager&quot; for &quot;Level 5&quot; on the &quot;Manager Track&quot;, and &quot;Principal Engineer&quot; for &quot;Level 5&quot; on the &quot;IC Track&quot;.</Text>
         <Table>
           <thead>
