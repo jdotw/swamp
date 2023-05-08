@@ -14,7 +14,6 @@ export function DeletePersonConfirmModal({
   onConfirm,
   onCancel,
 }: DeletePersonConfirmModalProps) {
-
   return (
     <ConfirmModal
       title={`Delete ${person?.first_name} ${person?.last_name}?`}
