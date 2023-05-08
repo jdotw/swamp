@@ -49,12 +49,12 @@ const data = [
     label: "Setup",
     icon: IconSettings,
     links: [
-      { label: "Role Types", link: "/setup/roletypes" },
+      { label: "Career Tracks", link: "/setup/tracks" },
       { label: "Levels", link: "/setup/levels" },
-      { label: "Deployments", link: "/setup/deploymenttypes" },
-      { label: "Capabilities", link: "/setup/capabilitytypes" },
-      { label: "Tracks", link: "/setup/tracks" },
       { label: "Titles", link: "/setup/titles" },
+      { label: "Role Types", link: "/setup/roletypes" },
+      { label: "Capability Types", link: "/setup/capabilitytypes" },
+      { label: "Deployment Types", link: "/setup/deploymenttypes" },
     ],
   },
 ];
@@ -67,7 +67,7 @@ interface NavbarSimpleColoredProps {
 }
 
 export function SideNavbar(props: NavbarSimpleColoredProps) {
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   const { hidden, onLinkClicked } = props;
 
   const links = data.map((item) => (
