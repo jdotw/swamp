@@ -5,6 +5,7 @@ import { Track, MutateTrack, useTrack } from "../../../Client/Track";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateTrackModal } from "./MutateTrackModal";
 import { useState } from "react";
+import { DeleteTrackConfirmModal } from "./DeleteTrackConfirmModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -13,28 +14,71 @@ const useStyles = createStyles(() => ({
     alignItems: "center",
     marginTop: 20,
   },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
+  },
+  disbandedTrack: {
+    color: "gray",
+  }
 }));
 
 function TrackList() {
   const { classes } = useStyles();
-  const { items, loading, createItem } = useTrack();
-  const [addModalOpen, setAddModalOpen] = useState(false);
+  const { items, loading, createItem, updateItem } = useTrack();
+  const [selectedTrack, setSelectedTrack] = useState<Track>();
+  const [mutateModalOpen, setMutateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   if (loading) return <Loading />;
 
-  const submitNewTrack = async (newTrack: MutateTrack) => {
-    await createItem(newTrack);
-    setAddModalOpen(false);
+  const submitTrack = async (newTrack: MutateTrack) => {
+    if (selectedTrack) {
+      updateItem(selectedTrack.id, newTrack);
+    } else {
+      await createItem(newTrack);
+    }
+    setMutateModalOpen(false);
   };
+
+  const editClicked = (track: Track) => {
+    setSelectedTrack(track);
+    setMutateModalOpen(true);
+  };
+
+  const deleteClicked = (track: Track) => {
+    setSelectedTrack(track);
+    setDeleteModalOpen(true);
+  };
+
+  const deleteConfirmed = async (track?: Track) => {
+    if (track) {
+      await updateItem(track.id, {
+        name: track.name,
+        parent_id: track.parent_id,
+        retired_at_date: new Date().toISOString(),
+      }
+      );
+    }
+    setDeleteModalOpen(false);
+  }
 
   const trackRow = (track: Track, level: number) => (
     <tr key={track.id.toString()}>
       <td>
-        <Link style={{ marginLeft: level * 20 }} to={track.id.toString()}>
+        <Link style={{ marginLeft: level * 20 }} className={track.retired_at_date ? classes.disbandedTrack : ""} to={track.id.toString()}>
           {track.name}
         </Link>
       </td>
-    </tr>
+      <td>
+        <div className={classes.rowButtonBar}>
+          <Button onClick={() => editClicked(track)} > Edit</Button>
+          <Button onClick={() => deleteClicked(track)}>Delete</Button>
+        </div>
+      </td>
+    </tr >
   );
 
   const trackRows = (items: Track[], parent?: Track, level = 0) =>
@@ -55,20 +99,27 @@ function TrackList() {
           <thead>
             <tr>
               <th>Name</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{trackRows(items)}</tbody>
         </Table>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddModalOpen(true)}>Add Track</Button>
+          <Button onClick={() => setMutateModalOpen(true)}>Add Track</Button>
         </div>
       </div>
       <MutateTrackModal
+        track={selectedTrack}
         parentCandidates={items}
-        opened={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSubmit={submitNewTrack}
-        mode="create"
+        opened={mutateModalOpen}
+        onSubmit={submitTrack}
+        onClose={() => setMutateModalOpen(false)}
+      />
+      <DeleteTrackConfirmModal
+        track={selectedTrack}
+        opened={deleteModalOpen}
+        onConfirm={deleteConfirmed}
+        onCancel={() => setDeleteModalOpen(false)}
       />
     </>
   );

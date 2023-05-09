@@ -40,6 +40,7 @@ public class TrackRepository : RepositoryBase<Track>, ITrackRepository
   public virtual void UpdateFields(Track update, Track existing)
   {
     existing.Name = update.Name;
+    existing.ParentId = update.ParentId;
     existing.RetiredAtDate = update.RetiredAtDate;
   }
 

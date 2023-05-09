@@ -36,7 +36,7 @@ public class CapabilityTypeTests
     Assert.NotEqual(0, capabilityType!.Id);
     Assert.Equal(newCapabilityType.Name, capabilityType.Name);
     capabilityType.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    capabilityType.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    capabilityType.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -60,7 +60,7 @@ public class CapabilityTypeTests
     Assert.Equal(parentCapabilityType.Id, capabilityType.ParentId);
     Assert.Equal(newCapabilityType.Name, capabilityType.Name);
     capabilityType.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    capabilityType.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    capabilityType.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]

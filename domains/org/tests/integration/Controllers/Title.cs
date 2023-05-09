@@ -38,7 +38,7 @@ public class TitleTests
     Assert.Equal(newTitle.LevelId, title.LevelId);
     Assert.Equal(newTitle.TrackId, title.TrackId);
     title.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    title.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    title.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -63,7 +63,7 @@ public class TitleTests
     Assert.Equal(newTitle.LevelId, title.LevelId);
     Assert.Equal(newTitle.TrackId, title.TrackId);
     title.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    title.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    title.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -88,7 +88,7 @@ public class TitleTests
     Assert.Equal(newTitle.LevelId, title.LevelId);
     Assert.Equal(newTitle.TrackId, title.TrackId);
     title.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    title.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    title.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]

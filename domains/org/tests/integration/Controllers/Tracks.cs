@@ -35,7 +35,7 @@ public class TrackTests
     Assert.NotEqual(0, track!.Id);
     Assert.Equal(newTrack.Name, track.Name);
     track.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    track.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    track.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -73,14 +73,19 @@ public class TrackTests
     var updateDto = new UpdateTrackDto
     {
       Name = "New Manager Title",
+      ParentId = _seedData.Track2.Id,
       RetiredAtDate = DateTime.UtcNow,
     };
 
     // Act
     var response = await _client.PutAsJsonAsync($"{_path}/{existingTrack.Id}", updateDto, _options);
+    var updated = await _client.GetFromJsonAsync<TrackDto>($"{_path}/{existingTrack.Id}", _options);
 
     // Assert
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+    Assert.Equal(updateDto.Name, updated!.Name);
+    Assert.Equal(updateDto.RetiredAtDate, updated.RetiredAtDate);
+    Assert.Equal(updateDto.ParentId, updated.ParentId);
   }
 
   [Fact]
@@ -119,6 +124,7 @@ public class TrackTests
 public class TracksSeedDataClass : ISeedDataClass<OrgDbContext>
 {
   public Track Track = null!;
+  public Track Track2 = null!;
 
   public void InitializeDbForTests(OrgDbContext db)
   {
@@ -128,6 +134,12 @@ public class TracksSeedDataClass : ISeedDataClass<OrgDbContext>
     Track = db.Tracks.Add(new Track
     {
       Name = "Manager",
+    }).Entity;
+    db.SaveChanges(true);
+
+    Track2 = db.Tracks.Add(new Track
+    {
+      Name = "Employee",
     }).Entity;
     db.SaveChanges(true);
   }

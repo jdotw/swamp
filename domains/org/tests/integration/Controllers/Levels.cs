@@ -35,7 +35,7 @@ public class LevelTests
     // Assert
     Assert.NotEqual(0, level!.Id);
     level.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    level.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    level.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -59,7 +59,7 @@ public class LevelTests
     Assert.NotEqual(0, level!.Id);
     Assert.Equal(parentLevel.Id, level.ParentId);
     level.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    level.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    level.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]

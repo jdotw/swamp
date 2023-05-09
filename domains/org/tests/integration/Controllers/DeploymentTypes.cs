@@ -36,7 +36,7 @@ public class DeploymentTypeTests
     Assert.NotEqual(0, deploymentType!.Id);
     Assert.Equal(newDeploymentType.Name, deploymentType.Name);
     deploymentType.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    deploymentType.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    deploymentType.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -60,7 +60,7 @@ public class DeploymentTypeTests
     Assert.Equal(parentDeploymentType.Id, deploymentType.ParentId);
     Assert.Equal(newDeploymentType.Name, deploymentType.Name);
     deploymentType.ActiveFromDate.Should().BeOnOrAfter(testStart);
-    deploymentType.RetiredAtDate.Should().Be(DateTimeOffset.MinValue);
+    deploymentType.RetiredAtDate.Should().BeNull();
   }
 
   [Fact]
@@ -206,7 +206,7 @@ public class DeploymentTypesSeedDataClass : ISeedDataClass<OrgDbContext>
       Name = "Test Deployment Type",
     }).Entity;
     db.SaveChanges(true);
-    
+
     DeploymentTypeWithoutChildren = db.DeploymentTypes.Add(new DeploymentType
     {
       Name = "DeploymentType Without Children",
