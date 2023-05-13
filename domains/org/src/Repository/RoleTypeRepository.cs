@@ -46,6 +46,7 @@ public class RoleTypeRepository : RepositoryBase<RoleType>, IRoleTypeRepository
   public virtual void UpdateFields(RoleType update, RoleType existing)
   {
     existing.Name = update.Name;
+    existing.RetiredAtDate = update.RetiredAtDate;
   }
 
   public async Task<int> UpdateAsync(RoleType updatedRoleType)

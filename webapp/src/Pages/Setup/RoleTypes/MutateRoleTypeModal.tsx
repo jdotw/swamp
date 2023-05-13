@@ -8,7 +8,6 @@ import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
-  MutateItemModalMode,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
@@ -18,7 +17,6 @@ export interface MutateRoleTypeModalProps {
   opened: boolean;
   onSubmit: (roleType: MutateRoleType) => void;
   onClose: () => void;
-  mode?: MutateItemModalMode;
 }
 
 export function MutateRoleTypeModal({
@@ -27,7 +25,6 @@ export function MutateRoleTypeModal({
   opened,
   onSubmit,
   onClose,
-  mode,
 }: MutateRoleTypeModalProps) {
   const fields: MutateItemModalFormField[] = [
     {
@@ -42,7 +39,6 @@ export function MutateRoleTypeModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    // Make sure we update a copy, not the actual roleType
     const roleType: MutateRoleType = {
       name: values.name,
       parent_id: parseInt(values.parent_id) ?? undefined,
@@ -58,12 +54,12 @@ export function MutateRoleTypeModal({
 
   return (
     <MutateItemModal
-      title={mode === "edit" ? "Edit RoleType" : "Add RoleType"}
+      title={roleType ? "Edit RoleType" : "Add RoleType"}
       opened={opened}
       onClose={onClose}
       fields={fields}
       onSubmit={submitFormValues}
-      mode={mode}
+      mode={roleType ? "edit" : "create"}
     >
       <TextInput key="name" withAsterisk label="Name" placeholder="name" />
       <Select
