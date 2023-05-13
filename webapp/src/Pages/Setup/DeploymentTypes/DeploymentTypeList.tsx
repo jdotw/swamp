@@ -1,51 +1,80 @@
 
 import { Text, Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DeploymentType, MutateDeploymentType, useDeploymentType } from "../../../Client/DeploymentTypes";
-import {
-  MutateRoleType,
-  RoleType,
-  useRoleType,
-} from "../../../Client/RoleType";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
+import { DeleteDeploymentTypeConfirmModal } from "./DeleteDeploymentTypeConfirmModal";
 // import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   buttonBar: {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: 20,
   },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
+  },
+  retired: {
+    color: "gray",
+  },
 }));
 
 function DeploymentTypeList() {
   const { classes } = useStyles();
-  const { items, loading, createItem } = useDeploymentType();
-  const [addModalOpen, setAddModalOpen] = useState(false);
+  const { items, loading, createItem, updateItem } = useDeploymentType();
+  const [selectedDeploymentType, setSelectedDeploymentType] = useState<DeploymentType>();
+  const [mutateModalOpen, setMutateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   if (loading) return <Loading />;
 
-  const submitNewDeploymentType = async (newDeploymentType: MutateDeploymentType) => {
-    await createItem(newDeploymentType);
-    setAddModalOpen(false);
+  const submitDeploymentType = async (newDeploymentType: MutateDeploymentType) => {
+    if (selectedDeploymentType) {
+      await updateItem(selectedDeploymentType.id, newDeploymentType);
+    } else {
+      await createItem(newDeploymentType);
+    }
+    setMutateModalOpen(false);
+  };
+
+  const deleteDeploymentType = async () => {
+    if (selectedDeploymentType) {
+      const mutatation: MutateDeploymentType = {
+        name: selectedDeploymentType.name,
+        parent_id: selectedDeploymentType.parent_id,
+        retired_at_date: new Date().toISOString(),
+      };
+      await updateItem(selectedDeploymentType.id, mutatation);
+    }
+    setDeleteModalOpen(false);
   };
 
   const deploymentTypeRow = (deploymentType: DeploymentType, level: number) => (
     <tr key={deploymentType.id.toString()}>
       <td>
-        <Link style={{ marginLeft: level * 20 }} to={deploymentType.id.toString()}>
+        <Link className={deploymentType.retired_at_date ? classes.retired : ""} style={{ marginLeft: level * 20 }} to={deploymentType.id.toString()}>
           {deploymentType.name}
         </Link>
+      </td>
+      <td className={classes.rowButtonBar}>
+        {!deploymentType.retired_at_date && (<>
+          <Button onClick={() => { setSelectedDeploymentType(deploymentType); setMutateModalOpen(true); }}>Edit</Button>
+          <Button onClick={() => { setSelectedDeploymentType(deploymentType); setDeleteModalOpen(true); }}>Delete</Button>
+        </>)}
       </td>
     </tr>
   );
 
   const deploymentTypeRows = (items: DeploymentType[], parent?: DeploymentType, level = 0) =>
     items.reduce((acc, deploymentType) => {
-      if (deploymentType.parent_id == (parent?.id ?? 0)) {
+      if (deploymentType.parent_id == (parent?.id)) {
         acc.push(deploymentTypeRow(deploymentType, level));
         acc.push(...deploymentTypeRows(items, deploymentType, level + 1));
       }
@@ -62,21 +91,28 @@ function DeploymentTypeList() {
             <thead>
               <tr>
                 <th>Name</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>{deploymentTypeRows(items)}</tbody>
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddModalOpen(true)}>Add Deployment Type</Button>
+          <Button onClick={() => { setSelectedDeploymentType(undefined); setMutateModalOpen(true) }}>Add Deployment Type</Button>
         </div>
       </div>
       <MutateDeploymentTypeModal
+        deploymentType={selectedDeploymentType}
         parentCandidates={items}
-        opened={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSubmit={submitNewDeploymentType}
-        mode="create"
+        opened={mutateModalOpen}
+        onSubmit={submitDeploymentType}
+        onClose={() => setMutateModalOpen(false)}
+      />
+      <DeleteDeploymentTypeConfirmModal
+        deploymentType={selectedDeploymentType}
+        opened={deleteModalOpen}
+        onConfirm={deleteDeploymentType}
+        onCancel={() => setDeleteModalOpen(false)}
       />
     </>
   );

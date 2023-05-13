@@ -43,6 +43,7 @@ public class DeploymentTypeRepository : RepositoryBase<DeploymentType>, IDeploym
   public virtual void UpdateFields(DeploymentType update, DeploymentType existing)
   {
     existing.Name = update.Name;
+    existing.ParentId = update.ParentId;
     existing.RetiredAtDate = update.RetiredAtDate;
   }
 
