@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MutateLevel, useLevel, Level } from "../../../Client/Level";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateLevelModal } from "./MutateLevelModal";
+import { DeleteLevelConfirmModal } from "./DeleteLevelConfirmModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -12,39 +13,76 @@ const useStyles = createStyles(() => ({
     alignItems: "center",
     marginTop: 20,
   },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
+  },
   titlesRow: {
     display: "inline",
     paddingLeft: 0,
+  },
+  retired: {
+    color: "gray"
   }
 }));
 
 function LevelList() {
   const { classes } = useStyles();
-  const { items, loading, createItem } = useLevel();
-  const [addLevelModalOpen, setAddLevelModalOpen] = useState(false);
-
+  const { items, loading, createItem, updateItem } = useLevel();
+  const [selectedLevel, setSelectedLevel] = useState<Level>();
+  const [mutateLevelModalOpen, setMutateLevelModalOpen] = useState(false);
+  const [deleteLevelModalOpen, setDeleteLevelModalOpen] = useState(false);
   if (loading) return <Loading />;
 
-  const submitNewLevel = async (newLevel: MutateLevel) => {
-    await createItem(newLevel);
-    setAddLevelModalOpen(false);
+  const submitLevel = async (level: MutateLevel) => {
+    if (selectedLevel) {
+      await updateItem(selectedLevel.id, level);
+    } else {
+      await createItem(level);
+    }
+    setMutateLevelModalOpen(false);
+  };
+
+  const deleteLevel = async () => {
+    if (selectedLevel) {
+      const mutatation: MutateLevel = {
+        index: selectedLevel.index,
+        name: selectedLevel.name,
+        parent_id: selectedLevel.parent_id,
+        external_id: selectedLevel.external_id,
+        retired_at_date: new Date().toISOString(),
+      }
+      await updateItem(selectedLevel.id, mutatation);
+    }
+    setDeleteLevelModalOpen(false);
   };
 
   const levelRow = (level: Level, indent: number) => (
     <tr key={level.id.toString()}>
       <td>
-        <Link style={{ marginLeft: indent * 20 }} to={level.id.toString()}>{level.index}</Link>
+        <Link style={{ marginLeft: indent * 20 }} className={level.retired_at_date ? classes.retired : ""} to={level.id.toString()}>{level.index}</Link>
       </td>
       <td>
-        <Link to={level.id.toString()}>{level.name}</Link>
+        <Link to={level.id.toString()} className={level.retired_at_date ? classes.retired : ""}>{level.name}</Link>
       </td>
       <td>
         <ul className={classes.titlesRow}>
-          {level.titles.map((title, index) => (<li className={classes.titlesRow} key={title.id.toString()}><Link key={title.id.toString()} to={"/org/titles/" + title.id.toString()}>{title.name}</Link>{index < (level.titles.length - 1) ? ", " : ""}</li>))}
+          {level.titles.map((title, index) => (<li className={classes.titlesRow} key={title.id.toString()}><Link className={level.retired_at_date ? classes.retired : ""} key={title.id.toString()} to={"/org/titles/" + title.id.toString()}>{title.name}</Link>{index < (level.titles.length - 1) ? ", " : ""}</li>))}
         </ul>
       </td>
       <td>
-        <Link to={level.id.toString()}>{level.external_id}</Link>
+        <Link className={level.retired_at_date ? classes.retired : ""} to={level.id.toString()}>{level.external_id}</Link>
+      </td>
+      <td className={classes.rowButtonBar}>
+        {!level.retired_at_date && (<>
+          <Button size="xs" variant="outline" color="blue" onClick={() => { setSelectedLevel(level); setMutateLevelModalOpen(true); }}>
+            Edit
+          </Button>
+          <Button size="xs" variant="outline" color="red" onClick={() => { setSelectedLevel(level); setDeleteLevelModalOpen(true); }}>
+            Delete
+          </Button></>)}
       </td>
     </tr>
   );
@@ -70,20 +108,27 @@ function LevelList() {
               <th>Name</th>
               <th>Titles</th>
               <th>External ID</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{levelRows(items)}</tbody>
         </Table>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddLevelModalOpen(true)}>Add Level</Button>
+          <Button onClick={() => { setSelectedLevel(undefined); setMutateLevelModalOpen(true) }}>Add Level</Button>
         </div>
       </div>
       <MutateLevelModal
-        opened={addLevelModalOpen}
-        onClose={() => setAddLevelModalOpen(false)}
-        onSubmit={submitNewLevel}
-        mode="create"
+        level={selectedLevel}
+        opened={mutateLevelModalOpen}
+        onClose={() => setMutateLevelModalOpen(false)}
+        onSubmit={submitLevel}
         parent_levels={items}
+      />
+      <DeleteLevelConfirmModal
+        level={selectedLevel}
+        opened={deleteLevelModalOpen}
+        onConfirm={deleteLevel}
+        onCancel={() => setDeleteLevelModalOpen(false)}
       />
     </>
   );

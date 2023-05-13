@@ -7,7 +7,6 @@ import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
-  MutateItemModalMode,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
 
@@ -17,7 +16,6 @@ export interface MutateLevelModalProps {
   opened: boolean;
   onSubmit: (level: MutateLevel) => void;
   onClose: () => void;
-  mode?: MutateItemModalMode;
 }
 
 export function MutateLevelModal({
@@ -26,7 +24,6 @@ export function MutateLevelModal({
   opened,
   onSubmit,
   onClose,
-  mode,
 }: MutateLevelModalProps) {
   const [selectedParent, setSelectedParent] = useState<Level>();
 
@@ -43,6 +40,9 @@ export function MutateLevelModal({
   };
 
   const onChange = (values: MutateItemFormValues) => {
+    // We keep track of the selected parent because if a 
+    // parent is selected then the index must be set to the 
+    // index of the parent and cannot be edited
     const parent = parent_levels?.find(
       (parent_level) => parent_level.id.toString() === values.parent_id
     );
@@ -78,19 +78,20 @@ export function MutateLevelModal({
 
   return (
     <MutateItemModal
-      title={mode === "edit" ? "Edit Level" : "Add Level"}
+      title={level ? "Edit Level" : "Add Level"}
       opened={opened}
       onClose={onModalClosed}
       fields={fields}
       onSubmit={submitFormValues}
-      mode={mode}
+      mode={level ? "edit" : "create"}
       onChange={onChange}
     >
       {parent_levels &&
         <Select
           key="parent_id"
           label="Parent"
-          placeholder="select parent level"
+          placeholder={level ? "none" : "select parent level"}
+          disabled={level !== undefined}
           data={parent_levels.map((parent_level) => {
             const label = `${parent_level.name} - ${parent_level.index.toString()} (${parent_level.external_id})`;
             return {
