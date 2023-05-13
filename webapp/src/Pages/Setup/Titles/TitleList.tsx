@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MutateTitle, useTitle, Title as TitleType } from "../../../Client/Title";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateTitleModal } from "./MutateTitleModal";
+import { DeleteTitleConfirmModal } from "./DeleteTitleConfirmModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -12,33 +13,66 @@ const useStyles = createStyles(() => ({
     alignItems: "center",
     marginTop: 20,
   },
+  rowButtonBar: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10,
+  },
+  retired: {
+    color: "gray"
+  },
 }));
 
 function TitleList() {
   const { classes } = useStyles();
-  const { items, loading, createItem } = useTitle();
-  const [addTitleModalOpen, setAddTitleModalOpen] = useState(false);
+  const { items, loading, createItem, updateItem } = useTitle();
+  const [selectedTitle, setSelectedTitle] = useState<TitleType>();
+  const [mutateTitleModalOpen, setMutateTitleModalOpen] = useState(false);
+  const [deleteTitleModalOpen, setDeleteTitleModalOpen] = useState(false);
 
   if (loading) return <Loading />;
 
-  const submitNewTitle = async (newTitle: MutateTitle) => {
-    console.log("submitNewTitle", newTitle);
-    await createItem(newTitle);
-    setAddTitleModalOpen(false);
+  const submitTitle = async (newTitle: MutateTitle) => {
+    if (selectedTitle) {
+      await updateItem(selectedTitle.id, newTitle);
+    } else {
+      await createItem(newTitle);
+    }
+    setMutateTitleModalOpen(false);
+  };
+
+  const deleteTitle = async () => {
+    if (selectedTitle) {
+      const mutatation: MutateTitle = {
+        name: selectedTitle.name,
+        level_id: selectedTitle.level_id,
+        track_id: selectedTitle.track_id,
+        retired_at_date: new Date().toISOString(),
+      }
+      await updateItem(selectedTitle.id, mutatation);
+    }
+    setDeleteTitleModalOpen(false);
   };
 
   const titleRow = (title: TitleType) => (
     <tr key={title.id.toString()}>
       <td>
-        <Link to={title.id.toString()}>{title.name}</Link>
+        <Link className={title.retired_at_date ? classes.retired : ""} to={title.id.toString()}>{title.name}</Link>
       </td>
       <td>
-        <Link to={title.id.toString()}>{title.level.index}</Link>
+        <Link className={title.retired_at_date ? classes.retired : ""} to={title.id.toString()}>{title.level.index}</Link>
       </td>
       <td>
-        <Link to={title.id.toString()}>{title.track?.name ?? ""}</Link>
+        <Link className={title.retired_at_date ? classes.retired : ""} to={title.id.toString()}>{title.track?.name ?? ""}</Link>
       </td>
-    </tr>
+      <td className={classes.rowButtonBar}>
+        {!title.retired_at_date && (<>
+          <Button onClick={() => { setSelectedTitle(title); setMutateTitleModalOpen(true) }}>Edit</Button>
+          <Button onClick={() => { setSelectedTitle(title); setDeleteTitleModalOpen(true) }}>Delete</Button>
+        </>)}
+      </td>
+    </tr >
   );
 
   return (
@@ -53,18 +87,26 @@ function TitleList() {
               <th>Title</th>
               <th>Level</th>
               <th>Track</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{items.map((item) => titleRow(item))}</tbody>
         </Table>
         <div className={classes.buttonBar}>
-          <Button onClick={() => setAddTitleModalOpen(true)}>Add Title</Button>
+          <Button onClick={() => setMutateTitleModalOpen(true)}>Add Title</Button>
         </div>
       </div>
       <MutateTitleModal
-        opened={addTitleModalOpen}
-        onClose={() => setAddTitleModalOpen(false)}
-        onSubmit={submitNewTitle}
+        title={selectedTitle}
+        opened={mutateTitleModalOpen}
+        onSubmit={submitTitle}
+        onClose={() => setMutateTitleModalOpen(false)}
+      />
+      <DeleteTitleConfirmModal
+        title={selectedTitle}
+        opened={deleteTitleModalOpen}
+        onConfirm={deleteTitle}
+        onCancel={() => setDeleteTitleModalOpen(false)}
       />
     </>
   );
