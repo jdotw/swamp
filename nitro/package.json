@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npx nitropack dev",
+    "build": "npx nitropack build",
+    "preview": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.0",
+    "nitropack": "latest",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "prisma": "^4.14.0"
+  }
+}
