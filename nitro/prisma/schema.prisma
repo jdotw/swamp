@@ -9,3 +9,256 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Team {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String
+  description String
+
+  formed_at    DateTime
+  disbanded_at DateTime?
+
+  parent_id Int?
+  parent    Team?  @relation("TeamChildren", fields: [parent_id], references: [id])
+  children  Team[] @relation("TeamChildren")
+
+  deployments      Deployment[]
+  home_assignments HomeAssignment[]
+}
+
+model Track {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  parentId Int?
+  parent   Track?  @relation("TrackChildren", fields: [parentId], references: [id])
+  children Track[] @relation("TrackChildren")
+
+  titles Title[]
+}
+
+model Level {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  index      Int
+  name       String
+  externalId String?
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  parentId Int?
+  parent   Level?  @relation("LevelChildren", fields: [parentId], references: [id])
+  children Level[] @relation("LevelChildren")
+
+  titles Title[]
+}
+
+model Title {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  levelId Int
+  level   Level @relation(fields: [levelId], references: [id])
+
+  trackId Int
+  track   Track @relation(fields: [trackId], references: [id])
+
+  titleAssignments TitleAssignment[]
+}
+
+model TitleAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  titleId Int
+  title   Title @relation(fields: [titleId], references: [id])
+
+  roleId Int
+  role   Role @relation(fields: [roleId], references: [id])
+}
+
+model RoleType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  parentId Int?
+  parent   RoleType?  @relation("RoleTypeChildren", fields: [parentId], references: [id])
+  children RoleType[] @relation("RoleTypeChildren")
+
+  roles Role[]
+}
+
+model Role {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  openFrom DateTime  @default(now())
+  closedAt DateTime?
+
+  roleTypeId   Int
+  roleType     RoleType     @relation(fields: [roleTypeId], references: [id])
+  capabilities Capability[]
+
+  managedRoleAssignments ManagerAssignment[] @relation("ManagerAssignmentManager")
+  managerAssignments     ManagerAssignment[] @relation("ManagerAssignmentRole")
+  roleAssignments        RoleAssignment[]
+  titleAssignments       TitleAssignment[]
+}
+
+model CapabilityType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  parentId Int?
+  parent   CapabilityType?  @relation("CapabilityTypeChildren", fields: [parentId], references: [id])
+  children CapabilityType[] @relation("CapabilityTypeChildren")
+
+  capabilities Capability[]
+}
+
+model Capability {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  capabilityTypeId Int
+  capabilityType   CapabilityType @relation(fields: [capabilityTypeId], references: [id])
+  roleId           Int
+  role             Role           @relation(fields: [roleId], references: [id])
+
+  deployments    Deployment[]
+  homeAssignment HomeAssignment[]
+}
+
+model DeploymentType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  activeFrom DateTime  @default(now())
+  retiredAt  DateTime?
+
+  parentId Int?
+  parent   DeploymentType?  @relation("DeploymentTypeChildren", fields: [parentId], references: [id])
+  children DeploymentType[] @relation("DeploymentTypeChildren")
+
+  deployments Deployment[]
+}
+
+model Deployment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  deploymentTypeId Int
+  deploymentType   DeploymentType @relation(fields: [deploymentTypeId], references: [id])
+  teamId           Int
+  team             Team           @relation(fields: [teamId], references: [id])
+  capabilityId     Int
+  capability       Capability     @relation(fields: [capabilityId], references: [id])
+}
+
+model HomeAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  teamId       Int
+  team         Team       @relation(fields: [teamId], references: [id])
+  capabilityId Int
+  capability   Capability @relation(fields: [capabilityId], references: [id])
+}
+
+model ManagerAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  roleId    Int
+  role      Role @relation("ManagerAssignmentRole", fields: [roleId], references: [id])
+  managerId Int
+  manager   Role @relation("ManagerAssignmentManager", fields: [managerId], references: [id])
+}
+
+model Person {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  external_id  String
+  first_name   String
+  middle_names String?
+  last_name    String
+
+  onboarded_at  DateTime  @default(now())
+  offboarded_at DateTime?
+
+  role_assignments RoleAssignment[]
+
+  @@map(name: "people")
+}
+
+model RoleAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  roleId   Int
+  role     Role   @relation(fields: [roleId], references: [id])
+  personId Int
+  person   Person @relation(fields: [personId], references: [id])
+}
