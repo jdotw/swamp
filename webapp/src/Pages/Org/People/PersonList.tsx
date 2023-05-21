@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Person, MutatePerson, usePerson } from "../../../Client/Person";
+import { MutatePerson, usePerson } from "@/Client/Person";
 import { createStyles, Table, Button, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
-import Loading from "../../../Components/Loading/Loading";
+import Loading from "@/Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
 import { ImportPeopleModal } from "./ImportPeopleModal";
 import { DeletePersonConfirmModal } from "./DeletePersonConfirmModal";
+import { trpc, RouterOutputs } from "@/Utils/trpc";
+import { Role } from "@/Client/Role";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -26,38 +28,47 @@ const useStyles = createStyles(() => ({
   },
 }));
 
+type Person = RouterOutputs["persons"]["list"][number];
+
 export function PersonList() {
   const { classes } = useStyles();
-  const { items, loading, createItem, updateItem, deleteItem } = usePerson();
   const [mutatePersonModalOpen, setMutatePersonModalOpen] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState<Person | undefined>(undefined);
+  const [selectedPerson, setSelectedPerson] = useState<Person | undefined>(
+    undefined
+  );
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
+  const personQuery = trpc.persons.list.useQuery();
+  const personCreator = trpc.persons.create.useMutation();
+  const personUpdater = trpc.persons.update.useMutation();
+  const personDeleter = trpc.persons.delete.useMutation();
 
-  if (loading) {
+  if (personQuery.isLoading) {
     return <Loading />;
   }
 
   const editClicked = (person: Person) => {
     setSelectedPerson(person);
     setMutatePersonModalOpen(true);
-  }
+  };
 
   const deleteClicked = (person: Person) => {
     setSelectedPerson(person);
     setConfirmDeleteModalOpen(true);
-  }
+  };
 
-  const onDeleteConfirmed = () => {
-    if (selectedPerson)
-      deleteItem(selectedPerson.id);
+  const onDeleteConfirmed = async () => {
+    if (selectedPerson) await personDeleter.mutateAsync(selectedPerson.id);
+    await personQuery.refetch();
     setConfirmDeleteModalOpen(false);
-  }
+  };
 
-  const rows = items.map((row: Person) => {
+  const rows = personQuery.data?.map((row: Person) => {
     const id = row.id.toString();
-    const active_role = row.active_role_assignment?.role;
-    const manager = active_role?.active_manager_assignment?.manager.active_role_assignment?.person;
+    // const active_role = row.active_role_assignment?.role;
+    // const manager =
+    //   active_role?.active_manager_assignment?.manager.active_role_assignment
+    //     ?.person;
     return (
       <tr key={id} data-testid={`person-${id}`}>
         <td>
@@ -70,32 +81,51 @@ export function PersonList() {
           <Link to={id}>{row.external_id}</Link>
         </td>
         <td>
-          <Link to={"/org/roles/" + id} data-testid="role-column-link"><Text className={active_role ? "" : classes.unassignedRole}>{active_role?.role_type?.name ?? "unassigned"}</Text></Link>
-        </td >
-        <td>
-          <Link to={id}><Text className={manager ? "" : classes.unassignedRole}>{manager?.first_name ?? "unassigned"}</Text></Link>
+          <Link to={"/org/roles/" + id} data-testid="role-column-link">
+            {/*
+            <Text className={active_role ? "" : classes.unassignedRole}>
+              {active_role?.role_type?.name ?? "unassigned"}
+            </Text>
+            */}
+          </Link>
         </td>
         <td>
-          <div className={classes.rowButtonBar}><Button onClick={() => editClicked(row)}>Edit</Button><Button onClick={() => deleteClicked(row)}>Delete</Button></div>
+          <Link to={id}>
+            {/*
+            <Text className={manager ? "" : classes.unassignedRole}>
+              {manager?.first_name ?? "unassigned"}
+            </Text>
+            */}
+          </Link>
         </td>
-      </tr >
+        <td>
+          <div className={classes.rowButtonBar}>
+            <Button onClick={() => editClicked(row)}>Edit</Button>
+            <Button onClick={() => deleteClicked(row)}>Delete</Button>
+          </div>
+        </td>
+      </tr>
     );
   });
 
   const onPersonSubmit = (newPerson: MutatePerson) => {
     (async () => {
       if (selectedPerson) {
-        await updateItem(selectedPerson.id, newPerson);
+        await personUpdater.mutateAsync({
+          id: selectedPerson.id,
+          person: newPerson,
+        });
       } else {
-        await createItem(newPerson);
+        await personCreator.mutateAsync({ ...newPerson });
       }
+      await personQuery.refetch();
       setMutatePersonModalOpen(false);
     })();
   };
 
   const onImportSubmit = () => {
     setImportModalOpen(false);
-  }
+  };
 
   return (
     <>
@@ -119,9 +149,7 @@ export function PersonList() {
           <Button onClick={() => setMutatePersonModalOpen(true)}>
             Onboard Person
           </Button>
-          <Button onClick={() => setImportModalOpen(true)}>
-            Import
-          </Button>
+          <Button onClick={() => setImportModalOpen(true)}>Import</Button>
         </div>
       </div>
       <MutatePersonModal
@@ -131,7 +159,11 @@ export function PersonList() {
         onSubmit={onPersonSubmit}
         onClose={() => setMutatePersonModalOpen(false)}
       />
-      <ImportPeopleModal opened={importModalOpen} onSubmit={onImportSubmit} onClose={() => setImportModalOpen(false)} />
+      <ImportPeopleModal
+        opened={importModalOpen}
+        onSubmit={onImportSubmit}
+        onClose={() => setImportModalOpen(false)}
+      />
       <DeletePersonConfirmModal
         person={selectedPerson}
         opened={confirmDeleteModalOpen}
