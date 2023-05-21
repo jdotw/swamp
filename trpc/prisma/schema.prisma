@@ -1,0 +1,292 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Team {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String
+  description String
+
+  formed_at    DateTime
+  disbanded_at DateTime?
+
+  parent_id Int?
+  parent    Team?  @relation("TeamChildren", fields: [parent_id], references: [id])
+  children  Team[] @relation("TeamChildren")
+
+  deployments      Deployment[]
+  home_assignments HomeAssignment[]
+
+  @@map("teams")
+}
+
+model Track {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  parent_id Int?
+  parent    Track?  @relation("TrackChildren", fields: [parent_id], references: [id])
+  children  Track[] @relation("TrackChildren")
+
+  titles Title[]
+
+  @@map("tracks")
+}
+
+model Level {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  index       Int
+  name        String
+  external_id String?
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  parent_id Int?
+  parent    Level?  @relation("LevelChildren", fields: [parent_id], references: [id])
+  children  Level[] @relation("LevelChildren")
+
+  titles Title[]
+
+  @@map("levels")
+}
+
+model Title {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  level_id Int
+  level    Level @relation(fields: [level_id], references: [id])
+
+  track_id Int
+  track    Track @relation(fields: [track_id], references: [id])
+
+  titleAssignments TitleAssignment[]
+
+  @@map("titles")
+}
+
+model TitleAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  title_id Int
+  title    Title @relation(fields: [title_id], references: [id])
+
+  role_id Int
+  role    Role @relation(fields: [role_id], references: [id])
+
+  @@map("title_assignments")
+}
+
+model RoleType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  parent_id Int?
+  parent    RoleType?  @relation("RoleTypeChildren", fields: [parent_id], references: [id])
+  children  RoleType[] @relation("RoleTypeChildren")
+
+  roles Role[]
+
+  @@map("role_types")
+}
+
+model Role {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  open_from DateTime  @default(now())
+  closed_at DateTime?
+
+  role_type_id Int
+  role_type    RoleType     @relation(fields: [role_type_id], references: [id])
+  capabilities Capability[]
+
+  managed_role_assignments ManagerAssignment[] @relation("ManagerAssignmentManager")
+  manager_assignments      ManagerAssignment[] @relation("ManagerAssignmentRole")
+  role_assignments         RoleAssignment[]
+  title_assignments        TitleAssignment[]
+
+  @@map("roles")
+}
+
+model CapabilityType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  parent_id Int?
+  parent    CapabilityType?  @relation("CapabilityTypeChildren", fields: [parent_id], references: [id])
+  children  CapabilityType[] @relation("CapabilityTypeChildren")
+
+  capabilities Capability[]
+
+  @@map("capability_types")
+}
+
+model Capability {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  capability_type_id Int
+  capability_type    CapabilityType @relation(fields: [capability_type_id], references: [id])
+  role_id            Int
+  role               Role           @relation(fields: [role_id], references: [id])
+
+  deployments     Deployment[]
+  home_assignment HomeAssignment[]
+
+  @@map("capabilities")
+}
+
+model DeploymentType {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+
+  active_from DateTime  @default(now())
+  retired_at  DateTime?
+
+  parent_id Int?
+  parent    DeploymentType?  @relation("DeploymentTypeChildren", fields: [parent_id], references: [id])
+  children  DeploymentType[] @relation("DeploymentTypeChildren")
+
+  deployments Deployment[]
+
+  @@map("deployment_types")
+}
+
+model Deployment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  deployment_type_id Int
+  deployment_type    DeploymentType @relation(fields: [deployment_type_id], references: [id])
+  team_id            Int
+  team               Team           @relation(fields: [team_id], references: [id])
+  capability_id      Int
+  capability         Capability     @relation(fields: [capability_id], references: [id])
+
+  @@map("deployments")
+}
+
+model HomeAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  team_id       Int
+  team          Team       @relation(fields: [team_id], references: [id])
+  capability_id Int
+  capability    Capability @relation(fields: [capability_id], references: [id])
+
+  @@map("home_assignments")
+}
+
+model ManagerAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  role_id    Int
+  role       Role @relation("ManagerAssignmentRole", fields: [role_id], references: [id])
+  manager_id Int
+  manager    Role @relation("ManagerAssignmentManager", fields: [manager_id], references: [id])
+
+  @@map("manager_assignments")
+}
+
+model Person {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  external_id  String
+  first_name   String
+  middle_names String?
+  last_name    String
+
+  onboarded_at  DateTime  @default(now())
+  offboarded_at DateTime?
+
+  role_assignments RoleAssignment[]
+
+  @@map("people")
+}
+
+model RoleAssignment {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  start DateTime  @default(now())
+  end   DateTime?
+
+  role_id   Int
+  role      Role   @relation(fields: [role_id], references: [id])
+  person_id Int
+  person    Person @relation(fields: [person_id], references: [id])
+
+  @@map("role_assignments")
+}
