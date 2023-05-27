@@ -1,11 +1,25 @@
 import { z } from "zod";
 import prisma from "../libs/prisma";
+// import { titleSchema } from "../title/service";
 
 const db = prisma.level;
 
-export const titleSchema = z.object({
+export const levelWithoutReferencesSchema = z.object({
   id: z.number(),
+  index: z.number(),
   name: z.string().min(1),
+  external_id: z.string().min(1),
+  parent_id: z
+    .number()
+    .nullable()
+    .transform((val) => val ?? undefined)
+    .optional(),
+  active_from: z.date(),
+  retired_at: z
+    .date()
+    .nullable()
+    .transform((val) => val ?? undefined)
+    .optional(),
 });
 
 export const levelSchema = z.object({
@@ -24,7 +38,7 @@ export const levelSchema = z.object({
     .nullable()
     .transform((val) => val ?? undefined)
     .optional(),
-  titles: z.array(titleSchema).optional(),
+  // titles: z.array(titleSchema).optional(),
 });
 
 export const getAll = async ({

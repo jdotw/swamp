@@ -45,6 +45,9 @@ describe("getAll", () => {
         where: {
           retired_at: undefined,
         },
+        include: {
+          titles: true,
+        },
       });
     });
   });
@@ -55,6 +58,9 @@ describe("getAll", () => {
       expect(prisma.level.findMany).toHaveBeenCalledWith({
         where: {
           retired_at: null,
+        },
+        include: {
+          titles: true,
         },
       });
     });

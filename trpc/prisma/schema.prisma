@@ -85,8 +85,8 @@ model Title {
   level_id Int
   level    Level @relation(fields: [level_id], references: [id])
 
-  track_id Int
-  track    Track @relation(fields: [track_id], references: [id])
+  track_id Int?
+  track    Track? @relation(fields: [track_id], references: [id])
 
   titleAssignments TitleAssignment[]
 

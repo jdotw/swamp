@@ -57,7 +57,9 @@ export const createSchema = z.object({
 });
 
 export const create = async (team: z.infer<typeof createSchema>) => {
-  const createdTeam = await db.create({ data: team });
+  const createdTeam = await db.create({
+    data: { ...team, formed_at: team.formed_at ?? new Date() },
+  });
   return teamSchema.parse(createdTeam);
 };
 
