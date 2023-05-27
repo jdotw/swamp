@@ -1,5 +1,5 @@
-import { RoleType } from "@/Client/RoleType";
 import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { RoleType } from "@/Utils/trpc";
 
 export interface DeleteRoleTypeConfirmModalProps {
   roleType?: RoleType;
@@ -24,4 +24,3 @@ export function DeleteRoleTypeConfirmModal({
     />
   );
 }
-

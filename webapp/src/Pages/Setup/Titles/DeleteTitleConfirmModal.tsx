@@ -1,5 +1,5 @@
-import { Title } from "@/Client/Title";
 import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { Title } from "@/Utils/trpc";
 
 export interface DeleteTitleConfirmModalProps {
   title?: Title;
@@ -24,4 +24,3 @@ export function DeleteTitleConfirmModal({
     />
   );
 }
-

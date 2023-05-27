@@ -1,19 +1,17 @@
 import { Select } from "@mantine/core";
 import { TextInput } from "@mantine/core";
-import { MutateTitle, Title } from "../../../Client/Title";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
-import { useLevel } from "@/Client/Level";
-import { useTrack } from "@/Client/Track";
+import { Title, TitleCreateInput, TitleUpdateInput, trpc } from "@/Utils/trpc";
 
 export interface MutateTitleModalProps {
   title?: Title;
   opened: boolean;
-  onSubmit: (title: MutateTitle) => void;
+  onSubmit: (title: TitleUpdateInput | TitleCreateInput) => void;
   onClose: () => void;
 }
 
@@ -23,16 +21,15 @@ export function MutateTitleModal({
   onSubmit,
   onClose,
 }: MutateTitleModalProps) {
-  const { items: levels } = useLevel();
-  const { items: tracks } = useTrack();
+  const levelQuery = trpc.levels.list.useQuery();
+  const trackQuery = trpc.tracks.list.useQuery();
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    const title: MutateTitle = {
+    const title = {
       name: values.name,
       level_id: parseInt(values.level_id),
       track_id: parseInt(values.track_id),
     };
-    console.log("submitFormValues", values);
     onSubmit(title);
   };
 
@@ -62,16 +59,12 @@ export function MutateTitleModal({
       onSubmit={submitFormValues}
       mode={title ? "edit" : "create"}
     >
-      <TextInput
-        key="name"
-        label="Title"
-        placeholder="title"
-      />
+      <TextInput key="name" label="Title" placeholder="title" />
       <Select
         key="level_id"
         label="Level"
         placeholder="select level"
-        data={levels.reduce((acc, level) => {
+        data={(levelQuery.data ?? []).reduce((acc, level) => {
           const title = `${level.index} (${level.external_id})`;
           acc.push({
             value: level.id.toString(),
@@ -85,7 +78,7 @@ export function MutateTitleModal({
         key="track_id"
         label="Track"
         placeholder="select track"
-        data={tracks.reduce((acc, track) => {
+        data={(trackQuery.data ?? []).reduce((acc, track) => {
           const title = track.name;
           acc.push({
             value: track.id.toString(),

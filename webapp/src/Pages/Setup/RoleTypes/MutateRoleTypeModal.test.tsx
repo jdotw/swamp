@@ -1,16 +1,7 @@
-import { TextInput } from "@mantine/core";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { addTestPolyfills } from "../../../../test/UITestHelpers";
-import { MutateRoleType, RoleType } from "../../../Client/RoleType";
-import {
-  MutateItemFormValues,
-  MutateItemModal,
-  MutateItemModalFormField,
-  MutateItemModalMode,
-  nonEmptyString,
-} from "../../../Components/MutateItemModal/MutateItemModal";
 import {
   MutateRoleTypeModal,
   MutateRoleTypeModalProps,
@@ -23,7 +14,6 @@ const mockOnClose = vi.fn();
 
 const defaultProps: MutateRoleTypeModalProps = {
   opened: true,
-  mode: "create",
   onSubmit: mockOnSubmit,
   onClose: mockOnClose,
 };

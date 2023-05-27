@@ -1,21 +1,22 @@
-import {
-  Select,
-  SelectItem,
-} from "@mantine/core";
+import { Select, SelectItem } from "@mantine/core";
 import { TextInput } from "@mantine/core";
-import { MutateRoleType, RoleType } from "../../../Client/RoleType";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
+import {
+  RoleType,
+  RoleTypeCreateInput,
+  RoleTypeUpdateInput,
+} from "@/Utils/trpc";
 
 export interface MutateRoleTypeModalProps {
   roleType?: RoleType;
   roleTypes?: RoleType[];
   opened: boolean;
-  onSubmit: (roleType: MutateRoleType) => void;
+  onSubmit: (roleType: RoleTypeCreateInput | RoleTypeUpdateInput) => void;
   onClose: () => void;
 }
 
@@ -39,9 +40,9 @@ export function MutateRoleTypeModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    const roleType: MutateRoleType = {
+    const roleType = {
       name: values.name,
-      parent_id: parseInt(values.parent_id) ?? undefined,
+      parent_id: values.parent_id ? parseInt(values.parent_id) : undefined,
     };
     onSubmit(roleType);
   };
