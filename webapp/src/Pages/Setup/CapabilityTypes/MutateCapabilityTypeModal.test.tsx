@@ -3,7 +3,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { addTestPolyfills } from "../../../../test/UITestHelpers";
-import { MutateCapabilityType, CapabilityType } from "../../../Client/CapabilityType";
+import {
+  MutateCapabilityType,
+  CapabilityType,
+} from "../../../Client/CapabilityType";
 import {
   MutateItemFormValues,
   MutateItemModal,

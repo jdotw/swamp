@@ -23,6 +23,12 @@ export type Track = RouterOutputs["tracks"]["list"][number];
 export type TrackCreateInput = RouterInputs["tracks"]["create"];
 export type TrackUpdateInput = RouterInputs["tracks"]["update"]["track"];
 
+export type CapabilityType = RouterOutputs["capabilityTypes"]["list"][number];
+export type CapabilityTypeCreateInput =
+  RouterInputs["capabilityTypes"]["create"];
+export type CapabilityTypeUpdateInput =
+  RouterInputs["capabilityTypes"]["update"]["capabilityType"];
+
 export type Title = RouterOutputs["titles"]["list"][number];
 export type TitleCreateInput = RouterInputs["titles"]["create"];
 export type TitleUpdateInput = RouterInputs["titles"]["update"]["title"];
