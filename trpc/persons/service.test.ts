@@ -6,14 +6,14 @@ import prisma from "../libs/__mocks__/prisma";
 vi.mock("../libs/prisma");
 
 describe("create", () => {
-  it("should return the created user", async () => {
+  it("should return the created user with null values as undefined", async () => {
     const newPerson = {
       first_name: "John",
       last_name: "Doe",
       external_id: "2",
     };
     const id = 1;
-    const createdPerson = {
+    const dbCreatedPerson = {
       ...newPerson,
       id: id,
       middle_names: null,
@@ -22,7 +22,16 @@ describe("create", () => {
       updated_at: new Date(),
       onboarded_at: new Date(),
     };
-    prisma.person.create.mockResolvedValue(createdPerson);
+    const createdPerson = {
+      ...newPerson,
+      id: id,
+      middle_names: undefined,
+      offboarded_at: undefined,
+      created_at: new Date(),
+      updated_at: new Date(),
+      onboarded_at: new Date(),
+    };
+    prisma.person.create.mockResolvedValue(dbCreatedPerson);
     const user = await create(newPerson);
     expect(user).toStrictEqual(createdPerson);
   });
@@ -31,6 +40,7 @@ describe("create", () => {
 describe("getAll", () => {
   describe("when includeOffboarded is true", () => {
     it("returns all persons", async () => {
+      prisma.person.findMany.mockResolvedValue([]);
       await getAll({ includeOffboarded: true });
       expect(prisma.person.findMany).toHaveBeenCalledWith({
         where: {
@@ -41,6 +51,7 @@ describe("getAll", () => {
   });
   describe("when includeOffboarded is false", () => {
     it("returns only non-offboarded persons", async () => {
+      prisma.person.findMany.mockResolvedValue([]);
       await getAll({ includeOffboarded: false });
       expect(prisma.person.findMany).toHaveBeenCalledWith({
         where: {

@@ -16,7 +16,8 @@ model Team {
   updated_at DateTime @updatedAt
 
   name        String
-  description String
+  description String?
+  type        String
 
   formed_at    DateTime
   disbanded_at DateTime?

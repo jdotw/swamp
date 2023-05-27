@@ -1,22 +1,20 @@
 import dotenv from "dotenv";
 import personsRouter from "./persons/transport.trpc";
-import { inferAsyncReturnType, initTRPC } from "@trpc/server";
+import teamsRouter from "./team/transport.trpc";
+import tracksRouter from "./track/transport.trpc";
+import levelsRouter from "./level/transport.trpc";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
+import { t, createContext } from "./trpc";
 
 dotenv.config();
 const port = process.env.PORT ?? "3000";
 
-// created for each request
-const createContext = ({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) => ({}); // no context
-type Context = inferAsyncReturnType<typeof createContext>;
-
-const t = initTRPC.context<Context>().create();
 const appRouter = t.router({
   persons: personsRouter,
+  teams: teamsRouter,
+  tracks: tracksRouter,
+  levels: levelsRouter,
 });
 
 const app = express();
