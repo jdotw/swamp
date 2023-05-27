@@ -1,20 +1,19 @@
 import { Select } from "@mantine/core";
 import { TextInput } from "@mantine/core";
-import { UseFormReturnType } from "@mantine/form";
-import { useEffect, useState } from "react";
-import { MutateLevel, Level } from "../../../Client/Level";
+import { useState } from "react";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
+import { Level, LevelCreateInput, LevelUpdateInput } from "@/Utils/trpc";
 
 export interface MutateLevelModalProps {
   level?: Level;
   parent_levels?: Level[];
   opened: boolean;
-  onSubmit: (level: MutateLevel) => void;
+  onSubmit: (level: LevelCreateInput | LevelUpdateInput) => void;
   onClose: () => void;
 }
 
@@ -29,7 +28,7 @@ export function MutateLevelModal({
 
   const submitFormValues = (values: MutateItemFormValues) => {
     // Make sure we update a copy, not the actual level
-    const level: MutateLevel = {
+    const level = {
       index: parseInt(values.index),
       name: values.name,
       external_id: values.external_id,
@@ -40,25 +39,27 @@ export function MutateLevelModal({
   };
 
   const onChange = (values: MutateItemFormValues) => {
-    // We keep track of the selected parent because if a 
-    // parent is selected then the index must be set to the 
+    // We keep track of the selected parent because if a
+    // parent is selected then the index must be set to the
     // index of the parent and cannot be edited
     const parent = parent_levels?.find(
       (parent_level) => parent_level.id.toString() === values.parent_id
     );
     setSelectedParent(parent);
-  }
+  };
 
   const onModalClosed = () => {
     setSelectedParent(undefined);
     onClose();
-  }
+  };
 
   const fields: MutateItemModalFormField[] = [
     {
       key: "index",
       validation: (value) => nonEmptyString(value, "Index is required"),
-      value: level ? level.index.toString() : (selectedParent?.index.toString() ?? ""),
+      value: level
+        ? level.index.toString()
+        : selectedParent?.index.toString() ?? "",
     },
     {
       key: "external_id",
@@ -72,7 +73,9 @@ export function MutateLevelModal({
     },
     {
       key: "parent_id",
-      value: level ? level.parent_id?.toString() : (selectedParent?.id.toString() ?? ""),
+      value: level
+        ? level.parent_id?.toString()
+        : selectedParent?.id.toString() ?? "",
     },
   ];
 
@@ -86,21 +89,22 @@ export function MutateLevelModal({
       mode={level ? "edit" : "create"}
       onChange={onChange}
     >
-      {parent_levels &&
+      {parent_levels && (
         <Select
           key="parent_id"
           label="Parent"
           placeholder={level ? "none" : "select parent level"}
           disabled={level !== undefined}
           data={parent_levels.map((parent_level) => {
-            const label = `${parent_level.name} - ${parent_level.index.toString()} (${parent_level.external_id})`;
+            const label = `${parent_level.name
+              } - ${parent_level.index.toString()} (${parent_level.external_id})`;
             return {
               value: parent_level.id.toString(),
               label: label,
             };
           })}
         />
-      }
+      )}
       <TextInput
         key="index"
         withAsterisk
@@ -108,12 +112,7 @@ export function MutateLevelModal({
         placeholder="level index"
         disabled={level !== undefined || selectedParent !== undefined}
       />
-      <TextInput
-        key="name"
-        withAsterisk
-        label="Name"
-        placeholder="name"
-      />
+      <TextInput key="name" withAsterisk label="Name" placeholder="name" />
       <TextInput
         key="external_id"
         label="External ID"

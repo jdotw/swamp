@@ -1,16 +1,16 @@
 import { TextInput } from "@mantine/core";
-import { Person, MutatePerson } from "../../../Client/Person";
 import {
   MutateItemFormValues,
   MutateItemModal,
   MutateItemModalFormField,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
+import { Person, PersonCreateInput, PersonUpdateInput } from "@/Utils/trpc";
 
 export interface MutatePersonModalProps {
   person?: Person;
   opened: boolean;
-  onSubmit: (updatedPerson: MutatePerson) => void;
+  onSubmit: (updatedPerson: PersonCreateInput | PersonUpdateInput) => void;
   onClose: () => void;
   title: string;
 }
@@ -45,8 +45,7 @@ export function MutatePersonModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    // Make sure we update a copy, not the actual person
-    const updatedPerson: MutatePerson = {
+    const updatedPerson = {
       ...person,
       external_id: values.external_id,
       first_name: values.first_name,

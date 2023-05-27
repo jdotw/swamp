@@ -1,5 +1,5 @@
-import { Person } from "@/Client/Person";
 import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { Person } from "@/Utils/trpc";
 
 export interface DeletePersonConfirmModalProps {
   person?: Person;
@@ -24,4 +24,3 @@ export function DeletePersonConfirmModal({
     />
   );
 }
-

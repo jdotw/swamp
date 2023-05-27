@@ -1,7 +1,4 @@
-import {
-  Select,
-  SelectItem,
-} from "@mantine/core";
+import { Select, SelectItem } from "@mantine/core";
 import { TextInput } from "@mantine/core";
 import {
   MutateItemFormValues,
@@ -10,13 +7,13 @@ import {
   MutateItemModalMode,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
-import { MutateTrack, Track } from "@/Client/Track";
+import { Track, TrackCreateInput, TrackUpdateInput } from "@/Utils/trpc";
 
 export interface MutateTrackModalProps {
   track?: Track;
   parentCandidates?: Track[];
   opened: boolean;
-  onSubmit: (track: MutateTrack) => void;
+  onSubmit: (track: TrackCreateInput | TrackUpdateInput) => void;
   onClose: () => void;
   mode?: MutateItemModalMode;
 }
@@ -42,9 +39,9 @@ export function MutateTrackModal({
   ];
 
   const submitFormValues = (values: MutateItemFormValues) => {
-    const track: MutateTrack = {
+    const track = {
       name: values.name,
-      parent_id: parseInt(values.parent_id) ?? undefined,
+      parent_id: values.parent_id ? parseInt(values.parent_id) : undefined,
     };
     onSubmit(track);
   };

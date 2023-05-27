@@ -1,5 +1,5 @@
-import { Level } from "@/Client/Level";
 import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { Level } from "@/Utils/trpc";
 
 export interface DeleteLevelConfirmModalProps {
   level?: Level;
@@ -24,4 +24,3 @@ export function DeleteLevelConfirmModal({
     />
   );
 }
-

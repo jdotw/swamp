@@ -1,5 +1,5 @@
-import { Track } from "@/Client/Track";
 import { ConfirmModal } from "@/Components/ConfirmModal/ConfirmModal";
+import { Track } from "@/Utils/trpc";
 
 export interface DeleteTrackConfirmModalProps {
   track?: Track;
@@ -24,4 +24,3 @@ export function DeleteTrackConfirmModal({
     />
   );
 }
-

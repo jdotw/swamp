@@ -1,15 +1,20 @@
-import { MutateItemFormValues, MutateItemModal, MutateItemModalFormField, nonEmptyString } from "@/Components/MutateItemModal/MutateItemModal";
+import {
+  MutateItemFormValues,
+  MutateItemModal,
+  MutateItemModalFormField,
+  nonEmptyString,
+} from "@/Components/MutateItemModal/MutateItemModal";
+import { Team, TeamCreateInput, TeamUpdateInput } from "@/Utils/trpc";
 import { Select, TextInput } from "@mantine/core";
-import { MutateTeam, Team } from "../../../Client/Team";
 
 export const MutateTeamModalTestID = "mutate-team-modal";
 
 export interface MutateTeamModalProps {
   mode: "edit" | "create";
-  team?: MutateTeam;
+  team?: Team;
   parentCandidates: Team[];
   opened: boolean;
-  onSubmit: (updatedTeam: MutateTeam) => void;
+  onSubmit: (updatedTeam: TeamCreateInput | TeamUpdateInput) => void;
   onClose: () => void;
 }
 
@@ -21,36 +26,33 @@ function MutateTeamModal({
   onClose,
   parentCandidates,
 }: MutateTeamModalProps) {
-
   const fields: MutateItemModalFormField[] = [
     {
       key: "name",
       initialValue: "",
-      // initialValue: team?.name ?? "",
       validation: (value) => nonEmptyString(value, "Name is required"),
       value: team?.name ?? "",
     },
     {
       key: "type",
       initialValue: "",
-      // initialValue: team?.type ?? "delivery",
       validation: (value) => nonEmptyString(value, "Type is required"),
       value: team?.type ?? "delivery",
     },
     {
       key: "parent_id",
       initialValue: "",
-      // initialValue: team?.parent_id?.toString() ?? "",
       value: team?.parent_id?.toString() ?? "",
     },
   ];
 
   const submitForm = (values: MutateItemFormValues) => {
-    let updatedTeam: MutateTeam = {
-      ...team!,
+    const updatedTeam = {
+      ...team,
+      description: undefined,
       name: values.name,
       type: values.type,
-      parent_id: values.parentId ? parseInt(values.parentId) : undefined
+      parent_id: values.parentId ? parseInt(values.parentId) : undefined,
     };
     onSubmit(updatedTeam);
   };
@@ -77,12 +79,7 @@ function MutateTeamModal({
           { label: "Home", value: "home" },
         ]}
       />
-      <TextInput
-        key="name"
-        withAsterisk
-        label="Name"
-        placeholder="team name"
-      />
+      <TextInput key="name" withAsterisk label="Name" placeholder="team name" />
       <Select
         key="parentId"
         label="Parent"

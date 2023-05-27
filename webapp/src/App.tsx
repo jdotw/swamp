@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "./Utils/trpc";
-
+import superjson from "superjson";
 import { HeaderSimple } from "./Components/Header/Header";
 import { SideNavbar } from "./Components/Navbar/SideNavbar";
 
@@ -24,6 +24,7 @@ function App() {
           // },
         }),
       ],
+      transformer: superjson,
     })
   );
   const [burgerOpened, { toggle: toggleBurgerOpened }] = useDisclosure(false);

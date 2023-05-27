@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { MutatePerson, usePerson } from "@/Client/Person";
 import { createStyles, Table, Button, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import Loading from "@/Components/Loading/Loading";
 import { MutatePersonModal } from "./MutatePersonModal";
 import { ImportPeopleModal } from "./ImportPeopleModal";
 import { DeletePersonConfirmModal } from "./DeletePersonConfirmModal";
-import { trpc, RouterOutputs } from "@/Utils/trpc";
-import { Role } from "@/Client/Role";
+import {
+  trpc,
+  Person,
+  PersonCreateInput,
+  PersonUpdateInput,
+} from "@/Utils/trpc";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -27,8 +30,6 @@ const useStyles = createStyles(() => ({
     color: "red",
   },
 }));
-
-type Person = RouterOutputs["persons"]["list"][number];
 
 export function PersonList() {
   const { classes } = useStyles();
@@ -108,19 +109,19 @@ export function PersonList() {
     );
   });
 
-  const onPersonSubmit = (newPerson: MutatePerson) => {
-    (async () => {
-      if (selectedPerson) {
-        await personUpdater.mutateAsync({
-          id: selectedPerson.id,
-          person: newPerson,
-        });
-      } else {
-        await personCreator.mutateAsync({ ...newPerson });
-      }
-      await personQuery.refetch();
-      setMutatePersonModalOpen(false);
-    })();
+  const onPersonSubmit = async (
+    newPerson: PersonCreateInput | PersonUpdateInput
+  ) => {
+    if (selectedPerson) {
+      await personUpdater.mutateAsync({
+        id: selectedPerson.id,
+        person: newPerson as PersonUpdateInput,
+      });
+    } else {
+      await personCreator.mutateAsync(newPerson as PersonCreateInput);
+    }
+    await personQuery.refetch();
+    setMutatePersonModalOpen(false);
   };
 
   const onImportSubmit = () => {
