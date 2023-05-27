@@ -1,8 +1,9 @@
-import { getAll, roleTypeSchema } from "./service";
+import { getAll } from "./service";
 import { describe, it, expect, vi } from "vitest";
 import { create } from "../role_type/service";
 import prisma from "../libs/__mocks__/prisma";
 import { z } from "zod";
+import { roleTypeSchema } from "./schema";
 
 vi.mock("../libs/prisma");
 
@@ -43,6 +44,9 @@ describe("getAll", () => {
         where: {
           retired_at: undefined,
         },
+        include: {
+          capability_types: true,
+        },
       });
     });
   });
@@ -53,6 +57,9 @@ describe("getAll", () => {
       expect(prisma.roleType.findMany).toHaveBeenCalledWith({
         where: {
           retired_at: null,
+        },
+        include: {
+          capability_types: true,
         },
       });
     });

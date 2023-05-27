@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import personsRouter from "./persons/transport.trpc";
 import teamsRouter from "./team/transport.trpc";
 import tracksRouter from "./track/transport.trpc";
+import capabilityTypesRouter from "./capability_type/transport.trpc";
 import roleTypesRouter from "./role_type/transport.trpc";
 import titlesRouter from "./title/transport.trpc";
 import levelsRouter from "./level/transport.trpc";
@@ -19,6 +20,7 @@ const appRouter = t.router({
   levels: levelsRouter,
   titles: titlesRouter,
   roleTypes: roleTypesRouter,
+  capabilityTypes: capabilityTypesRouter,
 });
 
 const app = express();

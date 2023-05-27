@@ -124,7 +124,8 @@ model RoleType {
   parent    RoleType?  @relation("RoleTypeChildren", fields: [parent_id], references: [id])
   children  RoleType[] @relation("RoleTypeChildren")
 
-  roles Role[]
+  roles            Role[]
+  capability_types CapabilityType[]
 
   @@map("role_types")
 }
@@ -162,6 +163,9 @@ model CapabilityType {
   parent_id Int?
   parent    CapabilityType?  @relation("CapabilityTypeChildren", fields: [parent_id], references: [id])
   children  CapabilityType[] @relation("CapabilityTypeChildren")
+
+  role_type_id Int?
+  role_type    RoleType? @relation(fields: [role_type_id], references: [id])
 
   capabilities Capability[]
 

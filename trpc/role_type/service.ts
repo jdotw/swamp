@@ -1,22 +1,14 @@
 import { z } from "zod";
 import prisma from "../libs/prisma";
+import { roleTypeSchema } from "./schema";
+import { capabilityTypeSchema } from "@/capability_type/schema";
 
 const db = prisma.roleType;
 
-export const roleTypeSchema = z.object({
-  id: z.number(),
-  name: z.string().min(1),
-  parent_id: z
-    .number()
-    .nullable()
-    .transform((val) => val ?? undefined)
-    .optional(),
-  active_from: z.date(),
-  retired_at: z
-    .date()
-    .nullable()
-    .transform((val) => val ?? undefined)
-    .optional(),
+export const roleTypeDetailsSchema = roleTypeSchema.extend({
+  parent: roleTypeSchema.optional(),
+  children: z.array(roleTypeSchema).default([]),
+  capability_types: z.array(capabilityTypeSchema).default([]),
 });
 
 export const getAll = async ({
@@ -28,8 +20,11 @@ export const getAll = async ({
     where: {
       retired_at: includeRetired ? undefined : null,
     },
+    include: {
+      capability_types: true,
+    },
   });
-  return z.array(roleTypeSchema).parse(roleTypes);
+  return z.array(roleTypeDetailsSchema).parse(roleTypes);
 };
 
 export const getById = async (id: number) => {

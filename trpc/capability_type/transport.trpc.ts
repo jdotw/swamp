@@ -16,11 +16,11 @@ export default router({
     .input(
       z.object({
         id: z.number(),
-        roleType: service.updateSchema,
+        capabilityType: service.updateSchema,
       })
     )
     .mutation(async (opts) => {
-      return service.update(opts.input.id, opts.input.roleType);
+      return service.update(opts.input.id, opts.input.capabilityType);
     }),
   delete: publicProcedure.input(z.number()).mutation(async (opts) => {
     return service.deleteById(opts.input);
