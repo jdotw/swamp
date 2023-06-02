@@ -177,8 +177,6 @@ model Capability {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  name String
-
   active_from DateTime  @default(now())
   retired_at  DateTime?
 
