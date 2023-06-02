@@ -1,12 +1,21 @@
-
-import { Text, Button, createStyles, ScrollArea, Table, Title } from "@mantine/core";
+import {
+  Text,
+  Button,
+  createStyles,
+  ScrollArea,
+  Table,
+  Title,
+} from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { DeploymentType, MutateDeploymentType, useDeploymentType } from "../../../Client/DeploymentTypes";
+import {
+  DeploymentType,
+  MutateDeploymentType,
+  useDeploymentType,
+} from "../../../Client/DeploymentTypes";
 import Loading from "../../../Components/Loading/Loading";
 import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
 import { DeleteDeploymentTypeConfirmModal } from "./DeleteDeploymentTypeConfirmModal";
-// import { MutateDeploymentTypeModal } from "./MutateDeploymentTypeModal";
 
 const useStyles = createStyles(() => ({
   buttonBar: {
@@ -28,14 +37,18 @@ const useStyles = createStyles(() => ({
 
 function DeploymentTypeList() {
   const { classes } = useStyles();
-  const { items, loading, createItem, updateItem } = useDeploymentType();
-  const [selectedDeploymentType, setSelectedDeploymentType] = useState<DeploymentType>();
+  const { items, loading, createItem, updateItem, deleteItem } =
+    useDeploymentType();
+  const [selectedDeploymentType, setSelectedDeploymentType] =
+    useState<DeploymentType>();
   const [mutateModalOpen, setMutateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   if (loading) return <Loading />;
 
-  const submitDeploymentType = async (newDeploymentType: MutateDeploymentType) => {
+  const submitDeploymentType = async (
+    newDeploymentType: MutateDeploymentType
+  ) => {
     if (selectedDeploymentType) {
       await updateItem(selectedDeploymentType.id, newDeploymentType);
     } else {
@@ -46,12 +59,7 @@ function DeploymentTypeList() {
 
   const deleteDeploymentType = async () => {
     if (selectedDeploymentType) {
-      const mutatation: MutateDeploymentType = {
-        name: selectedDeploymentType.name,
-        parent_id: selectedDeploymentType.parent_id,
-        retired_at_date: new Date().toISOString(),
-      };
-      await updateItem(selectedDeploymentType.id, mutatation);
+      await deleteItem(selectedDeploymentType.id);
     }
     setDeleteModalOpen(false);
   };
@@ -59,22 +67,46 @@ function DeploymentTypeList() {
   const deploymentTypeRow = (deploymentType: DeploymentType, level: number) => (
     <tr key={deploymentType.id.toString()}>
       <td>
-        <Link className={deploymentType.retired_at_date ? classes.retired : ""} style={{ marginLeft: level * 20 }} to={deploymentType.id.toString()}>
+        <Link
+          className={deploymentType.retired_at ? classes.retired : ""}
+          style={{ marginLeft: level * 20 }}
+          to={deploymentType.id.toString()}
+        >
           {deploymentType.name}
         </Link>
       </td>
       <td className={classes.rowButtonBar}>
-        {!deploymentType.retired_at_date && (<>
-          <Button onClick={() => { setSelectedDeploymentType(deploymentType); setMutateModalOpen(true); }}>Edit</Button>
-          <Button onClick={() => { setSelectedDeploymentType(deploymentType); setDeleteModalOpen(true); }}>Delete</Button>
-        </>)}
+        {!deploymentType.retired_at && (
+          <>
+            <Button
+              onClick={() => {
+                setSelectedDeploymentType(deploymentType);
+                setMutateModalOpen(true);
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => {
+                setSelectedDeploymentType(deploymentType);
+                setDeleteModalOpen(true);
+              }}
+            >
+              Delete
+            </Button>
+          </>
+        )}
       </td>
     </tr>
   );
 
-  const deploymentTypeRows = (items: DeploymentType[], parent?: DeploymentType, level = 0) =>
+  const deploymentTypeRows = (
+    items: DeploymentType[],
+    parent?: DeploymentType,
+    level = 0
+  ) =>
     items.reduce((acc, deploymentType) => {
-      if (deploymentType.parent_id == (parent?.id)) {
+      if (deploymentType.parent_id == parent?.id) {
         acc.push(deploymentTypeRow(deploymentType, level));
         acc.push(...deploymentTypeRows(items, deploymentType, level + 1));
       }
@@ -85,7 +117,11 @@ function DeploymentTypeList() {
     <>
       <div>
         <Title order={3}>Deployment Types</Title>
-        <Text>Deployment Types describe how a Capability is deployed into a Team. For example, the Capability might be a member of the team (contributor), the Manager of the team, or a Support role in the team.</Text>
+        <Text>
+          Deployment Types describe how a Capability is deployed into a Team.
+          For example, the Capability might be a member of the team
+          (contributor), the Manager of the team, or a Support role in the team.
+        </Text>
         <ScrollArea>
           <Table>
             <thead>
@@ -98,7 +134,14 @@ function DeploymentTypeList() {
           </Table>
         </ScrollArea>
         <div className={classes.buttonBar}>
-          <Button onClick={() => { setSelectedDeploymentType(undefined); setMutateModalOpen(true) }}>Add Deployment Type</Button>
+          <Button
+            onClick={() => {
+              setSelectedDeploymentType(undefined);
+              setMutateModalOpen(true);
+            }}
+          >
+            Add Deployment Type
+          </Button>
         </div>
       </div>
       <MutateDeploymentTypeModal

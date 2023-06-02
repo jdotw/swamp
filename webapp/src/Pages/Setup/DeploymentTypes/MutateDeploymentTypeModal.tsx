@@ -1,7 +1,4 @@
-import {
-  Select,
-  SelectItem,
-} from "@mantine/core";
+import { Select, SelectItem } from "@mantine/core";
 import { TextInput } from "@mantine/core";
 import {
   MutateItemFormValues,
@@ -9,7 +6,10 @@ import {
   MutateItemModalFormField,
   nonEmptyString,
 } from "../../../Components/MutateItemModal/MutateItemModal";
-import { DeploymentType, MutateDeploymentType } from "../../../Client/DeploymentTypes";
+import {
+  DeploymentType,
+  MutateDeploymentType,
+} from "../../../Client/DeploymentTypes";
 
 export interface MutateDeploymentTypeModalProps {
   deploymentType?: DeploymentType;
@@ -41,22 +41,23 @@ export function MutateDeploymentTypeModal({
   const submitFormValues = (values: MutateItemFormValues) => {
     const deploymentType: MutateDeploymentType = {
       name: values.name,
-      parent_id: parseInt(values.parent_id) ?? undefined,
+      parent_id: values.parent_id ? parseInt(values.parent_id) : undefined,
     };
     onSubmit(deploymentType);
   };
 
-  const parentDeploymentTypeData = parentCandidates?.reduce((acc, dt) => {
-    if (dt.id === deploymentType?.id) {
-      return acc;
-    } else {
-      acc.push({
-        value: dt.id.toString(),
-        label: dt.name,
-      });
-      return acc;
-    }
-  }, [] as SelectItem[]) ?? [];
+  const parentDeploymentTypeData =
+    parentCandidates?.reduce((acc, dt) => {
+      if (dt.id === deploymentType?.id) {
+        return acc;
+      } else {
+        acc.push({
+          value: dt.id.toString(),
+          label: dt.name,
+        });
+        return acc;
+      }
+    }, [] as SelectItem[]) ?? [];
 
   return (
     <MutateItemModal
@@ -68,12 +69,13 @@ export function MutateDeploymentTypeModal({
       mode={deploymentType ? "edit" : "create"}
     >
       <TextInput key="name" withAsterisk label="Name" placeholder="name" />
-      <Select clearable
+      <Select
+        clearable
         key="parent_id"
         label="Parent"
         placeholder="parent deployment type"
         data={parentDeploymentTypeData}
       />
-    </MutateItemModal >
+    </MutateItemModal>
   );
 }
